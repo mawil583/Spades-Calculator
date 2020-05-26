@@ -6,14 +6,21 @@ const init = async () => {
 
     const server = Hapi.server({
         port: 5000,
-        host: 'localhost'
+        host: 'localhost',
+        routes: {
+            cors: true
+        }
     });
 
     server.route({
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            return 'Hello World!';
+            const response = h.response("Hello World!")
+            return response
+            // return 'Hello World!';
+            // return {payload: "hello world"};
+
         }
     });
 
