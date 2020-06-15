@@ -5,21 +5,17 @@ const Weather = () => {
 
     const [message, setMessage] = useState('');
 
-    useEffect(async () => {
-        const helloWorld = await fetch.get("")
-            .then(response => {
-                // console.log("response: ", response);
-                // console.log("response.json(): ",response.json());
-                // return response.json();
-                return response.text();
-            })
-            .then(data => {
-                setMessage(data)
-                console.log(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            })
+    useEffect(() => {
+        async function callRootRoute () {
+            try {
+                const helloWorld = await fetch.get("");
+                const response = await helloWorld.text();
+                setMessage(response);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        callRootRoute();
     }, []);
 
     return (

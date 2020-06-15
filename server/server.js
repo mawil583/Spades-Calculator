@@ -16,11 +16,8 @@ const init = async () => {
         method: 'GET',
         path: '/',
         handler: (request, h) => {
-            const response = h.response("Hello World!")
-            return response
-            // return 'Hello World!';
-            // return {payload: "hello world"};
-
+            const response = h.response("Hello World!");
+            return response;
         }
     });
 
