@@ -1,5 +1,5 @@
 import React from 'react';
-import HelloWorld from './components/HelloWorld/HelloWorld';
+import HelloWorld from './components/HelloWorld/';
 import Counter from './components/Counter';
 import logo from './logo.svg';
 import './App.css';

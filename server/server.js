@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+// look up @hapi/joi for more convenient routing
 
 const init = async () => {
 

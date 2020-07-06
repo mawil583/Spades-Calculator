@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import fetch from '../../utils/fetch';
+// import fetch from '../../utils/fetch';
 
-const HelloWorld = () => {
+const HelloWorld = (props) => {
 
-    const [message, setMessage] = useState('');
+    // const [message, setMessage] = useState('');
 
     useEffect(() => {
-        async function callRootRoute () {
-            try {
-                const helloWorld = await fetch.get("");
-                const response = await helloWorld.text();
-                setMessage(response);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        callRootRoute();
+        props.getMessage()
+        // async function callRootRoute () {
+        //     try {
+        //         const helloWorld = await fetch.get("");
+        //         const response = await helloWorld.text();
+        //         setMessage(response);
+        //     } catch (error) {
+        //         console.error(error);
+        //     }
+        // };
+        // callRootRoute();
     }, []);
+
+    console.log("props: ", props);
 
     return (
         <div>
-            <h1>The message I have for the world is: "{message}" </h1>
+            <h1>The message I have for the world is: "{props.message}" </h1>
         </div>
     );
 }
