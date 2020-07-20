@@ -1,12 +1,10 @@
 const message = (state = '', action) => {
-    console.log(action);
+
     switch (action.type) {
         case 'GET_MESSAGE':
-            console.log("GET_MESSAGE reducer cl of action: ", action)
-            return state
+            return action.promise;
         default:
-            console.log("GET_MESSAGE was not dispatched");
-            return state
+            return state;
     }
 }
 

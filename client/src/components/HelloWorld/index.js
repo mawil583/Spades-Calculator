@@ -14,7 +14,6 @@ const mapDispatchToProps = (dispatch) => {
         getMessage: () => {
             dispatch(getMessage());
         },
-        
     };
 };
 

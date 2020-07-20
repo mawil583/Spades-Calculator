@@ -1,25 +1,10 @@
 import React, { useEffect } from 'react';
-// import fetch from '../../utils/fetch';
 
 const HelloWorld = (props) => {
 
-    // const [message, setMessage] = useState('');
-
     useEffect(() => {
-        props.getMessage()
-        // async function callRootRoute () {
-        //     try {
-        //         const helloWorld = await fetch.get("");
-        //         const response = await helloWorld.text();
-        //         setMessage(response);
-        //     } catch (error) {
-        //         console.error(error);
-        //     }
-        // };
-        // callRootRoute();
+        props.getMessage();
     }, []);
-
-    console.log("props: ", props);
 
     return (
         <div>

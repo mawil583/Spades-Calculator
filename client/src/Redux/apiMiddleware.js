@@ -1,27 +1,20 @@
-export default function apiMiddleware() {
-    return store => next => action => {
-        console.log("middleware is being called");
-    return next(action);
+const apiMiddleware = store => next => action => {
 
-        // if (!action.promise) {
-        //     console.log("middleware: there was no action.promise");
-        //     return next(action);
-        // }
+    if (!action.promise) {
+        return next(action);
+    }
 
-        // function callApi (request) {
-        //     console.log("callApi middleware funciton is being called");
-        //     request.then(response => {
+    function callApi (request) {
 
-        //         console.log("return from callApi: ", {...action, promise: response} );
-                
-        //         return {...action, promise: response};
-        //     });
-        // };
-        // console.log("just before callApi gets called");
-
-
-        // since request is action.promise:
-        // return callApi(action.promise);
-
+        request.then(response => {
+            return response.text();
+        }).then(function(data) {
+            return next({...action, promise: data})
+        })
+        
     };
-};
+
+    // since request is action.promise:
+    return callApi(action.promise);    
+}
+export default apiMiddleware;
