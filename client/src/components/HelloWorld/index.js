@@ -5,7 +5,7 @@ import { getMessage } from '../../Redux/HelloWorld/actions';
 
 const mapStateToProps = (state) => {
     return {
-        message: state.helloWorld
+        message: state.message
     };
 };
 
