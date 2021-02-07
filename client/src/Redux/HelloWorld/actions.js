@@ -1,9 +1,8 @@
-import fetch from '../../utils/fetch';
+import fetch from "../../utils/fetch";
 
-export function getMessage () {
-    return {
-        type: 'GET_MESSAGE',
-        promise: fetch.get("")
-    };
-};
-
+export function getMessage() {
+  return {
+    type: "GET_MESSAGE",
+    promise: fetch.get(""),
+  };
+}

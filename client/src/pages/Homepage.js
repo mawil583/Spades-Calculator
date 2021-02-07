@@ -1,6 +1,7 @@
 import React from "react";
 import HelloWorld from "../components/HelloWorld";
 import Counter from "../components/Counter";
+import BlogPosts from "../components/BlogPosts";
 import logo from "../logo.svg";
 import "../App.css";
 
@@ -12,6 +13,7 @@ function Homepage() {
 
         <HelloWorld />
         <img src={logo} className="App-logo" alt="logo" />
+        <BlogPosts />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
