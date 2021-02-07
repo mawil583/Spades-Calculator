@@ -1,8 +1,8 @@
 "use strict";
 
-const Hapi = require("@hapi/hapi");
 require("dotenv").config({ path: "./secrets.env" });
-const client = require("./config/contentful");
+const Hapi = require("@hapi/hapi");
+const contentful = require("./config/contentful");
 
 const init = async () => {
   const server = Hapi.server({
@@ -26,7 +26,7 @@ const init = async () => {
       method: "GET",
       path: "/entries",
       handler: async (request, h) => {
-        const entries = await client.getEntries();
+        const entries = await contentful.getEntries();
         const response = h.response(entries);
         return response;
       },
