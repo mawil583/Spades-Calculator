@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 const HelloWorld = (props) => {
   useEffect(() => {
     props.getMessage();
-  }, []);
+  });
 
   return (
     <div>

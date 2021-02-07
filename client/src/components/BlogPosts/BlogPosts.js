@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 const BlogPosts = (props) => {
   useEffect(() => {
     props.getBlogPosts();
-  }, []);
+  });
 
   return (
     <div>
