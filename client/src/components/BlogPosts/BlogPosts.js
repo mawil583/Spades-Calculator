@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 const BlogPosts = (props) => {
+  const { getBlogPosts, blogPosts } = props;
+
   useEffect(() => {
-    props.getBlogPosts();
-  });
+    getBlogPosts();
+  }, [getBlogPosts]);
 
   return (
     <div>
       <h1>Here are my blog posts: </h1>
-      {props.blogPosts.map((blogPost, i) => (
-        <p key={i}>{blogPost}</p>
+      {blogPosts.map((blogPost, i) => (
+        <p key={i}>{documentToReactComponents(blogPost)}</p>
       ))}
     </div>
   );
