@@ -1,4 +1,6 @@
 import React from "react";
+import Link from "next/link";
+
 import HelloWorld from "../components/HelloWorld";
 import Counter from "../components/Counter";
 import BlogPosts from "../components/BlogPosts";
@@ -13,6 +15,12 @@ function Homepage() {
 
         <HelloWorld />
         <img src={logo} className="App-logo" alt="logo" />
+        <div>
+          <h2>Blog Posts:</h2>
+          <Link href="/pages/blog/blog">
+            <a>Here</a>
+          </Link>
+        </div>
         <BlogPosts />
         <p>
           Edit <code>src/App.js</code> and save to reload.
