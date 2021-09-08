@@ -22,15 +22,16 @@ const init = async () => {
         return response;
       },
     },
-    {
-      method: "GET",
-      path: "/entries",
-      handler: async (request, h) => {
-        const entries = await contentful.getEntries();
-        const response = h.response(entries);
-        return response;
-      },
-    },
+    // TODO: // TODO: after contentful accessToken is set up, I can uncomment this route handler
+    // {
+    //   method: "GET",
+    //   path: "/entries",
+    //   handler: async (request, h) => {
+    //     const entries = await contentful.getEntries();
+    //     const response = h.response(entries);
+    //     return response;
+    //   },
+    // },
   ]);
 
   await server.start();

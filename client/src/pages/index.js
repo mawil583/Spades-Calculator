@@ -21,7 +21,12 @@ function Homepage() {
             <a>Here</a>
           </Link>
         </div>
-        <BlogPosts />
+        {/* 
+        TODO: make sure Contentful accessToken is set up in local secrets.ENV
+
+        <BlogPosts /> 
+        
+        */}
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>

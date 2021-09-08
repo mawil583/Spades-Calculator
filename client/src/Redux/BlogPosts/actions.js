@@ -1,8 +1,9 @@
 import fetch from "../../utils/fetch";
 
 export function getBlogPosts() {
-  return {
-    type: "GET_BLOG_POSTS",
-    promise: fetch.get("entries"),
-  };
+  // TODO: after contentful accessToken is set up, I can uncomment to get blog entries
+  // return {
+  //   type: "GET_BLOG_POSTS",
+  //   promise: fetch.get("entries"),
+  // };
 }

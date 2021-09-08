@@ -1,8 +1,11 @@
-const client = require("contentful");
+// TODO: // TODO: grab contentful accessToken and save it in secrets.env
+// then I can uncomment this contentful config below
 
-const contentful = client.createClient({
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-  space: process.env.SPACE_ID,
-});
+// const client = require("contentful");
 
-module.exports = contentful;
+// const contentful = client.createClient({
+//   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+//   space: process.env.SPACE_ID,
+// });
+
+// module.exports = contentful;
