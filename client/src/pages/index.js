@@ -17,16 +17,13 @@ function Homepage() {
         <img src={logo} className="App-logo" alt="logo" />
         <div>
           <h2>Blog Posts:</h2>
-          <Link href="/pages/blog/blog">
-            <a>Here</a>
-          </Link>
+          <Link href="/pages/blog/blog">Here</Link>
         </div>
-        {/* 
-        TODO: make sure Contentful accessToken is set up in local secrets.ENV
 
-        <BlogPosts /> 
-        
-        */}
+        {/* TODO: make sure Contentful accessToken is set up in local secrets.ENV */}
+
+        <BlogPosts />
+
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
