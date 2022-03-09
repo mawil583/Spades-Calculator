@@ -6,6 +6,7 @@ const apiMiddleware = (store) => (next) => (action) => {
   function callApi(request) {
     request
       .then((response) => {
+        // TODO: may not need this if/else. Simplify
         if (response.text) {
           return response.text();
         } else {
