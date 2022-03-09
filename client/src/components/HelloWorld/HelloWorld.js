@@ -4,7 +4,6 @@ const HelloWorld = (props) => {
   const { getMessage, message } = props;
 
   useEffect(() => {
-    // console.log({ props });
     getMessage();
   }, [getMessage]);
 

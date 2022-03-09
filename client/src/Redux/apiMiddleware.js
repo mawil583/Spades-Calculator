@@ -4,13 +4,8 @@ const apiMiddleware = (store) => (next) => (action) => {
   }
 
   function callApi(request) {
-    console.log({ request });
     request
       .then((response) => {
-        console.log({ response });
-        console.log({ body: response.body });
-        // console.log({ text: response.text() });
-        // console.log({ json: response.json() });
         if (response.text) {
           return response.text();
         } else {
@@ -18,7 +13,6 @@ const apiMiddleware = (store) => (next) => (action) => {
         }
       })
       .then(function (data) {
-        console.log({ data });
         return next({ ...action, promise: data });
       });
   }

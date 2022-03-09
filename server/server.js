@@ -9,10 +9,9 @@ const init = async () => {
     port: 5000,
     host: "localhost",
     routes: {
-      //   // cors: true,
       cors: {
-        origin: ["*"], // an array of origins or 'ignore'
-        credentials: true, // boolean - 'Access-Control-Allow-Credentials'
+        origin: ["*"],
+        credentials: true,
       },
     },
   });
@@ -20,20 +19,16 @@ const init = async () => {
   server.route([
     {
       method: "GET",
-      path: "/",
+      path: "/helloWorld",
       handler: async (request, h) => {
-        console.log("hi");
         const response = h.response("Hello World!");
-        console.log({ serverResponse: response });
         return response;
       },
     },
-    // TODO: // TODO: after contentful accessToken is set up, I can uncomment this route handler
     {
       method: "GET",
       path: "/entries",
       handler: async (request, h) => {
-        console.log("cats");
         const entries = await contentful.getEntries();
         const response = h.response(entries);
         return response;
