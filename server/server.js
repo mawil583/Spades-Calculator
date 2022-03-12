@@ -9,29 +9,31 @@ const init = async () => {
     port: 5000,
     host: "localhost",
     routes: {
-      cors: true,
+      cors: {
+        origin: ["*"],
+        credentials: true,
+      },
     },
   });
 
   server.route([
     {
       method: "GET",
-      path: "/",
+      path: "/helloWorld",
       handler: async (request, h) => {
         const response = h.response("Hello World!");
         return response;
       },
     },
-    // TODO: // TODO: after contentful accessToken is set up, I can uncomment this route handler
-    // {
-    //   method: "GET",
-    //   path: "/entries",
-    //   handler: async (request, h) => {
-    //     const entries = await contentful.getEntries();
-    //     const response = h.response(entries);
-    //     return response;
-    //   },
-    // },
+    {
+      method: "GET",
+      path: "/entries",
+      handler: async (request, h) => {
+        const entries = await contentful.getEntries();
+        const response = h.response(entries);
+        return response;
+      },
+    },
   ]);
 
   await server.start();
@@ -39,6 +41,7 @@ const init = async () => {
 };
 
 process.on("unhandledRejection", (err) => {
+  console.log("hi");
   console.log(err);
   process.exit(1);
 });

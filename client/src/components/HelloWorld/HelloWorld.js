@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 
 const HelloWorld = (props) => {
+  const { getMessage, message } = props;
+
   useEffect(() => {
-    props.getMessage();
-  });
+    getMessage();
+  }, [getMessage]);
 
   return (
     <div>
-      <h1>The message I have for the world is: "{props.message}" </h1>
+      <h1>The message I have for the world is: "{message}" </h1>
     </div>
   );
 };
