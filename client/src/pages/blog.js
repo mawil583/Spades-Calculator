@@ -1,6 +1,5 @@
 import React from "react";
-import BlogPosts from "../../components/BlogPosts/BlogPosts";
-import BlogPosts from "../../components/BlogPosts";
+import BlogPosts from "../components/BlogPosts";
 import "../App.css";
 
 function Blog() {
