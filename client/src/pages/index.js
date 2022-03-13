@@ -18,6 +18,7 @@ function Homepage() {
         <div>
           <h2>Blog Posts:</h2>
           <Link to="/blog">Blog</Link>
+          <Link to="/spades-calculator">Spades Calculator</Link>
         </div>
 
         <BlogPosts />
