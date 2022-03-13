@@ -20,8 +20,6 @@ function Homepage() {
           <Link href="/pages/blog/blog">Here</Link>
         </div>
 
-        {/* TODO: make sure Contentful accessToken is set up in local secrets.ENV */}
-
         <BlogPosts />
 
         <p>
