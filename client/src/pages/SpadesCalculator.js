@@ -8,27 +8,27 @@ function SpadesCalculator() {
   // const [team2Score, setTeam2Score] = useState(0);
   // const [team2Bags, setTeam2Bags] = useState(0);
   // const [teamInfoCompleted, setTeamInfoCompleted] = useState(false);
-  console.log(JSON.parse(localStorage.getItem("initialValues")));
-  const hasLocalStorage = !!localStorage.getItem("initialValues");
+  console.log(JSON.parse(sessionStorage.getItem("initialValues")));
+  const hasSessionStorage = !!sessionStorage.getItem("initialValues");
   const formik = useFormik({
     initialValues: {
-      team1Name: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).team1Name
+      team1Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).team1Name
         : "Team 1",
-      team2Name: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).team2Name
+      team2Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Name
         : "Team 2",
-      player1name: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).player1name
+      player1name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).player1name
         : "",
-      team2Player1: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).team2Player1
+      team2Player1: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Player1
         : "",
-      player2Name: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).player2Name
+      player2Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).player2Name
         : "",
-      team2Player2: hasLocalStorage
-        ? JSON.parse(localStorage.getItem("initialValues")).team2Player2
+      team2Player2: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Player2
         : "",
       nameInfoSubmitted: false,
     },
@@ -36,12 +36,12 @@ function SpadesCalculator() {
       console.log({ values });
       formik.setFieldValue("nameInfoSubmitted", true);
       console.log({ values: formik.values });
-      localStorage.setItem("initialValues", JSON.stringify(values));
+      sessionStorage.setItem("initialValues", JSON.stringify(values));
     },
   });
 
   useEffect(() => {
-    localStorage.setItem("initialValues", JSON.stringify(formik.values));
+    sessionStorage.setItem("initialValues", JSON.stringify(formik.values));
   }, [formik.values]);
 
   return (
@@ -67,7 +67,6 @@ function SpadesCalculator() {
             sure I'm not using both Formik form state and local state for the
             same information. Can only have one source of truth!!!
           </li>
-          <li>change local storage to session storage</li>
         </ul>
         <div
           className="team-board"
