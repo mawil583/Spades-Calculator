@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
+
+import SpadesRound from "../components/SpadesRound";
 import "../App.css";
 
 function SpadesCalculator() {
@@ -8,7 +10,8 @@ function SpadesCalculator() {
   // const [team2Score, setTeam2Score] = useState(0);
   // const [team2Bags, setTeam2Bags] = useState(0);
   // const [teamInfoCompleted, setTeamInfoCompleted] = useState(false);
-  console.log(JSON.parse(sessionStorage.getItem("initialValues")));
+  // const [roundStarted, setRoundStarted] = useState(false);
+  const [roundData, setRoundData] = useState([]);
   const hasSessionStorage = !!sessionStorage.getItem("initialValues");
   const formik = useFormik({
     initialValues: {
@@ -18,24 +21,23 @@ function SpadesCalculator() {
       team2Name: hasSessionStorage
         ? JSON.parse(sessionStorage.getItem("initialValues")).team2Name
         : "Team 2",
-      player1name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).player1name
+      t1p1Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).t1p1Name
         : "",
-      team2Player1: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Player1
+      t2p1Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).t2p1Name
         : "",
-      player2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).player2Name
+      t1p2Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).t1p2Name
         : "",
-      team2Player2: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Player2
+      t2p2Name: hasSessionStorage
+        ? JSON.parse(sessionStorage.getItem("initialValues")).t2p2Name
         : "",
+      roundNumber: roundData.length,
       nameInfoSubmitted: false,
     },
     onSubmit: (values) => {
-      console.log({ values });
       formik.setFieldValue("nameInfoSubmitted", true);
-      console.log({ values: formik.values });
       sessionStorage.setItem("initialValues", JSON.stringify(values));
     },
   });
@@ -67,6 +69,8 @@ function SpadesCalculator() {
             sure I'm not using both Formik form state and local state for the
             same information. Can only have one source of truth!!!
           </li>
+          <li>if 'start' button is clicked, then round will come up</li>
+          <li>determine where round number state will be stored</li>
         </ul>
         <div
           className="team-board"
@@ -78,7 +82,7 @@ function SpadesCalculator() {
         >
           <div>
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor="team1Name">Team Name</label>
+              <label htmlFor="team1Name">Team 1 Name</label>
               <input
                 type="text"
                 value={formik.values.team1Name}
@@ -87,26 +91,22 @@ function SpadesCalculator() {
                 name="team1Name"
               />
 
-              <label htmlFor="player1name">Player 1 Name</label>
+              <label htmlFor="t1p1Name">Player 1 Name</label>
               <input
                 type="text"
-                value={formik.values.player1name}
+                value={formik.values.t1p1Name}
                 onChange={formik.handleChange}
-                id="player1name"
-                name="player1name"
+                id="t1p1Name"
+                name="t1p1Name"
               />
 
-              <label htmlFor="player2Name">Player 2 Name</label>
+              <label htmlFor="t1p2Name">Player 2 Name</label>
               <input
-                value={formik.values.player2Name}
+                value={formik.values.t1p2Name}
                 onChange={formik.handleChange}
-                id="player2Name"
-                name="player2Name"
+                id="t1p2Name"
+                name="t1p2Name"
               />
-
-              {/* <h3>Score: {team1Score}</h3>
-                <h3>Bags: {team1Bags}</h3> */}
-
               <label htmlFor="team2Name">Team Name</label>
               <input
                 value={formik.values.team2Name}
@@ -115,26 +115,36 @@ function SpadesCalculator() {
                 name="team2Name"
               />
 
-              <label htmlFor="team2Player1">Player 1 Name</label>
+              <label htmlFor="t2p1Name">Player 1 Name</label>
               <input
-                value={formik.values.team2Player1}
+                value={formik.values.t2p1Name}
                 onChange={formik.handleChange}
-                id="team2Player1"
-                name="team2Player1"
+                id="t2p1Name"
+                name="t2p1Name"
               />
 
-              <label htmlFor="team2Player2">player 2 Name</label>
+              <label htmlFor="t2p2Name">player 2 Name</label>
               <input
-                value={formik.values.team2Player2}
+                value={formik.values.t2p2Name}
                 onChange={formik.handleChange}
-                id="team2Player2"
-                name="team2Player2"
+                id="t2p2Name"
+                name="t2p2Name"
               />
 
               <button type="submit">Start</button>
             </form>
-            {/* <h3>Score: {team2Score}</h3>
-            <h3>Bags: {team2Bags}</h3> */}
+            {formik.values.nameInfoSubmitted ? (
+              <SpadesRound values={formik.values} />
+            ) : null}
+            {/* 
+          - initialize rounds to empty array
+          - when round starts (when 'start' is clicked), then we push an object to our rounds array 
+          {t1p1Bet, t1p2Bet, t2p1Bet, t2p2Bet, t1p1Actual, t1p2Actual, t2p1Actual, t2p2Actual, t1Bags, t2Bags, t1Score, t2Score}
+          all initialized to falsey defaults
+          - when an object is in our array (when arr.length is not falsey), then we render our first round, which is a form
+          - When someone fills out all fields of the child component <Round>, form fields update to input values, and math is calculated, and another empty object is pushed to our rounds array
+                - will need to pass handler from parent to child and the handler should update parent state
+          */}
           </div>
         </div>
         {/* 
