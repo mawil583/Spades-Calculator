@@ -12,6 +12,8 @@ function SpadesCalculator() {
   // const [teamInfoCompleted, setTeamInfoCompleted] = useState(false);
   // const [roundStarted, setRoundStarted] = useState(false);
   const [roundData, setRoundData] = useState([]);
+  const [roundNumber, setRoundNumber] = useState(1);
+
   const hasSessionStorage = !!sessionStorage.getItem("initialValues");
   const formik = useFormik({
     initialValues: {
@@ -33,14 +35,29 @@ function SpadesCalculator() {
       t2p2Name: hasSessionStorage
         ? JSON.parse(sessionStorage.getItem("initialValues")).t2p2Name
         : "",
-      roundNumber: roundData.length,
       nameInfoSubmitted: false,
     },
     onSubmit: (values) => {
       formik.setFieldValue("nameInfoSubmitted", true);
+      setRoundNumber(roundNumber + 1);
       sessionStorage.setItem("initialValues", JSON.stringify(values));
     },
   });
+  function displayRounds() {
+    const rounds = [];
+    for (let i = 0; i < roundData.length + 1; i++) {
+      rounds.push(
+        <SpadesRound
+          roundNumber={i + 1}
+          key={i}
+          values={formik.values}
+          roundData={roundData}
+          setRoundData={setRoundData}
+        />
+      );
+    }
+    return rounds.reverse();
+  }
 
   useEffect(() => {
     sessionStorage.setItem("initialValues", JSON.stringify(formik.values));
@@ -133,9 +150,11 @@ function SpadesCalculator() {
 
               <button type="submit">Start</button>
             </form>
-            {formik.values.nameInfoSubmitted ? (
-              <SpadesRound values={formik.values} />
-            ) : null}
+
+            {formik.values.nameInfoSubmitted
+              ? displayRounds().map((round) => round)
+              : null}
+
             {/* 
           - initialize rounds to empty array
           - when round starts (when 'start' is clicked), then we push an object to our rounds array 
