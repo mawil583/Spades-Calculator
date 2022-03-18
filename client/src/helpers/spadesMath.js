@@ -1,10 +1,6 @@
-function calculateRoundScore(bids, actuals) {
-  const team1Bid = parseInt(bids.t1p1Bid) + parseInt(bids.t1p2Bid);
-  const team2Bid = parseInt(bids.t2p1Bid) + parseInt(bids.t2p2Bid);
-  const team1Actual =
-    parseInt(actuals.t1p1Actual) + parseInt(actuals.t1p2Actual);
-  const team2Actual =
-    parseInt(actuals.t2p1Actual) + parseInt(actuals.t2p2Actual);
+function calculateRoundScore(team1, team2) {
+  const team1Bid = parseInt(team1.p1Bid) + parseInt(team1.p2Bid);
+  const team1Actual = parseInt(team1.p1Actual) + parseInt(team1.p2Actual);
 
   const gotSet = team1Actual < team1Bid;
 

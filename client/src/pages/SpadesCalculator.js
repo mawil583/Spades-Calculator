@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useFormik } from "formik";
+import React, { useState, useEffect } from 'react';
+import { useFormik } from 'formik';
 
-import SpadesRound from "../components/SpadesRound";
-import { calculateRoundScore } from "../helpers/spadesMath";
-import "../App.css";
+import SpadesRound from '../components/SpadesRound';
+import { calculateRoundScore } from '../helpers/spadesMath';
+import '../App.css';
 
 function SpadesCalculator() {
   const [team1Score, setTeam1Score] = useState(0);
@@ -15,33 +15,33 @@ function SpadesCalculator() {
   const [roundData, setRoundData] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
 
-  const hasSessionStorage = !!sessionStorage.getItem("initialValues");
+  const hasSessionStorage = !!sessionStorage.getItem('initialValues');
   const formik = useFormik({
     initialValues: {
       team1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).team1Name
-        : "Team 1",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).team1Name
+        : 'Team 1',
       team2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).team2Name
-        : "Team 2",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).team2Name
+        : 'Team 2',
       t1p1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).t1p1Name
-        : "",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).t1p1Name
+        : '',
       t2p1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).t2p1Name
-        : "",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).t2p1Name
+        : '',
       t1p2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).t1p2Name
-        : "",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).t1p2Name
+        : '',
       t2p2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem("initialValues")).t2p2Name
-        : "",
+        ? JSON.parse(sessionStorage.getItem('initialValues')).t2p2Name
+        : '',
       nameInfoSubmitted: false,
     },
     onSubmit: (values) => {
-      formik.setFieldValue("nameInfoSubmitted", true);
+      formik.setFieldValue('nameInfoSubmitted', true);
       setRoundNumber(roundNumber + 1);
-      sessionStorage.setItem("initialValues", JSON.stringify(values));
+      sessionStorage.setItem('initialValues', JSON.stringify(values));
     },
   });
 
@@ -66,12 +66,12 @@ function SpadesCalculator() {
   }
 
   useEffect(() => {
-    sessionStorage.setItem("initialValues", JSON.stringify(formik.values));
+    sessionStorage.setItem('initialValues', JSON.stringify(formik.values));
   }, [formik.values]);
 
   return (
-    <div className="App">
-      <div className="App-inner">
+    <div className='App'>
+      <div className='App-inner'>
         <p>This is where my spades calculator will be!</p>
         <h1>TODO's</h1>
         <ul>
@@ -98,67 +98,70 @@ function SpadesCalculator() {
             BUG: if the last completed field is double digit, a new round will
             be created after inputting the first of the two digits
           </li>
+          <li>
+            make sure SpadesRound.jsx inputs go in order from bets to actuals
+          </li>
         </ul>
         <div
-          className="team-board"
+          className='team-board'
           style={{
-            display: "flex",
-            maxWidth: "90%",
-            margin: "0 auto",
+            display: 'flex',
+            maxWidth: '90%',
+            margin: '0 auto',
           }}
         >
           <div>
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor="team1Name">Team 1 Name</label>
+              <label htmlFor='team1Name'>Team 1 Name</label>
               <input
-                type="text"
+                type='text'
                 value={formik.values.team1Name}
                 onChange={formik.handleChange}
-                id="team1Name"
-                name="team1Name"
+                id='team1Name'
+                name='team1Name'
               />
 
-              <label htmlFor="t1p1Name">Player 1 Name</label>
+              <label htmlFor='t1p1Name'>Player 1 Name</label>
               <input
-                type="text"
+                type='text'
                 value={formik.values.t1p1Name}
                 onChange={formik.handleChange}
-                id="t1p1Name"
-                name="t1p1Name"
+                id='t1p1Name'
+                name='t1p1Name'
               />
 
-              <label htmlFor="t1p2Name">Player 2 Name</label>
+              <label htmlFor='t1p2Name'>Player 2 Name</label>
               <input
                 value={formik.values.t1p2Name}
                 onChange={formik.handleChange}
-                id="t1p2Name"
-                name="t1p2Name"
+                id='t1p2Name'
+                name='t1p2Name'
               />
-              <label htmlFor="team2Name">Team Name</label>
+              <label htmlFor='team2Name'>Team Name</label>
               <input
                 value={formik.values.team2Name}
                 onChange={formik.handleChange}
-                id="team2Name"
-                name="team2Name"
+                id='team2Name'
+                name='team2Name'
               />
 
-              <label htmlFor="t2p1Name">Player 1 Name</label>
+              <label htmlFor='t2p1Name'>Player 1 Name</label>
               <input
                 value={formik.values.t2p1Name}
                 onChange={formik.handleChange}
-                id="t2p1Name"
-                name="t2p1Name"
+                id='t2p1Name'
+                name='t2p1Name'
               />
 
-              <label htmlFor="t2p2Name">player 2 Name</label>
+              <label htmlFor='t2p2Name'>player 2 Name</label>
               <input
                 value={formik.values.t2p2Name}
                 onChange={formik.handleChange}
-                id="t2p2Name"
-                name="t2p2Name"
+                id='t2p2Name'
+                name='t2p2Name'
               />
 
-              <button type="submit">Start</button>
+              <button type='submit'>Start</button>
             </form>
 
             <div>
