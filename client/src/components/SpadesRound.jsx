@@ -120,41 +120,6 @@ function SpadesRound(props) {
             id='team2.p2Actual'
             name='team2.p2Actual'
           />
-
-          {/* <label htmlFor='t2p1Bid'>{t2p1Name} Bid: </label>
-          <input
-            type='text'
-            value={formik.values.bids.t2p1Bid}
-            onChange={formik.handleChange}
-            id='bids.t2p1Bid'
-            name='bids.t2p1Bid'
-          />
-
-          <label htmlFor='t2p2Bid'>{t2p2Name} Bid: </label>
-          <input
-            type='text'
-            value={formik.values.bids.t2p2Bid}
-            onChange={formik.handleChange}
-            id='bids.t2p2Bid'
-            name='bids.t2p2Bid'
-          />
-          <br />
-          <label htmlFor='t2p1Actual'>{t2p1Name} Actual: </label>
-          <input
-            type='text'
-            value={formik.values.actuals.t2p1Actual}
-            onChange={formik.handleChange}
-            id='actuals.t2p1Actual'
-            name='actuals.t2p1Actual'
-          />
-          <label htmlFor='t2p2Actual'>{t2p2Name} Actual: </label>
-          <input
-            type='text'
-            value={formik.values.actuals.t2p2Actual}
-            onChange={formik.handleChange}
-            id='actuals.t2p2Actual'
-            name='actuals.t2p2Actual'
-          /> */}
         </div>
       </form>
     </div>
