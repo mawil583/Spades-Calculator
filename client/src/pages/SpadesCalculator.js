@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 
 import SpadesRound from "../components/SpadesRound";
+import { calculateRoundScore } from "../helpers/spadesMath";
 import "../App.css";
 
 function SpadesCalculator() {
-  // const [team1Score, setTeam1Score] = useState(0);
-  // const [team1Bags, setTeam1Bags] = useState(0);
-  // const [team2Score, setTeam2Score] = useState(0);
-  // const [team2Bags, setTeam2Bags] = useState(0);
+  const [team1Score, setTeam1Score] = useState(0);
+  const [team1Bags, setTeam1Bags] = useState(0);
+  const [team2Score, setTeam2Score] = useState(0);
+  const [team2Bags, setTeam2Bags] = useState(0);
   // const [teamInfoCompleted, setTeamInfoCompleted] = useState(false);
   // const [roundStarted, setRoundStarted] = useState(false);
   const [roundData, setRoundData] = useState([]);
@@ -43,6 +44,11 @@ function SpadesCalculator() {
       sessionStorage.setItem("initialValues", JSON.stringify(values));
     },
   });
+
+  function score(p1Bid, p2Bid) {
+    return (p1Bid + p2Bid) * 10;
+  }
+
   function displayRounds() {
     const rounds = [];
     for (let i = 0; i < roundData.length + 1; i++) {
@@ -88,6 +94,10 @@ function SpadesCalculator() {
           </li>
           <li>if 'start' button is clicked, then round will come up</li>
           <li>determine where round number state will be stored</li>
+          <li>
+            BUG: if the last completed field is double digit, a new round will
+            be created after inputting the first of the two digits
+          </li>
         </ul>
         <div
           className="team-board"
@@ -151,6 +161,24 @@ function SpadesCalculator() {
               <button type="submit">Start</button>
             </form>
 
+            <div>
+              <div>
+                <h1>
+                  {formik.values.team1Name} Score: {team1Score}
+                </h1>
+                <h2>
+                  {formik.values.team1Name} Bags: {team1Bags}
+                </h2>
+              </div>
+              <div>
+                <h1>
+                  {formik.values.team2Name} Score: {team2Score}
+                </h1>
+                <h2>
+                  {formik.values.team2Name} Bags: {team2Bags}
+                </h2>
+              </div>
+            </div>
             {formik.values.nameInfoSubmitted
               ? displayRounds().map((round) => round)
               : null}

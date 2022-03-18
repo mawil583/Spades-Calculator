@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
-
 import { useFormik } from "formik";
+
+import { calculateRoundScore } from "../helpers/spadesMath";
 
 function SpadesRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
@@ -13,8 +14,15 @@ function SpadesRound(props) {
   }
 
   const formik = useFormik({
+    // TODO: change objects from bids and actuals to team1 and team2
     initialValues: {
       bids: { t1p1Bid: "", t1p2Bid: "", t2p1Bid: "", t2p2Bid: "" },
+      actuals: {
+        t1p1Actual: "",
+        t1p2Actual: "",
+        t2p1Actual: "",
+        t2p2Actual: "",
+      },
       roundIsOver: false,
     },
   });
@@ -24,13 +32,18 @@ function SpadesRound(props) {
   }, []);
 
   useEffect(() => {
-    const allInputsCompleted = Object.entries(formik.values.bids).every(
+    const allBidsCompleted = Object.entries(formik.values.bids).every(
       (bid) => bid[1] !== ""
     );
+    const allActualsCompleted = Object.entries(formik.values.actuals).every(
+      (actual) => actual[1] !== ""
+    );
+    const allInputsCompleted = allBidsCompleted && allActualsCompleted;
     if (allInputsCompleted) {
       props.setRoundData([...props.roundData, { ...formik.values.bids }]);
+      // calculateRoundScore(formik.values.bids, formik.values.actuals);
     }
-  }, [formik.values.bids]);
+  }, [formik.values.bids, formik.values.actuals]);
 
   return (
     <div>
@@ -58,6 +71,23 @@ function SpadesRound(props) {
             id="bids.t1p2Bid"
             name="bids.t1p2Bid"
           />
+          <br />
+          <label htmlFor="t1p1Actual">{t1p1Name} Actual: </label>
+          <input
+            type="text"
+            value={formik.values.actuals.t1p1Actual}
+            onChange={formik.handleChange}
+            id="actuals.t1p1Actual"
+            name="actuals.t1p1Actual"
+          />
+          <label htmlFor="t1p2Actual">{t1p2Name} Actual: </label>
+          <input
+            type="text"
+            value={formik.values.actuals.t1p2Actual}
+            onChange={formik.handleChange}
+            id="actuals.t1p2Actual"
+            name="actuals.t1p2Actual"
+          />
         </div>
         <div>
           <h2>{team2Name}</h2>
@@ -77,6 +107,23 @@ function SpadesRound(props) {
             onChange={formik.handleChange}
             id="bids.t2p2Bid"
             name="bids.t2p2Bid"
+          />
+          <br />
+          <label htmlFor="t2p1Actual">{t2p1Name} Actual: </label>
+          <input
+            type="text"
+            value={formik.values.actuals.t2p1Actual}
+            onChange={formik.handleChange}
+            id="actuals.t2p1Actual"
+            name="actuals.t2p1Actual"
+          />
+          <label htmlFor="t2p2Actual">{t2p2Name} Actual: </label>
+          <input
+            type="text"
+            value={formik.values.actuals.t2p2Actual}
+            onChange={formik.handleChange}
+            id="actuals.t2p2Actual"
+            name="actuals.t2p2Actual"
           />
         </div>
       </form>
