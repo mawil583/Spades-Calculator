@@ -11,6 +11,7 @@ function SpadesCalculator() {
   const [team2Bags, setTeam2Bags] = useState(0);
   const [roundData, setRoundData] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
+  const [roundHistory, setRoundHistory] = useState([]);
 
   const hasSessionStorage = !!sessionStorage.getItem('initialValues');
   const formik = useFormik({
@@ -49,16 +50,25 @@ function SpadesCalculator() {
     setTeam2Bags(team2Bags + t2Bags);
   }
   function displayRounds() {
+    console.log({ roundHistory });
     const rounds = [];
     for (let i = 0; i < roundData.length + 1; i++) {
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
           key={i}
+          index={i}
           values={formik.values}
           roundData={roundData}
           setRoundData={setRoundData}
+          // roundHistory={roundHistory}
+          // setRoundHistory={setRoundHistory}
           addRoundScoreToGameScore={addRoundScoreToGameScore}
+          // team1Score={team1Score}
+          // gameScore={
+          //   roundHistory[i] !== undefined ? roundHistory[i].team1GameScore : 0
+          // }
+          // team1RoundScore={}
         />
       );
     }
