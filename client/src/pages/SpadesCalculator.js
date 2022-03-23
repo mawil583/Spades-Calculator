@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 
 import SpadesRound from '../components/SpadesRound';
-import { calculateRoundScore } from '../helpers/spadesMath';
 import '../App.css';
 
 function SpadesCalculator() {
@@ -10,8 +9,6 @@ function SpadesCalculator() {
   const [team1Bags, setTeam1Bags] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
   const [team2Bags, setTeam2Bags] = useState(0);
-  // const [teamInfoCompleted, setTeamInfoCompleted] = useState(false);
-  // const [roundStarted, setRoundStarted] = useState(false);
   const [roundData, setRoundData] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
 
@@ -45,10 +42,12 @@ function SpadesCalculator() {
     },
   });
 
-  function score(p1Bid, p2Bid) {
-    return (p1Bid + p2Bid) * 10;
+  function addRoundScoreToGameScore(t1Round, t2Round, t1Bags, t2Bags) {
+    setTeam1Score(team1Score + t1Round);
+    setTeam2Score(team2Score + t2Round);
+    setTeam1Bags(team1Bags + t1Bags);
+    setTeam2Bags(team2Bags + t2Bags);
   }
-
   function displayRounds() {
     const rounds = [];
     for (let i = 0; i < roundData.length + 1; i++) {
@@ -59,6 +58,7 @@ function SpadesCalculator() {
           values={formik.values}
           roundData={roundData}
           setRoundData={setRoundData}
+          addRoundScoreToGameScore={addRoundScoreToGameScore}
         />
       );
     }
@@ -68,6 +68,17 @@ function SpadesCalculator() {
   useEffect(() => {
     sessionStorage.setItem('initialValues', JSON.stringify(formik.values));
   }, [formik.values]);
+
+  useEffect(() => {
+    if (team1Bags >= 10) {
+      setTeam1Bags(team1Bags % 10);
+      setTeam1Score(team1Score - 100);
+    }
+    if (team2Bags >= 10) {
+      setTeam2Bags(team2Bags % 10);
+      setTeam1Score(team2Score - 100);
+    }
+  }, [team1Bags, team2Bags]);
 
   return (
     <div className='App'>

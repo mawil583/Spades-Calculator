@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useFormik } from 'formik';
 
 import { calculateRoundScore } from '../helpers/spadesMath';
@@ -8,6 +8,8 @@ function SpadesRound(props) {
     props.values;
 
   const inputRef = useRef();
+  const [team1Score, setTeam1Score] = useState(0);
+  const [team2Score, setTeam2Score] = useState(0);
 
   function moveFocusToCurrentRound() {
     inputRef.current.focus();
@@ -15,7 +17,6 @@ function SpadesRound(props) {
 
   const formik = useFormik({
     initialValues: {
-      // roundIsOver: false,
       team1: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
       team2: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
     },
@@ -35,7 +36,21 @@ function SpadesRound(props) {
     const allInputsCompleted = team1Completed && team2Completed;
     if (allInputsCompleted) {
       props.setRoundData([...props.roundData, { ...formik.values }]);
-      calculateRoundScore(formik.values.team1, formik.values.team2);
+
+      const roundScore = calculateRoundScore(
+        formik.values.team1,
+        formik.values.team2
+      );
+
+      setTeam1Score(roundScore.team1RoundScore.score);
+      setTeam2Score(roundScore.team2RoundScore.score);
+      // TODO: simplify. Maybe form an object instead of passing so many parameters
+      props.addRoundScoreToGameScore(
+        roundScore.team1RoundScore.score,
+        roundScore.team2RoundScore.score,
+        roundScore.team1RoundScore.bags,
+        roundScore.team2RoundScore.bags
+      );
     }
   }, [formik.values]);
 
@@ -45,7 +60,10 @@ function SpadesRound(props) {
 
       <form>
         <div>
-          <h2>{team1Name}</h2>
+          <h2>
+            {team1Name}
+            {team1Score ? ` Score: ${team1Score}` : null}
+          </h2>
           <label htmlFor='p1Bid'>{t1p1Name} Bid: </label>
           <input
             ref={inputRef}
@@ -84,7 +102,10 @@ function SpadesRound(props) {
           />
         </div>
         <div>
-          <h2>{team2Name}</h2>
+          <h2>
+            {team2Name}
+            {team2Score ? ` Score: ${team2Score}` : null}
+          </h2>
 
           <label htmlFor='p1Bid'>{t2p1Name} Bid: </label>
           <input
