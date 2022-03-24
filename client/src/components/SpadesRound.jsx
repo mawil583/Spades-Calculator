@@ -10,8 +10,10 @@ function SpadesRound(props) {
   const inputRef = useRef();
   const [team1RoundScore, setTeam1RoundScore] = useState(0);
   const [team2RoundScore, setTeam2RoundScore] = useState(0);
-  // const [team1GameScore, setTeam1GameScore] = useState(0);
-  // const [team2GameScore, setTeam2GameScore] = useState(0);
+  const [team1GameScore, setTeam1GameScore] = useState(0);
+  const [team1RoundBags, setTeam1Bags] = useState(0);
+  const [team2RoundBags, setTeam2Bags] = useState(0);
+  const [team2GameScore, setTeam2GameScore] = useState(0);
   const [isRoundFinished, setIsRoundFinished] = useState(false);
 
   function moveFocusToCurrentRound() {
@@ -29,6 +31,16 @@ function SpadesRound(props) {
     moveFocusToCurrentRound();
   }, []);
 
+  /* 
+  maybe split useEffect into 2 or 3
+
+  1st useEffect sets IsRoundFinished
+
+  2nd useEffect sets score and dependency is IsRoundFinished
+
+
+  */
+
   useEffect(() => {
     const team1Completed = Object.values(formik.values.team1).every(
       (field) => field !== ''
@@ -39,31 +51,44 @@ function SpadesRound(props) {
     const allInputsCompleted = team1Completed && team2Completed;
     if (allInputsCompleted) {
       setIsRoundFinished(true);
-      console.log({ roundData: props.roundData });
-      props.setRoundData([...props.roundData, { ...formik.values }]);
-
+      console.log({ bidsAndActuals: props.bidsAndActuals });
+      props.setBidsAndActuals([...props.bidsAndActuals, { ...formik.values }]);
+      // set history here
       const roundScore = calculateRoundScore(
         formik.values.team1,
         formik.values.team2
       );
+      // this causes infinite loop when roundScore is in dependency array
       setTeam1RoundScore(roundScore.team1RoundScore.score);
       setTeam2RoundScore(roundScore.team2RoundScore.score);
+      console.log({ roundScore });
       // TODO: simplify. Maybe form an object instead of passing so many parameters
+      // this also causes infinite loop when roundScore is in dependency array
       props.addRoundScoreToGameScore(
         roundScore.team1RoundScore.score,
         roundScore.team2RoundScore.score,
         roundScore.team1RoundScore.bags,
-        roundScore.team2RoundScore.bags
+        roundScore.team2RoundScore.bags,
+        // maybe pass setTeam1GameScore fn as parameter
+        setTeam1GameScore,
+        setTeam2GameScore,
+        setTeam1Bags,
+        setTeam2Bags
       );
-      console.log({ team1Score: props.team1Score });
-      // props.setRoundHistory([
-      //   ...props.roundHistory,
-      //   { team1GameScore: props.team1Score },
-      // ]);
+      console.log({ roundHistory: props.roundHistory });
+      console.log({ roundHistoryLength: props.roundHistory.length });
+
+      // props.roundHistory.length === 0
+      //   ? props.setRoundHistory([scoreObj])
+      //   : props.setRoundHistory([...props.roundHistory, scoreObj]);
     }
   }, [formik.values]);
 
-  console.log(props.roundHistory);
+  // useEffect(() => {
+
+  // }, [props.team1Score])
+
+  console.log({ roundHistory: props.roundHistory });
   return (
     <div>
       <div>
@@ -92,16 +117,22 @@ function SpadesRound(props) {
               </div>
               <div className='row'>
                 <div>
-                  {team1Name} Game Score:{' '}
+                  {team1Name} Game Score: {team1GameScore}
                   {/* {props.roundHistory[props.index]
                   ? props.roundHistory[props.index].team1GameScore
                   : null} */}
                 </div>
-                <div>{team2Name} Game Score: </div>
+                <div>
+                  {team2Name} Game Score: {team2GameScore}
+                </div>
               </div>
               <div className='row'>
-                <div>{team1Name} Bags: </div>
-                <div>{team2Name} Bags: </div>
+                <div>
+                  {team1Name} Bags: {team1RoundBags}{' '}
+                </div>
+                <div>
+                  {team2Name} Bags: {team2RoundBags}
+                </div>
               </div>
             </div>
           ) : null}

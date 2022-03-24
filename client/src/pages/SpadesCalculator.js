@@ -9,7 +9,7 @@ function SpadesCalculator() {
   const [team1Bags, setTeam1Bags] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
   const [team2Bags, setTeam2Bags] = useState(0);
-  const [roundData, setRoundData] = useState([]);
+  const [bidsAndActuals, setBidsAndActuals] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
   const [roundHistory, setRoundHistory] = useState([]);
 
@@ -43,28 +43,53 @@ function SpadesCalculator() {
     },
   });
 
-  function addRoundScoreToGameScore(t1Round, t2Round, t1Bags, t2Bags) {
+  // TODO: this function is doing more than just setting score. It's returning an object. Either rename or split up
+  function addRoundScoreToGameScore(
+    t1Round,
+    t2Round,
+    t1Bags,
+    t2Bags,
+    setTeam1GameScore,
+    setTeam2GameScore,
+    setTeam1RoundBags,
+    setTeam2RoundBags
+  ) {
+    console.log({ t1Round, t1Bags });
+    console.log({ team1Score });
     setTeam1Score(team1Score + t1Round);
     setTeam2Score(team2Score + t2Round);
     setTeam1Bags(team1Bags + t1Bags);
     setTeam2Bags(team2Bags + t2Bags);
+    setTeam1GameScore(team1Score + t1Round);
+    setTeam2GameScore(team2Score + t1Round);
+    setTeam1RoundBags(t1Bags);
+    setTeam2RoundBags(t2Bags);
+    console.log({ team1Score });
+    // return {
+    //   team1Score: team1Score + t1Round,
+    //   team2Score: team2Score + t2Round,
+    //   team1Bags: team1Bags + t1Bags,
+    //   team2Bags: team2Bags + t2Bags,
+    // };
   }
+
   function displayRounds() {
     console.log({ roundHistory });
     const rounds = [];
-    for (let i = 0; i < roundData.length + 1; i++) {
+    for (let i = 0; i < bidsAndActuals.length + 1; i++) {
+      console.log({ bidsAndActuals });
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
           key={i}
           index={i}
           values={formik.values}
-          roundData={roundData}
-          setRoundData={setRoundData}
-          // roundHistory={roundHistory}
-          // setRoundHistory={setRoundHistory}
+          bidsAndActuals={bidsAndActuals}
+          setBidsAndActuals={setBidsAndActuals}
+          roundHistory={roundHistory}
+          setRoundHistory={setRoundHistory}
           addRoundScoreToGameScore={addRoundScoreToGameScore}
-          // team1Score={team1Score}
+          team1Score={team1Score}
           // gameScore={
           //   roundHistory[i] !== undefined ? roundHistory[i].team1GameScore : 0
           // }
