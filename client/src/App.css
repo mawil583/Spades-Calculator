@@ -1,6 +1,6 @@
-.App {
+/* .App {
   text-align: center;
-}
+} */
 
 .App-logo {
   height: 40vmin;
@@ -36,11 +36,25 @@
     transform: rotate(360deg);
   }
 }
-.App-inner {
+/* .App-inner {
   background: yellow;
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 768px;
   margin: 0 auto;
+} */
+
+/* CSS for SpadesCalculator.js component */
+.namesContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.namesContainer > * {
+  flex: 1 1 160px;
+}
+
+.teamNames {
+  display: flex;
 }

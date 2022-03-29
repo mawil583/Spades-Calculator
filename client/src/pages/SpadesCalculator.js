@@ -119,7 +119,7 @@ function SpadesCalculator() {
     <div className='App'>
       <div className='App-inner'>
         <p>This is where my spades calculator will be!</p>
-        <h1>TODO's</h1>
+        {/* <h1>TODO's</h1>
         <ul>
           <li>
             Make the 'Spades Calculator' landing page only ask for player names,
@@ -147,87 +147,102 @@ function SpadesCalculator() {
           <li>
             make sure SpadesRound.jsx inputs go in order from bets to actuals
           </li>
-        </ul>
+        </ul> */}
         <div
           className='team-board'
-          style={{
-            display: 'flex',
-            maxWidth: '90%',
-            margin: '0 auto',
-          }}
+          // style={{
+          //   display: 'flex',
+          //   maxWidth: '90%',
+          //   margin: '0 auto',
+          // }}
         >
           <div>
             <form onSubmit={formik.handleSubmit}>
-              <label htmlFor='team1Name'>Team 1 Name</label>
-              <input
-                type='text'
-                value={formik.values.team1Name}
-                onChange={formik.handleChange}
-                id='team1Name'
-                name='team1Name'
-              />
+              <div className='namesContainer'>
+                <div className='namesBox'>
+                  <label htmlFor='team1Name'>Team 1 Name</label>
+                  <input
+                    type='text'
+                    value={formik.values.team1Name}
+                    onChange={formik.handleChange}
+                    id='team1Name'
+                    name='team1Name'
+                  />
+                </div>
+                <div className='namesContainer'>
+                  <label htmlFor='team2Name'>Team 2 Name</label>
+                  <input
+                    value={formik.values.team2Name}
+                    onChange={formik.handleChange}
+                    id='team2Name'
+                    name='team2Name'
+                  />
+                </div>
+                <div className='namesContainer'>
+                  <label htmlFor='t1p1Name'>Player 1 Name</label>
+                  <input
+                    type='text'
+                    value={formik.values.t1p1Name}
+                    onChange={formik.handleChange}
+                    id='t1p1Name'
+                    name='t1p1Name'
+                  />
+                </div>
 
-              <label htmlFor='t1p1Name'>Player 1 Name</label>
-              <input
-                type='text'
-                value={formik.values.t1p1Name}
-                onChange={formik.handleChange}
-                id='t1p1Name'
-                name='t1p1Name'
-              />
+                <div className='namesContainer'>
+                  <label htmlFor='t2p1Name'>Player 1 Name</label>
+                  <input
+                    value={formik.values.t2p1Name}
+                    onChange={formik.handleChange}
+                    id='t2p1Name'
+                    name='t2p1Name'
+                  />
+                </div>
+                <div className='namesContainer'>
+                  <label htmlFor='t1p2Name'>Player 2 Name</label>
+                  <input
+                    value={formik.values.t1p2Name}
+                    onChange={formik.handleChange}
+                    id='t1p2Name'
+                    name='t1p2Name'
+                  />
+                </div>
 
-              <label htmlFor='t1p2Name'>Player 2 Name</label>
-              <input
-                value={formik.values.t1p2Name}
-                onChange={formik.handleChange}
-                id='t1p2Name'
-                name='t1p2Name'
-              />
-              <label htmlFor='team2Name'>Team Name</label>
-              <input
-                value={formik.values.team2Name}
-                onChange={formik.handleChange}
-                id='team2Name'
-                name='team2Name'
-              />
+                <div className='namesContainer'>
+                  <label htmlFor='t2p2Name'>player 2 Name</label>
+                  <input
+                    value={formik.values.t2p2Name}
+                    onChange={formik.handleChange}
+                    id='t2p2Name'
+                    name='t2p2Name'
+                  />
+                </div>
 
-              <label htmlFor='t2p1Name'>Player 1 Name</label>
-              <input
-                value={formik.values.t2p1Name}
-                onChange={formik.handleChange}
-                id='t2p1Name'
-                name='t2p1Name'
-              />
-
-              <label htmlFor='t2p2Name'>player 2 Name</label>
-              <input
-                value={formik.values.t2p2Name}
-                onChange={formik.handleChange}
-                id='t2p2Name'
-                name='t2p2Name'
-              />
-
-              <button type='submit'>Start</button>
+                <button type='submit'>Start</button>
+              </div>
             </form>
 
-            <div>
+            {formik.values.nameInfoSubmitted ? (
               <div>
-                <h1>
-                  {formik.values.team1Name} Score: {team1Score}
-                </h1>
-                <h2>
-                  {formik.values.team1Name} Bags: {team1Bags}
-                </h2>
+                <div>
+                  <h1>
+                    {formik.values.team1Name} Score: {team1Score}
+                  </h1>
+                  <h2>
+                    {formik.values.team1Name} Bags: {team1Bags}
+                  </h2>
+                </div>
+                <div>
+                  <h1>
+                    {formik.values.team2Name} Score: {team2Score}
+                  </h1>
+                  <h2>
+                    {formik.values.team2Name} Bags: {team2Bags}
+                  </h2>
+                </div>
               </div>
-              <div>
-                <h1>
-                  {formik.values.team2Name} Score: {team2Score}
-                </h1>
-                <h2>
-                  {formik.values.team2Name} Bags: {team2Bags}
-                </h2>
-              </div>
-            </div>
+            ) : null}
+
             {formik.values.nameInfoSubmitted
               ? displayRounds().map((round) => round)
               : null}

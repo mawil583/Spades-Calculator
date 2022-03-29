@@ -22,8 +22,8 @@ function SpadesRound(props) {
 
   const formik = useFormik({
     initialValues: {
-      team1: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
-      team2: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+      team1BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+      team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
     },
   });
 
@@ -42,21 +42,23 @@ function SpadesRound(props) {
   */
 
   useEffect(() => {
-    const team1Completed = Object.values(formik.values.team1).every(
-      (field) => field !== ''
-    );
-    const team2Completed = Object.values(formik.values.team2).every(
-      (field) => field !== ''
-    );
-    const allInputsCompleted = team1Completed && team2Completed;
-    if (allInputsCompleted) {
+    const isNotDefaultValue = (value) => {
+      return value !== '';
+    };
+    const team1InputVals = Object.values(formik.values.team1BidsAndActuals);
+    const team2InputVals = Object.values(formik.values.team2BidsAndActuals);
+    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
+    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
+    const allBidsAndActualsAreEntered =
+      team1InputsAreEntered && team2InputsAreEntered;
+    if (allBidsAndActualsAreEntered) {
       setIsRoundFinished(true);
       console.log({ bidsAndActuals: props.bidsAndActuals });
       props.setBidsAndActuals([...props.bidsAndActuals, { ...formik.values }]);
       // set history here
       const roundScore = calculateRoundScore(
-        formik.values.team1,
-        formik.values.team2
+        formik.values.team1BidsAndActuals,
+        formik.values.team2BidsAndActuals
       );
       // this causes infinite loop when roundScore is in dependency array
       setTeam1RoundScore(roundScore.team1RoundScore.score);
@@ -139,45 +141,49 @@ function SpadesRound(props) {
 
           <div>
             <h1>Bids</h1>
-            <div className='row'>
-              <label htmlFor='p1Bid'>{t1p1Name}</label>
-              <input
-                ref={inputRef}
-                type='text'
-                value={formik.values.team1.p1Bid}
-                onChange={formik.handleChange}
-                // TODO: attributes id and name have to be the same because Formik maps them to initialValues. This is bad practice. Try not to nest anything within initialValues
-                id='team1.p1Bid'
-                name='team1.p1Bid'
-              />
-
-              <label htmlFor='p1Bid'>{t2p1Name}</label>
-              <input
-                type='text'
-                value={formik.values.team2.p1Bid}
-                onChange={formik.handleChange}
-                id='team2.p1Bid'
-                name='team2.p1Bid'
-              />
-            </div>
-            <div className='row'>
-              <label htmlFor='p2Bid'>{t1p2Name} Bid: </label>
-              <input
-                type='text'
-                value={formik.values.team1.p2Bid}
-                onChange={formik.handleChange}
-                id='team1.p2Bid'
-                name='team1.p2Bid'
-              />
-
-              <label htmlFor='p2Bid'>{t2p2Name} Bid: </label>
-              <input
-                type='text'
-                value={formik.values.team2.p2Bid}
-                onChange={formik.handleChange}
-                id='team2.p2Bid'
-                name='team2.p2Bid'
-              />
+            <div className='namesContainer'>
+              <div>
+                <label htmlFor='p1Bid'>{t1p1Name}</label>
+                <input
+                  ref={inputRef}
+                  type='text'
+                  value={formik.values.team1BidsAndActuals.p1Bid}
+                  onChange={formik.handleChange}
+                  // TODO: attributes id and name have to be the same because Formik maps them to initialValues. This is bad practice. Try not to nest anything within initialValues
+                  id='team1BidsAndActuals.p1Bid'
+                  name='team1BidsAndActuals.p1Bid'
+                />
+              </div>
+              <div>
+                <label htmlFor='p1Bid'>{t2p1Name}</label>
+                <input
+                  type='text'
+                  value={formik.values.team2BidsAndActuals.p1Bid}
+                  onChange={formik.handleChange}
+                  id='team2BidsAndActuals.p1Bid'
+                  name='team2BidsAndActuals.p1Bid'
+                />
+              </div>
+              <div>
+                <label htmlFor='p2Bid'>{t1p2Name}</label>
+                <input
+                  type='text'
+                  value={formik.values.team1BidsAndActuals.p2Bid}
+                  onChange={formik.handleChange}
+                  id='team1BidsAndActuals.p2Bid'
+                  name='team1BidsAndActuals.p2Bid'
+                />
+              </div>
+              <div>
+                <label htmlFor='p2Bid'>{t2p2Name}</label>
+                <input
+                  type='text'
+                  value={formik.values.team2BidsAndActuals.p2Bid}
+                  onChange={formik.handleChange}
+                  id='team2BidsAndActuals.p2Bid'
+                  name='team2BidsAndActuals.p2Bid'
+                />
+              </div>
             </div>
           </div>
           <div>
@@ -186,38 +192,38 @@ function SpadesRound(props) {
               <label htmlFor='p1Actual'>{t1p1Name}</label>
               <input
                 type='text'
-                value={formik.values.team1.p1Actual}
+                value={formik.values.team1BidsAndActuals.p1Actual}
                 onChange={formik.handleChange}
-                id='team1.p1Actual'
-                name='team1.p1Actual'
+                id='team1BidsAndActuals.p1Actual'
+                name='team1BidsAndActuals.p1Actual'
               />
 
               <label htmlFor='p1Actual'>{t2p1Name} Actual: </label>
               <input
                 type='text'
-                value={formik.values.team2.p1Actual}
+                value={formik.values.team2BidsAndActuals.p1Actual}
                 onChange={formik.handleChange}
-                id='team2.p1Actual'
-                name='team2.p1Actual'
+                id='team2BidsAndActuals.p1Actual'
+                name='team2BidsAndActuals.p1Actual'
               />
             </div>
             <div className='row'>
               <label htmlFor='p2Actual'>{t1p2Name} Actual: </label>
               <input
                 type='text'
-                value={formik.values.team1.p2Actual}
+                value={formik.values.team1BidsAndActuals.p2Actual}
                 onChange={formik.handleChange}
-                id='team1.p2Actual'
-                name='team1.p2Actual'
+                id='team1BidsAndActuals.p2Actual'
+                name='team1BidsAndActuals.p2Actual'
               />
 
               <label htmlFor='p2Actual'>{t2p2Name} Actual: </label>
               <input
                 type='text'
-                value={formik.values.team2.p2Actual}
+                value={formik.values.team2BidsAndActuals.p2Actual}
                 onChange={formik.handleChange}
-                id='team2.p2Actual'
-                name='team2.p2Actual'
+                id='team2BidsAndActuals.p2Actual'
+                name='team2BidsAndActuals.p2Actual'
               />
             </div>
           </div>
