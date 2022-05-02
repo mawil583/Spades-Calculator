@@ -46,15 +46,15 @@
 } */
 
 /* CSS for SpadesCalculator.js component */
-.namesContainer {
+/* .namesContainer {
   display: flex;
   flex-wrap: wrap;
-}
-
+} */
+/* 
 .namesContainer > * {
   flex: 1 1 160px;
-}
+} */
 
-.teamNames {
+/* .teamNames {
   display: flex;
-}
+} */

@@ -1,5 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
+import {
+  Container,
+  Stack,
+  HStack,
+  VStack,
+  Button,
+  SimpleGrid,
+  Center,
+  Input,
+  Editable,
+  EditableInput,
+  EditableTextarea,
+  EditablePreview,
+  Heading,
+  Flex,
+  Text,
+} from '@chakra-ui/react';
+// Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
 
 import SpadesRound from '../components/SpadesRound';
 import '../App.css';
@@ -61,7 +79,7 @@ function SpadesCalculator() {
     setTeam1Bags(team1Bags + t1Bags);
     setTeam2Bags(team2Bags + t2Bags);
     setTeam1GameScore(team1Score + t1Round);
-    setTeam2GameScore(team2Score + t1Round);
+    setTeam2GameScore(team2Score + t2Round);
     setTeam1RoundBags(t1Bags);
     setTeam2RoundBags(t2Bags);
     console.log({ team1Score });
@@ -158,29 +176,59 @@ function SpadesCalculator() {
         >
           <div>
             <form onSubmit={formik.handleSubmit}>
-              <div className='namesContainer'>
+              <SimpleGrid columns={2}>
+                {/* <Container> */}
+                {/* <Button colorScheme='blue'>Hello</Button> */}
                 <div className='namesBox'>
-                  <label htmlFor='team1Name'>Team 1 Name</label>
-                  <input
+                  {/* <label htmlFor='team1Name'>Team 1 Name</label> */}
+
+                  <Editable defaultValue='Team 1'>
+                    <Center>
+                      <EditablePreview />
+                      <EditableInput
+                        type='text'
+                        value={formik.values.team1Name}
+                        onChange={formik.handleChange}
+                        id='team1Name'
+                        name='team1Name'
+                      />
+                    </Center>
+                  </Editable>
+                  {/* <Input
                     type='text'
                     value={formik.values.team1Name}
                     onChange={formik.handleChange}
                     id='team1Name'
                     name='team1Name'
-                  />
+                  /> */}
                 </div>
+                {/* </Container> */}
                 <div className='namesContainer'>
-                  <label htmlFor='team2Name'>Team 2 Name</label>
-                  <input
+                  <Editable defaultValue='Team 2'>
+                    <Center>
+                      <EditablePreview />
+                      <EditableInput
+                        value={formik.values.team2Name}
+                        onChange={formik.handleChange}
+                        id='team2Name'
+                        name='team2Name'
+                      />
+                    </Center>
+                  </Editable>
+
+                  {/* <label htmlFor='team2Name'>Team 2 Name</label> */}
+                  {/* 
+                  <Input
                     value={formik.values.team2Name}
                     onChange={formik.handleChange}
                     id='team2Name'
                     name='team2Name'
-                  />
+                  /> */}
                 </div>
                 <div className='namesContainer'>
                   <label htmlFor='t1p1Name'>Player 1 Name</label>
-                  <input
+                  <Input
+                    placeholder={`Who's dealing first?`}
                     type='text'
                     value={formik.values.t1p1Name}
                     onChange={formik.handleChange}
@@ -191,7 +239,8 @@ function SpadesCalculator() {
 
                 <div className='namesContainer'>
                   <label htmlFor='t2p1Name'>Player 1 Name</label>
-                  <input
+                  <Input
+                    placeholder={`Who's left of dealer?`}
                     value={formik.values.t2p1Name}
                     onChange={formik.handleChange}
                     id='t2p1Name'
@@ -200,7 +249,7 @@ function SpadesCalculator() {
                 </div>
                 <div className='namesContainer'>
                   <label htmlFor='t1p2Name'>Player 2 Name</label>
-                  <input
+                  <Input
                     value={formik.values.t1p2Name}
                     onChange={formik.handleChange}
                     id='t1p2Name'
@@ -209,22 +258,69 @@ function SpadesCalculator() {
                 </div>
 
                 <div className='namesContainer'>
-                  <label htmlFor='t2p2Name'>player 2 Name</label>
-                  <input
+                  <label htmlFor='t2p2Name'>Player 2 Name</label>
+                  <Input
                     value={formik.values.t2p2Name}
                     onChange={formik.handleChange}
                     id='t2p2Name'
                     name='t2p2Name'
                   />
                 </div>
-
-                <button type='submit'>Start</button>
-              </div>
+              </SimpleGrid>
+              <Center>
+                <Button
+                  size='md'
+                  height='40px'
+                  width='200px'
+                  border='2px'
+                  borderColor='green.500'
+                  type='submit'
+                >
+                  Start
+                </Button>
+              </Center>
             </form>
 
             {formik.values.nameInfoSubmitted ? (
-              <div>
-                <div>
+              <Container py={10} borderBottom={'1px solid black'}>
+                <Center>
+                  <Heading
+                    as='h2'
+                    size='lg'
+                    style={{ textDecoration: 'underline' }}
+                  >
+                    Score
+                  </Heading>
+                </Center>
+                <SimpleGrid columns={2}>
+                  <Flex direction={'column'}>
+                    <Center>
+                      <Heading as={'h2'} size='md'>
+                        {formik.values.team1Name}
+                      </Heading>
+                    </Center>
+                    <Center>
+                      <Text fontSize={'5xl'}>{team1Score}</Text>
+                    </Center>
+                    <Center>
+                      <Text fontSize={'md'}>{team1Bags} bags</Text>
+                    </Center>
+                  </Flex>
+                  <Flex direction={'column'}>
+                    <Center>
+                      <Heading as={'h2'} size='md'>
+                        {formik.values.team2Name}
+                      </Heading>
+                    </Center>
+                    <Center>
+                      <Text fontSize={'5xl'}>{team2Score}</Text>
+                    </Center>
+                    <Center>
+                      <Text fontSize={'md'}>{team2Bags} bags</Text>
+                    </Center>
+                  </Flex>
+                </SimpleGrid>
+                {/* <div>
                   <h1>
                     {formik.values.team1Name} Score: {team1Score}
                   </h1>
@@ -239,8 +335,8 @@ function SpadesCalculator() {
                   <h2>
                     {formik.values.team2Name} Bags: {team2Bags}
                   </h2>
-                </div>
-              </div>
+                </div> */}
+              </Container>
             ) : null}
 
             {formik.values.nameInfoSubmitted

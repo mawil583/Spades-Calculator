@@ -1,5 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useFormik } from 'formik';
+import {
+  Container,
+  Stack,
+  HStack,
+  VStack,
+  Button,
+  SimpleGrid,
+  Center,
+  Input,
+  Editable,
+  EditableInput,
+  EditableTextarea,
+  EditablePreview,
+  Heading,
+  Flex,
+  Text,
+  Divider,
+  Box,
+} from '@chakra-ui/react';
 
 import { calculateRoundScore } from '../helpers/spadesMath';
 
@@ -26,6 +45,9 @@ function SpadesRound(props) {
       team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
     },
   });
+  const isNotDefaultValue = (value) => {
+    return value !== '';
+  };
 
   useEffect(() => {
     moveFocusToCurrentRound();
@@ -42,9 +64,6 @@ function SpadesRound(props) {
   */
 
   useEffect(() => {
-    const isNotDefaultValue = (value) => {
-      return value !== '';
-    };
     const team1InputVals = Object.values(formik.values.team1BidsAndActuals);
     const team2InputVals = Object.values(formik.values.team2BidsAndActuals);
     const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
@@ -86,6 +105,30 @@ function SpadesRound(props) {
     }
   }, [formik.values]);
 
+  const GridCardItem = ({ playerName, val, id }) => {
+    return (
+      <Flex my={'5px'} direction={'row'} justify={'space-around'}>
+        <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
+          {playerName}
+        </label>
+        <Input
+          w={'30px'}
+          size={'xs'}
+          ref={inputRef}
+          type='text'
+          value={val}
+          onChange={formik.handleChange}
+          // TODO: attributes id and name have to be the same because Formik maps them to initialValues. This is bad practice. Try not to nest anything within initialValues
+          // id='team1BidsAndActuals.p1Bid'
+          // name='team1BidsAndActuals.p1Bid'
+          id={id}
+          name={id}
+          mr={'15px'}
+        />
+      </Flex>
+    );
+  };
+
   // useEffect(() => {
 
   // }, [props.team1Score])
@@ -93,140 +136,109 @@ function SpadesRound(props) {
   console.log({ roundHistory: props.roundHistory });
   return (
     <div>
-      <div>
-        <h1>Round {props.roundNumber}</h1>
-      </div>
+      <Heading as={'h3'}>Round {props.roundNumber}</Heading>
+      <Box>
+        <Flex direction={'row'} height={'30px'}>
+          <Box
+            width={'100%'}
+            borderBottom={'1px solid black'}
+            mr={'5px'}
+            ml={'5px'}
+          >
+            <Center>{team1Name}</Center>
+          </Box>
+          <Box
+            width={'100%'}
+            borderBottom={'1px solid gray'}
+            mr={'5px'}
+            ml={'5px'}
+          >
+            <Center>{team2Name}</Center>
+          </Box>
+        </Flex>
+      </Box>
 
       <form>
         <div>
-          <div>
-            <h2>
-              {team1Name}
-              {/* {team1Score ? ` Score: ${team1Score}` : null} */}
-            </h2>
-            <h2>{team2Name}</h2>
-          </div>
-          {isRoundFinished ? (
-            <div>
-              <h1>Score</h1>
-              <div className='row'>
-                <div>
-                  {team1Name}Round Score: {team1RoundScore}
-                </div>
-                <div>
-                  {team2Name} Round Score: {team2RoundScore}
-                </div>
-              </div>
-              <div className='row'>
-                <div>
-                  {team1Name} Game Score: {team1GameScore}
-                  {/* {props.roundHistory[props.index]
-                  ? props.roundHistory[props.index].team1GameScore
-                  : null} */}
-                </div>
-                <div>
-                  {team2Name} Game Score: {team2GameScore}
-                </div>
-              </div>
-              <div className='row'>
-                <div>
-                  {team1Name} Bags: {team1RoundBags}{' '}
-                </div>
-                <div>
-                  {team2Name} Bags: {team2RoundBags}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          <div>
-            <h1>Bids</h1>
-            <div className='namesContainer'>
+          <Container>
+            {isRoundFinished ? (
               <div>
-                <label htmlFor='p1Bid'>{t1p1Name}</label>
-                <input
-                  ref={inputRef}
-                  type='text'
-                  value={formik.values.team1BidsAndActuals.p1Bid}
-                  onChange={formik.handleChange}
-                  // TODO: attributes id and name have to be the same because Formik maps them to initialValues. This is bad practice. Try not to nest anything within initialValues
-                  id='team1BidsAndActuals.p1Bid'
-                  name='team1BidsAndActuals.p1Bid'
-                />
+                <Center>
+                  <Heading mt={'20px'} mb={'10px'} size={'lg'}>
+                    Score
+                  </Heading>
+                </Center>
+                <SimpleGrid columns={2} className='namesContainer'>
+                  <Center>Round Score: {team1RoundScore}</Center>
+                  <Center>Round Score: {team2RoundScore}</Center>
+                  <Center>Game Score: {team1GameScore}</Center>
+                  <Center>Game Score: {team2GameScore}</Center>
+                  <Center>Bags: {team1RoundBags}</Center>
+                  <Center>Bags: {team2RoundBags}</Center>
+                </SimpleGrid>
               </div>
-              <div>
-                <label htmlFor='p1Bid'>{t2p1Name}</label>
-                <input
-                  type='text'
-                  value={formik.values.team2BidsAndActuals.p1Bid}
-                  onChange={formik.handleChange}
-                  id='team2BidsAndActuals.p1Bid'
-                  name='team2BidsAndActuals.p1Bid'
-                />
-              </div>
-              <div>
-                <label htmlFor='p2Bid'>{t1p2Name}</label>
-                <input
-                  type='text'
-                  value={formik.values.team1BidsAndActuals.p2Bid}
-                  onChange={formik.handleChange}
-                  id='team1BidsAndActuals.p2Bid'
-                  name='team1BidsAndActuals.p2Bid'
-                />
-              </div>
-              <div>
-                <label htmlFor='p2Bid'>{t2p2Name}</label>
-                <input
-                  type='text'
-                  value={formik.values.team2BidsAndActuals.p2Bid}
-                  onChange={formik.handleChange}
-                  id='team2BidsAndActuals.p2Bid'
-                  name='team2BidsAndActuals.p2Bid'
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <h1>Actuals</h1>
-            <div className='row'>
-              <label htmlFor='p1Actual'>{t1p1Name}</label>
-              <input
-                type='text'
-                value={formik.values.team1BidsAndActuals.p1Actual}
-                onChange={formik.handleChange}
+            ) : null}
+            <Center>
+              <Heading mt={'20px'} mb={'10px'} size={'md'}>
+                Bids
+              </Heading>
+            </Center>
+            <SimpleGrid columns={2} className='namesContainer'>
+              <GridCardItem
+                playerName={t1p1Name}
+                val={formik.values.team1BidsAndActuals.p1Bid}
+                id='team1BidsAndActuals.p1Bid'
+              />
+              <GridCardItem
+                playerName={t2p1Name}
+                val={formik.values.team2BidsAndActuals.p1Bid}
+                id='team2BidsAndActuals.p1Bid'
+              />
+              <GridCardItem
+                playerName={t1p2Name}
+                val={formik.values.team1BidsAndActuals.p2Bid}
+                id='team1BidsAndActuals.p2Bid'
+              />
+              <GridCardItem
+                playerName={t2p2Name}
+                val={formik.values.team2BidsAndActuals.p2Bid}
+                id='team2BidsAndActuals.p2Bid'
+              />
+            </SimpleGrid>
+            <Center>
+              <hr
+                style={{ width: '60%', color: '#808080', margin: '10px 0' }}
+              />
+            </Center>
+            <Center>
+              <Heading mt={'20px'} mb={'10px'} size={'md'}>
+                Actuals
+              </Heading>
+            </Center>
+            <SimpleGrid columns={2} className='namesContainer'>
+              <GridCardItem
                 id='team1BidsAndActuals.p1Actual'
-                name='team1BidsAndActuals.p1Actual'
+                playerName={t1p1Name}
+                val={formik.values.team1BidsAndActuals.p1Actual}
               />
-
-              <label htmlFor='p1Actual'>{t2p1Name} Actual: </label>
-              <input
-                type='text'
-                value={formik.values.team2BidsAndActuals.p1Actual}
-                onChange={formik.handleChange}
+              <GridCardItem
                 id='team2BidsAndActuals.p1Actual'
-                name='team2BidsAndActuals.p1Actual'
+                playerName={t2p1Name}
+                val={formik.values.team2BidsAndActuals.p1Actual}
               />
-            </div>
-            <div className='row'>
-              <label htmlFor='p2Actual'>{t1p2Name} Actual: </label>
-              <input
-                type='text'
-                value={formik.values.team1BidsAndActuals.p2Actual}
-                onChange={formik.handleChange}
+              <GridCardItem
+                playerName={t1p2Name}
                 id='team1BidsAndActuals.p2Actual'
-                name='team1BidsAndActuals.p2Actual'
+                val={formik.values.team1BidsAndActuals.p2Actual}
               />
-
-              <label htmlFor='p2Actual'>{t2p2Name} Actual: </label>
-              <input
-                type='text'
-                value={formik.values.team2BidsAndActuals.p2Actual}
-                onChange={formik.handleChange}
+              <GridCardItem
+                playerName={t2p2Name}
+                val={formik.values.team2BidsAndActuals.p2Actual}
                 id='team2BidsAndActuals.p2Actual'
-                name='team2BidsAndActuals.p2Actual'
               />
-            </div>
-          </div>
+            </SimpleGrid>
+          </Container>
+          <div></div>
         </div>
 
         {/* <div>
