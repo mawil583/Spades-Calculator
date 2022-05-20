@@ -1,33 +1,29 @@
-function calculateRoundScore(team1BidsAndActuals, team2) {
+function calculateRoundScore(team1Inputs, team2Inputs) {
   const didTeam1GoNil =
-    isNaN(parseInt(team1BidsAndActuals.p1Bid)) ||
-    isNaN(parseInt(team1BidsAndActuals.p2Bid));
+    isNaN(parseInt(team1Inputs.p1Bid)) || isNaN(parseInt(team1Inputs.p2Bid));
   const didTeam2GoNil =
-    isNaN(parseInt(team2.p1Bid)) || isNaN(parseInt(team2.p2Bid));
+    isNaN(parseInt(team2Inputs.p1Bid)) || isNaN(parseInt(team2Inputs.p2Bid));
 
-  const team1Bid =
-    parseInt(team1BidsAndActuals.p1Bid) + parseInt(team1BidsAndActuals.p2Bid);
-  const team2Bid = parseInt(team2.p1Bid) + parseInt(team2.p2Bid);
+  const team1Bid = parseInt(team1Inputs.p1Bid) + parseInt(team1Inputs.p2Bid);
+  const team2Bid = parseInt(team2Inputs.p1Bid) + parseInt(team2Inputs.p2Bid);
   const team1Actual =
-    parseInt(team1BidsAndActuals.p1Actual) +
-    parseInt(team1BidsAndActuals.p2Actual);
-  const team2Actual = parseInt(team2.p1Actual) + parseInt(team2.p2Actual);
-
-  console.log({ p1Bid: parseInt(team1BidsAndActuals.p1Bid) });
+    parseInt(team1Inputs.p1Actual) + parseInt(team1Inputs.p2Actual);
+  const team2Actual =
+    parseInt(team2Inputs.p1Actual) + parseInt(team2Inputs.p2Actual);
   const team1RoundScore = didTeam1GoNil
-    ? nilTeamRoundScore(team1BidsAndActuals)
+    ? nilTeamRoundScore(team1Inputs)
     : teamRoundScore(team1Bid, team1Actual);
   const team2RoundScore = didTeam2GoNil
-    ? nilTeamRoundScore(team2)
+    ? nilTeamRoundScore(team2Inputs)
     : teamRoundScore(team2Bid, team2Actual);
-  console.log({ team1RoundScore, team2RoundScore });
   return { team1RoundScore, team2RoundScore };
 }
 
 function nilTeamRoundScore(bidsAndActuals) {
+  console.log({ bidsAndActuals });
   const player1WentNil = isNaN(parseInt(parseInt(bidsAndActuals.p1Bid)));
   if (player1WentNil) {
-    const wasBlind = bidsAndActuals.p1Bid === 'blindNil';
+    const wasBlind = bidsAndActuals.p1Bid === 'Blind Nil';
     const achievedNil = parseInt(bidsAndActuals.p1Actual) === 0;
     const didntGetSet =
       parseInt(bidsAndActuals.p2Actual) >= parseInt(bidsAndActuals.p2Bid);
@@ -71,7 +67,7 @@ function nilTeamRoundScore(bidsAndActuals) {
       };
     }
   } else {
-    const wasBlind = bidsAndActuals.p2Bid === 'blindNil';
+    const wasBlind = bidsAndActuals.p2Bid === 'Blind Nil';
     const achievedNil = parseInt(bidsAndActuals.p1Actual) === 0;
     const didntGetSet =
       parseInt(bidsAndActuals.p1Actual) >= parseInt(bidsAndActuals.p2Bid);
