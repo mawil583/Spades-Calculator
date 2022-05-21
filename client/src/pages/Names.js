@@ -20,13 +20,19 @@ import 'core-js/es/set';
 import 'core-js/es/map';
 
 import * as Yup from 'yup';
-import SpadesRound from '../components/SpadesRound';
 import '../App.css';
 
 function Names() {
   const navigate = useNavigate();
 
   const hasSessionStorage = !!sessionStorage.getItem('initialValues');
+  const initialVal = (fieldName) => {
+    if (hasSessionStorage) {
+      return JSON.parse(sessionStorage.getItem('initialValues'))[fieldName];
+    }
+    return '';
+  };
+
   const validationSchema = Yup.object({
     t1p1Name: Yup.string().required('Required'),
     t2p1Name: Yup.string().required('Required'),
@@ -35,34 +41,35 @@ function Names() {
   });
   const formik = useFormik({
     initialValues: {
-      team1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).team1Name
-        : 'Team 1',
-      team2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).team2Name
-        : 'Team 2',
-      t1p1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).t1p1Name
-        : '',
-      t2p1Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).t2p1Name
-        : '',
-      t1p2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).t1p2Name
-        : '',
-      t2p2Name: hasSessionStorage
-        ? JSON.parse(sessionStorage.getItem('initialValues')).t2p2Name
-        : '',
+      team1Name: initialVal('team1Name') ? initialVal('team1Name') : 'Team 1',
+      team2Name: initialVal('team2Name') ? initialVal('team2Name') : 'Team 2',
+      t1p1Name: initialVal('t1p1Name'),
+      t2p1Name: initialVal('t2p1Name'),
+      t1p2Name: initialVal('t1p2Name'),
+      t2p2Name: initialVal('t2p2Name'),
     },
     validationSchema,
     onSubmit: (values) => {
+      console.log({ values });
       sessionStorage.setItem('initialValues', JSON.stringify(values));
       navigate('/spades-calculator', { state: values });
     },
   });
 
+  const setDefaultTeamNames = () => {
+    if (formik.values.team1Name === '') {
+      formik.setFieldValue('team1Name', 'Team 1');
+    }
+    if (formik.values.team2Name === '') {
+      formik.setFieldValue('team2Name', 'Team 2');
+    }
+  };
+
   useEffect(() => {
-    sessionStorage.setItem('initialValues', JSON.stringify(formik.values));
+    if (hasSessionStorage) {
+      sessionStorage.setItem('initialValues', JSON.stringify(formik.values));
+    }
+    setDefaultTeamNames();
   }, [formik.values]);
 
   return (
@@ -74,11 +81,11 @@ function Names() {
               <SimpleGrid columns={2}>
                 <div className='namesBox'>
                   <Editable
-                    defaultValue='Team 1'
+                    defaultValue={formik.values.team1Name}
                     mt={2}
                     fontSize='lg'
                     fontWeight='bold'
-                    placeholder='Team 1'
+                    placeholder={formik.values.team1Name}
                   >
                     <Center>
                       <EditablePreview />
@@ -94,11 +101,11 @@ function Names() {
                 </div>
                 <div className='namesContainer'>
                   <Editable
-                    defaultValue='Team 2'
+                    defaultValue={formik.values.team2Name}
                     mt={2}
                     fontSize='lg'
                     fontWeight='bold'
-                    placeholder='Team 2'
+                    placeholder={formik.values.team2Name}
                   >
                     <Center>
                       <EditablePreview />
