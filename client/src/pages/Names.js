@@ -28,8 +28,6 @@ function Names() {
 
   const hasSessionStorage = !!sessionStorage.getItem('initialValues');
   const validationSchema = Yup.object({
-    team1Name: Yup.string().required('Required'),
-    team2Name: Yup.string().required('Required'),
     t1p1Name: Yup.string().required('Required'),
     t2p1Name: Yup.string().required('Required'),
     t1p2Name: Yup.string().required('Required'),
@@ -78,8 +76,9 @@ function Names() {
                   <Editable
                     defaultValue='Team 1'
                     mt={2}
-                    fontSize='xl'
+                    fontSize='lg'
                     fontWeight='bold'
+                    placeholder='Team 1'
                   >
                     <Center>
                       <EditablePreview />
@@ -97,8 +96,9 @@ function Names() {
                   <Editable
                     defaultValue='Team 2'
                     mt={2}
-                    fontSize='xl'
+                    fontSize='lg'
                     fontWeight='bold'
+                    placeholder='Team 2'
                   >
                     <Center>
                       <EditablePreview />
@@ -112,7 +112,11 @@ function Names() {
                   </Editable>
                 </div>
                 <div className='namesContainer'>
-                  <FormControl isInvalid={formik.errors.t1p1Name}>
+                  <FormControl
+                    isInvalid={
+                      formik.errors.t1p1Name && formik.touched.t1p1Name
+                    }
+                  >
                     <FormLabel
                       style={{ paddingLeft: '5px' }}
                       htmlFor='t1p1Name'
@@ -128,7 +132,7 @@ function Names() {
                       id='t1p1Name'
                       name='t1p1Name'
                     />
-                    {formik.errors.t1p1Name ? (
+                    {formik.errors.t1p1Name && formik.touched.t1p1Name ? (
                       <FormErrorMessage>
                         {formik.errors.t1p1Name}
                       </FormErrorMessage>
@@ -137,7 +141,11 @@ function Names() {
                 </div>
 
                 <div className='namesContainer'>
-                  <FormControl isInvalid={formik.errors.t2p1Name}>
+                  <FormControl
+                    isInvalid={
+                      formik.errors.t2p1Name && formik.touched.t2p1Name
+                    }
+                  >
                     <FormLabel
                       style={{ paddingLeft: '5px' }}
                       htmlFor='t2p1Name'
@@ -152,7 +160,7 @@ function Names() {
                       id='t2p1Name'
                       name='t2p1Name'
                     />
-                    {formik.errors.t2p1Name ? (
+                    {formik.errors.t2p1Name && formik.touched.t2p1Name ? (
                       <FormErrorMessage>
                         {formik.errors.t2p1Name}
                       </FormErrorMessage>
@@ -160,7 +168,11 @@ function Names() {
                   </FormControl>
                 </div>
                 <div className='namesContainer'>
-                  <FormControl isInvalid={formik.errors.t1p2Name}>
+                  <FormControl
+                    isInvalid={
+                      formik.errors.t1p2Name && formik.touched.t1p2Name
+                    }
+                  >
                     <FormLabel
                       style={{ paddingLeft: '5px' }}
                       htmlFor='t1p2Name'
@@ -174,7 +186,7 @@ function Names() {
                       id='t1p2Name'
                       name='t1p2Name'
                     />
-                    {formik.errors.t1p2Name ? (
+                    {formik.errors.t1p2Name && formik.touched.t1p2Name ? (
                       <FormErrorMessage>
                         {formik.errors.t1p2Name}
                       </FormErrorMessage>
@@ -183,7 +195,11 @@ function Names() {
                 </div>
 
                 <div className='namesContainer'>
-                  <FormControl isInvalid={formik.errors.t2p2Name}>
+                  <FormControl
+                    isInvalid={
+                      formik.errors.t2p2Name && formik.touched.t2p2Name
+                    }
+                  >
                     <FormLabel
                       style={{ paddingLeft: '5px' }}
                       htmlFor='t2p2Name'
@@ -197,7 +213,7 @@ function Names() {
                       id='t2p2Name'
                       name='t2p2Name'
                     />
-                    {formik.errors.t2p2Name ? (
+                    {formik.errors.t2p2Name && formik.touched.t2p2Name ? (
                       <FormErrorMessage>
                         {formik.errors.t2p2Name}
                       </FormErrorMessage>
