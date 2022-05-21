@@ -1,27 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 
-import store from './Redux/store';
 import './index.css';
-import App from './App';
+// import App from './App';
 import * as serviceWorker from './serviceWorker';
 // import SpadesCalculator from './pages/SpadesCalculator';
 import SpadesCalculator from './pages/index';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <ChakraProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<SpadesCalculator />} />
-          <Route path='spades-calculator' element={<SpadesCalculator />} />
-        </Routes>
-      </BrowserRouter>
-    </ChakraProvider>
-  </Provider>,
+  <ChakraProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<SpadesCalculator />} />
+        <Route path='spades-calculator' element={<SpadesCalculator />} />
+      </Routes>
+    </BrowserRouter>
+  </ChakraProvider>,
   document.getElementById('root')
 );
 
