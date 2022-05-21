@@ -136,7 +136,6 @@ function SpadesCalculator() {
   return (
     <div className='App'>
       <div className='App-inner'>
-        <p>This is where my spades calculator will be!</p>
         {/* <h1>TODO's</h1>
         <ul>
           <li>
