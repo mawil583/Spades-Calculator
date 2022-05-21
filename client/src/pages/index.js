@@ -181,7 +181,12 @@ function SpadesCalculator() {
                 <div className='namesBox'>
                   {/* <label htmlFor='team1Name'>Team 1 Name</label> */}
 
-                  <Editable defaultValue='Team 1'>
+                  <Editable
+                    defaultValue='Team 1'
+                    mt={2}
+                    fontSize='xl'
+                    fontWeight='bold'
+                  >
                     <Center>
                       <EditablePreview />
                       <EditableInput
@@ -203,7 +208,12 @@ function SpadesCalculator() {
                 </div>
                 {/* </Container> */}
                 <div className='namesContainer'>
-                  <Editable defaultValue='Team 2'>
+                  <Editable
+                    defaultValue='Team 2'
+                    mt={2}
+                    fontSize='xl'
+                    fontWeight='bold'
+                  >
                     <Center>
                       <EditablePreview />
                       <EditableInput
@@ -225,7 +235,9 @@ function SpadesCalculator() {
                   /> */}
                 </div>
                 <div className='namesContainer'>
-                  <label htmlFor='t1p1Name'>Player 1 Name</label>
+                  <label style={{ paddingLeft: '5px' }} htmlFor='t1p1Name'>
+                    Player 1 Name
+                  </label>
                   <Input
                     px={1}
                     placeholder={`Who's dealing first?`}
@@ -238,7 +250,9 @@ function SpadesCalculator() {
                 </div>
 
                 <div className='namesContainer'>
-                  <label htmlFor='t2p1Name'>Player 1 Name</label>
+                  <label style={{ paddingLeft: '5px' }} htmlFor='t2p1Name'>
+                    Player 1 Name
+                  </label>
                   <Input
                     px={1}
                     placeholder={`Who's left of dealer?`}
@@ -249,7 +263,9 @@ function SpadesCalculator() {
                   />
                 </div>
                 <div className='namesContainer'>
-                  <label htmlFor='t1p2Name'>Player 2 Name</label>
+                  <label style={{ paddingLeft: '5px' }} htmlFor='t1p2Name'>
+                    Player 2 Name
+                  </label>
                   <Input
                     px={1}
                     value={formik.values.t1p2Name}
@@ -260,7 +276,9 @@ function SpadesCalculator() {
                 </div>
 
                 <div className='namesContainer'>
-                  <label htmlFor='t2p2Name'>Player 2 Name</label>
+                  <label style={{ paddingLeft: '5px' }} htmlFor='t2p2Name'>
+                    Player 2 Name
+                  </label>
                   <Input
                     px={1}
                     value={formik.values.t2p2Name}

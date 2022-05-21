@@ -50,10 +50,10 @@
   display: flex;
   flex-wrap: wrap;
 } */
-/* 
-.namesContainer > * {
-  flex: 1 1 160px;
-} */
+
+.namesContainer {
+  margin-bottom: 15px;
+}
 
 /* .teamNames {
   display: flex;
