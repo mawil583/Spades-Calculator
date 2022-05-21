@@ -5,8 +5,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import SpadesCalculator from './pages/index';
 import Names from './pages/Names';
+import SpadesCalculator from './pages/SpadesCalculator';
 
 ReactDOM.render(
   <ChakraProvider>

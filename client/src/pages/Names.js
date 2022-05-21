@@ -1,38 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import {
-  Container,
-  Stack,
-  HStack,
-  VStack,
   Button,
   SimpleGrid,
   Center,
   Input,
   Editable,
   EditableInput,
-  EditableTextarea,
   EditablePreview,
-  Heading,
-  Flex,
-  Text,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
 } from '@chakra-ui/react';
 // Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
 
-import { Link, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import 'core-js/es/promise';
+import 'core-js/es/set';
+import 'core-js/es/map';
+
+import * as Yup from 'yup';
 import SpadesRound from '../components/SpadesRound';
 import '../App.css';
 
 function Names() {
-  const [team1Score, setTeam1Score] = useState(0);
-  const [team1Bags, setTeam1Bags] = useState(0);
-  const [team2Score, setTeam2Score] = useState(0);
-  const [team2Bags, setTeam2Bags] = useState(0);
-  const [bidsAndActuals, setBidsAndActuals] = useState([]);
-  const [roundNumber, setRoundNumber] = useState(1);
-  const [roundHistory, setRoundHistory] = useState([]);
+  const navigate = useNavigate();
 
   const hasSessionStorage = !!sessionStorage.getItem('initialValues');
+  const validationSchema = Yup.object({
+    team1Name: Yup.string().required('Required'),
+    team2Name: Yup.string().required('Required'),
+    t1p1Name: Yup.string().required('Required'),
+    t2p1Name: Yup.string().required('Required'),
+    t1p2Name: Yup.string().required('Required'),
+    t2p2Name: Yup.string().required('Required'),
+  });
   const formik = useFormik({
     initialValues: {
       team1Name: hasSessionStorage
@@ -53,11 +55,11 @@ function Names() {
       t2p2Name: hasSessionStorage
         ? JSON.parse(sessionStorage.getItem('initialValues')).t2p2Name
         : '',
-      nameInfoSubmitted: false,
     },
+    validationSchema,
     onSubmit: (values) => {
-      formik.setFieldValue('nameInfoSubmitted', true);
       sessionStorage.setItem('initialValues', JSON.stringify(values));
+      navigate('/spades-calculator', { state: values });
     },
   });
 
@@ -90,15 +92,7 @@ function Names() {
                       />
                     </Center>
                   </Editable>
-                  {/* <Input
-                    type='text'
-                    value={formik.values.team1Name}
-                    onChange={formik.handleChange}
-                    id='team1Name'
-                    name='team1Name'
-                  /> */}
                 </div>
-                {/* </Container> */}
                 <div className='namesContainer'>
                   <Editable
                     defaultValue='Team 2'
@@ -116,83 +110,112 @@ function Names() {
                       />
                     </Center>
                   </Editable>
-
-                  {/* <label htmlFor='team2Name'>Team 2 Name</label> */}
-                  {/* 
-                  <Input
-                    value={formik.values.team2Name}
-                    onChange={formik.handleChange}
-                    id='team2Name'
-                    name='team2Name'
-                  /> */}
                 </div>
                 <div className='namesContainer'>
-                  <label style={{ paddingLeft: '5px' }} htmlFor='t1p1Name'>
-                    Player 1 Name
-                  </label>
-                  <Input
-                    px={1}
-                    placeholder={`Who's dealing first?`}
-                    type='text'
-                    value={formik.values.t1p1Name}
-                    onChange={formik.handleChange}
-                    id='t1p1Name'
-                    name='t1p1Name'
-                  />
-                </div>
-
-                <div className='namesContainer'>
-                  <label style={{ paddingLeft: '5px' }} htmlFor='t2p1Name'>
-                    Player 1 Name
-                  </label>
-                  <Input
-                    px={1}
-                    placeholder={`Who's left of dealer?`}
-                    value={formik.values.t2p1Name}
-                    onChange={formik.handleChange}
-                    id='t2p1Name'
-                    name='t2p1Name'
-                  />
-                </div>
-                <div className='namesContainer'>
-                  <label style={{ paddingLeft: '5px' }} htmlFor='t1p2Name'>
-                    Player 2 Name
-                  </label>
-                  <Input
-                    px={1}
-                    value={formik.values.t1p2Name}
-                    onChange={formik.handleChange}
-                    id='t1p2Name'
-                    name='t1p2Name'
-                  />
+                  <FormControl isInvalid={formik.errors.t1p1Name}>
+                    <FormLabel
+                      style={{ paddingLeft: '5px' }}
+                      htmlFor='t1p1Name'
+                    >
+                      Player 1 Name
+                    </FormLabel>
+                    <Input
+                      px={1}
+                      placeholder={`Who's dealing first?`}
+                      type='text'
+                      value={formik.values.t1p1Name}
+                      onChange={formik.handleChange}
+                      id='t1p1Name'
+                      name='t1p1Name'
+                    />
+                    {formik.errors.t1p1Name ? (
+                      <FormErrorMessage>
+                        {formik.errors.t1p1Name}
+                      </FormErrorMessage>
+                    ) : null}
+                  </FormControl>
                 </div>
 
                 <div className='namesContainer'>
-                  <label style={{ paddingLeft: '5px' }} htmlFor='t2p2Name'>
-                    Player 2 Name
-                  </label>
-                  <Input
-                    px={1}
-                    value={formik.values.t2p2Name}
-                    onChange={formik.handleChange}
-                    id='t2p2Name'
-                    name='t2p2Name'
-                  />
+                  <FormControl isInvalid={formik.errors.t2p1Name}>
+                    <FormLabel
+                      style={{ paddingLeft: '5px' }}
+                      htmlFor='t2p1Name'
+                    >
+                      Player 1 Name
+                    </FormLabel>
+                    <Input
+                      px={1}
+                      placeholder={`Who's left of dealer?`}
+                      value={formik.values.t2p1Name}
+                      onChange={formik.handleChange}
+                      id='t2p1Name'
+                      name='t2p1Name'
+                    />
+                    {formik.errors.t2p1Name ? (
+                      <FormErrorMessage>
+                        {formik.errors.t2p1Name}
+                      </FormErrorMessage>
+                    ) : null}
+                  </FormControl>
+                </div>
+                <div className='namesContainer'>
+                  <FormControl isInvalid={formik.errors.t1p2Name}>
+                    <FormLabel
+                      style={{ paddingLeft: '5px' }}
+                      htmlFor='t1p2Name'
+                    >
+                      Player 2 Name
+                    </FormLabel>
+                    <Input
+                      px={1}
+                      value={formik.values.t1p2Name}
+                      onChange={formik.handleChange}
+                      id='t1p2Name'
+                      name='t1p2Name'
+                    />
+                    {formik.errors.t1p2Name ? (
+                      <FormErrorMessage>
+                        {formik.errors.t1p2Name}
+                      </FormErrorMessage>
+                    ) : null}
+                  </FormControl>
+                </div>
+
+                <div className='namesContainer'>
+                  <FormControl isInvalid={formik.errors.t2p2Name}>
+                    <FormLabel
+                      style={{ paddingLeft: '5px' }}
+                      htmlFor='t2p2Name'
+                    >
+                      Player 2 Name
+                    </FormLabel>
+                    <Input
+                      px={1}
+                      value={formik.values.t2p2Name}
+                      onChange={formik.handleChange}
+                      id='t2p2Name'
+                      name='t2p2Name'
+                    />
+                    {formik.errors.t2p2Name ? (
+                      <FormErrorMessage>
+                        {formik.errors.t2p2Name}
+                      </FormErrorMessage>
+                    ) : null}
+                  </FormControl>
                 </div>
               </SimpleGrid>
               <Center>
-                <Link to='/spades-calculator'>
-                  <Button
-                    size='md'
-                    height='40px'
-                    width='200px'
-                    border='2px'
-                    borderColor='green.500'
-                    type='submit'
-                  >
-                    Start
-                  </Button>
-                </Link>
+                <Button
+                  size='md'
+                  height='40px'
+                  width='200px'
+                  border='2px'
+                  borderColor='green.500'
+                  type='submit'
+                >
+                  Start
+                </Button>
               </Center>
             </form>
 
