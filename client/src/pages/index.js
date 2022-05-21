@@ -227,6 +227,7 @@ function SpadesCalculator() {
                 <div className='namesContainer'>
                   <label htmlFor='t1p1Name'>Player 1 Name</label>
                   <Input
+                    px={1}
                     placeholder={`Who's dealing first?`}
                     type='text'
                     value={formik.values.t1p1Name}
@@ -239,6 +240,7 @@ function SpadesCalculator() {
                 <div className='namesContainer'>
                   <label htmlFor='t2p1Name'>Player 1 Name</label>
                   <Input
+                    px={1}
                     placeholder={`Who's left of dealer?`}
                     value={formik.values.t2p1Name}
                     onChange={formik.handleChange}
@@ -249,6 +251,7 @@ function SpadesCalculator() {
                 <div className='namesContainer'>
                   <label htmlFor='t1p2Name'>Player 2 Name</label>
                   <Input
+                    px={1}
                     value={formik.values.t1p2Name}
                     onChange={formik.handleChange}
                     id='t1p2Name'
@@ -259,6 +262,7 @@ function SpadesCalculator() {
                 <div className='namesContainer'>
                   <label htmlFor='t2p2Name'>Player 2 Name</label>
                   <Input
+                    px={1}
                     value={formik.values.t2p2Name}
                     onChange={formik.handleChange}
                     id='t2p2Name'
