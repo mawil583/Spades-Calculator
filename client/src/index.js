@@ -8,16 +8,15 @@ import store from './Redux/store';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Blog from './pages/Blog';
-import SpadesCalculator from './pages/SpadesCalculator';
+// import SpadesCalculator from './pages/SpadesCalculator';
+import SpadesCalculator from './pages/index';
 
 ReactDOM.render(
   <Provider store={store}>
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<App />} />
-          <Route path='blog' element={<Blog />} />
+          <Route path='/' element={<SpadesCalculator />} />
           <Route path='spades-calculator' element={<SpadesCalculator />} />
         </Routes>
       </BrowserRouter>
