@@ -52,12 +52,12 @@ function SpadesRound(props) {
   //   inputRef.current.focus();
   // }
 
-  const formik = useFormik({
-    initialValues: {
-      team1BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
-      team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
-    },
-  });
+  // const formik = useFormik({
+  //   initialValues: {
+  //     team1BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+  //     team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+  //   },
+  // });
 
   // const [team1BidsAndActuals, setTeam1BidsAndActuals] = useState({
   //   p1Bid: '',
@@ -67,10 +67,36 @@ function SpadesRound(props) {
   // });
 
   // team 1
-  const [t1p1Bid, setT1p1Bid] = useState('');
-  const [t1p2Bid, setT1p2Bid] = useState('');
-  const [t1p1Actual, setT1p1Actual] = useState('');
-  const [t1p2Actual, setT1p2Actual] = useState('');
+  // const [t1p1Bid, setT1p1Bid] = useState('');
+  // console.log(
+  //   JSON.parse(sessionStorage.getItem('rounds'))[props.index]
+  //     .team1BidsAndActuals.p1Bid
+  // );
+  console.log(props.index);
+  const sessionRounds = JSON.parse(sessionStorage.getItem('rounds'));
+  const sessionRound = sessionRounds ? sessionRounds[props.index] : undefined;
+  const isStoredInSession = () => {
+    if (sessionRound) {
+      return true;
+    }
+    return false;
+  };
+
+  const [t1p1Bid, setT1p1Bid] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p1Bid : ''
+  );
+  // const [t1p2Bid, setT1p2Bid] = useState('');
+  const [t1p2Bid, setT1p2Bid] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p2Bid : ''
+  );
+  // const [t1p1Actual, setT1p1Actual] = useState('');
+  const [t1p1Actual, setT1p1Actual] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p1Actual : ''
+  );
+  // const [t1p2Actual, setT1p2Actual] = useState('');
+  const [t1p2Actual, setT1p2Actual] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p2Actual : ''
+  );
   const team1BidsAndActuals = {
     p1Bid: t1p1Bid,
     p2Bid: t1p2Bid,
@@ -80,10 +106,22 @@ function SpadesRound(props) {
   const team1Setters = { setT1p1Bid, setT1p2Bid, setT1p1Actual, setT1p2Actual };
 
   // team 2
-  const [t2p1Bid, setT2p1Bid] = useState('');
-  const [t2p2Bid, setT2p2Bid] = useState('');
-  const [t2p1Actual, setT2p1Actual] = useState('');
-  const [t2p2Actual, setT2p2Actual] = useState('');
+  // const [t2p1Bid, setT2p1Bid] = useState('');
+  const [t2p1Bid, setT2p1Bid] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p1Bid : ''
+  );
+  // const [t2p2Bid, setT2p2Bid] = useState('');
+  const [t2p2Bid, setT2p2Bid] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p2Bid : ''
+  );
+  // const [t2p1Actual, setT2p1Actual] = useState('');
+  const [t2p1Actual, setT2p1Actual] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p1Actual : ''
+  );
+  // const [t2p2Actual, setT2p2Actual] = useState('');
+  const [t2p2Actual, setT2p2Actual] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p2Actual : ''
+  );
   const team2BidsAndActuals = {
     p1Bid: t2p1Bid,
     p2Bid: t2p2Bid,
@@ -129,12 +167,17 @@ function SpadesRound(props) {
       team1InputsAreEntered && team2InputsAreEntered;
     console.log({ allBidsAndActualsAreEntered });
     if (allBidsAndActualsAreEntered) {
+      // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
+      console.log('IF'); // this is happening on every refresh
       setIsRoundFinished(true);
       console.log({ bidsAndActuals: props.bidsAndActuals });
-      // props.setBidsAndActuals([...props.bidsAndActuals, { ...formik.values }]);
-      props.setBidsAndActuals([
-        ...props.bidsAndActuals,
-        { ...team1BidsAndActuals, ...team2BidsAndActuals },
+      // props.setBidsAndActuals([
+      //   ...props.bidsAndActuals,
+      //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
+      // ]);
+      props.setRoundHistory([
+        ...props.roundHistory,
+        { team1BidsAndActuals, team2BidsAndActuals },
       ]);
 
       console.log({ team1BidsAndActuals });
@@ -163,10 +206,24 @@ function SpadesRound(props) {
       );
       console.log({ roundHistory: props.roundHistory });
       console.log({ roundHistoryLength: props.roundHistory.length });
+      // props.setRoundHistory([
+      //   ...props.roundHistory,
+      //   { team1BidsAndActuals, team2BidsAndActuals },
+      // ]);
 
-      // props.roundHistory.length === 0
-      //   ? props.setRoundHistory([scoreObj])
-      //   : props.setRoundHistory([...props.roundHistory, scoreObj]);
+      // gets set here
+      // sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
+      /* 
+      
+      roundHistory shape:
+    
+      // each index of this array represents a different round
+      [
+        team1BidsAndActuals: team1BidsAndActuals,
+        team2BidsAndActuals: team2BidsAndActuals,
+      ]
+      
+      */
     }
   }, [
     t2p1Bid,
@@ -179,7 +236,22 @@ function SpadesRound(props) {
     t2p2Actual,
   ]);
 
-  console.log({ roundHistory: props.roundHistory });
+  // this might be running twice
+  useEffect(() => {
+    console.log({ roundHistoryEffect: JSON.stringify(props.roundHistory) });
+    // gets set here
+    sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
+  }, [props.roundHistory]);
+  // });
+
+  // sessionStorage is in sync here
+  useEffect(() => {
+    console.log({
+      sessionStorageRounds: JSON.parse(sessionStorage.getItem('rounds')),
+    });
+  }, [sessionStorage.getItem('rounds')]);
+
+  console.log({ roundHistory: props.roundHistory }); // only team 2
   return (
     <div>
       <Heading as={'h3'}>Round {props.roundNumber}</Heading>

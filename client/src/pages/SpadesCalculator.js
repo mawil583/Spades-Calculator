@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -9,11 +9,6 @@ import {
   Button,
   SimpleGrid,
   Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
   Heading,
   Flex,
   Text,
@@ -34,9 +29,12 @@ function SpadesCalculator() {
   const [team2Bags, setTeam2Bags] = useState(0);
   const [bidsAndActuals, setBidsAndActuals] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
-  const [roundHistory, setRoundHistory] = useState([]);
-
-  const hasSessionStorage = !!sessionStorage.getItem('initialValues');
+  const [roundHistory, setRoundHistory] = useState(
+    JSON.parse(sessionStorage.getItem('rounds')) || []
+  );
+  // const [roundHistory, setRoundHistory] = useState(
+  //   JSON.parse(sessionStorage.getItem('rounds')) || bidsAndActuals
+  // );
 
   function addRoundScoreToGameScore(
     t1Round,
@@ -50,6 +48,7 @@ function SpadesCalculator() {
   ) {
     console.log({ t1Round, t1Bags });
     console.log({ team1Score });
+
     setTeam1Score(team1Score + t1Round);
     setTeam2Score(team2Score + t2Round);
     setTeam1Bags(team1Bags + t1Bags);
@@ -62,9 +61,18 @@ function SpadesCalculator() {
   }
 
   function displayRounds() {
-    console.log({ roundHistory });
-    const rounds = [];
-    for (let i = 0; i < bidsAndActuals.length + 1; i++) {
+    console.log({ roundHistory }); // only team 2
+    const rounds = []; // OR sessionStorage.getItem('rounds');
+    // console.log({ sessionstorage: sessionStorage.getItem('rounds') });
+    console.log({
+      sessionstorageParsed: JSON.parse(sessionStorage.getItem('rounds')),
+    });
+    // const rounds = [...JSON.parse(sessionStorage.getItem('rounds'))] || []; // OR sessionStorage.getItem('rounds');
+    // console.log({ rounds });
+    // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
+    // roundHistory is increasing after every refresh
+    for (let i = 0; i < roundHistory.length + 1; i++) {
+      // for (let i = 0; i < roundHistory.length; i++) {
       console.log({ bidsAndActuals });
       rounds.push(
         <SpadesRound
@@ -80,13 +88,46 @@ function SpadesCalculator() {
           team1Score={team1Score}
         />
       );
+      console.log({ rounds });
     }
     return rounds.reverse();
   }
 
-  useEffect(() => {
-    sessionStorage.setItem('initialValues', JSON.stringify(formVals));
-  }, [formVals]);
+  // const displayRounds = useCallback(() => {
+  //   const rounds = []; // OR sessionStorage.getItem('rounds');
+  //   // console.log({ sessionstorage: sessionStorage.getItem('rounds') });
+  //   console.log({
+  //     sessionstorageParsed: JSON.parse(sessionStorage.getItem('rounds')),
+  //   });
+  //   // const rounds = [...JSON.parse(sessionStorage.getItem('rounds'))] || []; // OR sessionStorage.getItem('rounds');
+  //   // console.log({ rounds });
+  //   // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
+  //   // roundHistory is increasing after every refresh
+  //   for (let i = 0; i < roundHistory.length + 1; i++) {
+  //     // for (let i = 0; i < roundHistory.length; i++) {
+  //     console.log({ bidsAndActuals });
+  //     rounds.push(
+  //       <SpadesRound
+  //         roundNumber={i + 1}
+  //         key={i}
+  //         index={i}
+  //         values={formVals}
+  //         bidsAndActuals={bidsAndActuals}
+  //         setBidsAndActuals={setBidsAndActuals}
+  //         roundHistory={roundHistory}
+  //         setRoundHistory={setRoundHistory}
+  //         addRoundScoreToGameScore={addRoundScoreToGameScore}
+  //         team1Score={team1Score}
+  //       />
+  //     );
+  //     console.log({ rounds });
+  //   }
+  //   return rounds.reverse();
+  // }, [sessionStorage.getItem('rounds')]);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem('gameStats', JSON.stringify(formVals));
+  // }, [roundHistory]);
 
   useEffect(() => {
     if (team1Bags >= 10) {
