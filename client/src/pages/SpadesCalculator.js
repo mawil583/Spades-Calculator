@@ -27,8 +27,8 @@ function SpadesCalculator() {
   const [team1Bags, setTeam1Bags] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
   const [team2Bags, setTeam2Bags] = useState(0);
-  const [bidsAndActuals, setBidsAndActuals] = useState([]);
-  const [roundNumber, setRoundNumber] = useState(1);
+  // const [bidsAndActuals, setBidsAndActuals] = useState([]);
+  // const [roundNumber, setRoundNumber] = useState(1);
   const [roundHistory, setRoundHistory] = useState(
     JSON.parse(sessionStorage.getItem('rounds')) || []
   );
@@ -71,17 +71,18 @@ function SpadesCalculator() {
     // console.log({ rounds });
     // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
     // roundHistory is increasing after every refresh
+    console.log({ roundHistoryLengthRoundArr: roundHistory.length });
     for (let i = 0; i < roundHistory.length + 1; i++) {
       // for (let i = 0; i < roundHistory.length; i++) {
-      console.log({ bidsAndActuals });
+      // console.log({ bidsAndActuals });
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
           key={i}
           index={i}
           values={formVals}
-          bidsAndActuals={bidsAndActuals}
-          setBidsAndActuals={setBidsAndActuals}
+          // bidsAndActuals={bidsAndActuals}
+          // setBidsAndActuals={setBidsAndActuals}
           roundHistory={roundHistory}
           setRoundHistory={setRoundHistory}
           addRoundScoreToGameScore={addRoundScoreToGameScore}
@@ -92,6 +93,10 @@ function SpadesCalculator() {
     }
     return rounds.reverse();
   }
+  /* 
+  if round 1 is completed, then refresh will send completed values to  SpadesRound meaning
+  
+  */
 
   // const displayRounds = useCallback(() => {
   //   const rounds = []; // OR sessionStorage.getItem('rounds');

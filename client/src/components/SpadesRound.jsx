@@ -28,7 +28,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-// import BidModal from './BidModal';
+// BUG: try to set score outside of useEffect
 import PlayerInput from './PlayerInput';
 
 import { calculateRoundScore } from '../helpers/spadesMath';
@@ -168,6 +168,7 @@ function SpadesRound(props) {
     console.log({ allBidsAndActualsAreEntered });
     if (allBidsAndActualsAreEntered) {
       // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
+      console.log({ roundNumber: props.roundNumber });
       console.log('IF'); // this is happening on every refresh
       setIsRoundFinished(true);
       console.log({ bidsAndActuals: props.bidsAndActuals });
@@ -175,6 +176,14 @@ function SpadesRound(props) {
       //   ...props.bidsAndActuals,
       //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
       // ]);
+      console.log({ roundHistory: props.roundHistory });
+      console.log({ roundHistoryLength: props.roundHistory.length });
+      console.log({
+        newRoundHistory: [
+          ...props.roundHistory,
+          { team1BidsAndActuals, team2BidsAndActuals },
+        ],
+      });
       props.setRoundHistory([
         ...props.roundHistory,
         { team1BidsAndActuals, team2BidsAndActuals },
@@ -204,8 +213,6 @@ function SpadesRound(props) {
         setTeam1Bags,
         setTeam2Bags
       );
-      console.log({ roundHistory: props.roundHistory });
-      console.log({ roundHistoryLength: props.roundHistory.length });
       // props.setRoundHistory([
       //   ...props.roundHistory,
       //   { team1BidsAndActuals, team2BidsAndActuals },
@@ -251,7 +258,7 @@ function SpadesRound(props) {
     });
   }, [sessionStorage.getItem('rounds')]);
 
-  console.log({ roundHistory: props.roundHistory }); // only team 2
+  // console.log({ roundHistory: props.roundHistory }); // only team 2
   return (
     <div>
       <Heading as={'h3'}>Round {props.roundNumber}</Heading>
