@@ -155,93 +155,128 @@ function SpadesRound(props) {
 
   */
 
-  useEffect(() => {
-    // const team1InputVals = Object.values(formik.values.team1BidsAndActuals);
-    const team1InputVals = Object.values(team1BidsAndActuals);
-    // const team2InputVals = Object.values(formik.values.team2BidsAndActuals);
-    const team2InputVals = Object.values(team2BidsAndActuals);
-    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
-    console.log({ team1InputsAreEntered });
-    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
-    const allBidsAndActualsAreEntered =
-      team1InputsAreEntered && team2InputsAreEntered;
+  const team1InputVals = Object.values(team1BidsAndActuals);
+  const team2InputVals = Object.values(team2BidsAndActuals);
+  const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
+  const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
+  const allBidsAndActualsAreEntered =
+    team1InputsAreEntered && team2InputsAreEntered;
+
+  const handleInput = () => {
+    console.log(team1InputVals);
     console.log({ allBidsAndActualsAreEntered });
     if (allBidsAndActualsAreEntered) {
-      // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
-      console.log({ roundNumber: props.roundNumber });
-      console.log('IF'); // this is happening on every refresh
       setIsRoundFinished(true);
-      console.log({ bidsAndActuals: props.bidsAndActuals });
-      // props.setBidsAndActuals([
-      //   ...props.bidsAndActuals,
-      //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
-      // ]);
-      console.log({ roundHistory: props.roundHistory });
-      console.log({ roundHistoryLength: props.roundHistory.length });
-      console.log({
-        newRoundHistory: [
-          ...props.roundHistory,
-          { team1BidsAndActuals, team2BidsAndActuals },
-        ],
-      });
       props.setRoundHistory([
         ...props.roundHistory,
         { team1BidsAndActuals, team2BidsAndActuals },
       ]);
-
-      console.log({ team1BidsAndActuals });
-      // set history here
       const roundScore = calculateRoundScore(
         team1BidsAndActuals,
         team2BidsAndActuals
       );
-      console.log({ roundScore });
-      // this causes infinite loop when roundScore is in dependency array
       setTeam1RoundScore(roundScore.team1RoundScore.score);
       setTeam2RoundScore(roundScore.team2RoundScore.score);
-      console.log({ roundScore });
-      // TODO: simplify. Maybe form an object instead of passing so many parameters
-      // this also causes infinite loop when roundScore is in dependency array
       props.addRoundScoreToGameScore(
         roundScore.team1RoundScore.score,
         roundScore.team2RoundScore.score,
         roundScore.team1RoundScore.bags,
         roundScore.team2RoundScore.bags,
-        // maybe pass setTeam1GameScore fn as parameter
         setTeam1GameScore,
         setTeam2GameScore,
         setTeam1Bags,
         setTeam2Bags
       );
-      // props.setRoundHistory([
-      //   ...props.roundHistory,
-      //   { team1BidsAndActuals, team2BidsAndActuals },
-      // ]);
-
-      // gets set here
-      // sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
-      /* 
-      
-      roundHistory shape:
-    
-      // each index of this array represents a different round
-      [
-        team1BidsAndActuals: team1BidsAndActuals,
-        team2BidsAndActuals: team2BidsAndActuals,
-      ]
-      
-      */
     }
-  }, [
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
-  ]);
+  };
+
+  // useEffect(() => {
+  //   // const team1InputVals = Object.values(formik.values.team1BidsAndActuals);
+  //   const team1InputVals = Object.values(team1BidsAndActuals);
+  //   // const team2InputVals = Object.values(formik.values.team2BidsAndActuals);
+  //   const team2InputVals = Object.values(team2BidsAndActuals);
+  //   const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
+  //   console.log({ team1InputsAreEntered });
+  //   const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
+  //   const allBidsAndActualsAreEntered =
+  //     team1InputsAreEntered && team2InputsAreEntered;
+  //   console.log({ allBidsAndActualsAreEntered });
+  //   if (allBidsAndActualsAreEntered) {
+  //     // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
+  //     console.log({ roundNumber: props.roundNumber });
+  //     console.log('IF'); // this is happening on every refresh
+  //     setIsRoundFinished(true);
+  //     console.log({ bidsAndActuals: props.bidsAndActuals });
+  //     // props.setBidsAndActuals([
+  //     //   ...props.bidsAndActuals,
+  //     //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
+  //     // ]);
+  //     console.log({ roundHistory: props.roundHistory });
+  //     console.log({ roundHistoryLength: props.roundHistory.length });
+  //     console.log({
+  //       newRoundHistory: [
+  //         ...props.roundHistory,
+  //         { team1BidsAndActuals, team2BidsAndActuals },
+  //       ],
+  //     });
+  //     props.setRoundHistory([
+  //       ...props.roundHistory,
+  //       { team1BidsAndActuals, team2BidsAndActuals },
+  //     ]);
+
+  //     console.log({ team1BidsAndActuals });
+  //     // set history here
+  //     const roundScore = calculateRoundScore(
+  //       team1BidsAndActuals,
+  //       team2BidsAndActuals
+  //     );
+  //     console.log({ roundScore });
+  //     // this causes infinite loop when roundScore is in dependency array
+  //     setTeam1RoundScore(roundScore.team1RoundScore.score);
+  //     setTeam2RoundScore(roundScore.team2RoundScore.score);
+  //     console.log({ roundScore });
+  //     // TODO: simplify. Maybe form an object instead of passing so many parameters
+  //     // this also causes infinite loop when roundScore is in dependency array
+  //     props.addRoundScoreToGameScore(
+  //       roundScore.team1RoundScore.score,
+  //       roundScore.team2RoundScore.score,
+  //       roundScore.team1RoundScore.bags,
+  //       roundScore.team2RoundScore.bags,
+  //       // maybe pass setTeam1GameScore fn as parameter
+  //       setTeam1GameScore,
+  //       setTeam2GameScore,
+  //       setTeam1Bags,
+  //       setTeam2Bags
+  //     );
+  //     // props.setRoundHistory([
+  //     //   ...props.roundHistory,
+  //     //   { team1BidsAndActuals, team2BidsAndActuals },
+  //     // ]);
+
+  //     // gets set here
+  //     // sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
+  //     /*
+
+  //     roundHistory shape:
+
+  //     // each index of this array represents a different round
+  //     [
+  //       team1BidsAndActuals: team1BidsAndActuals,
+  //       team2BidsAndActuals: team2BidsAndActuals,
+  //     ]
+
+  //     */
+  //   }
+  // }, [
+  //   t2p1Bid,
+  //   t2p2Bid,
+  //   t2p1Actual,
+  //   t2p2Actual,
+  //   t2p1Bid,
+  //   t2p2Bid,
+  //   t2p1Actual,
+  //   t2p2Actual,
+  // ]);
 
   // this might be running twice
   useEffect(() => {
@@ -310,6 +345,7 @@ function SpadesRound(props) {
             </Center>
             <SimpleGrid columns={2} className='namesContainer'>
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT1p1Bid}
                 playerName={t1p1Name}
                 val={t1p1Bid}
@@ -317,6 +353,7 @@ function SpadesRound(props) {
                 type={'Bid'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT2p1Bid}
                 playerName={t2p1Name}
                 val={t2p1Bid}
@@ -324,6 +361,7 @@ function SpadesRound(props) {
                 type={'Bid'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT1p2Bid}
                 playerName={t1p2Name}
                 val={t1p2Bid}
@@ -331,6 +369,7 @@ function SpadesRound(props) {
                 type={'Bid'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT2p2Bid}
                 playerName={t2p2Name}
                 val={t2p2Bid}
@@ -350,6 +389,7 @@ function SpadesRound(props) {
             </Center>
             <SimpleGrid columns={2} className='namesContainer'>
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT1p1Actual}
                 id='team1BidsAndActuals.p1Actual'
                 playerName={t1p1Name}
@@ -357,6 +397,7 @@ function SpadesRound(props) {
                 type={'Actual'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT2p1Actual}
                 id='team2BidsAndActuals.p1Actual'
                 playerName={t2p1Name}
@@ -364,6 +405,7 @@ function SpadesRound(props) {
                 type={'Actual'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT1p2Actual}
                 playerName={t1p2Name}
                 id='team1BidsAndActuals.p2Actual'
@@ -371,6 +413,7 @@ function SpadesRound(props) {
                 type={'Actual'}
               />
               <PlayerInput
+                handleInput={handleInput}
                 setValTo={setT2p2Actual}
                 playerName={t2p2Name}
                 val={t2p2Actual}

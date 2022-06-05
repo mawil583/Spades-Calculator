@@ -211,3 +211,17 @@ function SpadesCalculator() {
 }
 
 export default SpadesCalculator;
+
+/* 
+on refresh we are setting roundHistory with sessionStorage. 
+
+[rounds] starts length of 1, which is a spadesRound with empty values and roundHistory has length 0. 
+When finishing the last Actual input, useEffect runs and roundHistory increases to 1.
+When roundHistory increases 
+
+after first round, we set roundHistory and set sessionStorage.
+this means that [rounds] will then be the first finished round plus 1 empty round
+
+On refresh, roundHistory is reset to the sessionStorageValue (arr.length = 1) and [rounds] would 
+
+*/

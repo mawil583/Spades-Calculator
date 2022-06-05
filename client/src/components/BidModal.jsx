@@ -28,7 +28,14 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-function BidModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
+function BidModal({
+  playerName,
+  isOpen,
+  setIsModalOpen,
+  type,
+  setValTo,
+  handleInput,
+}) {
   // const { onClose } = useDisclosure();
   // const { isModalOpen, setIsModalOpen } = useState(false);
 
@@ -96,6 +103,7 @@ function BidModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
                     key={i}
                     onClick={() => {
                       setValTo(bid);
+                      handleInput();
                       setIsModalOpen(false);
                     }}
                   >

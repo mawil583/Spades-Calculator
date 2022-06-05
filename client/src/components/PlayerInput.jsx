@@ -30,7 +30,7 @@ import {
 
 import BidModal from './BidModal';
 
-const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
+const PlayerInput = ({ playerName, val, id, type, setValTo, handleInput }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
@@ -40,6 +40,7 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
         setIsModalOpen={setIsModalOpen}
         type={type}
         setValTo={setValTo}
+        handleInput={handleInput}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
         <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
