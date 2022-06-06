@@ -84,6 +84,7 @@ function SpadesCalculator() {
           setBidsAndActuals={setBidsAndActuals}
           roundHistory={roundHistory}
           setRoundHistory={setRoundHistory}
+          isRoundFinished={i < roundHistory.length - 1}
           addRoundScoreToGameScore={addRoundScoreToGameScore}
           team1Score={team1Score}
         />
@@ -144,7 +145,7 @@ function SpadesCalculator() {
     <div className='App'>
       <div className='App-inner'>
         {/* TODO's
-        
+
             - make sure SpadesRound.jsx inputs go in order from bets to actuals
 
          */}
@@ -193,7 +194,7 @@ function SpadesCalculator() {
             {displayRounds().map((round) => round)}
           </div>
         </div>
-        {/* 
+        {/*
       if roundInSession === true, display current editable round
 
       if roundHasJustFinished === true, push most recent game to completedRounds array
