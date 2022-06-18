@@ -30,10 +30,10 @@ function SpadesCalculator() {
   const [bidsAndActuals, setBidsAndActuals] = useState([]);
   const [roundNumber, setRoundNumber] = useState(1);
   const [roundHistory, setRoundHistory] = useState(
-    JSON.parse(sessionStorage.getItem('rounds')) || []
+    JSON.parse(localStorage.getItem('rounds')) || []
   );
   // const [roundHistory, setRoundHistory] = useState(
-  //   JSON.parse(sessionStorage.getItem('rounds')) || bidsAndActuals
+  //   JSON.parse(localStorage.getItem('rounds')) || bidsAndActuals
   // );
 
   function addRoundScoreToGameScore(
@@ -62,12 +62,12 @@ function SpadesCalculator() {
 
   function displayRounds() {
     console.log({ roundHistory }); // only team 2
-    const rounds = []; // OR sessionStorage.getItem('rounds');
-    // console.log({ sessionstorage: sessionStorage.getItem('rounds') });
+    const rounds = []; // OR localStorage.getItem('rounds');
+    // console.log({ sessionstorage: localStorage.getItem('rounds') });
     console.log({
-      sessionstorageParsed: JSON.parse(sessionStorage.getItem('rounds')),
+      sessionstorageParsed: JSON.parse(localStorage.getItem('rounds')),
     });
-    // const rounds = [...JSON.parse(sessionStorage.getItem('rounds'))] || []; // OR sessionStorage.getItem('rounds');
+    // const rounds = [...JSON.parse(localStorage.getItem('rounds'))] || []; // OR localStorage.getItem('rounds');
     // console.log({ rounds });
     // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
     // roundHistory is increasing after every refresh
@@ -95,12 +95,12 @@ function SpadesCalculator() {
   }
 
   // const displayRounds = useCallback(() => {
-  //   const rounds = []; // OR sessionStorage.getItem('rounds');
-  //   // console.log({ sessionstorage: sessionStorage.getItem('rounds') });
+  //   const rounds = []; // OR localStorage.getItem('rounds');
+  //   // console.log({ sessionstorage: localStorage.getItem('rounds') });
   //   console.log({
-  //     sessionstorageParsed: JSON.parse(sessionStorage.getItem('rounds')),
+  //     sessionstorageParsed: JSON.parse(localStorage.getItem('rounds')),
   //   });
-  //   // const rounds = [...JSON.parse(sessionStorage.getItem('rounds'))] || []; // OR sessionStorage.getItem('rounds');
+  //   // const rounds = [...JSON.parse(localStorage.getItem('rounds'))] || []; // OR localStorage.getItem('rounds');
   //   // console.log({ rounds });
   //   // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
   //   // roundHistory is increasing after every refresh
@@ -124,10 +124,10 @@ function SpadesCalculator() {
   //     console.log({ rounds });
   //   }
   //   return rounds.reverse();
-  // }, [sessionStorage.getItem('rounds')]);
+  // }, [localStorage.getItem('rounds')]);
 
   // useEffect(() => {
-  //   sessionStorage.setItem('gameStats', JSON.stringify(formVals));
+  //   localStorage.setItem('gameStats', JSON.stringify(formVals));
   // }, [roundHistory]);
 
   useEffect(() => {

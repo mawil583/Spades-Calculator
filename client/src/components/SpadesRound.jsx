@@ -69,11 +69,11 @@ function SpadesRound(props) {
   // team 1
   // const [t1p1Bid, setT1p1Bid] = useState('');
   // console.log(
-  //   JSON.parse(sessionStorage.getItem('rounds'))[props.index]
+  //   JSON.parse(localStorage.getItem('rounds'))[props.index]
   //     .team1BidsAndActuals.p1Bid
   // );
   console.log(props.index);
-  const sessionRounds = JSON.parse(sessionStorage.getItem('rounds'));
+  const sessionRounds = JSON.parse(localStorage.getItem('rounds'));
   const sessionRound = sessionRounds ? sessionRounds[props.index] : undefined;
   const isStoredInSession = () => {
     if (sessionRound) {
@@ -176,7 +176,7 @@ function SpadesRound(props) {
       //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
       // ]);
 
-      if(props.roundHistory.length === props.roundNumber - 1) {
+      if (props.roundHistory.length === props.roundNumber - 1) {
         props.setRoundHistory([
           ...props.roundHistory,
           { team1BidsAndActuals, team2BidsAndActuals },
@@ -215,7 +215,7 @@ function SpadesRound(props) {
       // ]);
 
       // gets set here
-      // sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
+      // localStorage.setItem('rounds', JSON.stringify(props.roundHistory));
       /*
 
       roundHistory shape:
@@ -243,16 +243,16 @@ function SpadesRound(props) {
   useEffect(() => {
     console.log({ roundHistoryEffect: JSON.stringify(props.roundHistory) });
     // gets set here
-    sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
+    localStorage.setItem('rounds', JSON.stringify(props.roundHistory));
   }, [props.roundHistory]);
   // });
 
-  // sessionStorage is in sync here
+  // localStorage is in sync here
   // useEffect(() => {
   //   console.log({
-  //     sessionStorageRounds: JSON.parse(sessionStorage.getItem('rounds')),
+  //     sessionStorageRounds: JSON.parse(localStorage.getItem('rounds')),
   //   });
-  // }, [sessionStorage.getItem('rounds')]);
+  // }, [localStorage.getItem('rounds')]);
 
   console.log({ roundHistory: props.roundHistory }); // only team 2
   return (
