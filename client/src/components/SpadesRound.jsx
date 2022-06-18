@@ -44,7 +44,7 @@ function SpadesRound(props) {
   const [team1RoundBags, setTeam1Bags] = useState(0);
   const [team2RoundBags, setTeam2Bags] = useState(0);
   const [team2GameScore, setTeam2GameScore] = useState(0);
-  const [isRoundFinished, setIsRoundFinished] = useState(false);
+  const [isRoundFinished, setIsRoundFinished] = useState(props.isRoundFinished);
   // const { isOpen, onOpen, onClose } = useDisclosure();
   const { isModalOpen, setIsModalOpen } = useState(false);
 
@@ -145,7 +145,7 @@ function SpadesRound(props) {
   //   moveFocusToCurrentRound();
   // }, []);
 
-  /* 
+  /*
   maybe split useEffect into 2 or 3
 
   1st useEffect sets IsRoundFinished
@@ -166,7 +166,7 @@ function SpadesRound(props) {
     const allBidsAndActualsAreEntered =
       team1InputsAreEntered && team2InputsAreEntered;
     console.log({ allBidsAndActualsAreEntered });
-    if (allBidsAndActualsAreEntered) {
+    if (allBidsAndActualsAreEntered && !isRoundFinished) {
       // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
       console.log('IF'); // this is happening on every refresh
       setIsRoundFinished(true);
@@ -175,10 +175,13 @@ function SpadesRound(props) {
       //   ...props.bidsAndActuals,
       //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
       // ]);
-      props.setRoundHistory([
-        ...props.roundHistory,
-        { team1BidsAndActuals, team2BidsAndActuals },
-      ]);
+
+      if(props.roundHistory.length === props.roundNumber - 1) {
+        props.setRoundHistory([
+          ...props.roundHistory,
+          { team1BidsAndActuals, team2BidsAndActuals },
+        ]);
+      }
 
       console.log({ team1BidsAndActuals });
       // set history here
@@ -213,23 +216,23 @@ function SpadesRound(props) {
 
       // gets set here
       // sessionStorage.setItem('rounds', JSON.stringify(props.roundHistory));
-      /* 
-      
+      /*
+
       roundHistory shape:
-    
+
       // each index of this array represents a different round
       [
         team1BidsAndActuals: team1BidsAndActuals,
         team2BidsAndActuals: team2BidsAndActuals,
       ]
-      
+
       */
     }
   }, [
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
+    t1p1Bid,
+    t1p2Bid,
+    t1p1Actual,
+    t1p2Actual,
     t2p1Bid,
     t2p2Bid,
     t2p1Actual,
@@ -245,11 +248,11 @@ function SpadesRound(props) {
   // });
 
   // sessionStorage is in sync here
-  useEffect(() => {
-    console.log({
-      sessionStorageRounds: JSON.parse(sessionStorage.getItem('rounds')),
-    });
-  }, [sessionStorage.getItem('rounds')]);
+  // useEffect(() => {
+  //   console.log({
+  //     sessionStorageRounds: JSON.parse(sessionStorage.getItem('rounds')),
+  //   });
+  // }, [sessionStorage.getItem('rounds')]);
 
   console.log({ roundHistory: props.roundHistory }); // only team 2
   return (
