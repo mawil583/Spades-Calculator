@@ -29,9 +29,6 @@ import {
 } from '@chakra-ui/react';
 
 function BidModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
-  // const { onClose } = useDisclosure();
-  // const { isModalOpen, setIsModalOpen } = useState(false);
-
   const possibleBids = [
     'Blind Nil',
     'Nil',
@@ -105,12 +102,6 @@ function BidModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
               })}
             </SimpleGrid>
           </ModalBody>
-          {/* 
-          <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </>

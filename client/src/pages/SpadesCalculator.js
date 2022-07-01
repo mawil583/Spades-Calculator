@@ -25,9 +25,7 @@ import '../App.css';
 
 function SpadesCalculator() {
   const location = useLocation();
-  console.log({ location });
   const { state: formVals } = location;
-  console.log({ formVals });
   const [team1Score, setTeam1Score] = useState(0);
   const [team1Bags, setTeam1Bags] = useState(0);
   const [team2Score, setTeam2Score] = useState(0);
@@ -48,8 +46,6 @@ function SpadesCalculator() {
     setTeam1RoundBags,
     setTeam2RoundBags
   ) {
-    console.log({ t1Round, t1Bags });
-    console.log({ team1Score });
     setTeam1Score(team1Score + t1Round);
     setTeam2Score(team2Score + t2Round);
     setTeam1Bags(team1Bags + t1Bags);
@@ -58,11 +54,9 @@ function SpadesCalculator() {
     setTeam2GameScore(team2Score + t2Round);
     setTeam1RoundBags(t1Bags);
     setTeam2RoundBags(t2Bags);
-    console.log({ team1Score });
   }
 
   function displayRounds() {
-    console.log({ roundHistory });
     const rounds = [];
     for (let i = 0; i < bidsAndActuals.length + 1; i++) {
       console.log({ bidsAndActuals });
