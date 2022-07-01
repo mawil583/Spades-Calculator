@@ -36,25 +36,6 @@
     transform: rotate(360deg);
   }
 }
-/* .App-inner {
-  background: yellow;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 768px;
-  margin: 0 auto;
-} */
-
-/* CSS for SpadesCalculator.js component */
-/* .namesContainer {
-  display: flex;
-  flex-wrap: wrap;
-} */
-
 .namesContainer {
   margin-bottom: 15px;
 }
-
-/* .teamNames {
-  display: flex;
-} */

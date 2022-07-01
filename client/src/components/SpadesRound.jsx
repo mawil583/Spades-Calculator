@@ -120,7 +120,6 @@ function SpadesRound(props) {
     t2p2Actual,
   ]);
 
-  console.log({ roundHistory: props.roundHistory });
   return (
     <div>
       <Heading as={'h3'}>Round {props.roundNumber}</Heading>

@@ -50,43 +50,15 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
             onClick={() => {
               setIsModalOpen(true);
             }}
-            // ref={inputRef}
             value={val}
             id={id}
             name={id}
-            // onChange={formik.handleChange}
           >
             {type}
           </Button>
         ) : (
           val
         )}
-        {/* <Button
-          onClick={() => {
-            setIsModalOpen(true);
-          }}
-          // ref={inputRef}
-          value={val}
-          id={id}
-          name={id}
-          // onChange={formik.handleChange}
-        >
-          {type}
-        </Button> */}
-        {/* <Input
-        w={'30px'}
-        size={'xs'}
-        ref={inputRef}
-        type='text'
-        value={val}
-        onChange={formik.handleChange}
-        // TODO: attributes id and name have to be the same because Formik maps them to initialValues. This is bad practice. Try not to nest anything within initialValues
-        // id='team1BidsAndActuals.p1Bid'
-        // name='team1BidsAndActuals.p1Bid'
-        id={id}
-        name={id}
-        mr={'15px'}
-      /> */}
       </Flex>
     </>
   );

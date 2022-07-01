@@ -96,11 +96,6 @@ function SpadesCalculator() {
   return (
     <div className='App'>
       <div className='App-inner'>
-        {/* TODO's
-        
-            - make sure SpadesRound.jsx inputs go in order from bets to actuals
-
-         */}
         <div className='team-board'>
           <div>
             <Container py={10} borderBottom={'1px solid black'}>
@@ -146,13 +141,6 @@ function SpadesCalculator() {
             {displayRounds().map((round) => round)}
           </div>
         </div>
-        {/* 
-      if roundInSession === true, display current editable round
-
-      if roundHasJustFinished === true, push most recent game to completedRounds array
-
-      for each completed round, list game round stats in reverse order
-    */}
       </div>
     </div>
   );

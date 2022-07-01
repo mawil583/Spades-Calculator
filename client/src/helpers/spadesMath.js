@@ -20,7 +20,6 @@ function calculateRoundScore(team1Inputs, team2Inputs) {
 }
 
 function nilTeamRoundScore(bidsAndActuals) {
-  console.log({ bidsAndActuals });
   const player1WentNil = isNaN(parseInt(parseInt(bidsAndActuals.p1Bid)));
   if (player1WentNil) {
     const wasBlind = bidsAndActuals.p1Bid === 'Blind Nil';
@@ -36,31 +35,22 @@ function nilTeamRoundScore(bidsAndActuals) {
         (parseInt(bidsAndActuals.p2Actual) - parseInt(bidsAndActuals.p2Bid))
       : parseInt(-bidsAndActuals.p2Bid) * 10;
 
-    console.log({ nonNilPlayerScore });
-    console.log({ achievedNil });
-    console.log({ didntGetSet });
     if (achievedNil && didntGetSet) {
-      console.log('if');
-      console.log({ wasBlind });
       return {
         score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
         bags,
       };
     } else if (!achievedNil && didntGetSet) {
-      console.log('else if1');
       return {
         score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
         bags,
       };
     } else if (!achievedNil && !didntGetSet) {
-      console.log('else if2');
       return {
         score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
         bags,
       };
     } else if (achievedNil && !didntGetSet) {
-      console.log('last');
-
       return {
         score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
         bags,
@@ -80,27 +70,21 @@ function nilTeamRoundScore(bidsAndActuals) {
         (parseInt(bidsAndActuals.p1Actual) - parseInt(bidsAndActuals.p1Bid))
       : parseInt(-bidsAndActuals.p1Bid) * 10;
     if (achievedNil && didntGetSet) {
-      console.log('if');
-      console.log({ wasBlind });
       return {
         score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
         bags,
       };
     } else if (!achievedNil && didntGetSet) {
-      console.log('else if1');
       return {
         score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
         bags,
       };
     } else if (!achievedNil && !didntGetSet) {
-      console.log('else if2');
       return {
         score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
         bags,
       };
     } else if (achievedNil && !didntGetSet) {
-      console.log('last');
-
       return {
         score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
         bags,
