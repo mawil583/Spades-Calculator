@@ -2,30 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import {
   Container,
-  Stack,
-  HStack,
-  VStack,
-  Button,
   SimpleGrid,
   Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
   Heading,
   Flex,
-  Text,
-  Divider,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
 } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 
@@ -147,7 +128,7 @@ function SpadesRound(props) {
       <form>
         <div>
           <Container>
-            {isRoundFinished ? (
+            {isRoundFinished && (
               <div>
                 <Center>
                   <Heading mt={'20px'} mb={'10px'} size={'lg'}>
@@ -163,7 +144,7 @@ function SpadesRound(props) {
                   <Center>Bags: {team2RoundBags}</Center>
                 </SimpleGrid>
               </div>
-            ) : null}
+            )}
             <Center>
               <Heading mt={'20px'} mb={'10px'} size={'md'}>
                 Bids

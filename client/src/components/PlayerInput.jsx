@@ -1,40 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useFormik } from 'formik';
-import {
-  Container,
-  Stack,
-  HStack,
-  VStack,
-  Button,
-  SimpleGrid,
-  Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
-  Heading,
-  Flex,
-  Text,
-  Divider,
-  Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
-} from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Button, Flex } from '@chakra-ui/react';
 
-import BidModal from './BidModal';
+import InputModal from './InputModal';
 
 const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <>
-      <BidModal
+      <InputModal
         playerName={playerName}
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
