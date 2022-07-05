@@ -104,4 +104,64 @@ function teamRoundScore(teamBid, teamActual) {
   }
 }
 
-export { calculateRoundScore };
+function calculateScoreFromRoundHistory(roundHistory) {
+  console.log({ roundHistory });
+  /* 
+
+{team1score, team1Bags, team2Score, team2Bags}
+
+*/
+
+  const roundScores = roundHistory.map((round) => {
+    const roundScore = calculateRoundScore(
+      round.team1BidsAndActuals,
+      round.team2BidsAndActuals
+    );
+    const { team1RoundScore, team2RoundScore } = roundScore;
+    return {
+      team1Score: team1RoundScore.score,
+      team1Bags: team1RoundScore.bags,
+      team2Score: team2RoundScore.score,
+      team2Bags: team2RoundScore.bags,
+    };
+  });
+  console.log({ roundScores });
+
+  let initialScore = {
+    team1Score: 0,
+    team1Bags: 0,
+    team2Score: 0,
+    team2Bags: 0,
+  };
+
+  let gameScore = roundScores.reduce((prev, roundScore) => {
+    // let { team1Score, team1Bags, team2Score, team2Bags } = prev;
+    console.log({ team1Bags: prev.team1Bags });
+    console.log({ team2Bags: prev.team2Bags });
+
+    prev.team1Score += roundScore.team1Score;
+    prev.team1Bags += roundScore.team1Bags;
+    prev.team2Score += roundScore.team2Score;
+    prev.team2Bags += roundScore.team2Bags;
+
+    if (roundScore.team1Bags >= 10) {
+      console.log({ bustBagsT1: roundScore.team1Bags });
+      prev.team1Score -= 100;
+      prev.team1Bags += prev.team1Bags % 10;
+    }
+    if (roundScore.team2Bags >= 10) {
+      console.log({ bustBagsT2: roundScore.team2Bags });
+      prev.team2Score -= 100;
+      prev.team2Bags += prev.team2Bags % 10;
+    }
+
+    console.log({ prev });
+    return prev;
+  }, initialScore);
+  console.log({ gameScore });
+  return gameScore;
+}
+
+function calculateBagsFromRoundHistory() {}
+
+export { calculateRoundScore, calculateScoreFromRoundHistory };

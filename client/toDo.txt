@@ -1,0 +1,6 @@
+Flow:
+
+when game starts, current round is initialized
+each time player selects bid, an event handler is fired which checks whether the current round is finished (allBidsAndActualsAreEntered)
+if current round is finished, then inputs are added to roundHistory, currentRound values are reset, and round number is incremented
+when roundHistory is > 0, then we render a PastRounds.reverse()
