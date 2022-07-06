@@ -25,10 +25,10 @@ import '../App.css';
 function Names() {
   const navigate = useNavigate();
 
-  const hasSessionStorage = !!sessionStorage.getItem('initialValues');
+  const hasSessionStorage = !!localStorage.getItem('initialValues');
   const initialVal = (fieldName) => {
     if (hasSessionStorage) {
-      return JSON.parse(sessionStorage.getItem('initialValues'))[fieldName];
+      return JSON.parse(localStorage.getItem('initialValues'))[fieldName];
     }
     return '';
   };
@@ -66,7 +66,7 @@ function Names() {
 
   useEffect(() => {
     if (hasSessionStorage) {
-      sessionStorage.setItem('initialValues', JSON.stringify(formik.values));
+      localStorage.setItem('initialValues', JSON.stringify(formik.values));
     }
     setDefaultTeamNames();
   }, [formik.values]);

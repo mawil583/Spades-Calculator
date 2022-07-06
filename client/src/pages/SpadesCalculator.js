@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useFormik } from 'formik';
 import {
@@ -9,11 +9,6 @@ import {
   Button,
   SimpleGrid,
   Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
   Heading,
   Flex,
   Text,
@@ -84,6 +79,7 @@ function SpadesCalculator() {
           setCurrentRound={setCurrentRound}
         />
       );
+      console.log({ rounds });
     }
     return rounds.reverse();
   }

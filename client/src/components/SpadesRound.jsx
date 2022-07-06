@@ -74,10 +74,36 @@ function SpadesRound(props) {
   });
 
   // team 1
-  const [t1p1Bid, setT1p1Bid] = useState('');
-  const [t1p2Bid, setT1p2Bid] = useState('');
-  const [t1p1Actual, setT1p1Actual] = useState('');
-  const [t1p2Actual, setT1p2Actual] = useState('');
+  // const [t1p1Bid, setT1p1Bid] = useState('');
+  // console.log(
+  //   JSON.parse(localStorage.getItem('rounds'))[props.index]
+  //     .team1BidsAndActuals.p1Bid
+  // );
+  console.log(props.index);
+  const sessionRounds = JSON.parse(localStorage.getItem('rounds'));
+  const sessionRound = sessionRounds ? sessionRounds[props.index] : undefined;
+  const isStoredInSession = () => {
+    if (sessionRound) {
+      return true;
+    }
+    return false;
+  };
+
+  const [t1p1Bid, setT1p1Bid] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p1Bid : ''
+  );
+  // const [t1p2Bid, setT1p2Bid] = useState('');
+  const [t1p2Bid, setT1p2Bid] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p2Bid : ''
+  );
+  // const [t1p1Actual, setT1p1Actual] = useState('');
+  const [t1p1Actual, setT1p1Actual] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p1Actual : ''
+  );
+  // const [t1p2Actual, setT1p2Actual] = useState('');
+  const [t1p2Actual, setT1p2Actual] = useState(
+    isStoredInSession() ? sessionRound.team1BidsAndActuals.p2Actual : ''
+  );
   const team1BidsAndActuals = {
     p1Bid: t1p1Bid,
     p2Bid: t1p2Bid,
@@ -87,10 +113,22 @@ function SpadesRound(props) {
   const team1Setters = { setT1p1Bid, setT1p2Bid, setT1p1Actual, setT1p2Actual };
 
   // team 2
-  const [t2p1Bid, setT2p1Bid] = useState('');
-  const [t2p2Bid, setT2p2Bid] = useState('');
-  const [t2p1Actual, setT2p1Actual] = useState('');
-  const [t2p2Actual, setT2p2Actual] = useState('');
+  // const [t2p1Bid, setT2p1Bid] = useState('');
+  const [t2p1Bid, setT2p1Bid] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p1Bid : ''
+  );
+  // const [t2p2Bid, setT2p2Bid] = useState('');
+  const [t2p2Bid, setT2p2Bid] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p2Bid : ''
+  );
+  // const [t2p1Actual, setT2p1Actual] = useState('');
+  const [t2p1Actual, setT2p1Actual] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p1Actual : ''
+  );
+  // const [t2p2Actual, setT2p2Actual] = useState('');
+  const [t2p2Actual, setT2p2Actual] = useState(
+    isStoredInSession() ? sessionRound.team2BidsAndActuals.p2Actual : ''
+  );
   const team2BidsAndActuals = {
     p1Bid: t2p1Bid,
     p2Bid: t2p2Bid,
