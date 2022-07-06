@@ -17,24 +17,28 @@ import {
 
 import SpadesRound from '../components/SpadesRound';
 import '../App.css';
+import CurrentRound from '../components/CurrentRound';
+import { calculateScoreFromRoundHistory } from '../helpers/spadesMath';
+
+const hasLocalStorage =
+  !!JSON.parse(localStorage.getItem('roundHistory')) &&
+  JSON.parse(localStorage.getItem('roundHistory')).length > 0;
 
 function SpadesCalculator() {
   const location = useLocation();
-  console.log({ location });
   const { state: formVals } = location;
-  console.log({ formVals });
-  const [team1Score, setTeam1Score] = useState(0);
-  const [team1Bags, setTeam1Bags] = useState(0);
-  const [team2Score, setTeam2Score] = useState(0);
-  const [team2Bags, setTeam2Bags] = useState(0);
-  const [bidsAndActuals, setBidsAndActuals] = useState([]);
-  const [roundNumber, setRoundNumber] = useState(1);
+  const [team1BidsAndActuals, setTeam1BidsAndActuals] = useState([]);
+  const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState([]);
+  const [currentRound, setCurrentRound] = useState(1);
+
   const [roundHistory, setRoundHistory] = useState(
-    JSON.parse(localStorage.getItem('rounds')) || []
+    hasLocalStorage ? JSON.parse(localStorage.getItem('roundHistory')) : []
   );
-  // const [roundHistory, setRoundHistory] = useState(
-  //   JSON.parse(localStorage.getItem('rounds')) || bidsAndActuals
-  // );
+  let score = calculateScoreFromRoundHistory(roundHistory);
+  const [team1Score, setTeam1Score] = useState(score.team1Score);
+  const [team1Bags, setTeam1Bags] = useState(score.team1Bags);
+  const [team2Score, setTeam2Score] = useState(score.team2Score);
+  const [team2Bags, setTeam2Bags] = useState(score.team2Bags);
 
   function addRoundScoreToGameScore(
     t1Round,
@@ -46,9 +50,6 @@ function SpadesCalculator() {
     setTeam1RoundBags,
     setTeam2RoundBags
   ) {
-    console.log({ t1Round, t1Bags });
-    console.log({ team1Score });
-
     setTeam1Score(team1Score + t1Round);
     setTeam2Score(team2Score + t2Round);
     setTeam1Bags(team1Bags + t1Bags);
@@ -57,36 +58,25 @@ function SpadesCalculator() {
     setTeam2GameScore(team2Score + t2Round);
     setTeam1RoundBags(t1Bags);
     setTeam2RoundBags(t2Bags);
-    console.log({ team1Score });
   }
 
-  function displayRounds() {
-    console.log({ roundHistory }); // only team 2
-    const rounds = []; // OR localStorage.getItem('rounds');
-    // console.log({ sessionstorage: localStorage.getItem('rounds') });
-    console.log({
-      sessionstorageParsed: JSON.parse(localStorage.getItem('rounds')),
-    });
-    // const rounds = [...JSON.parse(localStorage.getItem('rounds'))] || []; // OR localStorage.getItem('rounds');
-    // console.log({ rounds });
-    // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
-    // roundHistory is increasing after every refresh
-    for (let i = 0; i < roundHistory.length + 1; i++) {
-      // for (let i = 0; i < roundHistory.length; i++) {
-      console.log({ bidsAndActuals });
+  function pastRounds() {
+    const rounds = [];
+    for (let i = 0; i < roundHistory.length; i++) {
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
           key={i}
           index={i}
           values={formVals}
-          bidsAndActuals={bidsAndActuals}
-          setBidsAndActuals={setBidsAndActuals}
           roundHistory={roundHistory}
           setRoundHistory={setRoundHistory}
-          isRoundFinished={i < roundHistory.length - 1}
+          team1BidsAndActuals={roundHistory[i].team1BidsAndActuals}
+          team2BidsAndActuals={roundHistory[i].team2BidsAndActuals}
           addRoundScoreToGameScore={addRoundScoreToGameScore}
           team1Score={team1Score}
+          currentRound={currentRound}
+          setCurrentRound={setCurrentRound}
         />
       );
       console.log({ rounds });
@@ -94,61 +84,24 @@ function SpadesCalculator() {
     return rounds.reverse();
   }
 
-  // const displayRounds = useCallback(() => {
-  //   const rounds = []; // OR localStorage.getItem('rounds');
-  //   // console.log({ sessionstorage: localStorage.getItem('rounds') });
-  //   console.log({
-  //     sessionstorageParsed: JSON.parse(localStorage.getItem('rounds')),
-  //   });
-  //   // const rounds = [...JSON.parse(localStorage.getItem('rounds'))] || []; // OR localStorage.getItem('rounds');
-  //   // console.log({ rounds });
-  //   // for (let i = 0; i < bidsAndActuals.length + 1; i++) {
-  //   // roundHistory is increasing after every refresh
-  //   for (let i = 0; i < roundHistory.length + 1; i++) {
-  //     // for (let i = 0; i < roundHistory.length; i++) {
-  //     console.log({ bidsAndActuals });
-  //     rounds.push(
-  //       <SpadesRound
-  //         roundNumber={i + 1}
-  //         key={i}
-  //         index={i}
-  //         values={formVals}
-  //         bidsAndActuals={bidsAndActuals}
-  //         setBidsAndActuals={setBidsAndActuals}
-  //         roundHistory={roundHistory}
-  //         setRoundHistory={setRoundHistory}
-  //         addRoundScoreToGameScore={addRoundScoreToGameScore}
-  //         team1Score={team1Score}
-  //       />
-  //     );
-  //     console.log({ rounds });
-  //   }
-  //   return rounds.reverse();
-  // }, [localStorage.getItem('rounds')]);
-
-  // useEffect(() => {
-  //   localStorage.setItem('gameStats', JSON.stringify(formVals));
-  // }, [roundHistory]);
+  useEffect(() => {
+    sessionStorage.setItem('initialValues', JSON.stringify(formVals));
+  }, []);
 
   useEffect(() => {
     if (team1Bags >= 10) {
-      setTeam1Bags(team1Bags % 10);
+      setTeam1Bags(team1Bags - 10);
       setTeam1Score(team1Score - 100);
     }
     if (team2Bags >= 10) {
-      setTeam2Bags(team2Bags % 10);
-      setTeam1Score(team2Score - 100);
+      setTeam2Bags(team2Bags - 10);
+      setTeam2Score(team2Score - 100);
     }
   }, [team1Bags, team2Bags]);
 
   return (
     <div className='App'>
       <div className='App-inner'>
-        {/* TODO's
-
-            - make sure SpadesRound.jsx inputs go in order from bets to actuals
-
-         */}
         <div className='team-board'>
           <div>
             <Container py={10} borderBottom={'1px solid black'}>
@@ -190,17 +143,21 @@ function SpadesCalculator() {
                 </Flex>
               </SimpleGrid>
             </Container>
-
-            {displayRounds().map((round) => round)}
+            <CurrentRound
+              currentRound={currentRound}
+              values={formVals}
+              team1BidsAndActuals={team1BidsAndActuals}
+              team2BidsAndActuals={team2BidsAndActuals}
+              setTeam1BidsAndActuals={setTeam1BidsAndActuals}
+              setTeam2BidsAndActuals={setTeam2BidsAndActuals}
+              roundHistory={roundHistory}
+              setRoundHistory={setRoundHistory}
+              addRoundScoreToGameScore={addRoundScoreToGameScore}
+              team1Score={team1Score}
+            />
+            {pastRounds().map((round) => round)}
           </div>
         </div>
-        {/*
-      if roundInSession === true, display current editable round
-
-      if roundHasJustFinished === true, push most recent game to completedRounds array
-
-      for each completed round, list game round stats in reverse order
-    */}
       </div>
     </div>
   );

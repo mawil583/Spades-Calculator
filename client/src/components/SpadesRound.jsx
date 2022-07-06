@@ -2,69 +2,76 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useFormik } from 'formik';
 import {
   Container,
-  Stack,
-  HStack,
-  VStack,
-  Button,
   SimpleGrid,
   Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
   Heading,
   Flex,
-  Text,
-  Divider,
   Box,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
+  calc,
 } from '@chakra-ui/react';
-
-// import BidModal from './BidModal';
 import PlayerInput from './PlayerInput';
 
-import { calculateRoundScore } from '../helpers/spadesMath';
+import {
+  calculateRoundScoreNew,
+  calculateScoreFromRoundHistory,
+  calculateRoundHistoryAtCurrentRound,
+} from '../helpers/spadesMath';
+const hasLocalStorage =
+  !!JSON.parse(localStorage.getItem('roundHistory')) &&
+  JSON.parse(localStorage.getItem('roundHistory')).length > 0;
 
 function SpadesRound(props) {
+  const { roundHistory, index } = props;
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.values;
 
+  const team1RoundScoreFromHistory = calculateRoundScoreNew(
+    roundHistory[index].team1BidsAndActuals.p1Bid,
+    roundHistory[index].team1BidsAndActuals.p2Bid,
+    roundHistory[index].team1BidsAndActuals.p1Actual,
+    roundHistory[index].team1BidsAndActuals.p2Actual
+  );
+  const team2RoundScoreFromHistory = calculateRoundScoreNew(
+    roundHistory[index].team2BidsAndActuals.p1Bid,
+    roundHistory[index].team2BidsAndActuals.p2Bid,
+    roundHistory[index].team2BidsAndActuals.p1Actual,
+    roundHistory[index].team2BidsAndActuals.p2Actual
+  );
+
+  const roundHistoryAtEndOfThisRound = calculateRoundHistoryAtCurrentRound(
+    roundHistory,
+    index
+  );
+  const gameScoreAtEndOfThisRound = calculateScoreFromRoundHistory(
+    roundHistoryAtEndOfThisRound
+  );
+
   const inputRef = useRef();
-  const [team1RoundScore, setTeam1RoundScore] = useState(0);
-  const [team2RoundScore, setTeam2RoundScore] = useState(0);
-  const [team1GameScore, setTeam1GameScore] = useState(0);
-  const [team1RoundBags, setTeam1Bags] = useState(0);
-  const [team2RoundBags, setTeam2Bags] = useState(0);
-  const [team2GameScore, setTeam2GameScore] = useState(0);
-  const [isRoundFinished, setIsRoundFinished] = useState(props.isRoundFinished);
-  // const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isModalOpen, setIsModalOpen } = useState(false);
-
-  // function moveFocusToCurrentRound() {
-  //   inputRef.current.focus();
-  // }
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     team1BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
-  //     team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
-  //   },
-  // });
-
-  // const [team1BidsAndActuals, setTeam1BidsAndActuals] = useState({
-  //   p1Bid: '',
-  //   p1Actual: '',
-  //   p2Bid: '',
-  //   p2Actual: '',
-  // });
+  const [team1RoundScore, setTeam1RoundScore] = useState(
+    team1RoundScoreFromHistory?.score || 0
+  );
+  const [team2RoundScore, setTeam2RoundScore] = useState(
+    team2RoundScoreFromHistory?.score || 0
+  );
+  const [team1GameScore, setTeam1GameScore] = useState(
+    gameScoreAtEndOfThisRound.team1Score
+  );
+  const [team1RoundBags, setTeam1RoundBags] = useState(
+    team1RoundScoreFromHistory?.bags || 0
+  );
+  const [team2RoundBags, setTeam2RoundBags] = useState(
+    team2RoundScoreFromHistory?.bags || 0
+  );
+  const [team2GameScore, setTeam2GameScore] = useState(
+    gameScoreAtEndOfThisRound.team2Score
+  );
+  const [isRoundFinished, setIsRoundFinished] = useState(false);
+  const formik = useFormik({
+    initialValues: {
+      team1BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+      team2BidsAndActuals: { p1Bid: '', p1Actual: '', p2Bid: '', p2Actual: '' },
+    },
+  });
 
   // team 1
   // const [t1p1Bid, setT1p1Bid] = useState('');
@@ -128,133 +135,9 @@ function SpadesRound(props) {
     p1Actual: t2p1Actual,
     p2Actual: t2p2Actual,
   };
+
   const team2Setters = { setT2p1Bid, setT2p2Bid, setT2p1Actual, setT2p2Actual };
 
-  // const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState({
-  //   p1Bid: '',
-  //   p1Actual: '',
-  //   p2Bid: '',
-  //   p2Actual: '',
-  // });
-
-  const isNotDefaultValue = (value) => {
-    return value !== '';
-  };
-
-  // useEffect(() => {
-  //   moveFocusToCurrentRound();
-  // }, []);
-
-  /*
-  maybe split useEffect into 2 or 3
-
-  1st useEffect sets IsRoundFinished
-
-  2nd useEffect sets score and dependency is IsRoundFinished
-
-
-  */
-
-  useEffect(() => {
-    // const team1InputVals = Object.values(formik.values.team1BidsAndActuals);
-    const team1InputVals = Object.values(team1BidsAndActuals);
-    // const team2InputVals = Object.values(formik.values.team2BidsAndActuals);
-    const team2InputVals = Object.values(team2BidsAndActuals);
-    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
-    console.log({ team1InputsAreEntered });
-    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
-    const allBidsAndActualsAreEntered =
-      team1InputsAreEntered && team2InputsAreEntered;
-    console.log({ allBidsAndActualsAreEntered });
-    if (allBidsAndActualsAreEntered && !isRoundFinished) {
-      // if (allBidsAndActualsAreEntered && props.roundHistory[props.index]) {
-      console.log('IF'); // this is happening on every refresh
-      setIsRoundFinished(true);
-      console.log({ bidsAndActuals: props.bidsAndActuals });
-      // props.setBidsAndActuals([
-      //   ...props.bidsAndActuals,
-      //   { ...team1BidsAndActuals, ...team2BidsAndActuals },
-      // ]);
-
-      if (props.roundHistory.length === props.roundNumber - 1) {
-        props.setRoundHistory([
-          ...props.roundHistory,
-          { team1BidsAndActuals, team2BidsAndActuals },
-        ]);
-      }
-
-      console.log({ team1BidsAndActuals });
-      // set history here
-      const roundScore = calculateRoundScore(
-        team1BidsAndActuals,
-        team2BidsAndActuals
-      );
-      console.log({ roundScore });
-      // this causes infinite loop when roundScore is in dependency array
-      setTeam1RoundScore(roundScore.team1RoundScore.score);
-      setTeam2RoundScore(roundScore.team2RoundScore.score);
-      console.log({ roundScore });
-      // TODO: simplify. Maybe form an object instead of passing so many parameters
-      // this also causes infinite loop when roundScore is in dependency array
-      props.addRoundScoreToGameScore(
-        roundScore.team1RoundScore.score,
-        roundScore.team2RoundScore.score,
-        roundScore.team1RoundScore.bags,
-        roundScore.team2RoundScore.bags,
-        // maybe pass setTeam1GameScore fn as parameter
-        setTeam1GameScore,
-        setTeam2GameScore,
-        setTeam1Bags,
-        setTeam2Bags
-      );
-      console.log({ roundHistory: props.roundHistory });
-      console.log({ roundHistoryLength: props.roundHistory.length });
-      // props.setRoundHistory([
-      //   ...props.roundHistory,
-      //   { team1BidsAndActuals, team2BidsAndActuals },
-      // ]);
-
-      // gets set here
-      // localStorage.setItem('rounds', JSON.stringify(props.roundHistory));
-      /*
-
-      roundHistory shape:
-
-      // each index of this array represents a different round
-      [
-        team1BidsAndActuals: team1BidsAndActuals,
-        team2BidsAndActuals: team2BidsAndActuals,
-      ]
-
-      */
-    }
-  }, [
-    t1p1Bid,
-    t1p2Bid,
-    t1p1Actual,
-    t1p2Actual,
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
-  ]);
-
-  // this might be running twice
-  useEffect(() => {
-    console.log({ roundHistoryEffect: JSON.stringify(props.roundHistory) });
-    // gets set here
-    localStorage.setItem('rounds', JSON.stringify(props.roundHistory));
-  }, [props.roundHistory]);
-  // });
-
-  // localStorage is in sync here
-  // useEffect(() => {
-  //   console.log({
-  //     sessionStorageRounds: JSON.parse(localStorage.getItem('rounds')),
-  //   });
-  // }, [localStorage.getItem('rounds')]);
-
-  console.log({ roundHistory: props.roundHistory }); // only team 2
   return (
     <div>
       <Heading as={'h3'}>Round {props.roundNumber}</Heading>
@@ -282,23 +165,22 @@ function SpadesRound(props) {
       <form>
         <div>
           <Container>
-            {isRoundFinished ? (
-              <div>
-                <Center>
-                  <Heading mt={'20px'} mb={'10px'} size={'lg'}>
-                    Score
-                  </Heading>
-                </Center>
-                <SimpleGrid columns={2} className='namesContainer'>
-                  <Center>Round Score: {team1RoundScore}</Center>
-                  <Center>Round Score: {team2RoundScore}</Center>
-                  <Center>Game Score: {team1GameScore}</Center>
-                  <Center>Game Score: {team2GameScore}</Center>
-                  <Center>Bags: {team1RoundBags}</Center>
-                  <Center>Bags: {team2RoundBags}</Center>
-                </SimpleGrid>
-              </div>
-            ) : null}
+            <div>
+              <Center>
+                <Heading mt={'20px'} mb={'10px'} size={'lg'}>
+                  Score
+                </Heading>
+              </Center>
+              <SimpleGrid columns={2} className='namesContainer'>
+                <Center>Round Score: {team1RoundScore}</Center>
+                <Center>Round Score: {team2RoundScore}</Center>
+                <Center>Game Score at Start: {team1GameScore}</Center>
+                <Center>Game Score at Start: {team2GameScore}</Center>
+                <Center>Bags: {team1RoundBags}</Center>
+                <Center>Bags: {team2RoundBags}</Center>
+              </SimpleGrid>
+            </div>
+
             <Center>
               <Heading mt={'20px'} mb={'10px'} size={'md'}>
                 Bids
@@ -308,28 +190,28 @@ function SpadesRound(props) {
               <PlayerInput
                 setValTo={setT1p1Bid}
                 playerName={t1p1Name}
-                val={t1p1Bid}
+                val={props.team1BidsAndActuals?.p1Bid}
                 id='team1BidsAndActuals.p1Bid'
                 type={'Bid'}
               />
               <PlayerInput
                 setValTo={setT2p1Bid}
                 playerName={t2p1Name}
-                val={t2p1Bid}
+                val={props.team2BidsAndActuals?.p1Bid}
                 id='team2BidsAndActuals.p1Bid'
                 type={'Bid'}
               />
               <PlayerInput
                 setValTo={setT1p2Bid}
                 playerName={t1p2Name}
-                val={t1p2Bid}
+                val={props.team1BidsAndActuals?.p2Bid}
                 id='team1BidsAndActuals.p2Bid'
                 type={'Bid'}
               />
               <PlayerInput
                 setValTo={setT2p2Bid}
                 playerName={t2p2Name}
-                val={t2p2Bid}
+                val={props.team2BidsAndActuals?.p2Bid}
                 id='team2BidsAndActuals.p2Bid'
                 type={'Bid'}
               />
@@ -349,27 +231,27 @@ function SpadesRound(props) {
                 setValTo={setT1p1Actual}
                 id='team1BidsAndActuals.p1Actual'
                 playerName={t1p1Name}
-                val={t1p1Actual}
+                val={props.team1BidsAndActuals?.p1Actual}
                 type={'Actual'}
               />
               <PlayerInput
                 setValTo={setT2p1Actual}
                 id='team2BidsAndActuals.p1Actual'
                 playerName={t2p1Name}
-                val={t2p1Actual}
+                val={props.team2BidsAndActuals?.p1Actual}
                 type={'Actual'}
               />
               <PlayerInput
                 setValTo={setT1p2Actual}
                 playerName={t1p2Name}
                 id='team1BidsAndActuals.p2Actual'
-                val={t1p2Actual}
+                val={props.team1BidsAndActuals?.p2Actual}
                 type={'Actual'}
               />
               <PlayerInput
                 setValTo={setT2p2Actual}
                 playerName={t2p2Name}
-                val={t2p2Actual}
+                val={props.team2BidsAndActuals?.p2Actual}
                 type={'Actual'}
                 id='team2BidsAndActuals.p2Actual'
               />
@@ -377,18 +259,11 @@ function SpadesRound(props) {
           </Container>
           <div></div>
         </div>
-
-        {/* <div>
-          <h2>
-            {team2Name}
-            {team2Score ? ` Score: ${team2Score}` : null}
-          </h2>
-
-          <br />
-        </div> */}
       </form>
     </div>
   );
 }
 
 export default SpadesRound;
+
+// make smaller. Split into bidsSection, ActualsSections

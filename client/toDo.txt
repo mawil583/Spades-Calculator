@@ -1,0 +1,11 @@
+Flow:
+
+when game starts, current round is initialized
+each time player selects bid, an event handler is fired which checks whether the current round is finished (allBidsAndActualsAreEntered)
+if current round is finished, then inputs are added to roundHistory, currentRound values are reset, and round number is incremented
+when roundHistory is > 0, then we render a PastRounds.reverse()
+
+TODO:
+break out components into smaller components
+write tests for when we go over bags (-100 penalty)
+test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage

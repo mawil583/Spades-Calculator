@@ -50,8 +50,7 @@ function Names() {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log({ values });
-      localStorage.setItem('initialValues', JSON.stringify(values));
+      sessionStorage.setItem('initialValues', JSON.stringify(values));
       navigate('/spades-calculator', { state: values });
     },
   });
@@ -241,25 +240,8 @@ function Names() {
                 </Button>
               </Center>
             </form>
-
-            {/* 
-          - initialize rounds to empty array
-          - when round starts (when 'start' is clicked), then we push an object to our rounds array 
-          {t1p1Bet, t1p2Bet, t2p1Bet, t2p2Bet, t1p1Actual, t1p2Actual, t2p1Actual, t2p2Actual, t1Bags, t2Bags, t1Score, t2Score}
-          all initialized to falsey defaults
-          - when an object is in our array (when arr.length is not falsey), then we render our first round, which is a form
-          - When someone fills out all fields of the child component <Round>, form fields update to input values, and math is calculated, and another empty object is pushed to our rounds array
-                - will need to pass handler from parent to child and the handler should update parent state
-          */}
           </div>
         </div>
-        {/* 
-      if roundInSession === true, display current editable round
-
-      if roundHasJustFinished === true, push most recent game to completedRounds array
-
-      for each completed round, list game round stats in reverse order
-    */}
       </div>
     </div>
   );
