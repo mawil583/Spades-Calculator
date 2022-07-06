@@ -50,7 +50,6 @@ function Names() {
     },
     validationSchema,
     onSubmit: (values) => {
-      console.log({ values });
       sessionStorage.setItem('initialValues', JSON.stringify(values));
       navigate('/spades-calculator', { state: values });
     },

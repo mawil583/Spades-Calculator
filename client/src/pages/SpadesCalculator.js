@@ -32,20 +32,18 @@ const hasLocalStorage =
 function SpadesCalculator() {
   const location = useLocation();
   const { state: formVals } = location;
-  const [bidsAndActuals, setBidsAndActuals] = useState([]);
-  // const [roundNumber, setRoundNumber] = useState(1);
+  const [team1BidsAndActuals, setTeam1BidsAndActuals] = useState([]);
+  const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState([]);
   const [currentRound, setCurrentRound] = useState(1);
 
   const [roundHistory, setRoundHistory] = useState(
     hasLocalStorage ? JSON.parse(localStorage.getItem('roundHistory')) : []
   );
   let score = calculateScoreFromRoundHistory(roundHistory);
-  console.log({ score });
-  // const [team1Score, setTeam1Score] = useState(0);
-  const [team1Score, setTeam1Score] = useState(score?.team1Score || 0);
-  const [team1Bags, setTeam1Bags] = useState(score?.team1Bags || 0);
-  const [team2Score, setTeam2Score] = useState(score?.team2Score || 0);
-  const [team2Bags, setTeam2Bags] = useState(score?.team2Bags || 0);
+  const [team1Score, setTeam1Score] = useState(score.team1Score);
+  const [team1Bags, setTeam1Bags] = useState(score.team1Bags);
+  const [team2Score, setTeam2Score] = useState(score.team2Score);
+  const [team2Bags, setTeam2Bags] = useState(score.team2Bags);
 
   function addRoundScoreToGameScore(
     t1Round,
@@ -67,43 +65,15 @@ function SpadesCalculator() {
     setTeam2RoundBags(t2Bags);
   }
 
-  // function displayRounds() {
-  //   const rounds = [];
-  //   for (let i = 0; i < bidsAndActuals.length + 1; i++) {
-  //     console.log({ bidsAndActuals });
-  //     rounds.push(
-  //       <SpadesRound
-  //         roundNumber={i + 1}
-  //         key={i}
-  //         index={i}
-  //         values={formVals}
-  //         bidsAndActuals={bidsAndActuals}
-  //         setBidsAndActuals={setBidsAndActuals}
-  //         roundHistory={roundHistory}
-  //         setRoundHistory={setRoundHistory}
-  //         addRoundScoreToGameScore={addRoundScoreToGameScore}
-  //         team1Score={team1Score}
-  //       />
-  //     );
-  //   }
-  //   return rounds.reverse();
-  // }
-
   function pastRounds() {
     const rounds = [];
-    console.log('before for');
     for (let i = 0; i < roundHistory.length; i++) {
-      console.log(i);
-      console.log(roundHistory);
-
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
           key={i}
           index={i}
           values={formVals}
-          bidsAndActuals={bidsAndActuals}
-          setBidsAndActuals={setBidsAndActuals}
           roundHistory={roundHistory}
           setRoundHistory={setRoundHistory}
           team1BidsAndActuals={roundHistory[i].team1BidsAndActuals}
@@ -118,23 +88,20 @@ function SpadesCalculator() {
     return rounds.reverse();
   }
 
-  // useEffect(() => {
-  //   sessionStorage.setItem('initialValues', JSON.stringify(formVals));
-  //   console.log('spades calc useEffect1');
-  // }, [formVals]);
+  useEffect(() => {
+    sessionStorage.setItem('initialValues', JSON.stringify(formVals));
+  }, []);
 
   useEffect(() => {
-    console.log('spades calc useEffect2');
     if (team1Bags >= 10) {
-      setTeam1Bags(team1Bags % 10);
+      setTeam1Bags(team1Bags - 10);
       setTeam1Score(team1Score - 100);
     }
     if (team2Bags >= 10) {
-      setTeam2Bags(team2Bags % 10);
+      setTeam2Bags(team2Bags - 10);
       setTeam2Score(team2Score - 100);
     }
   }, [team1Bags, team2Bags]);
-  console.log('before return');
 
   return (
     <div className='App'>
@@ -180,14 +147,13 @@ function SpadesCalculator() {
                 </Flex>
               </SimpleGrid>
             </Container>
-
-            {/* {displayRounds().map((round) => round)} */}
             <CurrentRound
-              // setCurrentRound={setCurrentRound}
               currentRound={currentRound}
               values={formVals}
-              bidsAndActuals={bidsAndActuals}
-              setBidsAndActuals={setBidsAndActuals}
+              team1BidsAndActuals={team1BidsAndActuals}
+              team2BidsAndActuals={team2BidsAndActuals}
+              setTeam1BidsAndActuals={setTeam1BidsAndActuals}
+              setTeam2BidsAndActuals={setTeam2BidsAndActuals}
               roundHistory={roundHistory}
               setRoundHistory={setRoundHistory}
               addRoundScoreToGameScore={addRoundScoreToGameScore}

@@ -32,3 +32,6 @@ export const possibleActuals = [
   '12',
   '13',
 ];
+
+export const BLIND_NIL = 'BLIND_NIL';
+export const NIL = 'NIL';

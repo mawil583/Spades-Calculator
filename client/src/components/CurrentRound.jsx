@@ -9,15 +9,17 @@ import {
 } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 
-import { calculateRoundScore } from '../helpers/spadesMath';
+import {
+  calculateRoundScore,
+  calculateRoundScoreNew,
+} from '../helpers/spadesMath';
 export const SelectContext = createContext();
 
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.values;
 
-  console.log({ team1BidsAndActuals: props.team1BidsAndActuals });
-
+  // instead of storing a bunch of pieces of state, declare large state object array using useReducer
   const [team1RoundScore, setTeam1RoundScore] = useState(0);
   const [team2RoundScore, setTeam2RoundScore] = useState(0);
   const [team1GameScore, setTeam1GameScore] = useState(0);
@@ -72,111 +74,30 @@ function CurrentRound(props) {
     setT2p2Actual('');
   };
 
-  // handleSelect happens BEFORE state has been updated.
-  // const handleSelect = () => {
-  //   // const team1InputVals = Object.values(team1BidsAndActuals);
-  //   // const team2InputVals = Object.values(team2BidsAndActuals);
-  //   console.log({ t1p1Bid });
-  //   console.log({ t1p2Bid });
-  //   console.log({ t1p1Actual });
-  //   console.log({ t1p2Actual });
-  //   const team1InputVals = [t1p1Bid, t1p2Bid, t1p1Actual, t1p2Actual];
-  //   const team2InputVals = [t2p1Bid, t2p2Bid, t2p1Actual, t2p2Actual];
-  //   const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
-  //   const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
-  //   const allBidsAndActualsAreEntered =
-  //     team1InputsAreEntered && team2InputsAreEntered;
-  //   console.log({ team1InputVals });
-  //   console.log({ team2InputVals });
-  //   console.log({ team1InputsAreEntered });
-  //   console.log({ allBidsAndActualsAreEntered });
-  //   if (allBidsAndActualsAreEntered) {
-  //     setIsRoundFinished(true);
-  //     props.setBidsAndActuals([
-  //       ...props.bidsAndActuals,
-  //       { ...team1BidsAndActuals, ...team2BidsAndActuals },
-  //     ]);
-  //     const roundScore = calculateRoundScore(
-  //       team1BidsAndActuals,
-  //       team2BidsAndActuals
-  //     );
-  //     setTeam1RoundScore(roundScore.team1RoundScore.score);
-  //     setTeam2RoundScore(roundScore.team2RoundScore.score);
-  //     props.addRoundScoreToGameScore(
-  //       roundScore.team1RoundScore.score,
-  //       roundScore.team2RoundScore.score,
-  //       roundScore.team1RoundScore.bags,
-  //       roundScore.team2RoundScore.bags,
-  //       setTeam1GameScore,
-  //       setTeam2GameScore,
-  //       setTeam1RoundBags,
-  //       setTeam2RoundBags
-  //     );
-  //     resetRoundValues();
-  //     props.setCurrentRound(props.currentRound + 1);
-  //   }
-  // };
-
-  useEffect(() => {
-    console.log('useEffect CurrentRound');
-    const team1InputVals = Object.values(team1BidsAndActuals);
-    const team2InputVals = Object.values(team2BidsAndActuals);
-    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
-    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
-    const allBidsAndActualsAreEntered =
-      team1InputsAreEntered && team2InputsAreEntered;
-    if (allBidsAndActualsAreEntered) {
-      console.log('allInputsEntered');
-      setIsRoundFinished(true);
-      props.setBidsAndActuals([
-        ...props.bidsAndActuals,
-        { ...team1BidsAndActuals, ...team2BidsAndActuals },
-      ]);
-
-      const roundScore = calculateRoundScore(
-        team1BidsAndActuals,
-        team2BidsAndActuals
-      );
-      setTeam1RoundScore(roundScore.team1RoundScore.score);
-      setTeam2RoundScore(roundScore.team2RoundScore.score);
-      props.addRoundScoreToGameScore(
-        roundScore.team1RoundScore.score,
-        roundScore.team2RoundScore.score,
-        roundScore.team1RoundScore.bags,
-        roundScore.team2RoundScore.bags,
-        setTeam1GameScore,
-        setTeam2GameScore,
-        setTeam1RoundBags,
-        setTeam2RoundBags
-      );
-      props.setRoundHistory([
-        ...props.roundHistory,
-        { team1BidsAndActuals, team2BidsAndActuals },
-      ]);
-      localStorage.setItem(
-        'roundHistory',
-        JSON.stringify([
-          ...props.roundHistory,
-          { team1BidsAndActuals, team2BidsAndActuals },
-        ])
-      );
-      resetRoundValues();
-      // props.setCurrentRound(props.currentRound + 1);
-    }
-  }, [
+  useSetScoreWhenRoundIsFinished(
+    team1BidsAndActuals,
+    team2BidsAndActuals,
+    isNotDefaultValue,
+    setIsRoundFinished,
+    props,
+    setTeam1RoundScore,
+    setTeam2RoundScore,
+    setTeam1GameScore,
+    setTeam2GameScore,
+    setTeam1RoundBags,
+    setTeam2RoundBags,
+    resetRoundValues,
+    t1p1Bid,
+    t1p2Bid,
+    t1p1Actual,
+    t1p2Actual,
     t2p1Bid,
     t2p2Bid,
     t2p1Actual,
-    t2p2Actual,
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
-  ]);
+    t2p2Actual
+  );
 
   return (
-    // <SelectContext.Provider handleSelect={handleSelect}>
-    // <SelectContext.Provider value={handleSelect}>
     <div>
       <Heading as={'h3'}>Round {props.roundHistory.length + 1}</Heading>
       <Box>
@@ -220,41 +141,43 @@ function CurrentRound(props) {
                 </SimpleGrid>
               </div>
             )}
-            <Center>
-              <Heading mt={'20px'} mb={'10px'} size={'md'}>
-                Bids
-              </Heading>
-            </Center>
-            <SimpleGrid columns={2} className='namesContainer'>
-              <PlayerInput
-                setValTo={setT1p1Bid}
-                playerName={t1p1Name}
-                val={t1p1Bid}
-                id='team1BidsAndActuals.p1Bid'
-                type={'Bid'}
-              />
-              <PlayerInput
-                setValTo={setT2p1Bid}
-                playerName={t2p1Name}
-                val={t2p1Bid}
-                id='team2BidsAndActuals.p1Bid'
-                type={'Bid'}
-              />
-              <PlayerInput
-                setValTo={setT1p2Bid}
-                playerName={t1p2Name}
-                val={t1p2Bid}
-                id='team1BidsAndActuals.p2Bid'
-                type={'Bid'}
-              />
-              <PlayerInput
-                setValTo={setT2p2Bid}
-                playerName={t2p2Name}
-                val={t2p2Bid}
-                id='team2BidsAndActuals.p2Bid'
-                type={'Bid'}
-              />
-            </SimpleGrid>
+            <div>
+              <Center>
+                <Heading mt={'20px'} mb={'10px'} size={'md'}>
+                  Bids
+                </Heading>
+              </Center>
+              <SimpleGrid columns={2} className='namesContainer'>
+                <PlayerInput
+                  setValTo={setT1p1Bid}
+                  playerName={t1p1Name}
+                  val={t1p1Bid}
+                  id='team1BidsAndActuals.p1Bid'
+                  type={'Bid'}
+                />
+                <PlayerInput
+                  setValTo={setT2p1Bid}
+                  playerName={t2p1Name}
+                  val={t2p1Bid}
+                  id='team2BidsAndActuals.p1Bid'
+                  type={'Bid'}
+                />
+                <PlayerInput
+                  setValTo={setT1p2Bid}
+                  playerName={t1p2Name}
+                  val={t1p2Bid}
+                  id='team1BidsAndActuals.p2Bid'
+                  type={'Bid'}
+                />
+                <PlayerInput
+                  setValTo={setT2p2Bid}
+                  playerName={t2p2Name}
+                  val={t2p2Bid}
+                  id='team2BidsAndActuals.p2Bid'
+                  type={'Bid'}
+                />
+              </SimpleGrid>
+            </div>
             <Center>
               <hr
                 style={{ width: '60%', color: '#808080', margin: '10px 0' }}
@@ -271,7 +194,6 @@ function CurrentRound(props) {
                 id='team1BidsAndActuals.p1Actual'
                 playerName={t1p1Name}
                 val={t1p1Actual}
-                // val={props.team1BidsAndActuals.p1Bid}
                 type={'Actual'}
               />
               <PlayerInput
@@ -301,8 +223,100 @@ function CurrentRound(props) {
         </div>
       </form>
     </div>
-    // </SelectContext.Provider>
   );
 }
 
 export default CurrentRound;
+function useSetScoreWhenRoundIsFinished(
+  team1BidsAndActuals,
+  team2BidsAndActuals,
+  isNotDefaultValue,
+  setIsRoundFinished,
+  props,
+  setTeam1RoundScore,
+  setTeam2RoundScore,
+  setTeam1GameScore,
+  setTeam2GameScore,
+  setTeam1RoundBags,
+  setTeam2RoundBags,
+  resetRoundValues,
+  t1p1Bid,
+  t1p2Bid,
+  t1p1Actual,
+  t1p2Actual,
+  t2p1Bid,
+  t2p2Bid,
+  t2p1Actual,
+  t2p2Actual
+) {
+  useEffect(() => {
+    const team1InputVals = Object.values(team1BidsAndActuals);
+    const team2InputVals = Object.values(team2BidsAndActuals);
+    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
+    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
+    const allBidsAndActualsAreEntered =
+      team1InputsAreEntered && team2InputsAreEntered;
+    if (allBidsAndActualsAreEntered) {
+      setIsRoundFinished(true);
+      props.setTeam1BidsAndActuals({
+        t1p1Bid,
+        t1p2Bid,
+        t1p1Actual,
+        t1p2Actual,
+      });
+      props.setTeam2BidsAndActuals({
+        t2p1Bid,
+        t2p2Bid,
+        t2p1Actual,
+        t2p2Actual,
+      });
+
+      const team1RoundScore = calculateRoundScoreNew(
+        team1BidsAndActuals.p1Bid,
+        team1BidsAndActuals.p2Bid,
+        team1BidsAndActuals.p1Actual,
+        team1BidsAndActuals.p2Actual
+      );
+      const team2RoundScore = calculateRoundScoreNew(
+        team2BidsAndActuals.p1Bid,
+        team2BidsAndActuals.p2Bid,
+        team2BidsAndActuals.p1Actual,
+        team2BidsAndActuals.p2Actual
+      );
+
+      setTeam1RoundScore(team1RoundScore.score);
+      setTeam2RoundScore(team2RoundScore.score);
+      props.addRoundScoreToGameScore(
+        team1RoundScore.score,
+        team2RoundScore.score,
+        team1RoundScore.bags,
+        team2RoundScore.bags,
+        setTeam1GameScore,
+        setTeam2GameScore,
+        setTeam1RoundBags,
+        setTeam2RoundBags
+      );
+      props.setRoundHistory([
+        ...props.roundHistory,
+        { team1BidsAndActuals, team2BidsAndActuals },
+      ]);
+      localStorage.setItem(
+        'roundHistory',
+        JSON.stringify([
+          ...props.roundHistory,
+          { team1BidsAndActuals, team2BidsAndActuals },
+        ])
+      );
+      resetRoundValues();
+    }
+  }, [
+    t2p1Bid,
+    t2p2Bid,
+    t2p1Actual,
+    t2p2Actual,
+    t2p1Bid,
+    t2p2Bid,
+    t2p1Actual,
+    t2p2Actual,
+  ]);
+}

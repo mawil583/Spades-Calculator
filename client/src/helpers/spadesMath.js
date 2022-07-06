@@ -1,39 +1,31 @@
-function calculateRoundScore(team1Inputs, team2Inputs) {
-  const didTeam1GoNil =
-    isNaN(parseInt(team1Inputs.p1Bid)) || isNaN(parseInt(team1Inputs.p2Bid));
-  const didTeam2GoNil =
-    isNaN(parseInt(team2Inputs.p1Bid)) || isNaN(parseInt(team2Inputs.p2Bid));
+import { BLIND_NIL, NIL } from './constants';
 
-  const team1Bid = parseInt(team1Inputs.p1Bid) + parseInt(team1Inputs.p2Bid);
-  const team2Bid = parseInt(team2Inputs.p1Bid) + parseInt(team2Inputs.p2Bid);
-  const team1Actual =
-    parseInt(team1Inputs.p1Actual) + parseInt(team1Inputs.p2Actual);
-  const team2Actual =
-    parseInt(team2Inputs.p1Actual) + parseInt(team2Inputs.p2Actual);
-  const team1RoundScore = didTeam1GoNil
-    ? nilTeamRoundScore(team1Inputs)
-    : teamRoundScore(team1Bid, team1Actual);
-  const team2RoundScore = didTeam2GoNil
-    ? nilTeamRoundScore(team2Inputs)
-    : teamRoundScore(team2Bid, team2Actual);
-  return { team1RoundScore, team2RoundScore };
+// p1Bid, p2Bid, p1Actual, p2Actual
+export function calculateRoundScoreNew(bid1, bid2, actual1, actual2) {
+  const didTeamGoNil = bid1 === NIL || bid2 === NIL;
+  const didTeamGoBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
+  const teamBid = parseInt(bid1) + parseInt(bid2);
+  const teamActual = parseInt(actual1) + parseInt(actual2);
+  const score =
+    didTeamGoNil || didTeamGoBlindNil
+      ? nilTeamRoundScoreNew(bid1, bid2, actual1, actual2)
+      : teamRoundScore(teamBid, teamActual);
+  return score;
 }
 
-function nilTeamRoundScore(bidsAndActuals) {
-  const player1WentNil = isNaN(parseInt(parseInt(bidsAndActuals.p1Bid)));
+function nilTeamRoundScoreNew(bid1, bid2, actual1, actual2) {
+  const player1WentNil = bid1 === NIL || bid1 === BLIND_NIL;
   if (player1WentNil) {
-    const wasBlind = bidsAndActuals.p1Bid === 'Blind Nil';
-    const achievedNil = parseInt(bidsAndActuals.p1Actual) === 0;
-    const didntGetSet =
-      parseInt(bidsAndActuals.p2Actual) >= parseInt(bidsAndActuals.p2Bid);
+    const wasBlind = bid1 === BLIND_NIL;
+    const achievedNil = parseInt(actual1) === 0;
+    const didntGetSet = parseInt(actual1) + parseInt(actual2) >= parseInt(bid2);
     const bags =
-      parseInt(bidsAndActuals.p2Actual) > parseInt(bidsAndActuals.p2Bid)
-        ? parseInt(bidsAndActuals.p2Actual) - parseInt(bidsAndActuals.p2Bid)
+      parseInt(actual2) + parseInt(actual1) > parseInt(bid2)
+        ? parseInt(actual2) + parseInt(actual1) - parseInt(bid2)
         : 0;
     const nonNilPlayerScore = didntGetSet
-      ? parseInt(bidsAndActuals.p2Bid) * 10 +
-        (parseInt(bidsAndActuals.p2Actual) - parseInt(bidsAndActuals.p2Bid))
-      : parseInt(-bidsAndActuals.p2Bid) * 10;
+      ? parseInt(bid2) * 10 + bags
+      : parseInt(-bid2) * 10;
 
     if (achievedNil && didntGetSet) {
       return {
@@ -57,18 +49,16 @@ function nilTeamRoundScore(bidsAndActuals) {
       };
     }
   } else {
-    const wasBlind = bidsAndActuals.p2Bid === 'Blind Nil';
-    const achievedNil = parseInt(bidsAndActuals.p1Actual) === 0;
-    const didntGetSet =
-      parseInt(bidsAndActuals.p1Actual) >= parseInt(bidsAndActuals.p2Bid);
+    const wasBlind = bid2 === BLIND_NIL;
+    const achievedNil = parseInt(actual2) === 0;
+    const didntGetSet = parseInt(actual1) + parseInt(actual2) >= parseInt(bid1);
     const bags =
-      parseInt(bidsAndActuals.p1Actual) > parseInt(bidsAndActuals.p1Bid)
-        ? parseInt(bidsAndActuals.p1Actual) - parseInt(bidsAndActuals.p1Bid)
+      parseInt(actual2) + parseInt(actual1) > parseInt(bid1)
+        ? parseInt(actual1) + parseInt(actual2) - parseInt(bid1)
         : 0;
     const nonNilPlayerScore = didntGetSet
-      ? parseInt(bidsAndActuals.p1Bid) * 10 +
-        (parseInt(bidsAndActuals.p1Actual) - parseInt(bidsAndActuals.p1Bid))
-      : parseInt(-bidsAndActuals.p1Bid) * 10;
+      ? parseInt(bid1) * 10 + bags
+      : parseInt(-bid1) * 10;
     if (achievedNil && didntGetSet) {
       return {
         score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
@@ -105,19 +95,20 @@ function teamRoundScore(teamBid, teamActual) {
 }
 
 function calculateScoreFromRoundHistory(roundHistory) {
-  console.log({ roundHistory });
-  /* 
-
-{team1score, team1Bags, team2Score, team2Bags}
-
-*/
-
   const roundScores = roundHistory.map((round) => {
-    const roundScore = calculateRoundScore(
-      round.team1BidsAndActuals,
-      round.team2BidsAndActuals
+    const { team1BidsAndActuals, team2BidsAndActuals } = round;
+    const team1RoundScore = calculateRoundScoreNew(
+      team1BidsAndActuals.p1Bid,
+      team1BidsAndActuals.p2Bid,
+      team1BidsAndActuals.p1Actual,
+      team1BidsAndActuals.p2Actual
     );
-    const { team1RoundScore, team2RoundScore } = roundScore;
+    const team2RoundScore = calculateRoundScoreNew(
+      team2BidsAndActuals.p1Bid,
+      team2BidsAndActuals.p2Bid,
+      team2BidsAndActuals.p1Actual,
+      team2BidsAndActuals.p2Actual
+    );
     return {
       team1Score: team1RoundScore.score,
       team1Bags: team1RoundScore.bags,
@@ -125,7 +116,6 @@ function calculateScoreFromRoundHistory(roundHistory) {
       team2Bags: team2RoundScore.bags,
     };
   });
-  console.log({ roundScores });
 
   let initialScore = {
     team1Score: 0,
@@ -135,33 +125,31 @@ function calculateScoreFromRoundHistory(roundHistory) {
   };
 
   let gameScore = roundScores.reduce((prev, roundScore) => {
-    // let { team1Score, team1Bags, team2Score, team2Bags } = prev;
-    console.log({ team1Bags: prev.team1Bags });
-    console.log({ team2Bags: prev.team2Bags });
-
     prev.team1Score += roundScore.team1Score;
     prev.team1Bags += roundScore.team1Bags;
     prev.team2Score += roundScore.team2Score;
     prev.team2Bags += roundScore.team2Bags;
 
-    if (roundScore.team1Bags >= 10) {
-      console.log({ bustBagsT1: roundScore.team1Bags });
+    if (prev.team1Bags >= 10) {
       prev.team1Score -= 100;
-      prev.team1Bags += prev.team1Bags % 10;
+      prev.team1Bags -= 10;
     }
-    if (roundScore.team2Bags >= 10) {
-      console.log({ bustBagsT2: roundScore.team2Bags });
+    if (prev.team2Bags >= 10) {
       prev.team2Score -= 100;
-      prev.team2Bags += prev.team2Bags % 10;
+      prev.team2Bags -= 10;
     }
 
-    console.log({ prev });
     return prev;
   }, initialScore);
-  console.log({ gameScore });
   return gameScore;
 }
 
-function calculateBagsFromRoundHistory() {}
+export function calculateRoundHistoryAtCurrentRound(roundHistory, index) {
+  const history = [];
+  for (let i = 0; i < index; i++) {
+    history.push(roundHistory[i]);
+  }
+  return history;
+}
 
-export { calculateRoundScore, calculateScoreFromRoundHistory };
+export { calculateScoreFromRoundHistory };
