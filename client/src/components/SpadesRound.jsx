@@ -168,14 +168,14 @@ function SpadesRound(props) {
             <div>
               <Center>
                 <Heading mt={'20px'} mb={'10px'} size={'lg'}>
-                  Score
+                  Round Summary
                 </Heading>
               </Center>
               <SimpleGrid columns={2} className='namesContainer'>
                 <Center>Round Score: {team1RoundScore}</Center>
                 <Center>Round Score: {team2RoundScore}</Center>
-                <Center>Game Score at Start: {team1GameScore}</Center>
-                <Center>Game Score at Start: {team2GameScore}</Center>
+                <Center>Game Score: {team1GameScore}</Center>
+                <Center>Game Score: {team2GameScore}</Center>
                 <Center>Bags: {team1RoundBags}</Center>
                 <Center>Bags: {team2RoundBags}</Center>
               </SimpleGrid>
