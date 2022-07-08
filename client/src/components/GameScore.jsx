@@ -1,16 +1,6 @@
 import React from 'react';
-import {
-  Container,
-  Stack,
-  HStack,
-  VStack,
-  Button,
-  SimpleGrid,
-  Center,
-  Heading,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
+import { Container, SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import TeamScore from './TeamScore';
 
 function GameScore({ formVals, team1Score, team1Bags, team2Score, team2Bags }) {
   return (
@@ -21,32 +11,16 @@ function GameScore({ formVals, team1Score, team1Bags, team2Score, team2Bags }) {
         </Heading>
       </Center>
       <SimpleGrid columns={2}>
-        <Flex direction={'column'}>
-          <Center>
-            <Heading as={'h2'} size='md'>
-              {formVals.team1Name}
-            </Heading>
-          </Center>
-          <Center>
-            <Text fontSize={'5xl'}>{team1Score}</Text>
-          </Center>
-          <Center>
-            <Text fontSize={'md'}>{team1Bags} bags</Text>
-          </Center>
-        </Flex>
-        <Flex direction={'column'}>
-          <Center>
-            <Heading as={'h2'} size='md'>
-              {formVals.team2Name}
-            </Heading>
-          </Center>
-          <Center>
-            <Text fontSize={'5xl'}>{team2Score}</Text>
-          </Center>
-          <Center>
-            <Text fontSize={'md'}>{team2Bags} bags</Text>
-          </Center>
-        </Flex>
+        <TeamScore
+          teamName={formVals.team1Name}
+          teamScore={team1Score}
+          teamBags={team1Bags}
+        />
+        <TeamScore
+          teamName={formVals.team2Name}
+          teamScore={team2Score}
+          teamBags={team2Bags}
+        />
       </SimpleGrid>
     </Container>
   );
