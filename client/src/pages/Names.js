@@ -25,9 +25,9 @@ import '../App.css';
 function Names() {
   const navigate = useNavigate();
 
-  const hasSessionStorage = !!localStorage.getItem('initialValues');
+  const hasLocalStorage = !!localStorage.getItem('initialValues');
   const initialVal = (fieldName) => {
-    if (hasSessionStorage) {
+    if (hasLocalStorage) {
       return JSON.parse(localStorage.getItem('initialValues'))[fieldName];
     }
     return '';
@@ -65,7 +65,7 @@ function Names() {
   };
 
   useEffect(() => {
-    if (hasSessionStorage) {
+    if (hasLocalStorage) {
       localStorage.setItem('initialValues', JSON.stringify(formik.values));
     }
     setDefaultTeamNames();

@@ -84,7 +84,6 @@ function nilTeamRoundScoreNew(bid1, bid2, actual1, actual2) {
 }
 
 function teamRoundScore(teamBid, teamActual) {
-  // TODO: make the dropdown for bidding say 'nil' but the dropdown for actuals have value of 0
   const gotSet = teamActual < teamBid;
   if (gotSet) {
     return { score: teamBid * -10, bags: 0 };

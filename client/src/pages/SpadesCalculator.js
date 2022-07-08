@@ -1,21 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-
-import { useFormik } from 'formik';
-import {
-  Container,
-  Stack,
-  HStack,
-  VStack,
-  Button,
-  SimpleGrid,
-  Center,
-  Heading,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
-// Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
-
 import SpadesRound from '../components/SpadesRound';
 import GameScore from '../components/GameScore';
 import '../App.css';
@@ -81,7 +65,6 @@ function SpadesCalculator() {
           setCurrentRound={setCurrentRound}
         />
       );
-      console.log({ rounds });
     }
     return rounds.reverse();
   }
@@ -119,6 +102,7 @@ function SpadesCalculator() {
               setRoundHistory={setRoundHistory}
             />
             <CurrentRound
+              roundNumber={roundHistory.length + 1}
               currentRound={currentRound}
               values={formVals}
               team1BidsAndActuals={team1BidsAndActuals}

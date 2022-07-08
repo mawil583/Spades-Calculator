@@ -8,6 +8,11 @@ import {
   Box,
 } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
+import RoundSummary from './RoundSummary';
+import BidSection from './BidSection';
+import ActualSection from './ActualSection';
+import RoundHeading from './RoundHeading';
+import Divider from './Divider';
 
 import {
   calculateRoundScore,
@@ -19,7 +24,6 @@ function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.values;
 
-  // instead of storing a bunch of pieces of state, declare large state object array using useReducer
   const [team1RoundScore, setTeam1RoundScore] = useState(0);
   const [team2RoundScore, setTeam2RoundScore] = useState(0);
   const [team1GameScore, setTeam1GameScore] = useState(0);
@@ -99,47 +103,19 @@ function CurrentRound(props) {
 
   return (
     <div>
-      <Heading as={'h3'}>Round {props.roundHistory.length + 1}</Heading>
-      <Box>
-        <Flex direction={'row'} height={'30px'}>
-          <Box
-            width={'100%'}
-            borderBottom={'1px solid black'}
-            mr={'5px'}
-            ml={'5px'}
-          >
-            <Center>{team1Name}</Center>
-          </Box>
-          <Box
-            width={'100%'}
-            borderBottom={'1px solid gray'}
-            mr={'5px'}
-            ml={'5px'}
-          >
-            <Center>{team2Name}</Center>
-          </Box>
-        </Flex>
-      </Box>
-
+      <RoundHeading props={props} team1Name={team1Name} team2Name={team2Name} />
       <form>
         <div>
           <Container>
             {isRoundFinished && (
-              <div>
-                <Center>
-                  <Heading mt={'20px'} mb={'10px'} size={'lg'}>
-                    Score
-                  </Heading>
-                </Center>
-                <SimpleGrid columns={2} className='namesContainer'>
-                  <Center>Round Score: {team1RoundScore}</Center>
-                  <Center>Round Score: {team2RoundScore}</Center>
-                  <Center>Game Score: {team1GameScore}</Center>
-                  <Center>Game Score: {team2GameScore}</Center>
-                  <Center>Bags: {team1RoundBags}</Center>
-                  <Center>Bags: {team2RoundBags}</Center>
-                </SimpleGrid>
-              </div>
+              <RoundSummary
+                team1RoundScore={team1RoundScore}
+                team2RoundScore={team2RoundScore}
+                team1GameScore={team1GameScore}
+                team2GameScore={team2GameScore}
+                team1RoundBags={team1RoundBags}
+                team2RoundBags={team2RoundBags}
+              />
             )}
             <div>
               <Center>
@@ -178,11 +154,7 @@ function CurrentRound(props) {
                 />
               </SimpleGrid>
             </div>
-            <Center>
-              <hr
-                style={{ width: '60%', color: '#808080', margin: '10px 0' }}
-              />
-            </Center>
+            <Divider />
             <Center>
               <Heading mt={'20px'} mb={'10px'} size={'md'}>
                 Actuals
@@ -227,6 +199,7 @@ function CurrentRound(props) {
 }
 
 export default CurrentRound;
+
 function useSetScoreWhenRoundIsFinished(
   team1BidsAndActuals,
   team2BidsAndActuals,
