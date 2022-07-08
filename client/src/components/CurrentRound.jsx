@@ -1,12 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import {
-  Container,
-  SimpleGrid,
-  Center,
-  Heading,
-  Flex,
-  Box,
-} from '@chakra-ui/react';
+import { Container, SimpleGrid, Center, Heading } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
@@ -14,10 +7,7 @@ import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 
-import {
-  calculateRoundScore,
-  calculateRoundScoreNew,
-} from '../helpers/spadesMath';
+import { calculateRoundScoreNew } from '../helpers/spadesMath';
 export const SelectContext = createContext();
 
 function CurrentRound(props) {
@@ -43,7 +33,6 @@ function CurrentRound(props) {
     p1Actual: t1p1Actual,
     p2Actual: t1p2Actual,
   };
-  const team1Setters = { setT1p1Bid, setT1p2Bid, setT1p1Actual, setT1p2Actual };
 
   // team 2
   const [t2p1Bid, setT2p1Bid] = useState('');
@@ -56,7 +45,6 @@ function CurrentRound(props) {
     p1Actual: t2p1Actual,
     p2Actual: t2p2Actual,
   };
-  const team2Setters = { setT2p1Bid, setT2p2Bid, setT2p1Actual, setT2p2Actual };
 
   const isNotDefaultValue = (value) => {
     return value !== '';
@@ -283,10 +271,10 @@ function useSetScoreWhenRoundIsFinished(
       resetRoundValues();
     }
   }, [
-    t2p1Bid,
-    t2p2Bid,
-    t2p1Actual,
-    t2p2Actual,
+    t1p1Bid,
+    t1p2Bid,
+    t1p1Actual,
+    t1p2Actual,
     t2p1Bid,
     t2p2Bid,
     t2p1Actual,
