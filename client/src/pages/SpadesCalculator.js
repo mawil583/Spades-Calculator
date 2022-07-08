@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
+
 import { useFormik } from 'formik';
 import {
   Container,
@@ -16,6 +17,7 @@ import {
 // Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
 
 import SpadesRound from '../components/SpadesRound';
+import GameScore from '../components/GameScore';
 import '../App.css';
 import CurrentRound from '../components/CurrentRound';
 import { calculateScoreFromRoundHistory } from '../helpers/spadesMath';
@@ -104,45 +106,18 @@ function SpadesCalculator() {
       <div className='App-inner'>
         <div className='team-board'>
           <div>
-            <Container py={10} borderBottom={'1px solid black'}>
-              <Center>
-                <Heading
-                  as='h2'
-                  size='lg'
-                  style={{ textDecoration: 'underline' }}
-                >
-                  Score
-                </Heading>
-              </Center>
-              <SimpleGrid columns={2}>
-                <Flex direction={'column'}>
-                  <Center>
-                    <Heading as={'h2'} size='md'>
-                      {formVals.team1Name}
-                    </Heading>
-                  </Center>
-                  <Center>
-                    <Text fontSize={'5xl'}>{team1Score}</Text>
-                  </Center>
-                  <Center>
-                    <Text fontSize={'md'}>{team1Bags} bags</Text>
-                  </Center>
-                </Flex>
-                <Flex direction={'column'}>
-                  <Center>
-                    <Heading as={'h2'} size='md'>
-                      {formVals.team2Name}
-                    </Heading>
-                  </Center>
-                  <Center>
-                    <Text fontSize={'5xl'}>{team2Score}</Text>
-                  </Center>
-                  <Center>
-                    <Text fontSize={'md'}>{team2Bags} bags</Text>
-                  </Center>
-                </Flex>
-              </SimpleGrid>
-            </Container>
+            <GameScore
+              formVals={formVals}
+              team1Score={team1Score}
+              team1Bags={team1Bags}
+              team2Score={team2Score}
+              team2Bags={team2Bags}
+              setTeam1Score={setTeam1Score}
+              setTeam1Bags={setTeam1Bags}
+              setTeam2Score={setTeam2Score}
+              setTeam2Bags={setTeam2Bags}
+              setRoundHistory={setRoundHistory}
+            />
             <CurrentRound
               currentRound={currentRound}
               values={formVals}

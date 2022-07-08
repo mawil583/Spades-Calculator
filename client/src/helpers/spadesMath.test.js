@@ -57,6 +57,8 @@ test('calculate missing nil with bags', () => {
   expect(result).deep.equals({ bags: 1, score: -79 });
   const result2 = calculateRoundScoreNew(NIL, 2, 1, 2);
   expect(result2).deep.equals({ bags: 1, score: -79 });
+  const result3 = calculateRoundScoreNew(NIL, '3', '4', '3');
+  expect(result3).deep.equals({ bags: 4, score: -66 });
 });
 
 test('calculate missing nil and getting set', () => {

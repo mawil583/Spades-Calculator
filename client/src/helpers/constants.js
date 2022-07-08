@@ -33,5 +33,5 @@ export const possibleActuals = [
   '13',
 ];
 
-export const BLIND_NIL = 'BLIND_NIL';
-export const NIL = 'NIL';
+export const BLIND_NIL = 'Blind Nil';
+export const NIL = 'Nil';
