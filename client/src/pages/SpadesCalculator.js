@@ -112,6 +112,11 @@ function SpadesCalculator() {
               team1Bags={team1Bags}
               team2Score={team2Score}
               team2Bags={team2Bags}
+              setTeam1Score={setTeam1Score}
+              setTeam1Bags={setTeam1Bags}
+              setTeam2Score={setTeam2Score}
+              setTeam2Bags={setTeam2Bags}
+              setRoundHistory={setRoundHistory}
             />
             <CurrentRound
               currentRound={currentRound}
