@@ -23,7 +23,7 @@ import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 
 function SpadesRound(props) {
-  const { roundHistory, index } = props;
+  const { roundHistory, index, setRoundHistory } = props;
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.values;
 
@@ -120,6 +120,8 @@ function SpadesRound(props) {
               team2RoundBags={team2RoundBags}
             />
             <BidSection
+              setRoundHistory={setRoundHistory}
+              roundIndex={index}
               setT1p1Bid={setT1p1Bid}
               t1p1Name={t1p1Name}
               props={props}

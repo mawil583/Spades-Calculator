@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import SpadesRound from '../components/SpadesRound';
 import GameScore from '../components/GameScore';
@@ -17,9 +17,10 @@ function SpadesCalculator() {
   const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState([]);
   const [currentRound, setCurrentRound] = useState(1);
 
-  const [roundHistory, setRoundHistory] = useState(
-    hasLocalStorage ? JSON.parse(localStorage.getItem('roundHistory')) : []
-  );
+  // const [roundHistory, setRoundHistory] = useState(
+  //   hasLocalStorage ? JSON.parse(localStorage.getItem('roundHistory')) : []
+  // );
+  const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
   let score = calculateScoreFromRoundHistory(roundHistory);
   const [team1Score, setTeam1Score] = useState(score.team1Score);
   const [team1Bags, setTeam1Bags] = useState(score.team1Bags);
@@ -45,8 +46,12 @@ function SpadesCalculator() {
     setTeam1RoundBags(t1Bags);
     setTeam2RoundBags(t2Bags);
   }
+  const pastRounds = useMemo(() => {
+    console.log('useMemo called'); // doesn't get called
+    return getPastRounds(roundHistory);
+  }, [roundHistory]);
 
-  function pastRounds() {
+  function getPastRounds(roundHistory) {
     const rounds = [];
     for (let i = 0; i < roundHistory.length; i++) {
       rounds.push(
@@ -114,7 +119,7 @@ function SpadesCalculator() {
               addRoundScoreToGameScore={addRoundScoreToGameScore}
               team1Score={team1Score}
             />
-            {pastRounds().map((round) => round)}
+            {pastRounds.map((round) => round)}
           </div>
         </div>
       </div>
@@ -123,3 +128,44 @@ function SpadesCalculator() {
 }
 
 export default SpadesCalculator;
+
+// Hook
+function useLocalStorage(key, initialValue) {
+  console.log('useLocalStorage called');
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    if (typeof window === 'undefined') {
+      return initialValue;
+    }
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      if (typeof window !== 'undefined') {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue];
+}

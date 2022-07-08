@@ -3,6 +3,8 @@ import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 
 function BidSection({
+  setRoundHistory,
+  roundIndex,
   setT1p1Bid,
   t1p1Name,
   props,
@@ -22,6 +24,8 @@ function BidSection({
       </Center>
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
+          setRoundHistory={setRoundHistory}
+          roundIndex={roundIndex}
           setValTo={setT1p1Bid}
           playerName={t1p1Name}
           val={props.team1BidsAndActuals?.p1Bid}
@@ -29,6 +33,8 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          setRoundHistory={setRoundHistory}
+          roundIndex={roundIndex}
           setValTo={setT2p1Bid}
           playerName={t2p1Name}
           val={props.team2BidsAndActuals?.p1Bid}
@@ -36,6 +42,8 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          setRoundHistory={setRoundHistory}
+          roundIndex={roundIndex}
           setValTo={setT1p2Bid}
           playerName={t1p2Name}
           val={props.team1BidsAndActuals?.p2Bid}
@@ -43,6 +51,8 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          setRoundHistory={setRoundHistory}
+          roundIndex={roundIndex}
           setValTo={setT2p2Bid}
           playerName={t2p2Name}
           val={props.team2BidsAndActuals?.p2Bid}
