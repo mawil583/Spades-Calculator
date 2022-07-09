@@ -7,7 +7,9 @@ when roundHistory is > 0, then we render a PastRounds.reverse()
 
 ToDo:
 break out components into smaller components
+editable past rounds
 
 Backlog
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
+warning modal when user clicks 'new game'
