@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/react';
 import { possibleActuals, possibleBids } from '../helpers/constants';
-import { SelectContext } from './CurrentRound';
 
 function ButtonGrid({ type, setIsModalOpen, setValTo }) {
   const selectionOptions = () => {
@@ -12,7 +11,6 @@ function ButtonGrid({ type, setIsModalOpen, setValTo }) {
   };
 
   const onSelect = (bid) => {
-    console.log('hi');
     setValTo(bid);
     setIsModalOpen(false);
   };

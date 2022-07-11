@@ -5,7 +5,8 @@ import PlayerInput from './PlayerInput';
 function BidSection({
   setT1p1Bid,
   t1p1Name,
-  props,
+  team1BidsAndActuals,
+  team2BidsAndActuals,
   setT2p1Bid,
   t2p1Name,
   setT1p2Bid,
@@ -24,28 +25,28 @@ function BidSection({
         <PlayerInput
           setValTo={setT1p1Bid}
           playerName={t1p1Name}
-          val={props.team1BidsAndActuals?.p1Bid}
+          val={team1BidsAndActuals?.p1Bid}
           id='team1BidsAndActuals.p1Bid'
           type={'Bid'}
         />
         <PlayerInput
           setValTo={setT2p1Bid}
           playerName={t2p1Name}
-          val={props.team2BidsAndActuals?.p1Bid}
+          val={team2BidsAndActuals?.p1Bid}
           id='team2BidsAndActuals.p1Bid'
           type={'Bid'}
         />
         <PlayerInput
           setValTo={setT1p2Bid}
           playerName={t1p2Name}
-          val={props.team1BidsAndActuals?.p2Bid}
+          val={team1BidsAndActuals?.p2Bid}
           id='team1BidsAndActuals.p2Bid'
           type={'Bid'}
         />
         <PlayerInput
           setValTo={setT2p2Bid}
           playerName={t2p2Name}
-          val={props.team2BidsAndActuals?.p2Bid}
+          val={team2BidsAndActuals?.p2Bid}
           id='team2BidsAndActuals.p2Bid'
           type={'Bid'}
         />

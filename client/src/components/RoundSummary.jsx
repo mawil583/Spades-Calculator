@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Container,
-  SimpleGrid,
-  Center,
-  Heading,
-  Flex,
-  Box,
-  calc,
-} from '@chakra-ui/react';
+import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
 
 function RoundSummary({
   team1RoundScore,

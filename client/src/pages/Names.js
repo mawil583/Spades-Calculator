@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 import {
   Button,
@@ -55,7 +55,7 @@ function Names() {
     },
   });
 
-  const setDefaultTeamNames = () => {
+  const setDefaultTeamNames = (formik) => {
     if (formik.values.team1Name === '') {
       formik.setFieldValue('team1Name', 'Team 1');
     }
@@ -68,8 +68,8 @@ function Names() {
     if (hasLocalStorage) {
       localStorage.setItem('initialValues', JSON.stringify(formik.values));
     }
-    setDefaultTeamNames();
-  }, [formik.values]);
+    setDefaultTeamNames(formik);
+  }, [formik.values, hasLocalStorage, formik]);
 
   return (
     <div className='App'>

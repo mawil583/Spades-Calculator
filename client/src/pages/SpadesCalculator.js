@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import SpadesRound from '../components/SpadesRound';
 import GameScore from '../components/GameScore';
@@ -71,7 +71,7 @@ function SpadesCalculator() {
 
   useEffect(() => {
     sessionStorage.setItem('initialValues', JSON.stringify(formVals));
-  }, []);
+  }, [formVals]);
 
   useEffect(() => {
     if (team1Bags >= 10) {
@@ -82,7 +82,7 @@ function SpadesCalculator() {
       setTeam2Bags(team2Bags - 10);
       setTeam2Score(team2Score - 100);
     }
-  }, [team1Bags, team2Bags]);
+  }, [team1Bags, team2Bags, team1Score, team2Score]);
 
   return (
     <div className='App'>

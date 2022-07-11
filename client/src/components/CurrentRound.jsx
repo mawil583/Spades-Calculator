@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { Container, SimpleGrid, Center, Heading } from '@chakra-ui/react';
-import PlayerInput from './PlayerInput';
+import { Container } from '@chakra-ui/react';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
@@ -105,79 +104,32 @@ function CurrentRound(props) {
                 team2RoundBags={team2RoundBags}
               />
             )}
-            <div>
-              <Center>
-                <Heading mt={'20px'} mb={'10px'} size={'md'}>
-                  Bids
-                </Heading>
-              </Center>
-              <SimpleGrid columns={2} className='namesContainer'>
-                <PlayerInput
-                  setValTo={setT1p1Bid}
-                  playerName={t1p1Name}
-                  val={t1p1Bid}
-                  id='team1BidsAndActuals.p1Bid'
-                  type={'Bid'}
-                />
-                <PlayerInput
-                  setValTo={setT2p1Bid}
-                  playerName={t2p1Name}
-                  val={t2p1Bid}
-                  id='team2BidsAndActuals.p1Bid'
-                  type={'Bid'}
-                />
-                <PlayerInput
-                  setValTo={setT1p2Bid}
-                  playerName={t1p2Name}
-                  val={t1p2Bid}
-                  id='team1BidsAndActuals.p2Bid'
-                  type={'Bid'}
-                />
-                <PlayerInput
-                  setValTo={setT2p2Bid}
-                  playerName={t2p2Name}
-                  val={t2p2Bid}
-                  id='team2BidsAndActuals.p2Bid'
-                  type={'Bid'}
-                />
-              </SimpleGrid>
-            </div>
+            <BidSection
+              setT1p1Bid={setT1p1Bid}
+              team1BidsAndActuals={team1BidsAndActuals}
+              team2BidsAndActuals={team2BidsAndActuals}
+              setT2p1Bid={setT2p1Bid}
+              setT1p2Bid={setT1p2Bid}
+              t1p1Name={t1p1Name}
+              t1p2Name={t1p2Name}
+              setT2p2Bid={setT2p2Bid}
+              t2p1Name={t2p1Name}
+              t2p2Name={t2p2Name}
+            />
             <Divider />
-            <Center>
-              <Heading mt={'20px'} mb={'10px'} size={'md'}>
-                Actuals
-              </Heading>
-            </Center>
-            <SimpleGrid columns={2} className='namesContainer'>
-              <PlayerInput
-                setValTo={setT1p1Actual}
-                id='team1BidsAndActuals.p1Actual'
-                playerName={t1p1Name}
-                val={t1p1Actual}
-                type={'Actual'}
-              />
-              <PlayerInput
-                setValTo={setT2p1Actual}
-                id='team2BidsAndActuals.p1Actual'
-                playerName={t2p1Name}
-                val={t2p1Actual}
-                type={'Actual'}
-              />
-              <PlayerInput
-                setValTo={setT1p2Actual}
-                playerName={t1p2Name}
-                id='team1BidsAndActuals.p2Actual'
-                val={t1p2Actual}
-                type={'Actual'}
-              />
-              <PlayerInput
-                setValTo={setT2p2Actual}
-                playerName={t2p2Name}
-                val={t2p2Actual}
-                type={'Actual'}
-                id='team2BidsAndActuals.p2Actual'
-              />
-            </SimpleGrid>
+            <ActualSection
+              team1BidsAndActuals={team1BidsAndActuals}
+              team2BidsAndActuals={team2BidsAndActuals}
+              setT1p1Actual={setT1p1Actual}
+              t1p1Name={t1p1Name}
+              props={props}
+              setT2p1Actual={setT2p1Actual}
+              t2p1Name={t2p1Name}
+              setT1p2Actual={setT1p2Actual}
+              t1p2Name={t1p2Name}
+              setT2p2Actual={setT2p2Actual}
+              t2p2Name={t2p2Name}
+            />
           </Container>
           <div></div>
         </div>
