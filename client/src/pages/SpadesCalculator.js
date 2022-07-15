@@ -5,6 +5,7 @@ import GameScore from '../components/GameScore';
 import '../App.css';
 import CurrentRound from '../components/CurrentRound';
 import { calculateScoreFromRoundHistory } from '../helpers/spadesMath';
+import { useLocalStorage } from '../helpers/hooks';
 
 const hasLocalStorage =
   !!JSON.parse(localStorage.getItem('roundHistory')) &&
