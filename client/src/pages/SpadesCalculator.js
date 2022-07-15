@@ -14,7 +14,9 @@ function SpadesCalculator() {
   const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState([]);
   const [currentRound, setCurrentRound] = useState(1);
   const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
-  const score = calculateScoreFromRoundHistory(roundHistory);
+  const [score, setScore] = useState(
+    calculateScoreFromRoundHistory(roundHistory)
+  );
   const [team1Score, setTeam1Score] = useState(score.team1Score);
   const [team1Bags, setTeam1Bags] = useState(score.team1Bags);
   const [team2Score, setTeam2Score] = useState(score.team2Score);
@@ -62,6 +64,10 @@ function SpadesCalculator() {
     });
     return rounds.reverse();
   }
+
+  useEffect(() => {
+    setScore(calculateScoreFromRoundHistory(roundHistory));
+  }, [roundHistory]);
 
   useEffect(() => {
     if (team1Bags >= 10) {

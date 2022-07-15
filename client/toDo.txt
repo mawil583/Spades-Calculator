@@ -1,6 +1,8 @@
 --High Priority--
+fix bug where game score is lagging when editing rounds
 improve separation of concerns for CurrentRound vs SpadesRound
-implement editable past rounds
+refine editable past rounds
+figure out why 'game score at end of round' is lagging behind by 1 round
 
 --Backlog--
 break out components into smaller components on Names page

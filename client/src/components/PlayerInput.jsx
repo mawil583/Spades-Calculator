@@ -5,6 +5,10 @@ import InputModal from './InputModal';
 
 const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const onEdit = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
       <InputModal
@@ -30,7 +34,7 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
             {type}
           </Button>
         ) : (
-          val
+          <div onClick={onEdit}>{val}</div>
         )}
       </Flex>
     </>

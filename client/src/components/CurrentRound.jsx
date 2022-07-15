@@ -121,13 +121,13 @@ function CurrentRound(props) {
               team1BidsAndActuals={team1BidsAndActuals}
               team2BidsAndActuals={team2BidsAndActuals}
               setT1p1Actual={setT1p1Actual}
+              setT1p2Actual={setT1p2Actual}
+              setT2p1Actual={setT2p1Actual}
+              setT2p2Actual={setT2p2Actual}
               t1p1Name={t1p1Name}
               props={props}
-              setT2p1Actual={setT2p1Actual}
               t2p1Name={t2p1Name}
-              setT1p2Actual={setT1p2Actual}
               t1p2Name={t1p2Name}
-              setT2p2Actual={setT2p2Actual}
               t2p2Name={t2p2Name}
             />
           </Container>
