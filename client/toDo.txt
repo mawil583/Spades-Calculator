@@ -1,15 +1,22 @@
-Flow:
+--High Priority--
+implement useLocalStorage hook
+improve separation of concerns for CurrentRound vs SpadesRound
+implement editable past rounds
 
-when game starts, current round is initialized
-each time player selects bid, an event handler is fired which checks whether the current round is finished (allBidsAndActualsAreEntered)
-if current round is finished, then inputs are added to roundHistory, currentRound values are reset, and round number is incremented
-when roundHistory is > 0, then we render a PastRounds.reverse()
-
-ToDo:
-break out components into smaller components
-editable past rounds
-
-Backlog
+--Backlog--
+break out components into smaller components on Names page
+rename Names.js to something more like LandingPage or HomePage
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
-warning modal when user clicks 'new game'
+warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
+validation for total Actuals being more than 13
+add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
+add dynamic dealer tag
+improve layout
+implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
+consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make another mini accordion that sits within RoundSummary
+make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
+add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
+make layout responsive for tablet/desktop usage
+change sessionStorage to localStorage for Names
+implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
