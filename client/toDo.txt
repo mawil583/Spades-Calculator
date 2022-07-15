@@ -1,5 +1,4 @@
 --High Priority--
-implement useLocalStorage hook
 improve separation of concerns for CurrentRound vs SpadesRound
 implement editable past rounds
 
