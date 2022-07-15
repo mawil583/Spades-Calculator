@@ -48,7 +48,7 @@ function SpadesCalculator() {
 
   function pastRounds() {
     const rounds = [];
-    for (let i = 0; i < roundHistory.length; i++) {
+    roundHistory.forEach((round, i) => {
       rounds.push(
         <SpadesRound
           roundNumber={i + 1}
@@ -65,7 +65,7 @@ function SpadesCalculator() {
           setCurrentRound={setCurrentRound}
         />
       );
-    }
+    });
     return rounds.reverse();
   }
 
