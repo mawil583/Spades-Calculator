@@ -1,19 +1,19 @@
 import { BLIND_NIL, NIL } from './constants';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
-export function calculateRoundScoreNew(bid1, bid2, actual1, actual2) {
+export function calculateRoundScore(bid1, bid2, actual1, actual2) {
   const didTeamGoNil = bid1 === NIL || bid2 === NIL;
   const didTeamGoBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
   const teamBid = parseInt(bid1) + parseInt(bid2);
   const teamActual = parseInt(actual1) + parseInt(actual2);
   const score =
     didTeamGoNil || didTeamGoBlindNil
-      ? nilTeamRoundScoreNew(bid1, bid2, actual1, actual2)
+      ? nilTeamRoundScore(bid1, bid2, actual1, actual2)
       : teamRoundScore(teamBid, teamActual);
   return score;
 }
 
-function nilTeamRoundScoreNew(bid1, bid2, actual1, actual2) {
+function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
   const player1WentNil = bid1 === NIL || bid1 === BLIND_NIL;
   if (player1WentNil) {
     const wasBlind = bid1 === BLIND_NIL;
@@ -96,13 +96,13 @@ function teamRoundScore(teamBid, teamActual) {
 function calculateScoreFromRoundHistory(roundHistory) {
   const roundScores = roundHistory.map((round) => {
     const { team1BidsAndActuals, team2BidsAndActuals } = round;
-    const team1RoundScore = calculateRoundScoreNew(
+    const team1RoundScore = calculateRoundScore(
       team1BidsAndActuals.p1Bid,
       team1BidsAndActuals.p2Bid,
       team1BidsAndActuals.p1Actual,
       team1BidsAndActuals.p2Actual
     );
-    const team2RoundScore = calculateRoundScoreNew(
+    const team2RoundScore = calculateRoundScore(
       team2BidsAndActuals.p1Bid,
       team2BidsAndActuals.p2Bid,
       team2BidsAndActuals.p1Actual,

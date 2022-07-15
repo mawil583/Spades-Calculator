@@ -18,5 +18,5 @@ consider adding more info to RoundSummary: [game score at start of round (but fi
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
 add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 make layout responsive for tablet/desktop usage
-change sessionStorage to localStorage for Names
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
+BUG: when i clear localStorage, and then go back to homepage (names.js), and then I go back to /spades-calculator, I get error 'Cannot read properties of null (reading 'team1Name')'

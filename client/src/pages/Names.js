@@ -21,18 +21,19 @@ import 'core-js/es/map';
 
 import * as Yup from 'yup';
 import '../App.css';
+import { useLocalStorage } from '../helpers/hooks';
 
 function Names() {
   const navigate = useNavigate();
 
-  const hasLocalStorage = !!localStorage.getItem('initialValues');
-  const initialVal = (fieldName) => {
-    if (hasLocalStorage) {
-      return JSON.parse(localStorage.getItem('initialValues'))[fieldName];
-    }
-    return '';
-  };
-
+  const [names, setNames] = useLocalStorage('names', {
+    t1p1Name: '',
+    t1p2Name: '',
+    t2p1Name: '',
+    t2p2Name: '',
+    team1Name: 'Team 1',
+    team2Name: 'Team 2',
+  });
   const validationSchema = Yup.object({
     t1p1Name: Yup.string().required('Required'),
     t2p1Name: Yup.string().required('Required'),
@@ -41,16 +42,16 @@ function Names() {
   });
   const formik = useFormik({
     initialValues: {
-      team1Name: initialVal('team1Name') ? initialVal('team1Name') : 'Team 1',
-      team2Name: initialVal('team2Name') ? initialVal('team2Name') : 'Team 2',
-      t1p1Name: initialVal('t1p1Name'),
-      t2p1Name: initialVal('t2p1Name'),
-      t1p2Name: initialVal('t1p2Name'),
-      t2p2Name: initialVal('t2p2Name'),
+      team1Name: names.team1Name,
+      team2Name: names.team2Name,
+      t1p1Name: names.t1p1Name,
+      t2p1Name: names.t2p1Name,
+      t1p2Name: names.t1p2Name,
+      t2p2Name: names.t2p2Name,
     },
     validationSchema,
     onSubmit: (values) => {
-      sessionStorage.setItem('initialValues', JSON.stringify(values));
+      setNames(values);
       navigate('/spades-calculator', { state: values });
     },
   });
@@ -64,12 +65,19 @@ function Names() {
     }
   };
 
-  useEffect(() => {
-    if (hasLocalStorage) {
-      localStorage.setItem('initialValues', JSON.stringify(formik.values));
+  const setLocalStorageTeamNames = (formVals) => {
+    if (formVals.team1Name === '') {
+      setNames({ ...names, team1Name: 'Team 1' });
     }
+    if (formVals.team2Name === '') {
+      setNames({ ...names, team2Name: 'Team 2' });
+    }
+  };
+
+  useEffect(() => {
+    setLocalStorageTeamNames(formik.values);
     setDefaultTeamNames(formik);
-  }, [formik.values, hasLocalStorage, formik]);
+  }, [formik.values, formik]);
 
   return (
     <div className='App'>

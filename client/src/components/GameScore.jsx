@@ -21,7 +21,6 @@ function GameScore({
   setRoundHistory,
 }) {
   const resetGameWithSamePlayers = () => {
-    localStorage.removeItem('roundHistory');
     setTeam1Score(0);
     setTeam1Bags(0);
     setTeam2Score(0);

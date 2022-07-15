@@ -7,21 +7,14 @@ import CurrentRound from '../components/CurrentRound';
 import { calculateScoreFromRoundHistory } from '../helpers/spadesMath';
 import { useLocalStorage } from '../helpers/hooks';
 
-const hasLocalStorage =
-  !!JSON.parse(localStorage.getItem('roundHistory')) &&
-  JSON.parse(localStorage.getItem('roundHistory')).length > 0;
-
 function SpadesCalculator() {
   const location = useLocation();
   const { state: formVals } = location;
   const [team1BidsAndActuals, setTeam1BidsAndActuals] = useState([]);
   const [team2BidsAndActuals, setTeam2BidsAndActuals] = useState([]);
   const [currentRound, setCurrentRound] = useState(1);
-
-  const [roundHistory, setRoundHistory] = useState(
-    hasLocalStorage ? JSON.parse(localStorage.getItem('roundHistory')) : []
-  );
-  let score = calculateScoreFromRoundHistory(roundHistory);
+  const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
+  const score = calculateScoreFromRoundHistory(roundHistory);
   const [team1Score, setTeam1Score] = useState(score.team1Score);
   const [team1Bags, setTeam1Bags] = useState(score.team1Bags);
   const [team2Score, setTeam2Score] = useState(score.team2Score);
@@ -69,10 +62,6 @@ function SpadesCalculator() {
     });
     return rounds.reverse();
   }
-
-  useEffect(() => {
-    sessionStorage.setItem('initialValues', JSON.stringify(formVals));
-  }, [formVals]);
 
   useEffect(() => {
     if (team1Bags >= 10) {

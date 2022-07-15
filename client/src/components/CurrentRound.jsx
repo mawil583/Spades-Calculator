@@ -6,7 +6,7 @@ import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 
-import { calculateRoundScoreNew } from '../helpers/spadesMath';
+import { calculateRoundScore } from '../helpers/spadesMath';
 export const SelectContext = createContext();
 
 function CurrentRound(props) {
@@ -184,13 +184,13 @@ function useSetScoreWhenRoundIsFinished(
         t2p2Actual,
       });
 
-      const team1RoundScore = calculateRoundScoreNew(
+      const team1RoundScore = calculateRoundScore(
         team1BidsAndActuals.p1Bid,
         team1BidsAndActuals.p2Bid,
         team1BidsAndActuals.p1Actual,
         team1BidsAndActuals.p2Actual
       );
-      const team2RoundScore = calculateRoundScoreNew(
+      const team2RoundScore = calculateRoundScore(
         team2BidsAndActuals.p1Bid,
         team2BidsAndActuals.p2Bid,
         team2BidsAndActuals.p1Actual,
@@ -213,13 +213,6 @@ function useSetScoreWhenRoundIsFinished(
         ...props.roundHistory,
         { team1BidsAndActuals, team2BidsAndActuals },
       ]);
-      localStorage.setItem(
-        'roundHistory',
-        JSON.stringify([
-          ...props.roundHistory,
-          { team1BidsAndActuals, team2BidsAndActuals },
-        ])
-      );
       resetRoundValues();
     }
   }, [
