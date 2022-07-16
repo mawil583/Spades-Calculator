@@ -12,7 +12,7 @@ import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 
-function SpadesRound(props) {
+function PastRound(props) {
   const {
     roundHistory,
     index,
@@ -132,4 +132,4 @@ function SpadesRound(props) {
   );
 }
 
-export default SpadesRound;
+export default PastRound;

@@ -2,7 +2,7 @@
 
 figure out why 'game score at end of round' is lagging behind by 1 round until refresh
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
-improve separation of concerns for CurrentRound vs SpadesRound
+improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
 
 --Backlog--
@@ -25,6 +25,28 @@ BUG: when i clear localStorage, and then go back to homepage (names.js), and the
 figure out UX when user selects New Game button (do they get prompted with 'same players'? or 'are you sure? your data will be deleted') or if I should create different buttons for each action.
 figure out what to do with functions that require a lot of parameters
 implement typescript
-simplify spadesMath
+simplify spadesMath - make sure calculateScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory
 make ActualsSection conditional. It should only show when all bids are entered. It should also animate downwards.
 make team names editable on SpadesCalculator page
+when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
+optimize app - make sure there are no unnecessary re-renders
+
+Matt's suggestions:
+make sure that PastRound and CurrentRound don't know or set gameScore
+BidsAndActuals should only be inside of currentRound or PastRound
+
+ /* 
+  try to set the state from within handler rather than useEffect. And when you 
+  call a setState, 
+  */
+  // const handleBid = useCallback((bid, player) => {
+  //   if (player === 1) {
+  //     setT1p1Bid(bid, () => {
+  //       /* stick logic from useEffect
+  //   combine bid state and actual state into one state
+  //   */
+  //     });
+  //   } else if (player === 2) {
+  //   }
+  // }, []);
+  // const handleActual = useCallback((actual, player) => {}, []);
