@@ -15,6 +15,7 @@ import Divider from './Divider';
 function PastRound(props) {
   const {
     roundHistory,
+    roundNumber,
     index,
     team1BidsAndActuals,
     team2BidsAndActuals,
@@ -90,7 +91,11 @@ function PastRound(props) {
 
   return (
     <>
-      <RoundHeading props={props} team1Name={team1Name} team2Name={team2Name} />
+      <RoundHeading
+        roundNumber={roundNumber}
+        team1Name={team1Name}
+        team2Name={team2Name}
+      />
       <form>
         <Container>
           <RoundSummary
