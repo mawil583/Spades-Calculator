@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BLIND_NIL, NIL } from './constants';
 
 export function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -44,7 +45,7 @@ export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
     const claimed =
       parseInt(
         Object.values(team1Bids).reduce((accum, bid) => {
-          if (bid === '') {
+          if (bid === '' || bid === NIL || bid === BLIND_NIL) {
             return 0 + accum;
           }
           return parseInt(bid) + parseInt(accum);
@@ -52,7 +53,7 @@ export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
       ) +
       parseInt(
         Object.values(team2Bids).reduce((accum, bid) => {
-          if (bid === '') {
+          if (bid === '' || bid === NIL || bid === BLIND_NIL) {
             return 0 + accum;
           }
           return parseInt(bid) + parseInt(accum);

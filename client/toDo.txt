@@ -1,5 +1,4 @@
 --High Priority--
-add number of unclaimed 
 add dynamic dealer tag
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
