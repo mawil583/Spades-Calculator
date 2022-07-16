@@ -1,6 +1,7 @@
 --High Priority--
-
-figure out why 'game score at end of round' is lagging behind by 1 round until refresh
+add number of unclaimed 
+add dynamic dealer tag
+warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
 improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
@@ -10,10 +11,8 @@ break out components into smaller components on Names page
 rename Names.js to something more like LandingPage or HomePage
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
-warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 validation for total Actuals being more than 13
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
-add dynamic dealer tag
 improve layout
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
