@@ -24,6 +24,8 @@ function PastRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.values;
 
+  const roundData = roundHistory[index];
+
   const roundHistoryAtEndOfThisRound = calculateRoundHistoryAtCurrentRound(
     roundHistory,
     index
@@ -32,8 +34,6 @@ function PastRound(props) {
   const gameScoreAtEndOfThisRound = calculateScoreFromRoundHistory(
     roundHistoryAtEndOfThisRound
   );
-
-  const roundData = roundHistory[index];
 
   const team1RoundScoreFromHistory = calculateRoundScore(
     roundData.team1BidsAndActuals.p1Bid,

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -37,4 +37,27 @@ export function useLocalStorage(key, initialValue) {
     }
   };
   return [storedValue, setValue];
+}
+
+export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
+  useEffect(() => {
+    const claimed =
+      parseInt(
+        Object.values(team1Bids).reduce((accum, bid) => {
+          if (bid === '') {
+            return 0 + accum;
+          }
+          return parseInt(bid) + parseInt(accum);
+        }, 0)
+      ) +
+      parseInt(
+        Object.values(team2Bids).reduce((accum, bid) => {
+          if (bid === '') {
+            return 0 + accum;
+          }
+          return parseInt(bid) + parseInt(accum);
+        }, 0)
+      );
+    setNumUnclaimed(13 - claimed);
+  }, [setNumUnclaimed, team1Bids, team2Bids]);
 }

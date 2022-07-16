@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
+import { useSetUnclaimed } from '../helpers/hooks';
 
 function BidSection({
   setT1p1Bid,
@@ -14,6 +15,19 @@ function BidSection({
   setT2p2Bid,
   t2p2Name,
 }) {
+  const [numUnclaimed, setNumUnclaimed] = useState(13);
+
+  const team1Bids = {
+    p1Bid: team1BidsAndActuals?.p1Bid,
+    p2Bid: team1BidsAndActuals?.p2Bid,
+  };
+  const team2Bids = {
+    p1Bid: team2BidsAndActuals?.p1Bid,
+    p2Bid: team2BidsAndActuals?.p2Bid,
+  };
+
+  useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed);
+
   return (
     <div>
       <Center>
@@ -21,6 +35,11 @@ function BidSection({
           Bids
         </Heading>
       </Center>
+      {numUnclaimed < 0 ? (
+        <Center>Someone's getting set!</Center>
+      ) : (
+        <Center>Unclaimed: {numUnclaimed}</Center>
+      )}
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
           setValTo={setT1p1Bid}
