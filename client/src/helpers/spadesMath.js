@@ -93,8 +93,8 @@ function teamRoundScore(teamBid, teamActual) {
   }
 }
 
-function calculateScoreFromRoundHistory(roundHistory) {
-  const roundScores = roundHistory.map((round) => {
+export function calculateRoundScoresFromRoundHistory(roundHistory) {
+  return roundHistory.map((round) => {
     const { team1BidsAndActuals, team2BidsAndActuals } = round;
     const team1RoundScore = calculateRoundScore(
       team1BidsAndActuals.p1Bid,
@@ -115,6 +115,10 @@ function calculateScoreFromRoundHistory(roundHistory) {
       team2Bags: team2RoundScore.bags,
     };
   });
+}
+
+export function calculateScoreFromRoundHistory(roundHistory) {
+  const roundScores = calculateRoundScoresFromRoundHistory(roundHistory);
 
   let initialScore = {
     team1Score: 0,
@@ -150,5 +154,3 @@ export function calculateRoundHistoryAtCurrentRound(roundHistory, index) {
   }
   return history;
 }
-
-export { calculateScoreFromRoundHistory };

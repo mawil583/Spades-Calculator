@@ -1,8 +1,9 @@
 --High Priority--
-fix bug where game score is lagging when editing rounds
-improve separation of concerns for CurrentRound vs SpadesRound
+
+figure out why 'game score at end of round' is lagging behind by 1 round until refresh
+fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
+improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
-figure out why 'game score at end of round' is lagging behind by 1 round
 
 --Backlog--
 break out components into smaller components on Names page
@@ -15,9 +16,37 @@ add color theme to more clearly delineate teams (so that users don't accidentall
 add dynamic dealer tag
 improve layout
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
-consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make another mini accordion that sits within RoundSummary
+consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
 add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 make layout responsive for tablet/desktop usage
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
-BUG: when i clear localStorage, and then go back to homepage (names.js), and then I go back to /spades-calculator, I get error 'Cannot read properties of null (reading 'team1Name')'
+BUG: when i clear localStorage, and then go back to homepage (names.js), and then I manually type in the URL /spades-calculator, I get error 'Cannot read properties of null (reading 'team1Name')'
+figure out UX when user selects New Game button (do they get prompted with 'same players'? or 'are you sure? your data will be deleted') or if I should create different buttons for each action.
+figure out what to do with functions that require a lot of parameters
+implement typescript
+simplify spadesMath - make sure calculateScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory
+make ActualsSection conditional. It should only show when all bids are entered. It should also animate downwards.
+make team names editable on SpadesCalculator page
+when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
+optimize app - make sure there are no unnecessary re-renders
+
+Matt's suggestions:
+make sure that PastRound and CurrentRound don't know or set gameScore
+BidsAndActuals should only be inside of currentRound or PastRound
+
+ /* 
+  try to set the state from within handler rather than useEffect. And when you 
+  call a setState, 
+  */
+  // const handleBid = useCallback((bid, player) => {
+  //   if (player === 1) {
+  //     setT1p1Bid(bid, () => {
+  //       /* stick logic from useEffect
+  //   combine bid state and actual state into one state
+  //   */
+  //     });
+  //   } else if (player === 2) {
+  //   }
+  // }, []);
+  // const handleActual = useCallback((actual, player) => {}, []);

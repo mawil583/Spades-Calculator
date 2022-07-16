@@ -14,17 +14,9 @@ function GameScore({
   team1Bags,
   team2Score,
   team2Bags,
-  setTeam1Score,
-  setTeam1Bags,
-  setTeam2Score,
-  setTeam2Bags,
   setRoundHistory,
 }) {
   const resetGameWithSamePlayers = () => {
-    setTeam1Score(0);
-    setTeam1Bags(0);
-    setTeam2Score(0);
-    setTeam2Bags(0);
     setRoundHistory([]);
   };
 
