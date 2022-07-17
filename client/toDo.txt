@@ -1,4 +1,5 @@
 --High Priority--
+does a nil player receive a bag for each trick won?
 add dynamic dealer tag
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
@@ -6,6 +7,7 @@ improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
 
 --Backlog--
+change scoring rules to "takes bags"
 break out components into smaller components on Names page
 rename Names.js to something more like LandingPage or HomePage
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
@@ -28,6 +30,9 @@ make ActualsSection conditional. It should only show when all bids are entered. 
 make team names editable on SpadesCalculator page
 when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
 optimize app - make sure there are no unnecessary re-renders
+add info page where I describe the rules that I have implemented (currently it's "helps team out"), and provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades)
+implement ability for user to select which scoring rules they want to follow
+
 
 Matt's suggestions:
 make sure that PastRound and CurrentRound don't know or set gameScore

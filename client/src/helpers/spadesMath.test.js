@@ -60,6 +60,11 @@ test('calculate missing nil with bags', () => {
   expect(result2).deep.equals({ bags: 1, score: -79 });
   const result3 = calculateRoundScore(NIL, '3', '4', '3');
   expect(result3).deep.equals({ bags: 4, score: -66 });
+  /* if we were playing 'takes bags', this score would be 
+  the same except there would be 3 bags
+  */
+  const result4 = calculateRoundScore(NIL, 3, 3, 3);
+  expect(result4).deep.equals({ bags: 3, score: -67 });
 });
 
 test('calculate missing nil and getting set', () => {
@@ -67,6 +72,21 @@ test('calculate missing nil and getting set', () => {
   expect(result).deep.equals({ bags: 0, score: -120 });
   const result2 = calculateRoundScore(NIL, 2, 1, 0);
   expect(result2).deep.equals({ bags: 0, score: -120 });
+});
+
+test('calculate when player 1 misses nill, player 2 getting set, but bid total equals actuals total', () => {
+  /* this test demonstrates that we follow "helps team out" rule for 
+  failed nil. Should maybe change this to "takes bags" as that's 
+  probably more common:
+  https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades
+  https://www.pagat.com/auctionwhist/spades.html
+  */
+  const result = calculateRoundScore(NIL, 1, 1, 0);
+  expect(result).deep.equals({ bags: 0, score: -90 });
+
+  // this test should only pass when we change to "takes bags" rules:
+  // const result2 = calculateRoundScore(NIL, 1, 1, 0);
+  // expect(result2).deep.equals({ bags: 1, score: -109 });
 });
 
 test('calculate making blind nil correctly', () => {
