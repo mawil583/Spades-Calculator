@@ -4,7 +4,7 @@ import { Container } from '@chakra-ui/react';
 import {
   calculateRoundScore,
   calculateScoreFromRoundHistory,
-  calculateRoundHistoryAtCurrentRound,
+  getRoundHistoryAtCurrentRound,
 } from '../helpers/spadesMath';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
@@ -26,7 +26,7 @@ function PastRound(props) {
 
   const roundData = roundHistory[index];
 
-  const roundHistoryAtEndOfThisRound = calculateRoundHistoryAtCurrentRound(
+  const roundHistoryAtEndOfThisRound = getRoundHistoryAtCurrentRound(
     roundHistory,
     index
   );

@@ -1,3 +1,5 @@
+import { NIL } from './constants';
+
 export const roundHistoryWithTwelveBags = [
   {
     team1BidsAndActuals: {
@@ -25,6 +27,22 @@ export const roundHistoryWithTwelveBags = [
       p1Bid: '3',
       p2Actual: '1',
       p2Bid: '3',
+    },
+  },
+];
+export const roundHistoryWithBothTeamMembersMissingNil = [
+  {
+    team1BidsAndActuals: {
+      p1Bid: NIL,
+      p2Bid: NIL,
+      p1Actual: '1',
+      p2Actual: '1',
+    },
+    team2BidsAndActuals: {
+      p1Bid: '1',
+      p2Bid: '3',
+      p1Actual: '3',
+      p2Actual: '3',
     },
   },
 ];

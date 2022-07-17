@@ -7,6 +7,7 @@ import { expect } from 'chai';
 import {
   roundHistoryWithTwelveBags,
   roundHistoryWithTenBags,
+  roundHistoryWithBothTeamMembersMissingNil,
 } from './testFactory';
 
 test('calculate when bids equals actuals', () => {
@@ -126,6 +127,18 @@ test('calculate reaching 12 bags', () => {
     team1Score: -8,
     team1Bags: 2,
     team2Score: -18,
+    team2Bags: 2,
+  });
+});
+
+test('calculate both teams going nil', () => {
+  const result = calculateScoreFromRoundHistory(
+    roundHistoryWithBothTeamMembersMissingNil
+  );
+  expect(result).deep.equals({
+    team1Score: -200,
+    team1Bags: 2,
+    team2Score: 42,
     team2Bags: 2,
   });
 });

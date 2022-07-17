@@ -147,7 +147,7 @@ export function calculateScoreFromRoundHistory(roundHistory) {
   return gameScore;
 }
 
-export function calculateRoundHistoryAtCurrentRound(roundHistory, index) {
+export function getRoundHistoryAtCurrentRound(roundHistory, index) {
   const history = [];
   for (let i = 0; i < index; i++) {
     history.push(roundHistory[i]);
