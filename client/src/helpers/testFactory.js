@@ -47,6 +47,29 @@ export const roundHistoryWithBothTeamMembersMissingNil = [
   },
 ];
 
+export const teamRoundHistoryMakingNilWithNoBags = [
+  {
+    p1Bid: '2',
+    p2Bid: NIL,
+    p1Actual: '2',
+    p2Actual: 0,
+  },
+];
+export const teamRoundHistoryWithBagsNoNilNotSet = [
+  {
+    p1Bid: '2',
+    p2Bid: '3',
+    p1Actual: '2',
+    p2Actual: '4',
+  },
+  {
+    p1Bid: '3',
+    p2Bid: '4',
+    p1Actual: '4',
+    p2Actual: '4',
+  },
+];
+
 export const roundHistoryWithTenBags = [
   {
     team1BidsAndActuals: {
@@ -70,10 +93,10 @@ export const roundHistoryWithTenBags = [
       p2Actual: '4',
     },
     team2BidsAndActuals: {
-      p1Actual: '3',
       p1Bid: '3',
-      p2Actual: '1',
       p2Bid: '3',
+      p1Actual: '3',
+      p2Actual: '1',
     },
   },
 ];

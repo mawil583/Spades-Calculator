@@ -3,14 +3,15 @@ import { Container } from '@chakra-ui/react';
 
 import {
   calculateRoundScore,
-  calculateScoreFromRoundHistory,
   getRoundHistoryAtCurrentRound,
+  calculateTeamScoreFromRoundHistory,
 } from '../helpers/spadesMath';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
+import { TEAM1, TEAM2 } from '../helpers/constants';
 
 function PastRound(props) {
   const {
@@ -31,8 +32,13 @@ function PastRound(props) {
     index
   );
 
-  const gameScoreAtEndOfThisRound = calculateScoreFromRoundHistory(
-    roundHistoryAtEndOfThisRound
+  const team1GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
+    roundHistoryAtEndOfThisRound,
+    TEAM1
+  );
+  const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
+    roundHistoryAtEndOfThisRound,
+    TEAM2
   );
 
   const team1RoundScoreFromHistory = calculateRoundScore(
@@ -101,10 +107,10 @@ function PastRound(props) {
           <RoundSummary
             team1RoundScore={team1RoundScoreFromHistory?.score}
             team2RoundScore={team2RoundScoreFromHistory?.score}
-            team1GameScore={gameScoreAtEndOfThisRound.team1Score}
-            team2GameScore={gameScoreAtEndOfThisRound.team2Score}
-            team1RoundBags={team1RoundScoreFromHistory?.bags}
-            team2RoundBags={team2RoundScoreFromHistory?.bags}
+            team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
+            team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
+            team1RoundBags={team1GameScoreAtEndOfThisRound?.teamBags}
+            team2RoundBags={team2GameScoreAtEndOfThisRound?.teamBags}
           />
           <BidSection
             setT1p1Bid={setT1p1Bid}

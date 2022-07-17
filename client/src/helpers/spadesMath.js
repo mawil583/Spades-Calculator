@@ -117,6 +117,23 @@ export function calculateRoundScoresFromRoundHistory(roundHistory) {
   });
 }
 
+export function calculateTeamRoundScoresFromTeamHistory(teamHistory) {
+  return teamHistory.map((round) => {
+    const teamRoundScore = calculateRoundScore(
+      round.p1Bid,
+      round.p2Bid,
+      round.p1Actual,
+      round.p2Actual
+    );
+    return {
+      teamScore: teamRoundScore.score,
+      teamBags: teamRoundScore.bags,
+    };
+  });
+}
+
+// this is not used anymore. Was replaced with calculateTeamScoreFromRoundHistory because one team's score does not depend on the other team's score
+// make sure to remove the test that test this function before removing the function
 export function calculateScoreFromRoundHistory(roundHistory) {
   const roundScores = calculateRoundScoresFromRoundHistory(roundHistory);
 
@@ -140,6 +157,44 @@ export function calculateScoreFromRoundHistory(roundHistory) {
     if (prev.team2Bags >= 10) {
       prev.team2Score -= 100;
       prev.team2Bags -= 10;
+    }
+
+    return prev;
+  }, initialScore);
+  return gameScore;
+}
+
+export function getTeamHistoryFromRoundHistory(
+  roundHistory,
+  teamBidsAndActuals
+) {
+  return roundHistory.map((round) => {
+    return round[teamBidsAndActuals];
+  });
+}
+
+export function calculateTeamScoreFromRoundHistory(
+  roundHistory,
+  teamBidsAndActuals
+) {
+  const teamRoundHistory = getTeamHistoryFromRoundHistory(
+    roundHistory,
+    teamBidsAndActuals
+  );
+  const teamScores = calculateTeamRoundScoresFromTeamHistory(teamRoundHistory);
+
+  let initialScore = {
+    teamScore: 0,
+    teamBags: 0,
+  };
+
+  let gameScore = teamScores.reduce((prev, roundScore) => {
+    prev.teamScore += roundScore.teamScore;
+    prev.teamBags += roundScore.teamBags;
+
+    if (prev.teamBags >= 10) {
+      prev.teamScore -= 100;
+      prev.teamBags -= 10;
     }
 
     return prev;

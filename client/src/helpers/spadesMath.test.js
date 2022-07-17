@@ -1,13 +1,17 @@
 import {
   calculateRoundScore,
   calculateScoreFromRoundHistory,
+  calculateTeamRoundScoresFromTeamHistory,
+  getTeamHistoryFromRoundHistory,
 } from './spadesMath';
-import { NIL, BLIND_NIL } from './constants';
+import { NIL, BLIND_NIL, TEAM1, TEAM2 } from './constants';
 import { expect } from 'chai';
 import {
   roundHistoryWithTwelveBags,
   roundHistoryWithTenBags,
   roundHistoryWithBothTeamMembersMissingNil,
+  teamRoundHistoryMakingNilWithNoBags,
+  teamRoundHistoryWithBagsNoNilNotSet,
 } from './testFactory';
 
 test('calculate when bids equals actuals', () => {
@@ -161,4 +165,66 @@ test('calculate both teams going nil', () => {
     team2Score: 42,
     team2Bags: 2,
   });
+});
+
+test('getTeamHistoryFromRoundHistory', () => {
+  const result = getTeamHistoryFromRoundHistory(
+    roundHistoryWithTwelveBags,
+    TEAM1
+  );
+  expect(result).deep.equals([
+    {
+      p1Bid: '1',
+      p2Bid: '1',
+      p1Actual: '6',
+      p2Actual: '4',
+    },
+    { p1Bid: '3', p2Bid: '3', p1Actual: '6', p2Actual: '4' },
+  ]);
+});
+
+test('calculateTeamRoundScoresFromTeamHistory with nil', () => {
+  const result = calculateTeamRoundScoresFromTeamHistory(
+    teamRoundHistoryMakingNilWithNoBags
+  );
+  expect(result).deep.equals([
+    {
+      teamScore: 120,
+      teamBags: 0,
+    },
+  ]);
+});
+
+test('calculateTeamRoundScoresFromTeamHistory with nil', () => {
+  const result = calculateTeamRoundScoresFromTeamHistory(
+    teamRoundHistoryWithBagsNoNilNotSet
+  );
+  expect(result).deep.equals([
+    {
+      teamScore: 51,
+      teamBags: 1,
+    },
+    {
+      teamScore: 71,
+      teamBags: 1,
+    },
+  ]);
+});
+
+test('using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRoundHistory', () => {
+  const teamHistory = getTeamHistoryFromRoundHistory(
+    roundHistoryWithTenBags,
+    TEAM2
+  );
+  const result = calculateTeamRoundScoresFromTeamHistory(teamHistory);
+  expect(result).deep.equals([
+    {
+      teamScore: 42,
+      teamBags: 2,
+    },
+    {
+      teamScore: -60,
+      teamBags: 0,
+    },
+  ]);
 });

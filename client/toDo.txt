@@ -32,6 +32,8 @@ when someone bids, the button turns into text of what they bid. Keep it as a but
 optimize app - make sure there are no unnecessary re-renders
 add info page where I describe the rules that I have implemented (currently it's "helps team out"), and provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades)
 implement ability for user to select which scoring rules they want to follow
+remove unused calculateScoreFromRoundHistory and corresponding dependencies
+add more tests for calculateTeamRoundScoresFromTeamHistory and calculateTeamScoreFromRoundHistory
 
 
 Matt's suggestions:

@@ -3,25 +3,26 @@ import { useLocation } from 'react-router-dom';
 import GameScore from '../components/GameScore';
 import '../App.css';
 import CurrentRound from '../components/CurrentRound';
-import { calculateScoreFromRoundHistory } from '../helpers/spadesMath';
+import { calculateTeamScoreFromRoundHistory } from '../helpers/spadesMath';
 import { useLocalStorage } from '../helpers/hooks';
 import PastRounds from '../components/PastRounds';
+import { TEAM1, TEAM2 } from '../helpers/constants';
 
 function SpadesCalculator() {
   const location = useLocation();
   const { state: formVals } = location;
   const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
-  const score = calculateScoreFromRoundHistory(roundHistory);
-  const { team1Bags, team2Bags, team1Score, team2Score } = score;
+  const team1Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM1);
+  const team2Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM2);
 
   return (
     <div className='App'>
       <GameScore
         formVals={formVals}
-        team1Score={team1Score}
-        team1Bags={team1Bags}
-        team2Score={team2Score}
-        team2Bags={team2Bags}
+        team1Score={team1Score.teamScore}
+        team1Bags={team1Score.teamBags}
+        team2Score={team2Score.teamScore}
+        team2Bags={team2Score.teamBags}
         setRoundHistory={setRoundHistory}
       />
       <CurrentRound

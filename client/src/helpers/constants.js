@@ -35,3 +35,5 @@ export const possibleActuals = [
 
 export const BLIND_NIL = 'Blind Nil';
 export const NIL = 'Nil';
+export const TEAM1 = 'team1BidsAndActuals';
+export const TEAM2 = 'team2BidsAndActuals';
