@@ -1,11 +1,17 @@
 --High Priority--
-does a nil player receive a bag for each trick won?
 add dynamic dealer tag
 fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared.
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
 improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
+change text for overbid. if it's 1 overbid say '1 overbid. someone's getting set'. if it's more than 1 overbid "3 overbidS. someone's getting set"
+change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
+add text to PastRound Actuals. if someone went over 10 bags, or got set, or failed nil, let user know
+validation for total Actuals being more than 13
+implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
+does a nil player receive a bag for each trick won?
+add class for spadesMath, and extend that class to add other settings for how game is scored
 
 --Backlog--
 change scoring rules to "takes bags"
@@ -13,7 +19,6 @@ break out components into smaller components on Names page
 rename Names.js to something more like LandingPage or HomePage
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
-validation for total Actuals being more than 13
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
 improve layout
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
@@ -21,7 +26,6 @@ consider adding more info to RoundSummary: [game score at start of round (but fi
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
 add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 make layout responsive for tablet/desktop usage
-implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 BUG: when i clear localStorage, and then go back to homepage (names.js), and then I manually type in the URL /spades-calculator, I get error 'Cannot read properties of null (reading 'team1Name')'
 figure out UX when user selects New Game button (do they get prompted with 'same players'? or 'are you sure? your data will be deleted') or if I should create different buttons for each action.
 figure out what to do with functions that require a lot of parameters
