@@ -1,6 +1,7 @@
 --High Priority--
 does a nil player receive a bag for each trick won?
 add dynamic dealer tag
+fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared.
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
 improve separation of concerns for CurrentRound vs PastRound
@@ -34,6 +35,7 @@ add info page where I describe the rules that I have implemented (currently it's
 implement ability for user to select which scoring rules they want to follow
 remove unused calculateScoreFromRoundHistory and corresponding dependencies
 add more tests for calculateTeamRoundScoresFromTeamHistory and calculateTeamScoreFromRoundHistory
+clean up BidSection Heading. Maybe split it into more components
 
 
 Matt's suggestions:

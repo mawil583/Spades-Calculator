@@ -316,3 +316,20 @@ export function getRoundHistoryAtCurrentRound(roundHistory, index) {
   }
   return history;
 }
+
+export function convertStringInputToNum(input) {
+  switch (input) {
+    case BLIND_NIL:
+    case NIL:
+    case '':
+      return 0;
+    default:
+      return parseInt(input);
+  }
+}
+
+export function addInputs(...args) {
+  return args.reduce((acc, input) => {
+    return acc + convertStringInputToNum(input);
+  }, 0);
+}

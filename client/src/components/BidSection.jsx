@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import { SimpleGrid, Center, Heading, Flex } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 import { useSetUnclaimed } from '../helpers/hooks';
+import { addInputs } from '../helpers/spadesMath';
 
 function BidSection({
   setT1p1Bid,
@@ -30,11 +31,30 @@ function BidSection({
 
   return (
     <div>
-      <Center>
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+        }}
+      >
+        <Heading
+          size='lg'
+          style={{ position: 'absolute', marginRight: '50%', top: '20px' }}
+        >
+          {addInputs(team1Bids.p1Bid, team1Bids.p2Bid)}
+        </Heading>
         <Heading mt={'20px'} mb={'10px'} size={'md'}>
           Bids
         </Heading>
-      </Center>
+        <Heading
+          size='lg'
+          style={{ position: 'absolute', marginLeft: '50%', top: '20px' }}
+        >
+          {addInputs(team2Bids.p1Bid, team2Bids.p2Bid)}
+        </Heading>
+      </div>
       {numUnclaimed < 0 ? (
         <Center>Someone's getting set!</Center>
       ) : (

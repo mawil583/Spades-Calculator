@@ -6,6 +6,7 @@ import {
   calculateTeamScoreFromRoundHistory,
   nilTeamRoundScore,
   getRoundHistoryAtCurrentRound,
+  addInputs,
 } from './spadesMath';
 import { NIL, BLIND_NIL, TEAM1, TEAM2 } from './constants';
 import { expect } from 'chai';
@@ -273,4 +274,9 @@ test('using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRound
 test('getRoundHistoryAtCurrentRound', () => {
   const result = getRoundHistoryAtCurrentRound(roundHistoryWithTenBags, 0);
   expect(result).deep.equals([roundHistoryWithTenBags[0]]);
+});
+
+test('addInputs', () => {
+  const result = addInputs('Nil', '3');
+  expect(result).deep.equals(3);
 });
