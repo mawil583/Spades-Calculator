@@ -13,7 +13,7 @@ function TeamInputHeading({ team1Total, team2Total, title }) {
     >
       <Heading
         size='lg'
-        style={{ position: 'absolute', marginRight: '50%', top: '40px' }}
+        style={{ position: 'absolute', marginRight: '50%', top: '25px' }}
       >
         {team1Total}
       </Heading>
@@ -22,7 +22,7 @@ function TeamInputHeading({ team1Total, team2Total, title }) {
       </Heading>
       <Heading
         size='lg'
-        style={{ position: 'absolute', marginLeft: '50%', top: '40px' }}
+        style={{ position: 'absolute', marginLeft: '50%', top: '25px' }}
       >
         {team2Total}
       </Heading>
