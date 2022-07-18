@@ -1,6 +1,8 @@
 import React from 'react';
-import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
+import { addInputs } from '../helpers/spadesMath';
+import TeamInputHeading from './TeamInputHeading';
 
 function ActualSection({
   team1BidsAndActuals,
@@ -14,13 +16,23 @@ function ActualSection({
   setT2p2Actual,
   t2p2Name,
 }) {
+  const team1Actuals = {
+    p1Bid: team1BidsAndActuals?.p1Actual,
+    p2Bid: team1BidsAndActuals?.p2Actual,
+  };
+  const team2Actuals = {
+    p1Bid: team2BidsAndActuals?.p1Actual,
+    p2Bid: team2BidsAndActuals?.p2Actual,
+  };
+  const team1ActualTotal = addInputs(team1Actuals.p1Bid, team1Actuals.p2Bid);
+  const team2ActualTotal = addInputs(team2Actuals.p1Bid, team2Actuals.p2Bid);
   return (
     <div>
-      <Center>
-        <Heading mt={'20px'} mb={'10px'} size={'md'}>
-          Actuals
-        </Heading>
-      </Center>
+      <TeamInputHeading
+        team1Total={team1ActualTotal}
+        team2Total={team2ActualTotal}
+        title='Actuals'
+      />
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
           setValTo={setT1p1Actual}

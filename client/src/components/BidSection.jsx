@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { SimpleGrid, Center, Heading, Flex } from '@chakra-ui/react';
+import { SimpleGrid, Center } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 import { useSetUnclaimed } from '../helpers/hooks';
+import TeamInputHeading from './TeamInputHeading';
 import { addInputs } from '../helpers/spadesMath';
 
 function BidSection({
@@ -26,35 +27,18 @@ function BidSection({
     p1Bid: team2BidsAndActuals?.p1Bid,
     p2Bid: team2BidsAndActuals?.p2Bid,
   };
+  const team1BidTotal = addInputs(team1Bids.p1Bid, team1Bids.p2Bid);
+  const team2BidTotal = addInputs(team2Bids.p1Bid, team2Bids.p2Bid);
 
   useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed);
 
   return (
     <div>
-      <div
-        style={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-        }}
-      >
-        <Heading
-          size='lg'
-          style={{ position: 'absolute', marginRight: '50%', top: '20px' }}
-        >
-          {addInputs(team1Bids.p1Bid, team1Bids.p2Bid)}
-        </Heading>
-        <Heading mt={'20px'} mb={'10px'} size={'md'}>
-          Bids
-        </Heading>
-        <Heading
-          size='lg'
-          style={{ position: 'absolute', marginLeft: '50%', top: '20px' }}
-        >
-          {addInputs(team2Bids.p1Bid, team2Bids.p2Bid)}
-        </Heading>
-      </div>
+      <TeamInputHeading
+        team1Total={team1BidTotal}
+        team2Total={team2BidTotal}
+        title='Bids'
+      />
       {numUnclaimed < 0 ? (
         <Center>
           {Math.abs(numUnclaimed)} overbid! Someone's getting set!
