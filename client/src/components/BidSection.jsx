@@ -56,7 +56,9 @@ function BidSection({
         </Heading>
       </div>
       {numUnclaimed < 0 ? (
-        <Center>Someone's getting set!</Center>
+        <Center>
+          {Math.abs(numUnclaimed)} overbid! Someone's getting set!
+        </Center>
       ) : (
         <Center>Unclaimed: {numUnclaimed}</Center>
       )}
