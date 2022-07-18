@@ -13,9 +13,116 @@ export function calculateRoundScore(bid1, bid2, actual1, actual2) {
   return score;
 }
 
-function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
+export function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
   const player1WentNil = bid1 === NIL || bid1 === BLIND_NIL;
-  if (player1WentNil) {
+  const bothPlayersWentNil =
+    (bid1 === NIL || bid1 === BLIND_NIL) &&
+    (bid2 === NIL || bid2 === BLIND_NIL);
+  if (bothPlayersWentNil) {
+    const player1AchievedNil = parseInt(actual1) === 0;
+    const player2AchievedNil = parseInt(actual2) === 0;
+    if (bid1 === NIL && bid2 === NIL) {
+      if (player1AchievedNil && player2AchievedNil) {
+        return {
+          score: 100 + 100,
+          bags: 0,
+        };
+      } else if (player1AchievedNil && !player2AchievedNil) {
+        const bags = parseInt(actual2);
+        return {
+          score: 100 + -100,
+          bags,
+        };
+      } else if (!player1AchievedNil && player2AchievedNil) {
+        const bags = parseInt(actual1);
+        return {
+          score: 100 + -100,
+          bags,
+        };
+      } else {
+        const bags = parseInt(actual1) + parseInt(actual2);
+        return {
+          score: -100 + -100,
+          bags,
+        };
+      }
+    } else if (bid1 === NIL && bid2 === BLIND_NIL) {
+      if (player1AchievedNil && player2AchievedNil) {
+        return {
+          score: 100 + 200,
+          bags: 0,
+        };
+      } else if (player1AchievedNil && !player2AchievedNil) {
+        const bags = parseInt(actual2);
+        return {
+          score: 100 + -200,
+          bags,
+        };
+      } else if (!player1AchievedNil && player2AchievedNil) {
+        const bags = parseInt(actual1);
+        return {
+          score: -100 + 200,
+          bags,
+        };
+      } else {
+        const bags = parseInt(actual1) + parseInt(actual2);
+        return {
+          score: -100 + -200,
+          bags,
+        };
+      }
+    } else if (bid1 === BLIND_NIL && bid2 === NIL) {
+      if (player1AchievedNil && player2AchievedNil) {
+        return {
+          score: 200 + 100,
+          bags: 0,
+        };
+      } else if (player1AchievedNil && !player2AchievedNil) {
+        const bags = parseInt(actual2);
+        return {
+          score: 200 + -100,
+          bags,
+        };
+      } else if (!player1AchievedNil && player2AchievedNil) {
+        const bags = parseInt(actual1);
+        return {
+          score: -200 + 100,
+          bags,
+        };
+      } else {
+        const bags = parseInt(actual1) + parseInt(actual2);
+        return {
+          score: -200 + -100,
+          bags,
+        };
+      }
+    } else if (bid1 === BLIND_NIL && bid2 === BLIND_NIL) {
+      if (player1AchievedNil && player2AchievedNil) {
+        return {
+          score: 200 + 200,
+          bags: 0,
+        };
+      } else if (player1AchievedNil && !player2AchievedNil) {
+        const bags = parseInt(actual2);
+        return {
+          score: 200 + -200,
+          bags,
+        };
+      } else if (!player1AchievedNil && player2AchievedNil) {
+        const bags = parseInt(actual1);
+        return {
+          score: -200 + 200,
+          bags,
+        };
+      } else {
+        const bags = parseInt(actual1) + parseInt(actual2);
+        return {
+          score: -200 + -200,
+          bags,
+        };
+      }
+    }
+  } else if (player1WentNil) {
     const wasBlind = bid1 === BLIND_NIL;
     const achievedNil = parseInt(actual1) === 0;
     const didntGetSet = parseInt(actual1) + parseInt(actual2) >= parseInt(bid2);
@@ -204,7 +311,7 @@ export function calculateTeamScoreFromRoundHistory(
 
 export function getRoundHistoryAtCurrentRound(roundHistory, index) {
   const history = [];
-  for (let i = 0; i < index; i++) {
+  for (let i = 0; i <= index; i++) {
     history.push(roundHistory[i]);
   }
   return history;

@@ -46,6 +46,14 @@ export const roundHistoryWithBothTeamMembersMissingNil = [
     },
   },
 ];
+export const teamHistoryWithBothTeamMembersMissingNil = [
+  {
+    p1Bid: NIL,
+    p2Bid: NIL,
+    p1Actual: '1',
+    p2Actual: '1',
+  },
+];
 
 export const teamRoundHistoryMakingNilWithNoBags = [
   {

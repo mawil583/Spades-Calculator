@@ -36,6 +36,7 @@ function PastRound(props) {
     roundHistoryAtEndOfThisRound,
     TEAM1
   );
+
   const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
     roundHistoryAtEndOfThisRound,
     TEAM2

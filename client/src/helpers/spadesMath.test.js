@@ -3,6 +3,9 @@ import {
   calculateScoreFromRoundHistory,
   calculateTeamRoundScoresFromTeamHistory,
   getTeamHistoryFromRoundHistory,
+  calculateTeamScoreFromRoundHistory,
+  nilTeamRoundScore,
+  getRoundHistoryAtCurrentRound,
 } from './spadesMath';
 import { NIL, BLIND_NIL, TEAM1, TEAM2 } from './constants';
 import { expect } from 'chai';
@@ -12,6 +15,7 @@ import {
   roundHistoryWithBothTeamMembersMissingNil,
   teamRoundHistoryMakingNilWithNoBags,
   teamRoundHistoryWithBagsNoNilNotSet,
+  teamHistoryWithBothTeamMembersMissingNil,
 } from './testFactory';
 
 test('calculate when bids equals actuals', () => {
@@ -155,15 +159,52 @@ test('calculate reaching 12 bags', () => {
   });
 });
 
-test('calculate both teams going nil', () => {
-  const result = calculateScoreFromRoundHistory(
-    roundHistoryWithBothTeamMembersMissingNil
+test('test nilTeamRoundScore for both teams missing nil', () => {
+  const result = nilTeamRoundScore(
+    teamHistoryWithBothTeamMembersMissingNil[0].p1Bid,
+    teamHistoryWithBothTeamMembersMissingNil[0].p2Bid,
+    teamHistoryWithBothTeamMembersMissingNil[0].p1Actual,
+    teamHistoryWithBothTeamMembersMissingNil[0].p2Actual
   );
   expect(result).deep.equals({
-    team1Score: -200,
-    team1Bags: 2,
-    team2Score: 42,
-    team2Bags: 2,
+    score: -200,
+    bags: 2,
+  });
+});
+
+test('test calculateRoundScore for both teams missing nil', () => {
+  const result = calculateRoundScore(
+    teamHistoryWithBothTeamMembersMissingNil[0].p1Bid,
+    teamHistoryWithBothTeamMembersMissingNil[0].p2Bid,
+    teamHistoryWithBothTeamMembersMissingNil[0].p1Actual,
+    teamHistoryWithBothTeamMembersMissingNil[0].p2Actual
+  );
+  expect(result).deep.equals({
+    score: -200,
+    bags: 2,
+  });
+});
+
+test('test calculateTeamRoundScoresFromTeamHistory for both teams missing nil', () => {
+  const result = calculateTeamRoundScoresFromTeamHistory(
+    teamHistoryWithBothTeamMembersMissingNil
+  );
+  expect(result).deep.equals([
+    {
+      teamScore: -200,
+      teamBags: 2,
+    },
+  ]);
+});
+
+test('test calculateTeamScoreFromRoundHistory for both teams missing nil', () => {
+  const result = calculateTeamScoreFromRoundHistory(
+    roundHistoryWithBothTeamMembersMissingNil,
+    TEAM1
+  );
+  expect(result).deep.equals({
+    teamScore: -200,
+    teamBags: 2,
   });
 });
 
@@ -227,4 +268,9 @@ test('using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRound
       teamBags: 0,
     },
   ]);
+});
+
+test('getRoundHistoryAtCurrentRound', () => {
+  const result = getRoundHistoryAtCurrentRound(roundHistoryWithTenBags, 0);
+  expect(result).deep.equals([roundHistoryWithTenBags[0]]);
 });
