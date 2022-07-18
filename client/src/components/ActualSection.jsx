@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid, Center } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 import { addInputs } from '../helpers/spadesMath';
 import TeamInputHeading from './TeamInputHeading';
@@ -33,6 +33,7 @@ function ActualSection({
         team2Total={team2ActualTotal}
         title='Actuals'
       />
+      <Center style={{ visibility: 'hidden' }}>Unclaimed</Center>
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
           setValTo={setT1p1Actual}
