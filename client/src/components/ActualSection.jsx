@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SimpleGrid, Center } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
-import { addInputs } from '../helpers/spadesMath';
+import { addInputs, isNotDefaultValue } from '../helpers/spadesMath';
 import TeamInputHeading from './TeamInputHeading';
+import { useValidateActuals } from '../helpers/hooks';
+import { actualsErrorText } from '../helpers/helperFunctions';
 
 function ActualSection({
   team1BidsAndActuals,
@@ -16,16 +18,38 @@ function ActualSection({
   setT2p2Actual,
   t2p2Name,
 }) {
+  const [isValid, setIsValid] = useState(true);
   const team1Actuals = {
-    p1Bid: team1BidsAndActuals?.p1Actual,
-    p2Bid: team1BidsAndActuals?.p2Actual,
+    p1Actual: team1BidsAndActuals?.p1Actual,
+    p2Actual: team1BidsAndActuals?.p2Actual,
   };
   const team2Actuals = {
-    p1Bid: team2BidsAndActuals?.p1Actual,
-    p2Bid: team2BidsAndActuals?.p2Actual,
+    p1Actual: team2BidsAndActuals?.p1Actual,
+    p2Actual: team2BidsAndActuals?.p2Actual,
   };
-  const team1ActualTotal = addInputs(team1Actuals.p1Bid, team1Actuals.p2Bid);
-  const team2ActualTotal = addInputs(team2Actuals.p1Bid, team2Actuals.p2Bid);
+  const team1ActualTotal = addInputs(
+    team1Actuals.p1Actual,
+    team1Actuals.p2Actual
+  );
+  const team2ActualTotal = addInputs(
+    team2Actuals.p1Actual,
+    team2Actuals.p2Actual
+  );
+
+  const roundActuals = [
+    team1Actuals.p1Actual,
+    team1Actuals.p2Actual,
+    team2Actuals.p1Actual,
+    team2Actuals.p2Actual,
+  ];
+
+  const allActualsAreSubmitted = roundActuals.every(isNotDefaultValue);
+  const totalActuals = team1ActualTotal + team2ActualTotal;
+
+  useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid);
+
+  const errorMessage = actualsErrorText(allActualsAreSubmitted, totalActuals);
+
   return (
     <div>
       <TeamInputHeading
@@ -34,6 +58,18 @@ function ActualSection({
         title='Actuals'
       />
       <Center style={{ visibility: 'hidden' }}>Unclaimed</Center>
+      {!isValid && (
+        <div
+          style={{
+            color: 'red',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          {errorMessage}
+        </div>
+      )}
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
           setValTo={setT1p1Actual}

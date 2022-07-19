@@ -333,3 +333,7 @@ export function addInputs(...args) {
     return acc + convertStringInputToNum(input);
   }, 0);
 }
+
+export const isNotDefaultValue = (value) => {
+  return value !== '';
+};

@@ -4,6 +4,7 @@ import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
+import { isNotDefaultValue } from '../helpers/spadesMath';
 
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
@@ -32,10 +33,6 @@ function CurrentRound(props) {
     p2Bid: t2p2Bid,
     p1Actual: t2p1Actual,
     p2Actual: t2p2Actual,
-  };
-
-  const isNotDefaultValue = (value) => {
-    return value !== '';
   };
 
   const resetRoundValues = () => {

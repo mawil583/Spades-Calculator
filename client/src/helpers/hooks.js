@@ -62,3 +62,25 @@ export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
     setNumUnclaimed(13 - claimed);
   }, [setNumUnclaimed, team1Bids, team2Bids]);
 }
+
+export function useValidateActuals(
+  allActualsAreSubmitted,
+  totalActuals,
+  setIsValid
+) {
+  useEffect(() => {
+    if (allActualsAreSubmitted) {
+      if (totalActuals !== 13) {
+        setIsValid(false);
+      } else {
+        setIsValid(true);
+      }
+    } else {
+      if (totalActuals > 13) {
+        setIsValid(false);
+      } else {
+        setIsValid(true);
+      }
+    }
+  }, [totalActuals, allActualsAreSubmitted, setIsValid]);
+}
