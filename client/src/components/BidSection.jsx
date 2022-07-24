@@ -4,6 +4,7 @@ import PlayerInput from './PlayerInput';
 import { useSetUnclaimed } from '../helpers/hooks';
 import TeamInputHeading from './TeamInputHeading';
 import { addInputs } from '../helpers/spadesMath';
+import Unclaimed from './Unclaimed';
 
 function BidSection({
   setT1p1Bid,
@@ -39,13 +40,7 @@ function BidSection({
         team2Total={team2BidTotal}
         title='Bids'
       />
-      {numUnclaimed < 0 ? (
-        <Center>
-          {Math.abs(numUnclaimed)} overbid! Someone's getting set!
-        </Center>
-      ) : (
-        <Center>Unclaimed: {numUnclaimed}</Center>
-      )}
+      <Unclaimed numUnclaimed={numUnclaimed} />
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
           setValTo={setT1p1Bid}

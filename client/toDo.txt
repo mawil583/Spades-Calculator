@@ -1,8 +1,7 @@
 --High Priority--
 add dynamic dealer tag
-fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared.
+fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
-fix bug where gameScoreAtEndOfRound is always lagging behind, even with refresh
 improve separation of concerns for CurrentRound vs PastRound
 refine editable past rounds
 change text for overbid. if it's 1 overbid say '1 overbid. someone's getting set'. if it's more than 1 overbid "3 overbidS. someone's getting set"
