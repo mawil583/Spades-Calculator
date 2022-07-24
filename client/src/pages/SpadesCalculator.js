@@ -1,16 +1,19 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import GameScore from '../components/GameScore';
+import { useNavigate } from 'react-router-dom';
+
 import '../App.css';
+import GameScore from '../components/GameScore';
 import CurrentRound from '../components/CurrentRound';
 import { calculateTeamScoreFromRoundHistory } from '../helpers/spadesMath';
 import { useLocalStorage } from '../helpers/hooks';
 import PastRounds from '../components/PastRounds';
 import { TEAM1, TEAM2 } from '../helpers/constants';
+import { useValidateNamesExist } from '../helpers/hooks';
 
 function SpadesCalculator() {
-  const location = useLocation();
-  const { state: formVals } = location;
+  const navigate = useNavigate();
+  const names = JSON.parse(localStorage.getItem('names'));
+  useValidateNamesExist(names, navigate);
   const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
   const team1Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM1);
   const team2Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM2);
@@ -18,7 +21,7 @@ function SpadesCalculator() {
   return (
     <div className='App'>
       <GameScore
-        formVals={formVals}
+        formVals={names}
         team1Score={team1Score.teamScore}
         team1Bags={team1Score.teamBags}
         team2Score={team2Score.teamScore}
@@ -27,7 +30,7 @@ function SpadesCalculator() {
       />
       <CurrentRound
         roundNumber={roundHistory.length + 1}
-        values={formVals}
+        values={names}
         team1GameScore={team1Score}
         team2GameScore={team2Score}
         roundHistory={roundHistory}

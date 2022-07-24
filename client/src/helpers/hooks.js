@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+
 import { BLIND_NIL, NIL } from './constants';
+import { isNotDefaultValue } from './spadesMath';
 
 export function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -38,6 +40,19 @@ export function useLocalStorage(key, initialValue) {
     }
   };
   return [storedValue, setValue];
+}
+
+export function useValidateNamesExist(names, navigate) {
+  useEffect(() => {
+    if (!names) {
+      navigate('/');
+    } else {
+      const nameVals = Object.values(names);
+      if (!nameVals.some(isNotDefaultValue)) {
+        navigate('/');
+      }
+    }
+  });
 }
 
 export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
