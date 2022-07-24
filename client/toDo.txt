@@ -17,6 +17,7 @@ add class for spadesMath, and extend that class to add other settings for how ga
 change scoring rules to "takes bags"
 break out components into smaller components on Names page
 rename Names.js to something more like LandingPage or HomePage
+names was already set in Names.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)

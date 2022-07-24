@@ -34,12 +34,14 @@ function Names() {
     team1Name: 'Team 1',
     team2Name: 'Team 2',
   });
+
   const validationSchema = Yup.object({
     t1p1Name: Yup.string().required('Required'),
     t2p1Name: Yup.string().required('Required'),
     t1p2Name: Yup.string().required('Required'),
     t2p2Name: Yup.string().required('Required'),
   });
+
   const formik = useFormik({
     initialValues: {
       team1Name: names.team1Name,
@@ -65,19 +67,18 @@ function Names() {
     }
   };
 
-  const setLocalStorageTeamNames = (formVals) => {
-    if (formVals.team1Name === '') {
-      setNames({ ...names, team1Name: 'Team 1' });
-    }
-    if (formVals.team2Name === '') {
-      setNames({ ...names, team2Name: 'Team 2' });
-    }
-  };
-
   useEffect(() => {
+    function setLocalStorageTeamNames(formVals) {
+      if (formVals.team1Name === '') {
+        setNames({ ...names, team1Name: 'Team 1' });
+      }
+      if (formVals.team2Name === '') {
+        setNames({ ...names, team2Name: 'Team 2' });
+      }
+    }
     setLocalStorageTeamNames(formik.values);
     setDefaultTeamNames(formik);
-  }, [formik.values, formik]);
+  }, [formik.values, formik, setNames, names]);
 
   return (
     <div className='App'>

@@ -328,8 +328,8 @@ export function convertStringInputToNum(input) {
   }
 }
 
-export function addInputs(...args) {
-  return args.reduce((acc, input) => {
+export function addInputs(...inputs) {
+  return inputs.reduce((acc, input) => {
     return acc + convertStringInputToNum(input);
   }, 0);
 }
