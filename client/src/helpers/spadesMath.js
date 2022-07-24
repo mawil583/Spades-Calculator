@@ -290,12 +290,12 @@ export function calculateTeamScoreFromRoundHistory(
   );
   const teamScores = calculateTeamRoundScoresFromTeamHistory(teamRoundHistory);
 
-  let initialScore = {
+  const initialScore = {
     teamScore: 0,
     teamBags: 0,
   };
 
-  let gameScore = teamScores.reduce((prev, roundScore) => {
+  const gameScore = teamScores.reduce((prev, roundScore) => {
     prev.teamScore += roundScore.teamScore;
     prev.teamBags += roundScore.teamBags;
 
