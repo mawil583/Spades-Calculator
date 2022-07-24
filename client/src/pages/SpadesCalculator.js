@@ -20,26 +20,30 @@ function SpadesCalculator() {
 
   return (
     <div className='App'>
-      <GameScore
-        formVals={names}
-        team1Score={team1Score.teamScore}
-        team1Bags={team1Score.teamBags}
-        team2Score={team2Score.teamScore}
-        team2Bags={team2Score.teamBags}
-        setRoundHistory={setRoundHistory}
-      />
-      <CurrentRound
-        roundNumber={roundHistory.length + 1}
-        values={names}
-        team1GameScore={team1Score}
-        team2GameScore={team2Score}
-        roundHistory={roundHistory}
-        setRoundHistory={setRoundHistory}
-      />
-      <PastRounds
-        roundHistory={roundHistory}
-        setRoundHistory={setRoundHistory}
-      />
+      {names && (
+        <>
+          <GameScore
+            formVals={names}
+            team1Score={team1Score.teamScore}
+            team1Bags={team1Score.teamBags}
+            team2Score={team2Score.teamScore}
+            team2Bags={team2Score.teamBags}
+            setRoundHistory={setRoundHistory}
+          />
+          <CurrentRound
+            roundNumber={roundHistory.length + 1}
+            values={names}
+            team1GameScore={team1Score}
+            team2GameScore={team2Score}
+            roundHistory={roundHistory}
+            setRoundHistory={setRoundHistory}
+          />
+          <PastRounds
+            roundHistory={roundHistory}
+            setRoundHistory={setRoundHistory}
+          />
+        </>
+      )}
     </div>
   );
 }
