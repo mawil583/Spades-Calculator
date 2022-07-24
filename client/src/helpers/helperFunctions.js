@@ -6,9 +6,9 @@ export function actualsErrorText(allActualsAreSubmitted, totalActuals) {
   }
   return `Error: You can't take ${text}!`;
 }
+
 export function sIfPlural(num) {
   if (num > 1) {
-    console.log('if');
     return 's';
   }
   return '';
