@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { BLIND_NIL, NIL } from './constants';
-import { isNotDefaultValue } from './spadesMath';
+import { isNotDefaultValue, addInputs } from './spadesMath';
 
 export function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -57,24 +56,10 @@ export function useRedirectWhenFalsey(names, navigate) {
 
 export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
   useEffect(() => {
-    const claimed =
-      parseInt(
-        Object.values(team1Bids).reduce((accum, bid) => {
-          if (bid === '' || bid === NIL || bid === BLIND_NIL) {
-            return 0 + accum;
-          }
-          return parseInt(bid) + parseInt(accum);
-        }, 0)
-      ) +
-      parseInt(
-        Object.values(team2Bids).reduce((accum, bid) => {
-          if (bid === '' || bid === NIL || bid === BLIND_NIL) {
-            return 0 + accum;
-          }
-          return parseInt(bid) + parseInt(accum);
-        }, 0)
-      );
-    setNumUnclaimed(13 - claimed);
+    const team1Inputs = Object.values(team1Bids);
+    const team2Inputs = Object.values(team2Bids);
+    const totalClaimed = addInputs(...team1Inputs, ...team2Inputs);
+    setNumUnclaimed(13 - totalClaimed);
   }, [setNumUnclaimed, team1Bids, team2Bids]);
 }
 
