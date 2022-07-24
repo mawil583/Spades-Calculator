@@ -9,7 +9,7 @@ import {
 import TeamScore from './TeamScore';
 
 function GameScore({
-  formVals,
+  names,
   team1Score,
   team1Bags,
   team2Score,
@@ -35,12 +35,12 @@ function GameScore({
         </Center>
         <SimpleGrid columns={2}>
           <TeamScore
-            teamName={formVals.team1Name}
+            teamName={names.team1Name}
             teamScore={team1Score}
             teamBags={team1Bags}
           />
           <TeamScore
-            teamName={formVals.team2Name}
+            teamName={names.team2Name}
             teamScore={team2Score}
             teamBags={team2Bags}
           />

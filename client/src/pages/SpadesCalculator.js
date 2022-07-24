@@ -23,7 +23,7 @@ function SpadesCalculator() {
       {names && (
         <>
           <GameScore
-            formVals={names}
+            names={names}
             team1Score={team1Score.teamScore}
             team1Bags={team1Score.teamBags}
             team2Score={team2Score.teamScore}
@@ -32,7 +32,7 @@ function SpadesCalculator() {
           />
           <CurrentRound
             roundNumber={roundHistory.length + 1}
-            values={names}
+            names={names}
             team1GameScore={team1Score}
             team2GameScore={team2Score}
             roundHistory={roundHistory}

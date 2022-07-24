@@ -8,7 +8,7 @@ import { isNotDefaultValue } from '../helpers/spadesMath';
 
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
-    props.values;
+    props.names;
   const { setRoundHistory, roundHistory, roundNumber } = props;
 
   // team 1
