@@ -42,7 +42,7 @@ export function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 
-export function useValidateNamesExist(names, navigate) {
+export function useRedirectWhenFalsey(names, navigate) {
   useEffect(() => {
     if (!names) {
       navigate('/');

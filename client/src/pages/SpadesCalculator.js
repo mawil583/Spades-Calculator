@@ -8,12 +8,12 @@ import { calculateTeamScoreFromRoundHistory } from '../helpers/spadesMath';
 import { useLocalStorage } from '../helpers/hooks';
 import PastRounds from '../components/PastRounds';
 import { TEAM1, TEAM2 } from '../helpers/constants';
-import { useValidateNamesExist } from '../helpers/hooks';
+import { useRedirectWhenFalsey } from '../helpers/hooks';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
   const names = JSON.parse(localStorage.getItem('names'));
-  useValidateNamesExist(names, navigate);
+  useRedirectWhenFalsey(names, navigate);
   const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
   const team1Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM1);
   const team2Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM2);
