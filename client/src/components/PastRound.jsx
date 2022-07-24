@@ -21,9 +21,11 @@ function PastRound(props) {
     team1BidsAndActuals,
     team2BidsAndActuals,
     setRoundHistory,
+    names,
   } = props;
+
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
-    props.values;
+    names;
 
   const roundData = roundHistory[index];
 

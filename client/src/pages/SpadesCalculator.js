@@ -39,6 +39,7 @@ function SpadesCalculator() {
             setRoundHistory={setRoundHistory}
           />
           <PastRounds
+            names={names}
             roundHistory={roundHistory}
             setRoundHistory={setRoundHistory}
           />

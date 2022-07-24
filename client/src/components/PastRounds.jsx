@@ -1,10 +1,7 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
 import PastRound from './PastRound';
 
-function PastRounds({ roundHistory, setRoundHistory }) {
-  const location = useLocation();
-  const { state: formVals } = location;
+function PastRounds({ roundHistory, setRoundHistory, names }) {
   return (
     <>
       {roundHistory
@@ -14,7 +11,7 @@ function PastRounds({ roundHistory, setRoundHistory }) {
               roundNumber={i + 1}
               key={i}
               index={i}
-              values={formVals}
+              names={names}
               roundHistory={roundHistory}
               setRoundHistory={setRoundHistory}
               team1BidsAndActuals={roundHistory[i].team1BidsAndActuals}
