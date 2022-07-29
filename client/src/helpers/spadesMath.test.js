@@ -7,6 +7,11 @@ import {
   nilTeamRoundScore,
   getRoundHistoryAtCurrentRound,
   addInputs,
+  whoWentNil,
+  calculateTeamRoundScoreWithOneNilBidder,
+  calculateTeamRoundScoreWithBothNonBlindNil,
+  calculateScoreForDualNilWithOneBlind,
+  calculateTeamRoundScoreWithBothBlindNil,
 } from './spadesMath';
 import { NIL, BLIND_NIL, TEAM1, TEAM2 } from './constants';
 import { expect } from 'chai';
@@ -14,6 +19,7 @@ import {
   roundHistoryWithTwelveBags,
   roundHistoryWithTenBags,
   roundHistoryWithBothTeamMembersMissingNil,
+  teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing,
   teamRoundHistoryMakingNilWithNoBags,
   teamRoundHistoryWithBagsNoNilNotSet,
   teamHistoryWithBothTeamMembersMissingNil,
@@ -90,12 +96,12 @@ test('calculate when player 1 misses nill, player 2 getting set, but bid total e
   https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades
   https://www.pagat.com/auctionwhist/spades.html
   */
-  const result = calculateRoundScore(NIL, 1, 1, 0);
-  expect(result).deep.equals({ bags: 0, score: -90 });
+  // const result = calculateRoundScore(NIL, 1, 1, 0);
+  // expect(result).deep.equals({ bags: 0, score: -90 });
 
   // this test should only pass when we change to "takes bags" rules:
-  // const result2 = calculateRoundScore(NIL, 1, 1, 0);
-  // expect(result2).deep.equals({ bags: 1, score: -109 });
+  const result2 = calculateRoundScore(NIL, 1, 1, 0);
+  expect(result2).deep.equals({ bags: 1, score: -109 });
 });
 
 test('calculate making blind nil correctly', () => {
@@ -170,6 +176,20 @@ test('test nilTeamRoundScore for both teams missing nil', () => {
   expect(result).deep.equals({
     score: -200,
     bags: 2,
+  });
+});
+
+test('test nilTeamRoundScore for both teams betting nonBlindNill and only one missing nil', () => {
+  const result = nilTeamRoundScore(
+    teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing[0].p1Bid,
+    teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing[0].p2Bid,
+    teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing[0].p1Actual,
+    teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing[0].p2Actual
+  );
+  // do we really count bags here?
+  expect(result).deep.equals({
+    score: 0,
+    bags: 1,
   });
 });
 
@@ -277,6 +297,55 @@ test('getRoundHistoryAtCurrentRound', () => {
 });
 
 test('addInputs', () => {
-  const result = addInputs('Nil', '3');
+  const result = addInputs(NIL, '3');
   expect(result).deep.equals(3);
+});
+
+test('whoWentNil', () => {
+  const result = whoWentNil(NIL, '3', '1', '4');
+  expect(result).deep.equals({
+    nilPlayerBid: NIL,
+    nonNilPlayerBid: '3',
+    nilPlayerActual: '1',
+    nonNilPlayerActual: '4',
+  });
+});
+
+/* 
+When a player bidding Nil fails, tricks won by that player don't count 
+toward making their partner's bid, nor do they count as bags for the partnership. 
+
+if ^this^ were true, then this test should return {"bags": 1, "score": -69}
+*/
+test('calculateTeamRoundScoreWithOneNilBidder', () => {
+  const result = calculateTeamRoundScoreWithOneNilBidder(NIL, '3', '1', '4');
+  expect(result).deep.equals({
+    score: -68,
+    bags: 2,
+  });
+});
+
+test('calculateTeamRoundScoreWithBothNonBlindNil, one missing and the other making', () => {
+  const result = calculateTeamRoundScoreWithBothNonBlindNil(0, '1');
+  expect(result).deep.equals({
+    score: 0,
+    bags: 1,
+  });
+});
+
+test('calculateScoreForDualNilWithOneBlind, one missing and the other making', () => {
+  const result = calculateScoreForDualNilWithOneBlind(NIL, BLIND_NIL, 0, 1);
+  expect(result).deep.equals({
+    score: -100,
+    bags: 1,
+  });
+});
+
+test('calculateTeamRoundScoreWithBothBlindNil, one missing and the other making', () => {
+  const result = calculateTeamRoundScoreWithBothBlindNil(0, 1);
+  expect(result).deep.equals({
+    score: 0,
+    // should bags be getting added?
+    bags: 1,
+  });
 });
