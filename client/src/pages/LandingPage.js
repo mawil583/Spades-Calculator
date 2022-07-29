@@ -23,7 +23,7 @@ import * as Yup from 'yup';
 import '../App.css';
 import { useLocalStorage } from '../helpers/hooks';
 
-function Names() {
+function LandingPage() {
   const navigate = useNavigate();
 
   const [names, setNames] = useLocalStorage('names', {
@@ -256,4 +256,4 @@ function Names() {
   );
 }
 
-export default Names;
+export default LandingPage;

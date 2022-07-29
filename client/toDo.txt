@@ -11,7 +11,6 @@ make it more obvious that team names are editable and that past rounds are edita
 change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
 add text to PastRound Actuals. if someone went over 10 bags, or got set, or failed nil, let user know
 break out components into smaller components on Names page
-rename Names.js to something more like LandingPage or HomePage
 improve separation of concerns for CurrentRound vs PastRound
 names was already set in Names.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
