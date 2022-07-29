@@ -37,6 +37,7 @@ implement ability for user to select which scoring rules they want to follow
 remove unused calculateScoreFromRoundHistory and corresponding dependencies
 add more tests for calculateTeamRoundScoresFromTeamHistory and calculateTeamScoreFromRoundHistory
 clean up BidSection Heading. Maybe split it into more components
+Address comments on whoWentNil function
 
 
 Matt's suggestions:

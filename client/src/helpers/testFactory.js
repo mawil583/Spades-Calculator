@@ -54,6 +54,14 @@ export const teamHistoryWithBothTeamMembersMissingNil = [
     p2Actual: '1',
   },
 ];
+export const teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing = [
+  {
+    p1Bid: NIL,
+    p2Bid: NIL,
+    p1Actual: 0,
+    p2Actual: '1',
+  },
+];
 
 export const teamRoundHistoryMakingNilWithNoBags = [
   {

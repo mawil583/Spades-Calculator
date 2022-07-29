@@ -14,179 +14,29 @@ export function calculateRoundScore(bid1, bid2, actual1, actual2) {
 }
 
 export function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
-  const player1WentNil = bid1 === NIL || bid1 === BLIND_NIL;
   const bothPlayersWentNil =
     (bid1 === NIL || bid1 === BLIND_NIL) &&
     (bid2 === NIL || bid2 === BLIND_NIL);
   if (bothPlayersWentNil) {
-    const player1AchievedNil = parseInt(actual1) === 0;
-    const player2AchievedNil = parseInt(actual2) === 0;
-    if (bid1 === NIL && bid2 === NIL) {
-      if (player1AchievedNil && player2AchievedNil) {
-        return {
-          score: 100 + 100,
-          bags: 0,
-        };
-      } else if (player1AchievedNil && !player2AchievedNil) {
-        const bags = parseInt(actual2);
-        return {
-          score: 100 + -100,
-          bags,
-        };
-      } else if (!player1AchievedNil && player2AchievedNil) {
-        const bags = parseInt(actual1);
-        return {
-          score: 100 + -100,
-          bags,
-        };
-      } else {
-        const bags = parseInt(actual1) + parseInt(actual2);
-        return {
-          score: -100 + -100,
-          bags,
-        };
-      }
-    } else if (bid1 === NIL && bid2 === BLIND_NIL) {
-      if (player1AchievedNil && player2AchievedNil) {
-        return {
-          score: 100 + 200,
-          bags: 0,
-        };
-      } else if (player1AchievedNil && !player2AchievedNil) {
-        const bags = parseInt(actual2);
-        return {
-          score: 100 + -200,
-          bags,
-        };
-      } else if (!player1AchievedNil && player2AchievedNil) {
-        const bags = parseInt(actual1);
-        return {
-          score: -100 + 200,
-          bags,
-        };
-      } else {
-        const bags = parseInt(actual1) + parseInt(actual2);
-        return {
-          score: -100 + -200,
-          bags,
-        };
-      }
-    } else if (bid1 === BLIND_NIL && bid2 === NIL) {
-      if (player1AchievedNil && player2AchievedNil) {
-        return {
-          score: 200 + 100,
-          bags: 0,
-        };
-      } else if (player1AchievedNil && !player2AchievedNil) {
-        const bags = parseInt(actual2);
-        return {
-          score: 200 + -100,
-          bags,
-        };
-      } else if (!player1AchievedNil && player2AchievedNil) {
-        const bags = parseInt(actual1);
-        return {
-          score: -200 + 100,
-          bags,
-        };
-      } else {
-        const bags = parseInt(actual1) + parseInt(actual2);
-        return {
-          score: -200 + -100,
-          bags,
-        };
-      }
-    } else if (bid1 === BLIND_NIL && bid2 === BLIND_NIL) {
-      if (player1AchievedNil && player2AchievedNil) {
-        return {
-          score: 200 + 200,
-          bags: 0,
-        };
-      } else if (player1AchievedNil && !player2AchievedNil) {
-        const bags = parseInt(actual2);
-        return {
-          score: 200 + -200,
-          bags,
-        };
-      } else if (!player1AchievedNil && player2AchievedNil) {
-        const bags = parseInt(actual1);
-        return {
-          score: -200 + 200,
-          bags,
-        };
-      } else {
-        const bags = parseInt(actual1) + parseInt(actual2);
-        return {
-          score: -200 + -200,
-          bags,
-        };
-      }
-    }
-  } else if (player1WentNil) {
-    const wasBlind = bid1 === BLIND_NIL;
-    const achievedNil = parseInt(actual1) === 0;
-    const didntGetSet = parseInt(actual1) + parseInt(actual2) >= parseInt(bid2);
-    const bags =
-      parseInt(actual2) + parseInt(actual1) > parseInt(bid2)
-        ? parseInt(actual2) + parseInt(actual1) - parseInt(bid2)
-        : 0;
-    const nonNilPlayerScore = didntGetSet
-      ? parseInt(bid2) * 10 + bags
-      : parseInt(-bid2) * 10;
-
-    if (achievedNil && didntGetSet) {
-      return {
-        score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (!achievedNil && didntGetSet) {
-      return {
-        score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (!achievedNil && !didntGetSet) {
-      return {
-        score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (achievedNil && !didntGetSet) {
-      return {
-        score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
-        bags,
-      };
+    const areBothNotBlind = bid1 === NIL && bid2 === NIL;
+    const isOnlyOnePlayerBlind =
+      (bid1 === NIL && bid2 === BLIND_NIL) ||
+      (bid1 === BLIND_NIL && bid2 === NIL);
+    const bothAreBlind = bid1 === BLIND_NIL && bid2 === BLIND_NIL;
+    if (areBothNotBlind) {
+      return calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2);
+    } else if (isOnlyOnePlayerBlind) {
+      return calculateScoreForDualNilWithOneBlind(bid1, bid2, actual1, actual2);
+    } else if (bothAreBlind) {
+      return calculateTeamRoundScoreWithBothBlindNil(actual1, actual2);
     }
   } else {
-    const wasBlind = bid2 === BLIND_NIL;
-    const achievedNil = parseInt(actual2) === 0;
-    const didntGetSet = parseInt(actual1) + parseInt(actual2) >= parseInt(bid1);
-    const bags =
-      parseInt(actual2) + parseInt(actual1) > parseInt(bid1)
-        ? parseInt(actual1) + parseInt(actual2) - parseInt(bid1)
-        : 0;
-    const nonNilPlayerScore = didntGetSet
-      ? parseInt(bid1) * 10 + bags
-      : parseInt(-bid1) * 10;
-    if (achievedNil && didntGetSet) {
-      return {
-        score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (!achievedNil && didntGetSet) {
-      return {
-        score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (!achievedNil && !didntGetSet) {
-      return {
-        score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
-        bags,
-      };
-    } else if (achievedNil && !didntGetSet) {
-      return {
-        score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
-        bags,
-      };
-    }
+    return calculateTeamRoundScoreWithOneNilBidder(
+      bid1,
+      bid2,
+      actual1,
+      actual2
+    );
   }
 }
 
@@ -197,6 +47,188 @@ function teamRoundScore(teamBid, teamActual) {
   } else {
     let bags = teamActual - teamBid;
     return { score: teamBid * 10 + bags, bags };
+  }
+}
+
+// consider renaming. Also, are unused parameters a code smell if you indirectly use them via the 'arguments' keyword?
+// also, this function assumes only one bid is NIL. that might also be a code smell. Consider refactoring into class for encapsulation
+export function whoWentNil(bid1, bid2, actual1, actual2) {
+  const nilPlayerBid = [bid1, bid2].find(
+    (bid) => bid === NIL || bid === BLIND_NIL
+  );
+  const nonNilPlayerBid = [bid1, bid2].find(
+    (bid) => bid !== NIL && bid !== BLIND_NIL
+  );
+  const nilPlayerActual =
+    arguments[0] === nilPlayerBid ? arguments[2] : arguments[3];
+  const nonNilPlayerActual =
+    arguments[0] === nonNilPlayerBid ? arguments[2] : arguments[3];
+
+  return {
+    nilPlayerBid,
+    nonNilPlayerBid,
+    nilPlayerActual,
+    nonNilPlayerActual,
+  };
+}
+
+// this function assumes both bidders went nil
+// same code smell from above
+export function whoWasBlind(bid1, bid2, actual1, actual2) {
+  const nilPlayerBid = [bid1, bid2].find((bid) => bid === NIL);
+  const blindNilPlayerBid = [bid1, bid2].find((bid) => bid === BLIND_NIL);
+  const nilPlayerActual =
+    arguments[0] === nilPlayerBid ? arguments[2] : arguments[3];
+  const blindNilPlayerActual =
+    arguments[0] === blindNilPlayerBid ? arguments[2] : arguments[3];
+
+  return {
+    nilPlayerActual,
+    blindNilPlayerActual,
+  };
+}
+
+export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
+  const player1AchievedNil = parseInt(actual1) === 0;
+  const player2AchievedNil = parseInt(actual2) === 0;
+  if (player1AchievedNil && player2AchievedNil) {
+    return {
+      score: 100 + 100,
+      bags: 0,
+    };
+  } else if (player1AchievedNil && !player2AchievedNil) {
+    const bags = parseInt(actual2);
+    return {
+      score: 100 + -100,
+      bags,
+    };
+  } else if (!player1AchievedNil && player2AchievedNil) {
+    const bags = parseInt(actual1);
+    return {
+      score: 100 + -100,
+      bags,
+    };
+  } else {
+    const bags = parseInt(actual1) + parseInt(actual2);
+    return {
+      score: -100 + -100,
+      bags,
+    };
+  }
+}
+
+export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
+  const player1AchievedNil = parseInt(actual1) === 0;
+  const player2AchievedNil = parseInt(actual2) === 0;
+  if (player1AchievedNil && player2AchievedNil) {
+    return {
+      score: 200 + 200,
+      bags: 0,
+    };
+  } else if (player1AchievedNil && !player2AchievedNil) {
+    const bags = parseInt(actual2);
+    return {
+      score: 200 + -200,
+      bags,
+    };
+  } else if (!player1AchievedNil && player2AchievedNil) {
+    const bags = parseInt(actual1);
+    return {
+      score: 200 + -200,
+      bags,
+    };
+  } else {
+    const bags = parseInt(actual1) + parseInt(actual2);
+    return {
+      score: -200 + -200,
+      bags,
+    };
+  }
+}
+
+export function calculateScoreForDualNilWithOneBlind(
+  bid1,
+  bid2,
+  actual1,
+  actual2
+) {
+  const { nilPlayerActual, blindNilPlayerActual } = whoWasBlind(
+    bid1,
+    bid2,
+    actual1,
+    actual2
+  );
+  const nilPlayerAchievedNil = nilPlayerActual === 0;
+  const blindNilPlayerAchievedNil = blindNilPlayerActual === 0;
+  if (nilPlayerAchievedNil && blindNilPlayerAchievedNil) {
+    return {
+      score: 100 + 200,
+      bags: 0,
+    };
+  } else if (nilPlayerAchievedNil && !blindNilPlayerAchievedNil) {
+    const bags = parseInt(blindNilPlayerActual);
+    // notice bags do not add to score. Double check the rules on that
+    return {
+      score: 100 + -200,
+      bags,
+    };
+  } else if (!nilPlayerAchievedNil && blindNilPlayerAchievedNil) {
+    const bags = parseInt(nilPlayerAchievedNil);
+    return {
+      score: -100 + 200,
+      bags,
+    };
+  } else {
+    const bags = parseInt(nilPlayerActual) + parseInt(blindNilPlayerActual);
+    return {
+      score: -100 + -200,
+      bags,
+    };
+  }
+}
+
+export function calculateTeamRoundScoreWithOneNilBidder(
+  bid1,
+  bid2,
+  actual1,
+  actual2
+) {
+  const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual, nonNilPlayerActual } =
+    whoWentNil(bid1, bid2, actual1, actual2);
+  // player 1 went nil
+  // const wasBlind = bid1 === BLIND_NIL;
+  const wasBlind = nilPlayerBid === BLIND_NIL;
+  const achievedNil = parseInt(nilPlayerActual) === 0;
+  const totalActuals = parseInt(actual1) + parseInt(actual2);
+  const didntGetSet = totalActuals >= parseInt(nonNilPlayerBid);
+  const bags =
+    totalActuals > parseInt(nonNilPlayerBid)
+      ? totalActuals - parseInt(nonNilPlayerBid)
+      : 0;
+  const nonNilPlayerScore = didntGetSet
+    ? parseInt(nonNilPlayerBid) * 10 + bags
+    : parseInt(-nonNilPlayerBid) * 10;
+
+  if (achievedNil && didntGetSet) {
+    return {
+      score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
+      bags,
+    };
+  } else if (!achievedNil && didntGetSet) {
+    return {
+      score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
+      bags,
+    };
+  } else if (!achievedNil && !didntGetSet) {
+    return {
+      score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
+      bags,
+    };
+  } else if (achievedNil && !didntGetSet) {
+    return {
+      score: wasBlind ? 200 + nonNilPlayerScore : 100 + nonNilPlayerScore,
+      bags,
+    };
   }
 }
 
