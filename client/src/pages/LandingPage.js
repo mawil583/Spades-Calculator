@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
+// Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
 import {
   Button,
   SimpleGrid,
@@ -12,8 +13,6 @@ import {
   FormErrorMessage,
   FormLabel,
 } from '@chakra-ui/react';
-// Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
-
 import { useNavigate } from 'react-router-dom';
 import 'core-js/es/promise';
 import 'core-js/es/set';
@@ -22,6 +21,7 @@ import 'core-js/es/map';
 import * as Yup from 'yup';
 import '../App.css';
 import { useLocalStorage } from '../helpers/hooks';
+import TeamName from '../components/TeamName';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -87,45 +87,14 @@ function LandingPage() {
           <div>
             <form onSubmit={formik.handleSubmit}>
               <SimpleGrid columns={2}>
-                <div className='namesBox'>
-                  <Editable
-                    defaultValue={formik.values.team1Name}
-                    mt={2}
-                    fontSize='lg'
-                    fontWeight='bold'
-                    placeholder={formik.values.team1Name}
-                  >
-                    <Center>
-                      <EditablePreview />
-                      <EditableInput
-                        type='text'
-                        value={formik.values.team1Name}
-                        onChange={formik.handleChange}
-                        id='team1Name'
-                        name='team1Name'
-                      />
-                    </Center>
-                  </Editable>
-                </div>
-                <div className='namesContainer'>
-                  <Editable
-                    defaultValue={formik.values.team2Name}
-                    mt={2}
-                    fontSize='lg'
-                    fontWeight='bold'
-                    placeholder={formik.values.team2Name}
-                  >
-                    <Center>
-                      <EditablePreview />
-                      <EditableInput
-                        value={formik.values.team2Name}
-                        onChange={formik.handleChange}
-                        id='team2Name'
-                        name='team2Name'
-                      />
-                    </Center>
-                  </Editable>
-                </div>
+                <TeamName
+                  teamName={formik.values.team1Name}
+                  handleChange={formik.handleChange}
+                />
+                <TeamName
+                  teamName={formik.values.team2Name}
+                  handleChange={formik.handleChange}
+                />
                 <div className='namesContainer'>
                   <FormControl
                     isInvalid={
