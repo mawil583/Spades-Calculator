@@ -1,6 +1,5 @@
 import {
   calculateRoundScore,
-  calculateScoreFromRoundHistory,
   calculateTeamRoundScoresFromTeamHistory,
   getTeamHistoryFromRoundHistory,
   calculateTeamScoreFromRoundHistory,
@@ -147,22 +146,28 @@ test('calculate missing blind nil and getting set', () => {
 });
 
 test('calculate reaching exactly 10 bags', () => {
-  const result = calculateScoreFromRoundHistory(roundHistoryWithTenBags);
+  /* 
+  strange that calculateTeamScoreFromRoundHistory takes in history of 
+  both teams but only calculates score for one of the teams. consider refactoring
+  */
+  const result = calculateTeamScoreFromRoundHistory(
+    roundHistoryWithTenBags,
+    TEAM1
+  );
   expect(result).deep.equals({
-    team1Score: -10,
-    team1Bags: 0,
-    team2Score: -18,
-    team2Bags: 2,
+    teamScore: -10,
+    teamBags: 0,
   });
 });
 
 test('calculate reaching 12 bags', () => {
-  const result = calculateScoreFromRoundHistory(roundHistoryWithTwelveBags);
+  const result = calculateTeamScoreFromRoundHistory(
+    roundHistoryWithTwelveBags,
+    TEAM1
+  );
   expect(result).deep.equals({
-    team1Score: -8,
-    team1Bags: 2,
-    team2Score: -18,
-    team2Bags: 2,
+    teamScore: -8,
+    teamBags: 2,
   });
 });
 

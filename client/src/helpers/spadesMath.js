@@ -2,15 +2,25 @@ import { BLIND_NIL, NIL } from './constants';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
 export function calculateRoundScore(bid1, bid2, actual1, actual2) {
-  const didTeamGoNil = bid1 === NIL || bid2 === NIL;
-  const didTeamGoBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
+  const someoneWentNil = bid1 === NIL || bid2 === NIL;
+  const someoneWentBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
   const teamBid = parseInt(bid1) + parseInt(bid2);
   const teamActual = parseInt(actual1) + parseInt(actual2);
   const score =
-    didTeamGoNil || didTeamGoBlindNil
+    someoneWentNil || someoneWentBlindNil
       ? nilTeamRoundScore(bid1, bid2, actual1, actual2)
       : teamRoundScore(teamBid, teamActual);
   return score;
+}
+
+function teamRoundScore(teamBid, teamActual) {
+  const gotSet = teamActual < teamBid;
+  if (gotSet) {
+    return { score: teamBid * -10, bags: 0 };
+  } else {
+    let bags = teamActual - teamBid;
+    return { score: teamBid * 10 + bags, bags };
+  }
 }
 
 export function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
@@ -40,54 +50,6 @@ export function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
   }
 }
 
-function teamRoundScore(teamBid, teamActual) {
-  const gotSet = teamActual < teamBid;
-  if (gotSet) {
-    return { score: teamBid * -10, bags: 0 };
-  } else {
-    let bags = teamActual - teamBid;
-    return { score: teamBid * 10 + bags, bags };
-  }
-}
-
-// consider renaming. Also, are unused parameters a code smell if you indirectly use them via the 'arguments' keyword?
-// also, this function assumes only one bid is NIL. that might also be a code smell. Consider refactoring into class for encapsulation
-export function whoWentNil(bid1, bid2, actual1, actual2) {
-  const nilPlayerBid = [bid1, bid2].find(
-    (bid) => bid === NIL || bid === BLIND_NIL
-  );
-  const nonNilPlayerBid = [bid1, bid2].find(
-    (bid) => bid !== NIL && bid !== BLIND_NIL
-  );
-  const nilPlayerActual =
-    arguments[0] === nilPlayerBid ? arguments[2] : arguments[3];
-  const nonNilPlayerActual =
-    arguments[0] === nonNilPlayerBid ? arguments[2] : arguments[3];
-
-  return {
-    nilPlayerBid,
-    nonNilPlayerBid,
-    nilPlayerActual,
-    nonNilPlayerActual,
-  };
-}
-
-// this function assumes both bidders went nil
-// same code smell from above
-export function whoWasBlind(bid1, bid2, actual1, actual2) {
-  const nilPlayerBid = [bid1, bid2].find((bid) => bid === NIL);
-  const blindNilPlayerBid = [bid1, bid2].find((bid) => bid === BLIND_NIL);
-  const nilPlayerActual =
-    arguments[0] === nilPlayerBid ? arguments[2] : arguments[3];
-  const blindNilPlayerActual =
-    arguments[0] === blindNilPlayerBid ? arguments[2] : arguments[3];
-
-  return {
-    nilPlayerActual,
-    blindNilPlayerActual,
-  };
-}
-
 export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
   const player1AchievedNil = parseInt(actual1) === 0;
   const player2AchievedNil = parseInt(actual2) === 0;
@@ -112,35 +74,6 @@ export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
     const bags = parseInt(actual1) + parseInt(actual2);
     return {
       score: -100 + -100,
-      bags,
-    };
-  }
-}
-
-export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
-  const player1AchievedNil = parseInt(actual1) === 0;
-  const player2AchievedNil = parseInt(actual2) === 0;
-  if (player1AchievedNil && player2AchievedNil) {
-    return {
-      score: 200 + 200,
-      bags: 0,
-    };
-  } else if (player1AchievedNil && !player2AchievedNil) {
-    const bags = parseInt(actual2);
-    return {
-      score: 200 + -200,
-      bags,
-    };
-  } else if (!player1AchievedNil && player2AchievedNil) {
-    const bags = parseInt(actual1);
-    return {
-      score: 200 + -200,
-      bags,
-    };
-  } else {
-    const bags = parseInt(actual1) + parseInt(actual2);
-    return {
-      score: -200 + -200,
       bags,
     };
   }
@@ -187,6 +120,35 @@ export function calculateScoreForDualNilWithOneBlind(
   }
 }
 
+export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
+  const player1AchievedNil = parseInt(actual1) === 0;
+  const player2AchievedNil = parseInt(actual2) === 0;
+  if (player1AchievedNil && player2AchievedNil) {
+    return {
+      score: 200 + 200,
+      bags: 0,
+    };
+  } else if (player1AchievedNil && !player2AchievedNil) {
+    const bags = parseInt(actual2);
+    return {
+      score: 200 + -200,
+      bags,
+    };
+  } else if (!player1AchievedNil && player2AchievedNil) {
+    const bags = parseInt(actual1);
+    return {
+      score: 200 + -200,
+      bags,
+    };
+  } else {
+    const bags = parseInt(actual1) + parseInt(actual2);
+    return {
+      score: -200 + -200,
+      bags,
+    };
+  }
+}
+
 export function calculateTeamRoundScoreWithOneNilBidder(
   bid1,
   bid2,
@@ -195,8 +157,6 @@ export function calculateTeamRoundScoreWithOneNilBidder(
 ) {
   const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual, nonNilPlayerActual } =
     whoWentNil(bid1, bid2, actual1, actual2);
-  // player 1 went nil
-  // const wasBlind = bid1 === BLIND_NIL;
   const wasBlind = nilPlayerBid === BLIND_NIL;
   const achievedNil = parseInt(nilPlayerActual) === 0;
   const totalActuals = parseInt(actual1) + parseInt(actual2);
@@ -230,6 +190,38 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       bags,
     };
   }
+}
+
+// consider renaming.
+// also, this function assumes only one bid is NIL. that might also be a code smell. Consider refactoring into class for encapsulation
+export function whoWentNil(bid1, bid2, actual1, actual2) {
+  const nilPlayerBid = [bid1, bid2].find(
+    (bid) => bid === NIL || bid === BLIND_NIL
+  );
+  const nonNilPlayerBid = [bid1, bid2].find(
+    (bid) => bid !== NIL && bid !== BLIND_NIL
+  );
+  const nilPlayerActual = bid1 === nilPlayerBid ? actual1 : actual2;
+  const nonNilPlayerActual = bid1 === nonNilPlayerBid ? actual1 : actual2;
+
+  return {
+    nilPlayerBid,
+    nonNilPlayerBid,
+    nilPlayerActual,
+    nonNilPlayerActual,
+  };
+}
+
+export function whoWasBlind(bid1, bid2, actual1, actual2) {
+  const nilPlayerBid = [bid1, bid2].find((bid) => bid === NIL);
+  const blindNilPlayerBid = [bid1, bid2].find((bid) => bid === BLIND_NIL);
+  const nilPlayerActual = bid1 === nilPlayerBid ? actual1 : actual2;
+  const blindNilPlayerActual = bid1 === blindNilPlayerBid ? actual1 : actual2;
+
+  return {
+    nilPlayerActual,
+    blindNilPlayerActual,
+  };
 }
 
 export function calculateRoundScoresFromRoundHistory(roundHistory) {
@@ -271,38 +263,6 @@ export function calculateTeamRoundScoresFromTeamHistory(teamHistory) {
   });
 }
 
-// this is not used anymore. Was replaced with calculateTeamScoreFromRoundHistory because one team's score does not depend on the other team's score
-// make sure to remove the test that test this function before removing the function
-export function calculateScoreFromRoundHistory(roundHistory) {
-  const roundScores = calculateRoundScoresFromRoundHistory(roundHistory);
-
-  let initialScore = {
-    team1Score: 0,
-    team1Bags: 0,
-    team2Score: 0,
-    team2Bags: 0,
-  };
-
-  let gameScore = roundScores.reduce((prev, roundScore) => {
-    prev.team1Score += roundScore.team1Score;
-    prev.team1Bags += roundScore.team1Bags;
-    prev.team2Score += roundScore.team2Score;
-    prev.team2Bags += roundScore.team2Bags;
-
-    if (prev.team1Bags >= 10) {
-      prev.team1Score -= 100;
-      prev.team1Bags -= 10;
-    }
-    if (prev.team2Bags >= 10) {
-      prev.team2Score -= 100;
-      prev.team2Bags -= 10;
-    }
-
-    return prev;
-  }, initialScore);
-  return gameScore;
-}
-
 export function getTeamHistoryFromRoundHistory(
   roundHistory,
   teamBidsAndActuals
@@ -320,25 +280,27 @@ export function calculateTeamScoreFromRoundHistory(
     roundHistory,
     teamBidsAndActuals
   );
-  const teamScores = calculateTeamRoundScoresFromTeamHistory(teamRoundHistory);
+  const roundScores = calculateTeamRoundScoresFromTeamHistory(teamRoundHistory);
 
   const initialScore = {
     teamScore: 0,
     teamBags: 0,
   };
 
-  const gameScore = teamScores.reduce((prev, roundScore) => {
-    prev.teamScore += roundScore.teamScore;
-    prev.teamBags += roundScore.teamBags;
-
-    if (prev.teamBags >= 10) {
-      prev.teamScore -= 100;
-      prev.teamBags -= 10;
-    }
-
-    return prev;
-  }, initialScore);
+  const gameScore = roundScores.reduce(addRounds, initialScore);
   return gameScore;
+}
+
+function addRounds(prev, roundScore) {
+  prev.teamScore += roundScore.teamScore;
+  prev.teamBags += roundScore.teamBags;
+
+  if (prev.teamBags >= 10) {
+    prev.teamScore -= 100;
+    prev.teamBags -= 10;
+  }
+
+  return prev;
 }
 
 export function getRoundHistoryAtCurrentRound(roundHistory, index) {
