@@ -50,6 +50,7 @@ export function nilTeamRoundScore(bid1, bid2, actual1, actual2) {
   }
 }
 
+// this function should accept rulesType parameter
 export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
   const player1AchievedNil = parseInt(actual1) === 0;
   const player2AchievedNil = parseInt(actual2) === 0;
@@ -79,6 +80,7 @@ export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
   }
 }
 
+// this function should accept rulesType parameter
 export function calculateScoreForDualNilWithOneBlind(
   bid1,
   bid2,
@@ -120,6 +122,7 @@ export function calculateScoreForDualNilWithOneBlind(
   }
 }
 
+// this function should accept rulesType parameter
 export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
   const player1AchievedNil = parseInt(actual1) === 0;
   const player2AchievedNil = parseInt(actual2) === 0;
@@ -149,6 +152,7 @@ export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
   }
 }
 
+// this function should accept rulesType parameter
 export function calculateTeamRoundScoreWithOneNilBidder(
   bid1,
   bid2,
@@ -175,6 +179,8 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       bags,
     };
   } else if (!achievedNil && didntGetSet) {
+    // p1bid: nil, p2bid: 2, p1Actual: 1, p2Actual: 2, should be same score as:
+    // p1bid: nil, p2bid: 2, p1Actual: 1, p2Actual: 0, ?
     return {
       score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
       bags,
