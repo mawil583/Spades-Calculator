@@ -1,18 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormik } from 'formik';
 // Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
-import {
-  Button,
-  SimpleGrid,
-  Center,
-  Input,
-  Editable,
-  EditableInput,
-  EditablePreview,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-} from '@chakra-ui/react';
+import { Button, SimpleGrid, Center } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import 'core-js/es/promise';
 import 'core-js/es/set';
@@ -21,7 +10,8 @@ import 'core-js/es/map';
 import * as Yup from 'yup';
 import '../App.css';
 import { useLocalStorage } from '../helpers/hooks';
-import TeamName from '../components/TeamName';
+import TeamNameInput from '../components/TeamNameInput';
+import PlayerNameInput from '../components/PlayerNameInput';
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -82,145 +72,54 @@ function LandingPage() {
 
   return (
     <div className='App'>
-      <div className='App-inner'>
-        <div className='team-board'>
-          <div>
-            <form onSubmit={formik.handleSubmit}>
-              <SimpleGrid columns={2}>
-                <TeamName
-                  teamName={formik.values.team1Name}
-                  handleChange={formik.handleChange}
-                />
-                <TeamName
-                  teamName={formik.values.team2Name}
-                  handleChange={formik.handleChange}
-                />
-                <div className='namesContainer'>
-                  <FormControl
-                    isInvalid={
-                      formik.errors.t1p1Name && formik.touched.t1p1Name
-                    }
-                  >
-                    <FormLabel
-                      style={{ paddingLeft: '5px' }}
-                      htmlFor='t1p1Name'
-                    >
-                      Player 1 Name
-                    </FormLabel>
-                    <Input
-                      px={1}
-                      placeholder={`Who's dealing first?`}
-                      type='text'
-                      value={formik.values.t1p1Name}
-                      onChange={formik.handleChange}
-                      id='t1p1Name'
-                      name='t1p1Name'
-                    />
-                    {formik.errors.t1p1Name && formik.touched.t1p1Name ? (
-                      <FormErrorMessage>
-                        {formik.errors.t1p1Name}
-                      </FormErrorMessage>
-                    ) : null}
-                  </FormControl>
-                </div>
-
-                <div className='namesContainer'>
-                  <FormControl
-                    isInvalid={
-                      formik.errors.t2p1Name && formik.touched.t2p1Name
-                    }
-                  >
-                    <FormLabel
-                      style={{ paddingLeft: '5px' }}
-                      htmlFor='t2p1Name'
-                    >
-                      Player 1 Name
-                    </FormLabel>
-                    <Input
-                      px={1}
-                      placeholder={`Who's left of dealer?`}
-                      value={formik.values.t2p1Name}
-                      onChange={formik.handleChange}
-                      id='t2p1Name'
-                      name='t2p1Name'
-                    />
-                    {formik.errors.t2p1Name && formik.touched.t2p1Name ? (
-                      <FormErrorMessage>
-                        {formik.errors.t2p1Name}
-                      </FormErrorMessage>
-                    ) : null}
-                  </FormControl>
-                </div>
-                <div className='namesContainer'>
-                  <FormControl
-                    isInvalid={
-                      formik.errors.t1p2Name && formik.touched.t1p2Name
-                    }
-                  >
-                    <FormLabel
-                      style={{ paddingLeft: '5px' }}
-                      htmlFor='t1p2Name'
-                    >
-                      Player 2 Name
-                    </FormLabel>
-                    <Input
-                      px={1}
-                      value={formik.values.t1p2Name}
-                      onChange={formik.handleChange}
-                      id='t1p2Name'
-                      name='t1p2Name'
-                    />
-                    {formik.errors.t1p2Name && formik.touched.t1p2Name ? (
-                      <FormErrorMessage>
-                        {formik.errors.t1p2Name}
-                      </FormErrorMessage>
-                    ) : null}
-                  </FormControl>
-                </div>
-
-                <div className='namesContainer'>
-                  <FormControl
-                    isInvalid={
-                      formik.errors.t2p2Name && formik.touched.t2p2Name
-                    }
-                  >
-                    <FormLabel
-                      style={{ paddingLeft: '5px' }}
-                      htmlFor='t2p2Name'
-                    >
-                      Player 2 Name
-                    </FormLabel>
-                    <Input
-                      px={1}
-                      value={formik.values.t2p2Name}
-                      onChange={formik.handleChange}
-                      id='t2p2Name'
-                      name='t2p2Name'
-                    />
-                    {formik.errors.t2p2Name && formik.touched.t2p2Name ? (
-                      <FormErrorMessage>
-                        {formik.errors.t2p2Name}
-                      </FormErrorMessage>
-                    ) : null}
-                  </FormControl>
-                </div>
-              </SimpleGrid>
-              <Center>
-                <Button
-                  size='md'
-                  height='40px'
-                  width='200px'
-                  border='2px'
-                  borderColor='green.500'
-                  type='submit'
-                >
-                  Start
-                </Button>
-              </Center>
-            </form>
-          </div>
-        </div>
-      </div>
+      <form onSubmit={formik.handleSubmit}>
+        <SimpleGrid columns={2}>
+          <TeamNameInput
+            teamName={formik.values.team1Name}
+            handleChange={formik.handleChange}
+          />
+          <TeamNameInput
+            teamName={formik.values.team2Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            playerName={formik.values.t1p1Name}
+            errors={formik.errors.t1p1Name}
+            touched={formik.touched.t1p1Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            playerName={formik.values.t2p1Name}
+            errors={formik.errors.t2p1Name}
+            touched={formik.touched.t2p1Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            playerName={formik.values.t1p2Name}
+            errors={formik.errors.t1p2Name}
+            touched={formik.touched.t1p2Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            playerName={formik.values.t2p2Name}
+            errors={formik.errors.t2p2Name}
+            touched={formik.touched.t2p2Name}
+            handleChange={formik.handleChange}
+          />
+        </SimpleGrid>
+        <Center>
+          <Button
+            size='md'
+            height='40px'
+            width='200px'
+            border='2px'
+            borderColor='green.500'
+            type='submit'
+          >
+            Start
+          </Button>
+        </Center>
+      </form>
     </div>
   );
 }

@@ -6,7 +6,7 @@ import {
   EditablePreview,
 } from '@chakra-ui/react';
 
-function TeamName({ teamName, handleChange }) {
+function TeamNameInput({ teamName, handleChange }) {
   return (
     <div>
       <Editable
@@ -31,4 +31,4 @@ function TeamName({ teamName, handleChange }) {
   );
 }
 
-export default TeamName;
+export default TeamNameInput;
