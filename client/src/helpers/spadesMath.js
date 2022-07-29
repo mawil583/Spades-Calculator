@@ -212,6 +212,7 @@ export function whoWentNil(bid1, bid2, actual1, actual2) {
   };
 }
 
+// this function assumes both bidders went Nil but only one went blind. that might also be a code smell. Consider refactoring into class for encapsulation
 export function whoWasBlind(bid1, bid2, actual1, actual2) {
   const nilPlayerBid = [bid1, bid2].find((bid) => bid === NIL);
   const blindNilPlayerBid = [bid1, bid2].find((bid) => bid === BLIND_NIL);
