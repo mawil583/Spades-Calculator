@@ -1,0 +1,39 @@
+import React from 'react';
+// Note: Chakra UI applies a border-width: 0; to the <body>, so none of the input boxes are visible
+import {
+  Input,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+} from '@chakra-ui/react';
+import 'core-js/es/promise';
+import 'core-js/es/set';
+import 'core-js/es/map';
+
+import '../App.css';
+
+function PlayerNameInput({ playerName, errors, touched, handleChange }) {
+  return (
+    <div>
+      <FormControl isInvalid={errors && touched}>
+        <FormLabel style={{ paddingLeft: '5px' }} htmlFor='t1p1Name'>
+          Player 1 Name
+        </FormLabel>
+        <Input
+          px={1}
+          placeholder={`Who's dealing first?`}
+          type='text'
+          value={playerName}
+          onChange={handleChange}
+          id='t1p1Name'
+          name='t1p1Name'
+        />
+        {errors && touched ? (
+          <FormErrorMessage>{errors}</FormErrorMessage>
+        ) : null}
+      </FormControl>
+    </div>
+  );
+}
+
+export default PlayerNameInput;

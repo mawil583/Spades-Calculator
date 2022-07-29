@@ -5,14 +5,14 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import Names from './pages/Names';
+import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
 
 ReactDOM.render(
   <ChakraProvider>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Names />} />
+        <Route path='/' element={<LandingPage />} />
         <Route path='spades-calculator' element={<SpadesCalculator />} />
       </Routes>
     </BrowserRouter>
