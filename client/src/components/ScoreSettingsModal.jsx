@@ -80,11 +80,11 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
           />
           <SettingExample
             p1Bid={'Nil'}
-            p1Actual='2'
+            p1Actual='3'
             p2Bid='1'
-            p2Actual='0'
-            score={-110}
-            bags={0}
+            p2Actual='2'
+            score={-89}
+            bags={1}
           />
         </ModalBody>
       </ModalContent>

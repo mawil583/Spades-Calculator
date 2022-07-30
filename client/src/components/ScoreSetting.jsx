@@ -20,7 +20,7 @@ function ScoreSetting() {
     <>
       <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
       <Text fontSize='lg'>
-        Select your preferred scoring rules for nil.{' '}
+        Select your preferred scoring rules for failed nil.{' '}
         {
           <IconButton
             style={{ height: 'auto', verticalAlign: 'baseline' }}
