@@ -6,6 +6,7 @@
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^1.8.8",
     "@contentful/rich-text-react-renderer": "^14.1.2",
     "@contentful/rich-text-types": "^14.1.2",
