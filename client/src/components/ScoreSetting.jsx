@@ -14,7 +14,6 @@ function ScoreSetting() {
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
   const [isOpen, setIsModalOpen] = useState(false);
   const handleClick = () => {
-    console.log('handleClick');
     setIsModalOpen(true);
   };
   return (
