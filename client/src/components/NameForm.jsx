@@ -76,24 +76,34 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          id='t1p1Name'
+          label='Player 1 Name'
+          placeholder={`Who's dealing first?`}
           playerName={formik.values.t1p1Name}
           errors={formik.errors.t1p1Name}
           touched={formik.touched.t1p1Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          id='t2p1Name'
+          label='Player 1 Name'
+          placeholder={`Who's left of dealer?`}
           playerName={formik.values.t2p1Name}
           errors={formik.errors.t2p1Name}
           touched={formik.touched.t2p1Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          id='t1p2Name'
+          label='Player 2 Name'
           playerName={formik.values.t1p2Name}
           errors={formik.errors.t1p2Name}
           touched={formik.touched.t1p2Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          id='t2p2Name'
+          label='Player 2 Name'
           playerName={formik.values.t2p2Name}
           errors={formik.errors.t2p2Name}
           touched={formik.touched.t2p2Name}

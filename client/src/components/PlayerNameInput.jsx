@@ -12,21 +12,29 @@ import 'core-js/es/map';
 
 import '../App.css';
 
-function PlayerNameInput({ playerName, errors, touched, handleChange }) {
+function PlayerNameInput({
+  id,
+  label,
+  placeholder,
+  playerName,
+  errors,
+  touched,
+  handleChange,
+}) {
   return (
     <div>
       <FormControl isInvalid={errors && touched}>
         <FormLabel style={{ paddingLeft: '5px' }} htmlFor='t1p1Name'>
-          Player 1 Name
+          {label}
         </FormLabel>
         <Input
           px={1}
-          placeholder={`Who's dealing first?`}
+          placeholder={`${placeholder ? placeholder : ''}`}
           type='text'
           value={playerName}
           onChange={handleChange}
-          id='t1p1Name'
-          name='t1p1Name'
+          id={id}
+          name={id}
         />
         {errors && touched ? (
           <FormErrorMessage>{errors}</FormErrorMessage>
