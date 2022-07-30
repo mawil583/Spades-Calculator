@@ -37,3 +37,6 @@ export const BLIND_NIL = 'Blind Nil';
 export const NIL = 'Nil';
 export const TEAM1 = 'team1BidsAndActuals';
 export const TEAM2 = 'team2BidsAndActuals';
+export const TAKES_BAGS = 'takesBags';
+export const HELPS_TEAM_BID = 'helpsTeamBid';
+export const NO_BAGS_NO_HELP = 'noBagsNoHelp';

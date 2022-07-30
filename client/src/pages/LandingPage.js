@@ -5,11 +5,13 @@ import 'core-js/es/map';
 
 import '../App.css';
 import NameForm from '../components/NameForm';
+import ScoreSetting from '../components/ScoreSetting';
 
 function LandingPage() {
   return (
     <div className='App'>
       <NameForm />
+      <ScoreSetting />
     </div>
   );
 }
