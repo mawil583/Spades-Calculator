@@ -10,10 +10,6 @@ import { useLocalStorage } from '../helpers/hooks';
 
 function ScoreSetting() {
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
-
-  useEffect(() => {
-    setNilRule(TAKES_BAGS);
-  }, []);
   return (
     <>
       <Text>Select your preferred scoring rules for nil.</Text>
