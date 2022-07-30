@@ -1,5 +1,4 @@
 --High Priority--
-figure out why nilScoringRule isn't getting set on mount
 Add ScoreSettings component to LandingPage with ChakraUI radio component. Also add an 'info' popup explaining the differences. Make sure this setting is stored in localStorage
 add settings for each way of scoring nil. does a nil player receive a bag for each trick won? yes! Also, tricks taken by nil bidder to not count towards team's overall score. i.e. if p1 bids nil and p2 bids 1, but p1 takes 1 and p2 takes 0, the team score should be (-100 + 1) + (-10) = -109 with 1 bag. Change spadesMath.js! Also edit test file accordingly
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
