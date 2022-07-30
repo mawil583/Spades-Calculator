@@ -31,10 +31,10 @@ function SettingExample({ score, bags, p1Bid, p1Actual, p2Bid, p2Actual }) {
       <Box mr={'5px'} ml={'5px'} mb={6}>
         <Flex direction={'row'} justifyContent={'center'}>
           <Text style={{ fontSize: '18px' }}>
-            Team Score: <strong>{score}</strong>
+            Score: <strong>{score}</strong>
           </Text>
           <Text style={{ marginLeft: '10px', fontSize: '18px' }}>
-            Team Bags: <strong>{bags}</strong>
+            Bags: <strong>{bags}</strong>
           </Text>
         </Flex>
       </Box>
