@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, Radio, RadioGroup } from '@chakra-ui/react';
 
 import {
@@ -9,7 +9,12 @@ import {
 import { useLocalStorage } from '../helpers/hooks';
 
 function ScoreSetting() {
+  // why is localStorage not being set on mount?
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
+
+  // useEffect(() => {
+  //   setNilRule(TAKES_BAGS);
+  // });
   return (
     <>
       <Text>Select your preferred scoring rules for nil.</Text>
