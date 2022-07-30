@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Text, Radio, RadioGroup } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Text, Radio, RadioGroup, Stack, IconButton } from '@chakra-ui/react';
+import { QuestionIcon } from '@chakra-ui/icons';
 
 import {
   TAKES_BAGS,
@@ -7,16 +8,35 @@ import {
   NO_BAGS_NO_HELP,
 } from '../helpers/constants';
 import { useLocalStorage } from '../helpers/hooks';
+import ScoreSettingsModal from './ScoreSettingsModal';
 
 function ScoreSetting() {
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
+  const [isOpen, setIsModalOpen] = useState(false);
+  const handleClick = () => {
+    setIsModalOpen(true);
+  };
   return (
     <>
-      <Text>Select your preferred scoring rules for nil.</Text>
+      <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
+      <Text fontSize='lg'>
+        Select your preferred scoring rules for nil.{' '}
+        {
+          <IconButton
+            style={{ height: 'auto', verticalAlign: 'baseline' }}
+            size='lg'
+            variant='ghost'
+            onClick={handleClick}
+            icon={<QuestionIcon />}
+          />
+        }
+      </Text>
       <RadioGroup onChange={setNilRule} value={nilRule}>
-        <Radio value={TAKES_BAGS}>Takes Bags</Radio>
-        <Radio value={HELPS_TEAM_BID}>Helps Team Bid</Radio>
-        <Radio value={NO_BAGS_NO_HELP}>No Bags/No Help</Radio>
+        <Stack>
+          <Radio value={TAKES_BAGS}>Takes Bags</Radio>
+          <Radio value={HELPS_TEAM_BID}>Helps Team Bid</Radio>
+          <Radio value={NO_BAGS_NO_HELP}>No Bags/No Help</Radio>
+        </Stack>
       </RadioGroup>
     </>
   );
