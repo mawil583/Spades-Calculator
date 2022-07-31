@@ -36,25 +36,29 @@ function PastRound(props) {
 
   const team1GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
     roundHistoryAtEndOfThisRound,
-    TEAM1
+    TEAM1,
+    nilSetting
   );
 
   const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
     roundHistoryAtEndOfThisRound,
-    TEAM2
+    TEAM2,
+    nilSetting
   );
 
   const team1RoundScoreFromHistory = calculateRoundScore(
     roundData.team1BidsAndActuals.p1Bid,
     roundData.team1BidsAndActuals.p2Bid,
     roundData.team1BidsAndActuals.p1Actual,
-    roundData.team1BidsAndActuals.p2Actual
+    roundData.team1BidsAndActuals.p2Actual,
+    nilSetting
   );
   const team2RoundScoreFromHistory = calculateRoundScore(
     roundData.team2BidsAndActuals.p1Bid,
     roundData.team2BidsAndActuals.p2Bid,
     roundData.team2BidsAndActuals.p1Actual,
-    roundData.team2BidsAndActuals.p2Actual
+    roundData.team2BidsAndActuals.p2Actual,
+    nilSetting
   );
 
   const setT1p1Bid = (val) => {
