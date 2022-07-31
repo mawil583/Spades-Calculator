@@ -68,10 +68,12 @@ function NameForm() {
     <form onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={2}>
         <TeamNameInput
+          id='team1Name'
           teamName={formik.values.team1Name}
           handleChange={formik.handleChange}
         />
         <TeamNameInput
+          id='team2Name'
           teamName={formik.values.team2Name}
           handleChange={formik.handleChange}
         />
