@@ -6,7 +6,7 @@ import {
   EditablePreview,
 } from '@chakra-ui/react';
 
-function TeamNameInput({ teamName, handleChange }) {
+function TeamNameInput({ id, teamName, handleChange }) {
   return (
     <div>
       <Editable
@@ -22,8 +22,8 @@ function TeamNameInput({ teamName, handleChange }) {
             type='text'
             value={teamName}
             onChange={handleChange}
-            id='team1Name'
-            name='team1Name'
+            id={id}
+            name={id}
           />
         </Center>
       </Editable>
