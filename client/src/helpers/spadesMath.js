@@ -1,7 +1,19 @@
-import { BLIND_NIL, NIL } from './constants';
+import {
+  BLIND_NIL,
+  NIL,
+  TAKES_BAGS,
+  HELPS_TEAM_BID,
+  NO_BAGS_NO_HELP,
+} from './constants';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
-export function calculateRoundScore(bid1, bid2, actual1, actual2, nilSetting) {
+export function calculateRoundScore(
+  bid1,
+  bid2,
+  actual1,
+  actual2,
+  nilSetting = HELPS_TEAM_BID
+) {
   const someoneWentNil = bid1 === NIL || bid2 === NIL;
   const someoneWentBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
   const teamBid = parseInt(bid1) + parseInt(bid2);
@@ -23,54 +35,200 @@ function teamRoundScore(teamBid, teamActual) {
   }
 }
 
-export function nilTeamRoundScore(bid1, bid2, actual1, actual2, nilSetting) {
-  const bothPlayersWentNil =
-    (bid1 === NIL || bid1 === BLIND_NIL) &&
-    (bid2 === NIL || bid2 === BLIND_NIL);
-  if (bothPlayersWentNil) {
-    const areBothNotBlind = bid1 === NIL && bid2 === NIL;
-    const isOnlyOnePlayerBlind =
-      (bid1 === NIL && bid2 === BLIND_NIL) ||
-      (bid1 === BLIND_NIL && bid2 === NIL);
-    const bothAreBlind = bid1 === BLIND_NIL && bid2 === BLIND_NIL;
-    if (areBothNotBlind) {
-      return calculateTeamRoundScoreWithBothNonBlindNil(
-        actual1,
-        actual2,
-        nilSetting
-      );
-    } else if (isOnlyOnePlayerBlind) {
-      return calculateScoreForDualNilWithOneBlind(
+export function nilTeamRoundScore(
+  bid1,
+  bid2,
+  actual1,
+  actual2,
+  nilSetting = HELPS_TEAM_BID
+) {
+  const score = calculateNilTeamRoundScoreFromBidsAndActualsAndSetting(
+    bid1,
+    bid2,
+    actual1,
+    actual2,
+    nilSetting
+  );
+  const bags = calculateNilTeamRoundBagsFromBidsAndActualsAndSetting(
+    bid1,
+    bid2,
+    actual1,
+    actual2,
+    nilSetting
+  );
+  return { score, bags };
+}
+
+export function calculateNilTeamRoundScoreFromBidsAndActualsAndSetting(
+  bid1,
+  bid2,
+  actual1,
+  actual2,
+  nilSetting
+) {
+  const areP1AndP2ScoredIndependently = nilSetting != HELPS_TEAM_BID;
+  if (!areP1AndP2ScoredIndependently) {
+    const bothPlayersWentNil =
+      (bid1 === NIL || bid1 === BLIND_NIL) &&
+      (bid2 === NIL || bid2 === BLIND_NIL);
+    if (bothPlayersWentNil) {
+      const areBothNotBlind = bid1 === NIL && bid2 === NIL;
+      const isOnlyOnePlayerBlind =
+        (bid1 === NIL && bid2 === BLIND_NIL) ||
+        (bid1 === BLIND_NIL && bid2 === NIL);
+      const bothAreBlind = bid1 === BLIND_NIL && bid2 === BLIND_NIL;
+      if (areBothNotBlind) {
+        return calculateTeamRoundScoreWithBothNonBlindNil(
+          actual1,
+          actual2,
+          nilSetting
+        ).score;
+      } else if (isOnlyOnePlayerBlind) {
+        return calculateScoreForDualNilWithOneBlind(
+          bid1,
+          bid2,
+          actual1,
+          actual2,
+          nilSetting
+        ).score;
+      } else if (bothAreBlind) {
+        return calculateTeamRoundScoreWithBothBlindNil(
+          actual1,
+          actual2,
+          nilSetting
+        ).score;
+      }
+    } else {
+      return calculateTeamRoundScoreWithOneNilBidder(
         bid1,
         bid2,
         actual1,
         actual2,
         nilSetting
-      );
-    } else if (bothAreBlind) {
-      return calculateTeamRoundScoreWithBothBlindNil(
-        actual1,
-        actual2,
-        nilSetting
-      );
+      ).score;
     }
-  } else {
-    return calculateTeamRoundScoreWithOneNilBidder(
-      bid1,
-      bid2,
-      actual1,
-      actual2,
-      nilSetting
-    );
+  }
+
+  const p1BidValue =
+    convertAchievedBidToScoreValue(bid1) +
+    overPenalty(bid1, actual1, nilSetting) +
+    underPenalty(bid1, actual1);
+
+  const p2BidValue =
+    convertAchievedBidToScoreValue(bid2) +
+    overPenalty(bid2, actual2, nilSetting) +
+    underPenalty(bid2, actual2);
+
+  return p1BidValue + p2BidValue;
+}
+
+// bag penalty
+export function overPenalty(bid, actual, nilSetting) {
+  const shouldBePenalized =
+    convertStringInputToNum(bid) < convertStringInputToNum(actual);
+  if (!shouldBePenalized) {
+    return 0;
+  }
+  const bags = getPlayerBags(bid, actual, nilSetting);
+  const isTypeNil = bid === NIL || bid === BLIND_NIL;
+  let penalty = 0;
+  if (isTypeNil) {
+    // taking away original value, and then subtracting that amount again so that it exists as a penalty
+    penalty = -convertAchievedBidToScoreValue(bid) * 2;
+    penalty += bags;
+    return penalty;
+  }
+  return bags;
+}
+
+// set penalty
+export function underPenalty(bid, actual) {
+  const isTypeNil = bid === NIL || bid === BLIND_NIL;
+  const gotSet = convertStringInputToNum(actual) < convertStringInputToNum(bid);
+  const shouldBePenalized = !isTypeNil && gotSet;
+  if (!shouldBePenalized) {
+    return 0;
+  }
+  // taking away original value, and then subtracting that amount again so that it exists as a penalty
+  const penalty = -convertAchievedBidToScoreValue(bid) * 2;
+  return penalty;
+}
+
+export function getPlayerBags(bid, actual, nilSetting) {
+  let bags = 0;
+  if (convertStringInputToNum(bid) >= convertStringInputToNum(actual)) {
+    return bags;
+  }
+  switch (nilSetting) {
+    case NO_BAGS_NO_HELP:
+      const isTypeNil = bid === NIL || bid === BLIND_NIL;
+      if (!isTypeNil) {
+        bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
+      }
+      return bags;
+    case TAKES_BAGS:
+      bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
+      return bags;
   }
 }
 
-// this function should accept rulesType parameter
-export function calculateTeamRoundScoreWithBothNonBlindNil(
+export function calculateNilTeamRoundBagsFromBidsAndActualsAndSetting(
+  bid1,
+  bid2,
   actual1,
   actual2,
   nilSetting
 ) {
+  const areP1AndP2ScoredIndependently = nilSetting != HELPS_TEAM_BID;
+  if (!areP1AndP2ScoredIndependently) {
+    const bothPlayersWentNil =
+      (bid1 === NIL || bid1 === BLIND_NIL) &&
+      (bid2 === NIL || bid2 === BLIND_NIL);
+    if (bothPlayersWentNil) {
+      const areBothNotBlind = bid1 === NIL && bid2 === NIL;
+      const isOnlyOnePlayerBlind =
+        (bid1 === NIL && bid2 === BLIND_NIL) ||
+        (bid1 === BLIND_NIL && bid2 === NIL);
+      const bothAreBlind = bid1 === BLIND_NIL && bid2 === BLIND_NIL;
+      if (areBothNotBlind) {
+        return calculateTeamRoundScoreWithBothNonBlindNil(
+          actual1,
+          actual2,
+          nilSetting
+        ).bags;
+      } else if (isOnlyOnePlayerBlind) {
+        return calculateScoreForDualNilWithOneBlind(
+          bid1,
+          bid2,
+          actual1,
+          actual2,
+          nilSetting
+        ).bags;
+      } else if (bothAreBlind) {
+        return calculateTeamRoundScoreWithBothBlindNil(
+          actual1,
+          actual2,
+          nilSetting
+        ).bags;
+      }
+    } else {
+      return calculateTeamRoundScoreWithOneNilBidder(
+        bid1,
+        bid2,
+        actual1,
+        actual2,
+        nilSetting
+      ).bags;
+    }
+  }
+  const bags =
+    getPlayerBags(bid1, actual1, nilSetting) +
+    getPlayerBags(bid2, actual2, nilSetting);
+  return bags;
+}
+
+// only gets called if HELPS_TEAM_BID setting
+export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
   const player1AchievedNil = parseInt(actual1) === 0;
   const player2AchievedNil = parseInt(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -82,30 +240,27 @@ export function calculateTeamRoundScoreWithBothNonBlindNil(
       bags: 0,
     };
   } else if (onlyOnePlayerAchievedNil) {
-    // rulesType
     const actualFromPlayerWhoFailedNil = player1AchievedNil ? actual2 : actual1;
     const bags = parseInt(actualFromPlayerWhoFailedNil);
     return {
-      score: 100 + -100,
+      score: 100 + -100 + bags,
       bags,
     };
   } else {
-    // rulesType
     const bags = parseInt(actual1) + parseInt(actual2);
     return {
-      score: -100 + -100,
+      score: -100 + -100 + bags,
       bags,
     };
   }
 }
 
-// this function should accept rulesType parameter
+// only gets called if HELPS_TEAM_BID setting
 export function calculateScoreForDualNilWithOneBlind(
   bid1,
   bid2,
   actual1,
-  actual2,
-  nilSetting
+  actual2
 ) {
   const { nilPlayerActual, blindNilPlayerActual } = whoWasBlind(
     bid1,
@@ -121,35 +276,28 @@ export function calculateScoreForDualNilWithOneBlind(
       bags: 0,
     };
   } else if (nilPlayerAchievedNil && !blindNilPlayerAchievedNil) {
-    // rulesType
     const bags = parseInt(blindNilPlayerActual);
     return {
-      score: 100 + -200,
+      score: 100 + -200 + bags,
       bags,
     };
   } else if (!nilPlayerAchievedNil && blindNilPlayerAchievedNil) {
-    // rulesType
     const bags = parseInt(nilPlayerAchievedNil);
     return {
-      score: -100 + 200,
+      score: -100 + 200 + bags,
       bags,
     };
   } else {
-    // rulesType
     const bags = parseInt(nilPlayerActual) + parseInt(blindNilPlayerActual);
     return {
-      score: -100 + -200,
+      score: -100 + -200 + bags,
       bags,
     };
   }
 }
 
-// this function should accept rulesType parameter
-export function calculateTeamRoundScoreWithBothBlindNil(
-  actual1,
-  actual2,
-  nilSetting
-) {
+// only gets called if HELPS_TEAM_BID setting
+export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
   const player1AchievedNil = parseInt(actual1) === 0;
   const player2AchievedNil = parseInt(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -162,29 +310,26 @@ export function calculateTeamRoundScoreWithBothBlindNil(
     };
   } else if (onlyOnePlayerAchievedNil) {
     const actualFromPlayerWhoFailedNil = player1AchievedNil ? actual2 : actual1;
-    // rulesType
     const bags = parseInt(actualFromPlayerWhoFailedNil);
     return {
-      score: 200 + -200,
+      score: 200 + -200 + bags,
       bags,
     };
   } else {
-    // rulesType
     const bags = parseInt(actual1) + parseInt(actual2);
     return {
-      score: -200 + -200,
+      score: -200 + -200 + bags,
       bags,
     };
   }
 }
 
-// this function should accept rulesType parameter
+// only gets called with HELPS_TEAM_BID setting
 export function calculateTeamRoundScoreWithOneNilBidder(
   bid1,
   bid2,
   actual1,
-  actual2,
-  nilSetting
+  actual2
 ) {
   const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual, nonNilPlayerActual } =
     whoWentNil(bid1, bid2, actual1, actual2);
@@ -206,8 +351,6 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       bags,
     };
   } else if (!achievedNil && didntGetSet) {
-    // p1bid: nil, p2bid: 2, p1Actual: 1, p2Actual: 2, should be same score as:
-    // p1bid: nil, p2bid: 2, p1Actual: 1, p2Actual: 0, ?
     return {
       score: wasBlind ? -200 + nonNilPlayerScore : -100 + nonNilPlayerScore,
       bags,
@@ -256,33 +399,6 @@ export function whoWasBlind(bid1, bid2, actual1, actual2) {
     nilPlayerActual,
     blindNilPlayerActual,
   };
-}
-
-// this doesn't seem to be used anywhere. Remove it and everything that depends on it
-export function calculateRoundScoresFromRoundHistory(roundHistory, nilSetting) {
-  return roundHistory.map((round) => {
-    const { team1BidsAndActuals, team2BidsAndActuals } = round;
-    const team1RoundScore = calculateRoundScore(
-      team1BidsAndActuals.p1Bid,
-      team1BidsAndActuals.p2Bid,
-      team1BidsAndActuals.p1Actual,
-      team1BidsAndActuals.p2Actual,
-      nilSetting
-    );
-    const team2RoundScore = calculateRoundScore(
-      team2BidsAndActuals.p1Bid,
-      team2BidsAndActuals.p2Bid,
-      team2BidsAndActuals.p1Actual,
-      team2BidsAndActuals.p2Actual,
-      nilSetting
-    );
-    return {
-      team1Score: team1RoundScore.score,
-      team1Bags: team1RoundScore.bags,
-      team2Score: team2RoundScore.score,
-      team2Bags: team2RoundScore.bags,
-    };
-  });
 }
 
 export function calculateTeamRoundScoresFromTeamHistory(
@@ -354,6 +470,17 @@ export function getRoundHistoryAtCurrentRound(roundHistory, index) {
     history.push(roundHistory[i]);
   }
   return history;
+}
+
+export function convertAchievedBidToScoreValue(input) {
+  switch (input) {
+    case BLIND_NIL:
+      return 200;
+    case NIL:
+      return 100;
+    default:
+      return parseInt(input) * 10;
+  }
 }
 
 export function convertStringInputToNum(input) {

@@ -15,8 +15,18 @@ function SpadesCalculator() {
   const names = JSON.parse(localStorage.getItem('names'));
   useRedirectWhenFalsey(names, navigate);
   const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
-  const team1Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM1);
-  const team2Score = calculateTeamScoreFromRoundHistory(roundHistory, TEAM2);
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
+  const team1Score = calculateTeamScoreFromRoundHistory(
+    roundHistory,
+    TEAM1,
+    nilSetting
+  );
+  console.log({ team1Score });
+  const team2Score = calculateTeamScoreFromRoundHistory(
+    roundHistory,
+    TEAM2,
+    nilSetting
+  );
 
   return (
     <div className='App'>

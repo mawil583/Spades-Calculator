@@ -26,6 +26,7 @@ function PastRound(props) {
 
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     names;
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
 
   const roundData = roundHistory[index];
 
