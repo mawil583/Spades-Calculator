@@ -1,7 +1,7 @@
 --High Priority--
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 add dynamic dealer tag
-fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
+fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: either userReducer for global state or resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
 validation for total Actuals being more than 13
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 
@@ -9,9 +9,8 @@ implement validation for name length and team length such that it won't create l
 make it more obvious that team names are editable and that past rounds are editable
 change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
 add text to PastRound Actuals. if someone went over 10 bags, or got set, or failed nil, let user know
-break out components into smaller components on Names page
 improve separation of concerns for CurrentRound vs PastRound
-names was already set in Names.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
+names was already set in NameForm.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 instead of storing a bunch of pieces of state, declare large state object array using useReducer
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
@@ -29,7 +28,7 @@ make ActualsSection conditional. It should only show when all bids are entered. 
 make team names editable on SpadesCalculator page
 when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
 optimize app - make sure there are no unnecessary re-renders
-add info page where I describe the rules that I have implemented (currently it's "helps team out"), and provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades)
+provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades)
 add class for spadesMath, and extend that class to add other settings for how game is scored
 implement ability for user to select which scoring rules they want to follow
 remove unused calculateScoreFromRoundHistory and corresponding dependencies
