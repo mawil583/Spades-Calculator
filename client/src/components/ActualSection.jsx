@@ -57,7 +57,7 @@ function ActualSection({
         team2Total={team2ActualTotal}
         title='Actuals'
       />
-      <Center style={{ visibility: 'hidden' }}>Unclaimed</Center>
+      {/* <Center style={{ visibility: 'hidden' }}>Unclaimed</Center> */}
       {!isValid && (
         <div
           style={{
@@ -70,7 +70,11 @@ function ActualSection({
           {errorMessage}
         </div>
       )}
-      <SimpleGrid columns={2} className='namesContainer'>
+      <SimpleGrid
+        columns={2}
+        className='namesContainer'
+        style={{ marginTop: '5px' }}
+      >
         <PlayerInput
           setValTo={setT1p1Actual}
           id='team1BidsAndActuals.p1Actual'
