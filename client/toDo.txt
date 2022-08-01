@@ -1,5 +1,4 @@
 --High Priority--
-add settings for each way of scoring nil. Change spadesMath.js! Also edit test file accordingly
 warning modal when user clicks 'new game'. The modal should prompt the user with question (New game with same teams?)
 add dynamic dealer tag
 fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
