@@ -33,6 +33,15 @@ export const possibleActuals = [
   '13',
 ];
 
+export const defaultNames = {
+  t1p1Name: '',
+  t1p2Name: '',
+  t2p1Name: '',
+  t2p2Name: '',
+  team1Name: 'Team 1',
+  team2Name: 'Team 2',
+};
+
 export const BLIND_NIL = 'Blind Nil';
 export const NIL = 'Nil';
 export const TEAM1 = 'team1BidsAndActuals';

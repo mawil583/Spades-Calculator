@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   SimpleGrid,
   Center,
   Heading,
   Button,
+  IconButton,
 } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
+
 import TeamScore from './TeamScore';
+import WarningModal from './WarningModal';
 
 function GameScore({
   names,
@@ -15,16 +20,33 @@ function GameScore({
   team2Score,
   team2Bags,
   setRoundHistory,
+  hasRoundHistory,
 }) {
+  const navigate = useNavigate();
+  const [isOpen, setIsModalOpen] = useState(false);
   const resetGameWithSamePlayers = () => {
-    setRoundHistory([]);
+    setIsModalOpen(true);
+  };
+  const handleNavigateHome = () => {
+    navigate('/');
   };
 
   return (
-    <div>
+    <>
+      <WarningModal
+        isOpen={isOpen}
+        setIsModalOpen={setIsModalOpen}
+        setRoundHistory={setRoundHistory}
+        hasRoundHistory={hasRoundHistory}
+      />
       <div
-        style={{ display: 'flex', flexDirection: 'row', justifyContent: 'end' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}
       >
+        <IconButton onClick={handleNavigateHome} icon={<ArrowBackIcon />} />
         <Button onClick={resetGameWithSamePlayers}>New Game</Button>
       </div>
       <Container pb={10} borderBottom={'1px solid black'}>
@@ -46,7 +68,7 @@ function GameScore({
           />
         </SimpleGrid>
       </Container>
-    </div>
+    </>
   );
 }
 
