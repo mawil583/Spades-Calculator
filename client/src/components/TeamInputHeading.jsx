@@ -17,7 +17,7 @@ function TeamInputHeading({ team1Total, team2Total, title }) {
       >
         {team1Total}
       </Heading>
-      <Heading mt={'20px'} mb={'10px'} size={'md'}>
+      <Heading mt={'10px'} mb={'10px'} size={'md'}>
         {title}
       </Heading>
       <Heading

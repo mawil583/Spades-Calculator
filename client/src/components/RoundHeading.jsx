@@ -4,7 +4,9 @@ import { Center, Heading, Flex, Box } from '@chakra-ui/react';
 function RoundHeading({ roundNumber, team1Name, team2Name }) {
   return (
     <div>
-      <Heading as={'h3'}>Round {roundNumber}</Heading>
+      <Heading size='lg' as={'h3'}>
+        Round {roundNumber}
+      </Heading>
       <Box>
         <Flex direction={'row'} height={'30px'}>
           <Box

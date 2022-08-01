@@ -44,6 +44,7 @@ function GameScore({
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
+          marginBottom: '-15px',
         }}
       >
         <IconButton
@@ -54,7 +55,7 @@ function GameScore({
         />
         <Button onClick={resetGameWithSamePlayers}>New Game</Button>
       </div>
-      <Container pb={10} borderBottom={'1px solid black'}>
+      <Container pb={5} borderBottom={'1px solid black'}>
         <Center>
           <Heading as='h2' size='lg' style={{ textDecoration: 'underline' }}>
             Score

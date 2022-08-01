@@ -30,6 +30,7 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
             value={val}
             id={id}
             name={id}
+            size='sm'
           >
             {type}
           </Button>
