@@ -46,7 +46,12 @@ function GameScore({
           justifyContent: 'space-between',
         }}
       >
-        <IconButton onClick={handleNavigateHome} icon={<ArrowBackIcon />} />
+        <IconButton
+          onClick={handleNavigateHome}
+          fontSize='25px'
+          style={{ width: '60px' }}
+          icon={<ArrowBackIcon />}
+        />
         <Button onClick={resetGameWithSamePlayers}>New Game</Button>
       </div>
       <Container pb={10} borderBottom={'1px solid black'}>
