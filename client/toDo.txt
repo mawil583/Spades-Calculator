@@ -1,42 +1,37 @@
 --High Priority--
-hook up useReducer for easy global state management - do this for roundHistory, names, nilScoringRule, and currentRound form state
+hook up useReducer for easy global state management - do this for roundHistory, names, nilScoringRule, and currentRound form state. Make sure currentRound is added to localStorage.
 fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: either userReducer for global state or resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
 add dynamic dealer tag
-validation for total Actuals being more than 13
+validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 
 --Backlog--
-make it more obvious that team names are editable and that past rounds are editable
+simplify spadesMath - make sure calculateTeamScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory. add class for spadesMath, and extend that class to add other settings for how game is scored
+Address comments on whoWentNil function
+make it more obvious that team names are editable and that past rounds are editable. when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
+add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
+implement typescript
 clean up WarningModal.jsx
+figure out what to do with functions that require a lot of parameters
 change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
 address console warnings and audit fix dependency problems
 add text to PastRound Actuals. if someone went over 10 bags, or got set, or failed nil, let user know
 improve separation of concerns for CurrentRound vs PastRound
 names was already set in NameForm.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
-instead of storing a bunch of pieces of state, declare large state object array using useReducer
-add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
-improve layout
+improve design
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
 add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 make layout responsive for tablet/desktop usage
-figure out UX when user selects New Game button (do they get prompted with 'same players'? or 'are you sure? your data will be deleted') or if I should create different buttons for each action.
-figure out what to do with functions that require a lot of parameters
-implement typescript
-simplify spadesMath - make sure calculateScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory
 make ActualsSection conditional. It should only show when all bids are entered. It should also animate downwards.
 make team names editable on SpadesCalculator page
-when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
 optimize app - make sure there are no unnecessary re-renders
 provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay.aspx?game=spades)
-add class for spadesMath, and extend that class to add other settings for how game is scored
-implement ability for user to select which scoring rules they want to follow
-remove unused calculateScoreFromRoundHistory and corresponding dependencies
-add more tests for calculateTeamRoundScoresFromTeamHistory and calculateTeamScoreFromRoundHistory
+consider implementing even more game setting options
+add more tests for calculateTeamRoundScoresFromTeamHistory, calculateTeamScoreFromRoundHistory and different failed-nil settings
 clean up BidSection Heading. Maybe split it into more components
-Address comments on whoWentNil function
 
 
 Matt's suggestions:
