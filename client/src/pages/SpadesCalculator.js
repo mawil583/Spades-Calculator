@@ -21,7 +21,6 @@ function SpadesCalculator() {
     TEAM1,
     nilSetting
   );
-  console.log({ team1Score });
   const team2Score = calculateTeamScoreFromRoundHistory(
     roundHistory,
     TEAM2,
@@ -39,6 +38,7 @@ function SpadesCalculator() {
             team2Score={team2Score.teamScore}
             team2Bags={team2Score.teamBags}
             setRoundHistory={setRoundHistory}
+            hasRoundHistory={roundHistory.length > 0}
           />
           <CurrentRound
             roundNumber={roundHistory.length + 1}
