@@ -14,8 +14,7 @@ function PastRounds({ roundHistory, setRoundHistory, names }) {
               names={names}
               roundHistory={roundHistory}
               setRoundHistory={setRoundHistory}
-              team1BidsAndActuals={roundHistory[i].team1BidsAndActuals}
-              team2BidsAndActuals={roundHistory[i].team2BidsAndActuals}
+              roundAtIndex={round}
             />
           );
         })

@@ -81,8 +81,8 @@ function WarningModal({
         <Divider />
         <ModalBody style={{ padding: '15px' }}>
           <Flex direction={'row'} justifyContent={'space-evenly'}>
-            <Button onClick={onSameTeams}>Same Teams</Button>
             <Button onClick={onDifferentTeams}>Different Teams</Button>
+            <Button onClick={onSameTeams}>Same Teams</Button>
           </Flex>
         </ModalBody>
       </Collapse>

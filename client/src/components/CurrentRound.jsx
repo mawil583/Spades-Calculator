@@ -1,22 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Container } from '@chakra-ui/react';
+
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 import { isNotDefaultValue } from '../helpers/spadesMath';
-import { initialCurrentRound } from '../helpers/constants';
 
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.names;
   const { setRoundHistory, roundHistory, roundNumber } = props;
 
-  const [currentRound, setCurrentRound] = useState(initialCurrentRound);
-  console.log({ currentRound }); // undefined after all inputs are entered
+  const [currentRound, setCurrentRound] = useState({
+    team1BidsAndActuals: {
+      p1Bid: '',
+      p2Bid: '',
+      p1Actual: '',
+      p2Actual: '',
+    },
+    team2BidsAndActuals: {
+      p1Bid: '',
+      p2Bid: '',
+      p1Actual: '',
+      p2Actual: '',
+    },
+  });
 
   useSetScoreWhenRoundIsFinished(
-    initialCurrentRound,
     currentRound,
     setCurrentRound,
     isNotDefaultValue,
@@ -43,7 +54,6 @@ function CurrentRound(props) {
           />
           <Divider />
           <ActualSection
-            props={props}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
@@ -60,7 +70,6 @@ function CurrentRound(props) {
 export default CurrentRound;
 
 function useSetScoreWhenRoundIsFinished(
-  initialCurrentRound,
   currentRound,
   setCurrentRound,
   isNotDefaultValue,
@@ -76,10 +85,22 @@ function useSetScoreWhenRoundIsFinished(
       team1InputsAreEntered && team2InputsAreEntered;
     if (allBidsAndActualsAreEntered) {
       setRoundHistory([...roundHistory, { ...currentRound }]);
-      setCurrentRound(initialCurrentRound);
+      setCurrentRound({
+        team1BidsAndActuals: {
+          p1Bid: '',
+          p2Bid: '',
+          p1Actual: '',
+          p2Actual: '',
+        },
+        team2BidsAndActuals: {
+          p1Bid: '',
+          p2Bid: '',
+          p1Actual: '',
+          p2Actual: '',
+        },
+      });
     }
   }, [
-    initialCurrentRound,
     currentRound,
     setCurrentRound,
     isNotDefaultValue,

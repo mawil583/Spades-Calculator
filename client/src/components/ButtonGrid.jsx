@@ -11,6 +11,7 @@ function ButtonGrid({
   fieldToUpdate,
 }) {
   const buttonValues = getButtonValues(type);
+
   const getUpdatedRound = (bid, fieldToUpdate, currentRound) => {
     const clonedCurrentRound = { ...currentRound };
     const [team, player] = fieldToUpdate.split('.');
@@ -20,7 +21,6 @@ function ButtonGrid({
 
   const onSelect = (bid) => {
     const updatedRound = getUpdatedRound(bid, fieldToUpdate, currentRound);
-    console.log({ updatedRound }); // always works, even after all inputs are entered
     setRound(updatedRound);
     setIsModalOpen(false);
   };
