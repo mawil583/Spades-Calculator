@@ -7,12 +7,12 @@ import { useLocalStorage } from '../helpers/hooks';
 
 import TeamNameInput from '../components/TeamNameInput';
 import PlayerNameInput from '../components/PlayerNameInput';
-import { defaultNames } from '../helpers/constants';
+import { initialNames } from '../helpers/constants';
 
 function NameForm() {
   const navigate = useNavigate();
 
-  const [names, setNames] = useLocalStorage('names', defaultNames);
+  const [names, setNames] = useLocalStorage('names', initialNames);
 
   const validationSchema = Yup.object({
     t1p1Name: Yup.string().required('Required'),

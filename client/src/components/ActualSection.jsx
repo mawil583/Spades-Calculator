@@ -7,17 +7,14 @@ import { useValidateActuals } from '../helpers/hooks';
 import { actualsErrorText } from '../helpers/helperFunctions';
 
 function ActualSection({
-  team1BidsAndActuals,
-  team2BidsAndActuals,
-  setT1p1Actual,
+  setRound,
+  currentRound,
   t1p1Name,
-  setT2p1Actual,
-  t2p1Name,
-  setT1p2Actual,
   t1p2Name,
-  setT2p2Actual,
+  t2p1Name,
   t2p2Name,
 }) {
+  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const [isValid, setIsValid] = useState(true);
   const team1Actuals = {
     p1Actual: team1BidsAndActuals?.p1Actual,
@@ -57,7 +54,6 @@ function ActualSection({
         team2Total={team2ActualTotal}
         title='Actuals'
       />
-      {/* <Center style={{ visibility: 'hidden' }}>Unclaimed</Center> */}
       {!isValid && (
         <div
           style={{
@@ -76,32 +72,40 @@ function ActualSection({
         style={{ marginTop: '5px' }}
       >
         <PlayerInput
-          setValTo={setT1p1Actual}
-          id='team1BidsAndActuals.p1Actual'
+          type={'Actual'}
+          setRound={setRound}
           playerName={t1p1Name}
-          val={team1BidsAndActuals?.p1Actual}
-          type={'Actual'}
+          currentRound={currentRound}
+          id='team1BidsAndActuals.p1Actual'
+          fieldToUpdate={'team1BidsAndActuals.p1Actual'}
+          playerInput={team1BidsAndActuals?.p1Actual}
         />
         <PlayerInput
-          setValTo={setT2p1Actual}
+          setRound={setRound}
+          currentRound={currentRound}
           id='team2BidsAndActuals.p1Actual'
+          fieldToUpdate={'team2BidsAndActuals.p1Actual'}
           playerName={t2p1Name}
-          val={team2BidsAndActuals?.p1Actual}
+          playerInput={team2BidsAndActuals?.p1Actual}
           type={'Actual'}
         />
         <PlayerInput
-          setValTo={setT1p2Actual}
+          setRound={setRound}
+          currentRound={currentRound}
           playerName={t1p2Name}
           id='team1BidsAndActuals.p2Actual'
-          val={team1BidsAndActuals?.p2Actual}
+          fieldToUpdate={'team1BidsAndActuals.p2Actual'}
+          playerInput={team1BidsAndActuals?.p2Actual}
           type={'Actual'}
         />
         <PlayerInput
-          setValTo={setT2p2Actual}
+          setRound={setRound}
+          currentRound={currentRound}
           playerName={t2p2Name}
-          val={team2BidsAndActuals?.p2Actual}
+          playerInput={team2BidsAndActuals?.p2Actual}
           type={'Actual'}
           id='team2BidsAndActuals.p2Actual'
+          fieldToUpdate={'team2BidsAndActuals.p2Actual'}
         />
       </SimpleGrid>
     </div>

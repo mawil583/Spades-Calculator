@@ -33,13 +33,28 @@ export const possibleActuals = [
   '13',
 ];
 
-export const defaultNames = {
+export const initialNames = {
   t1p1Name: '',
   t1p2Name: '',
   t2p1Name: '',
   t2p2Name: '',
   team1Name: 'Team 1',
   team2Name: 'Team 2',
+};
+
+export const initialCurrentRound = {
+  team1BidsAndActuals: {
+    p1Bid: '',
+    p2Bid: '',
+    p1Actual: '',
+    p2Actual: '',
+  },
+  team2BidsAndActuals: {
+    p1Bid: '',
+    p2Bid: '',
+    p1Actual: '',
+    p2Actual: '',
+  },
 };
 
 export const BLIND_NIL = 'Blind Nil';

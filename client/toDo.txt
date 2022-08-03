@@ -32,6 +32,7 @@ provide source on failed nil (https://www.trickstercards.com/home/help/HowToPlay
 consider implementing even more game setting options
 add more tests for calculateTeamRoundScoresFromTeamHistory, calculateTeamScoreFromRoundHistory and different failed-nil settings
 clean up BidSection Heading. Maybe split it into more components
+buggy behavior when I try to move useSetScoreWhenRoundIsFinished into the hooks.js file. I get an infinite loop after inputting all of the second round's inputs. Figure out why
 
 
 Matt's suggestions:

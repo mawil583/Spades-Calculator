@@ -7,17 +7,15 @@ import { addInputs } from '../helpers/spadesMath';
 import Unclaimed from './Unclaimed';
 
 function BidSection({
-  setT1p1Bid,
+  setRound,
+  currentRound,
   t1p1Name,
-  team1BidsAndActuals,
-  team2BidsAndActuals,
-  setT2p1Bid,
-  t2p1Name,
-  setT1p2Bid,
   t1p2Name,
-  setT2p2Bid,
+  t2p1Name,
   t2p2Name,
 }) {
+  console.log({ currentRound }); // undefined after all inputs are entered
+  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const [numUnclaimed, setNumUnclaimed] = useState(13);
 
   const team1Bids = {
@@ -43,31 +41,39 @@ function BidSection({
       <Unclaimed numUnclaimed={numUnclaimed} />
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
-          setValTo={setT1p1Bid}
+          type={'Bid'}
+          setRound={setRound}
           playerName={t1p1Name}
-          val={team1BidsAndActuals?.p1Bid}
+          currentRound={currentRound}
           id='team1BidsAndActuals.p1Bid'
-          type={'Bid'}
+          playerInput={team1BidsAndActuals?.p1Bid}
+          fieldToUpdate='team1BidsAndActuals.p1Bid'
         />
         <PlayerInput
-          setValTo={setT2p1Bid}
+          setRound={setRound}
+          currentRound={currentRound}
           playerName={t2p1Name}
-          val={team2BidsAndActuals?.p1Bid}
+          playerInput={team2BidsAndActuals?.p1Bid}
           id='team2BidsAndActuals.p1Bid'
+          fieldToUpdate='team2BidsAndActuals.p1Bid'
           type={'Bid'}
         />
         <PlayerInput
-          setValTo={setT1p2Bid}
+          setRound={setRound}
+          currentRound={currentRound}
           playerName={t1p2Name}
-          val={team1BidsAndActuals?.p2Bid}
+          playerInput={team1BidsAndActuals?.p2Bid}
           id='team1BidsAndActuals.p2Bid'
+          fieldToUpdate='team1BidsAndActuals.p2Bid'
           type={'Bid'}
         />
         <PlayerInput
-          setValTo={setT2p2Bid}
+          setRound={setRound}
+          currentRound={currentRound}
           playerName={t2p2Name}
-          val={team2BidsAndActuals?.p2Bid}
+          playerInput={team2BidsAndActuals?.p2Bid}
           id='team2BidsAndActuals.p2Bid'
+          fieldToUpdate='team2BidsAndActuals.p2Bid'
           type={'Bid'}
         />
       </SimpleGrid>
