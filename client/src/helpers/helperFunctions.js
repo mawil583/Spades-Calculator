@@ -1,3 +1,5 @@
+import { possibleActuals, possibleBids } from './constants';
+
 export function actualsErrorText(allActualsAreSubmitted, totalActuals) {
   const trickCountIsTooLow = allActualsAreSubmitted && totalActuals < 13;
   let text = `${totalActuals}`;
@@ -24,3 +26,10 @@ export function getUnclaimedText(numUnclaimed) {
   }
   return `Unclaimed: ${numUnclaimed}`;
 }
+
+export const getButtonValues = (type) => {
+  if (type === 'Bid') {
+    return possibleBids;
+  }
+  return possibleActuals;
+};

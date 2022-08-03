@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { defaultNames } from '../helpers/constants';
+import { initialNames } from '../helpers/constants';
 
 function WarningModal({
   isOpen,
@@ -50,7 +50,7 @@ function WarningModal({
     setIsModalOpen(false);
   };
   const onDifferentTeams = () => {
-    localStorage.setItem('names', JSON.stringify(defaultNames));
+    localStorage.setItem('names', JSON.stringify(initialNames));
     setIsNewPlayerQuestionVisible(false);
     setIsModalOpen(false);
     navigate('/');

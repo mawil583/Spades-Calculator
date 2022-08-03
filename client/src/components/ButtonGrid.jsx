@@ -1,24 +1,34 @@
 import React from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/react';
-import { possibleActuals, possibleBids } from '../helpers/constants';
 
-function ButtonGrid({ type, setIsModalOpen, setValTo }) {
-  const selectionOptions = () => {
-    if (type === 'Bid') {
-      return possibleBids;
-    }
-    return possibleActuals;
+import { getButtonValues } from '../helpers/helperFunctions';
+
+function ButtonGrid({
+  type,
+  setIsModalOpen,
+  setRound,
+  currentRound,
+  fieldToUpdate,
+}) {
+  const buttonValues = getButtonValues(type);
+  const getUpdatedRound = (bid, fieldToUpdate, currentRound) => {
+    const clonedCurrentRound = { ...currentRound };
+    const [team, player] = fieldToUpdate.split('.');
+    clonedCurrentRound[team][player] = bid;
+    return clonedCurrentRound;
   };
 
   const onSelect = (bid) => {
-    setValTo(bid);
+    const updatedRound = getUpdatedRound(bid, fieldToUpdate, currentRound);
+    console.log({ updatedRound }); // always works, even after all inputs are entered
+    setRound(updatedRound);
     setIsModalOpen(false);
   };
 
   return (
     <>
       <SimpleGrid columns={3} spacingX={2} spacingY={4}>
-        {selectionOptions().map((buttonVal, i) => {
+        {buttonValues.map((buttonVal, i) => {
           return (
             <Button
               key={i}

@@ -3,7 +3,15 @@ import { Button, Flex } from '@chakra-ui/react';
 
 import InputModal from './InputModal';
 
-const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
+const PlayerInput = ({
+  playerName,
+  playerInput,
+  id,
+  type,
+  setRound,
+  currentRound,
+  fieldToUpdate,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const onEdit = () => {
@@ -16,18 +24,20 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         type={type}
-        setValTo={setValTo}
+        setRound={setRound}
+        fieldToUpdate={fieldToUpdate}
+        currentRound={currentRound}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
         <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
           {playerName}
         </label>
-        {val === '' ? (
+        {playerInput === '' ? (
           <Button
             onClick={() => {
               setIsModalOpen(true);
             }}
-            value={val}
+            value={playerInput}
             id={id}
             name={id}
             size='sm'
@@ -35,7 +45,7 @@ const PlayerInput = ({ playerName, val, id, type, setValTo }) => {
             {type}
           </Button>
         ) : (
-          <div onClick={onEdit}>{val}</div>
+          <div onClick={onEdit}>{playerInput}</div>
         )}
       </Flex>
     </>

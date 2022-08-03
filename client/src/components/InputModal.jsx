@@ -10,7 +10,15 @@ import {
 
 import ButtonGrid from './ButtonGrid';
 
-function InputModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
+function InputModal({
+  playerName,
+  isOpen,
+  setIsModalOpen,
+  type,
+  setRound,
+  fieldToUpdate,
+  currentRound,
+}) {
   return (
     <>
       <Modal
@@ -27,8 +35,10 @@ function InputModal({ playerName, isOpen, setIsModalOpen, type, setValTo }) {
           <ModalCloseButton />
           <ModalBody style={{ padding: '5px' }}>
             <ButtonGrid
+              setRound={setRound}
+              fieldToUpdate={fieldToUpdate}
+              currentRound={currentRound}
               setIsModalOpen={setIsModalOpen}
-              setValTo={setValTo}
               type={type}
             />
           </ModalBody>
