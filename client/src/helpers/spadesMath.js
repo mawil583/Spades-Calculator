@@ -14,14 +14,12 @@ export function calculateRoundScore(
   actual2,
   nilSetting = HELPS_TEAM_BID
 ) {
-  const someoneWentNil = bid1 === NIL || bid2 === NIL;
-  const someoneWentBlindNil = bid1 === BLIND_NIL || bid2 === BLIND_NIL;
+  const someoneWentNil = isTypeNil(bid1) || isTypeNil(bid2);
   const teamBid = parseInt(bid1) + parseInt(bid2);
   const teamActual = parseInt(actual1) + parseInt(actual2);
-  const score =
-    someoneWentNil || someoneWentBlindNil
-      ? nilTeamRoundScore(bid1, bid2, actual1, actual2, nilSetting)
-      : teamRoundScore(teamBid, teamActual);
+  const score = someoneWentNil
+    ? nilTeamRoundScore(bid1, bid2, actual1, actual2, nilSetting)
+    : teamRoundScore(teamBid, teamActual);
   return score;
 }
 
@@ -42,14 +40,14 @@ export function nilTeamRoundScore(
   actual2,
   nilSetting = HELPS_TEAM_BID
 ) {
-  const score = calculateNilTeamRoundScoreFromBidsAndActualsAndSetting(
+  const score = calculateNilTeamRoundScore(
     bid1,
     bid2,
     actual1,
     actual2,
     nilSetting
   );
-  const bags = calculateNilTeamRoundBagsFromBidsAndActualsAndSetting(
+  const bags = calculateNilTeamRoundBags(
     bid1,
     bid2,
     actual1,
@@ -59,18 +57,16 @@ export function nilTeamRoundScore(
   return { score, bags };
 }
 
-export function calculateNilTeamRoundScoreFromBidsAndActualsAndSetting(
+export function calculateNilTeamRoundScore(
   bid1,
   bid2,
   actual1,
   actual2,
   nilSetting
 ) {
-  const areP1AndP2ScoredIndependently = nilSetting != HELPS_TEAM_BID;
+  const areP1AndP2ScoredIndependently = nilSetting !== HELPS_TEAM_BID;
   if (!areP1AndP2ScoredIndependently) {
-    const bothPlayersWentNil =
-      (bid1 === NIL || bid1 === BLIND_NIL) &&
-      (bid2 === NIL || bid2 === BLIND_NIL);
+    const bothPlayersWentNil = isTypeNil(bid1) && isTypeNil(bid2);
     if (bothPlayersWentNil) {
       const areBothNotBlind = bid1 === NIL && bid2 === NIL;
       const isOnlyOnePlayerBlind =
@@ -143,15 +139,19 @@ export function overPenalty(bid, actual, nilSetting) {
 
 // set penalty
 export function underPenalty(bid, actual) {
-  const isTypeNil = bid === NIL || bid === BLIND_NIL;
+  const playerWentNil = isTypeNil(bid);
   const gotSet = convertStringInputToNum(actual) < convertStringInputToNum(bid);
-  const shouldBePenalized = !isTypeNil && gotSet;
+  const shouldBePenalized = !playerWentNil && gotSet;
   if (!shouldBePenalized) {
     return 0;
   }
   // taking away original value, and then subtracting that amount again so that it exists as a penalty
   const penalty = -convertAchievedBidToScoreValue(bid) * 2;
   return penalty;
+}
+
+function isTypeNil(bid) {
+  return bid === NIL || bid === BLIND_NIL;
 }
 
 export function getPlayerBags(bid, actual, nilSetting) {
@@ -161,29 +161,31 @@ export function getPlayerBags(bid, actual, nilSetting) {
   }
   switch (nilSetting) {
     case NO_BAGS_NO_HELP:
-      const isTypeNil = bid === NIL || bid === BLIND_NIL;
-      if (!isTypeNil) {
+      const didSomeoneGoNil = isTypeNil(bid);
+      if (!didSomeoneGoNil) {
         bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
       }
       return bags;
     case TAKES_BAGS:
       bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
       return bags;
+    default:
+      return new Error(
+        'This function should not be called unless setting is BLIND_NIL or TAKES_BAGS'
+      );
   }
 }
 
-export function calculateNilTeamRoundBagsFromBidsAndActualsAndSetting(
+export function calculateNilTeamRoundBags(
   bid1,
   bid2,
   actual1,
   actual2,
   nilSetting
 ) {
-  const areP1AndP2ScoredIndependently = nilSetting != HELPS_TEAM_BID;
+  const areP1AndP2ScoredIndependently = nilSetting !== HELPS_TEAM_BID;
   if (!areP1AndP2ScoredIndependently) {
-    const bothPlayersWentNil =
-      (bid1 === NIL || bid1 === BLIND_NIL) &&
-      (bid2 === NIL || bid2 === BLIND_NIL);
+    const bothPlayersWentNil = isTypeNil(bid1) && isTypeNil(bid2);
     if (bothPlayersWentNil) {
       const areBothNotBlind = bid1 === NIL && bid2 === NIL;
       const isOnlyOnePlayerBlind =
@@ -371,12 +373,8 @@ export function calculateTeamRoundScoreWithOneNilBidder(
 // consider renaming.
 // also, this function assumes only one bid is NIL. that might also be a code smell. Consider refactoring into class for encapsulation
 export function whoWentNil(bid1, bid2, actual1, actual2) {
-  const nilPlayerBid = [bid1, bid2].find(
-    (bid) => bid === NIL || bid === BLIND_NIL
-  );
-  const nonNilPlayerBid = [bid1, bid2].find(
-    (bid) => bid !== NIL && bid !== BLIND_NIL
-  );
+  const nilPlayerBid = [bid1, bid2].find((bid) => isTypeNil(bid));
+  const nonNilPlayerBid = [bid1, bid2].find((bid) => !isTypeNil(bid));
   const nilPlayerActual = bid1 === nilPlayerBid ? actual1 : actual2;
   const nonNilPlayerActual = bid1 === nonNilPlayerBid ? actual1 : actual2;
 
