@@ -80,8 +80,8 @@ function PastRound(props) {
             team2RoundScore={team2RoundScoreFromHistory?.score}
             team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
             team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
-            team1RoundBags={team1GameScoreAtEndOfThisRound?.teamBags}
-            team2RoundBags={team2GameScoreAtEndOfThisRound?.teamBags}
+            team1RoundBags={team1RoundScoreFromHistory?.bags}
+            team2RoundBags={team2RoundScoreFromHistory?.bags}
           />
           <BidSection
             index={index}
