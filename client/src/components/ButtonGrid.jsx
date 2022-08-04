@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/react';
 
 import { getButtonValues } from '../helpers/helperFunctions';
+import { GlobalContext } from '../helpers/GlobalContext';
 
 function ButtonGrid({
+  isCurrent,
   type,
   setIsModalOpen,
   setRound,
   currentRound,
   fieldToUpdate,
 }) {
+  const { setCurrentRound } = useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
 
   const getUpdatedRound = (bid, fieldToUpdate, currentRound) => {
@@ -20,9 +23,13 @@ function ButtonGrid({
   };
 
   const onSelect = (bid) => {
-    const updatedRound = getUpdatedRound(bid, fieldToUpdate, currentRound);
-    setRound(updatedRound);
     setIsModalOpen(false);
+    if (isCurrent) {
+      setCurrentRound(bid, fieldToUpdate);
+    } else {
+      const updatedRound = getUpdatedRound(bid, fieldToUpdate, currentRound);
+      setRound(updatedRound);
+    }
   };
 
   return (

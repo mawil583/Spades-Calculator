@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Container } from '@chakra-ui/react';
 
 import BidSection from './BidSection';
@@ -6,30 +6,18 @@ import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 import { isNotDefaultValue } from '../helpers/spadesMath';
+import { GlobalContext } from '../helpers/GlobalContext';
 
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.names;
   const { setRoundHistory, roundHistory, roundNumber } = props;
-
-  const [currentRound, setCurrentRound] = useState({
-    team1BidsAndActuals: {
-      p1Bid: '',
-      p2Bid: '',
-      p1Actual: '',
-      p2Actual: '',
-    },
-    team2BidsAndActuals: {
-      p1Bid: '',
-      p2Bid: '',
-      p1Actual: '',
-      p2Actual: '',
-    },
-  });
+  const { currentRound, setCurrentRound, resetCurrentRound } =
+    useContext(GlobalContext);
 
   useSetScoreWhenRoundIsFinished(
     currentRound,
-    setCurrentRound,
+    resetCurrentRound,
     isNotDefaultValue,
     setRoundHistory,
     roundHistory
@@ -45,6 +33,7 @@ function CurrentRound(props) {
       <form>
         <Container>
           <BidSection
+            isCurrent={true}
             t1p1Name={t1p1Name}
             t1p2Name={t1p2Name}
             t2p1Name={t2p1Name}
@@ -54,6 +43,7 @@ function CurrentRound(props) {
           />
           <Divider />
           <ActualSection
+            isCurrent={true}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
@@ -71,7 +61,7 @@ export default CurrentRound;
 
 function useSetScoreWhenRoundIsFinished(
   currentRound,
-  setCurrentRound,
+  resetCurrentRound,
   isNotDefaultValue,
   setRoundHistory,
   roundHistory
@@ -85,24 +75,11 @@ function useSetScoreWhenRoundIsFinished(
       team1InputsAreEntered && team2InputsAreEntered;
     if (allBidsAndActualsAreEntered) {
       setRoundHistory([...roundHistory, { ...currentRound }]);
-      setCurrentRound({
-        team1BidsAndActuals: {
-          p1Bid: '',
-          p2Bid: '',
-          p1Actual: '',
-          p2Actual: '',
-        },
-        team2BidsAndActuals: {
-          p1Bid: '',
-          p2Bid: '',
-          p1Actual: '',
-          p2Actual: '',
-        },
-      });
+      resetCurrentRound();
     }
   }, [
     currentRound,
-    setCurrentRound,
+    resetCurrentRound,
     isNotDefaultValue,
     setRoundHistory,
     roundHistory,

@@ -84,6 +84,7 @@ function PastRound(props) {
             team2RoundBags={team2GameScoreAtEndOfThisRound?.teamBags}
           />
           <BidSection
+            isCurrent={false}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
@@ -93,6 +94,7 @@ function PastRound(props) {
           />
           <Divider />
           <ActualSection
+            isCurrent={false}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}

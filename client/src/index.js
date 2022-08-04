@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import { StateProvider } from './helpers/GlobalContext';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
@@ -10,12 +11,14 @@ import SpadesCalculator from './pages/SpadesCalculator';
 
 ReactDOM.render(
   <ChakraProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<LandingPage />} />
-        <Route path='spades-calculator' element={<SpadesCalculator />} />
-      </Routes>
-    </BrowserRouter>
+    <StateProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='spades-calculator' element={<SpadesCalculator />} />
+        </Routes>
+      </BrowserRouter>
+    </StateProvider>
   </ChakraProvider>,
   document.getElementById('root')
 );

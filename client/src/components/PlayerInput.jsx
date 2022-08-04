@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Flex } from '@chakra-ui/react';
 
 import InputModal from './InputModal';
 
 const PlayerInput = ({
+  isCurrent,
   playerName,
   playerInput,
   id,
@@ -20,6 +21,7 @@ const PlayerInput = ({
   return (
     <>
       <InputModal
+        isCurrent={isCurrent}
         playerName={playerName}
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
