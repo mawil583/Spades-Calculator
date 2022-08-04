@@ -15,6 +15,8 @@ function CurrentRound(props) {
   const { currentRound, setCurrentRound, resetCurrentRound } =
     useContext(GlobalContext);
 
+  const roundIndex = roundHistory.length + 1;
+
   useSetScoreWhenRoundIsFinished(
     currentRound,
     resetCurrentRound,
@@ -34,21 +36,25 @@ function CurrentRound(props) {
         <Container>
           <BidSection
             isCurrent={true}
+            index={roundIndex}
             t1p1Name={t1p1Name}
             t1p2Name={t1p2Name}
             t2p1Name={t2p1Name}
             t2p2Name={t2p2Name}
             setRound={setCurrentRound}
+            roundHistory={roundHistory}
             currentRound={currentRound}
           />
           <Divider />
           <ActualSection
             isCurrent={true}
+            index={roundIndex}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
             setRound={setCurrentRound}
+            roundHistory={roundHistory}
             currentRound={currentRound}
           />
         </Container>
