@@ -7,13 +7,15 @@ import { addInputs } from '../helpers/spadesMath';
 import Unclaimed from './Unclaimed';
 
 function BidSection({
-  isCurrent,
+  index,
   setRound,
-  currentRound,
   t1p1Name,
   t1p2Name,
   t2p1Name,
   t2p2Name,
+  isCurrent,
+  roundHistory,
+  currentRound,
 }) {
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const [numUnclaimed, setNumUnclaimed] = useState(13);
@@ -41,6 +43,8 @@ function BidSection({
       <Unclaimed numUnclaimed={numUnclaimed} />
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
+          index={index}
+          roundHistory={roundHistory}
           isCurrent={isCurrent}
           type={'Bid'}
           setRound={setRound}
@@ -51,6 +55,8 @@ function BidSection({
           fieldToUpdate='team1BidsAndActuals.p1Bid'
         />
         <PlayerInput
+          index={index}
+          roundHistory={roundHistory}
           isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}
@@ -61,6 +67,8 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          index={index}
+          roundHistory={roundHistory}
           isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}
@@ -71,6 +79,8 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          index={index}
+          roundHistory={roundHistory}
           isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}

@@ -69,9 +69,9 @@ function PastRound(props) {
   return (
     <>
       <RoundHeading
-        roundNumber={roundNumber}
         team1Name={team1Name}
         team2Name={team2Name}
+        roundNumber={roundNumber}
       />
       <form>
         <Container>
@@ -84,22 +84,26 @@ function PastRound(props) {
             team2RoundBags={team2GameScoreAtEndOfThisRound?.teamBags}
           />
           <BidSection
+            index={index}
             isCurrent={false}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
             setRound={setRoundAtIndex}
+            roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />
           <Divider />
           <ActualSection
+            index={index}
             isCurrent={false}
             t1p1Name={t1p1Name}
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
             setRound={setRoundAtIndex}
+            roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />
         </Container>

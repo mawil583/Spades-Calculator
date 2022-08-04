@@ -4,6 +4,7 @@ import {
   TAKES_BAGS,
   HELPS_TEAM_BID,
   NO_BAGS_NO_HELP,
+  dealerIds,
 } from './constants';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
@@ -416,6 +417,33 @@ export function calculateTeamRoundScoresFromTeamHistory(
       teamBags: teamRoundScore.bags,
     };
   });
+}
+
+export function getDealerIdHistory(roundHistory) {
+  const clonedDealerIDs = [...dealerIds];
+  const dealerIdHistory = [];
+  roundHistory.forEach((round) => {
+    dealerIdHistory.push(clonedDealerIDs[0]);
+    clonedDealerIDs.push(clonedDealerIDs[0]);
+    clonedDealerIDs.shift();
+  });
+  return dealerIdHistory;
+}
+
+export function getCurrentDealerId(dealerIdHistory, index, isCurrent) {
+  const clonedDealerIDs = [...dealerIds];
+  if (isCurrent) {
+    if (dealerIdHistory.length < 4) {
+      if (dealerIdHistory.length === 0) return clonedDealerIDs[0];
+      return clonedDealerIDs[index - 1];
+    }
+    return dealerIdHistory[index - 5];
+  } else {
+    if (index < 4) {
+      return clonedDealerIDs[index];
+    }
+    return dealerIdHistory[index - 4];
+  }
 }
 
 export function getTeamHistoryFromRoundHistory(
