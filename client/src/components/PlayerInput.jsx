@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex, Badge } from '@chakra-ui/react';
 
 import InputModal from './InputModal';
 import { getDealerIdHistory, getCurrentDealerId } from '../helpers/spadesMath';
@@ -37,7 +37,7 @@ const PlayerInput = ({
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
         <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
-          {playerName} {isDealer && 'Dealer!!!'}
+          {playerName} {isDealer && <Badge colorScheme='purple'>D</Badge>}
         </label>
         {playerInput === '' ? (
           <Button
