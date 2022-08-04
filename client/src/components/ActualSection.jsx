@@ -7,6 +7,7 @@ import { useValidateActuals } from '../helpers/hooks';
 import { actualsErrorText } from '../helpers/helperFunctions';
 
 function ActualSection({
+  isCurrent,
   setRound,
   currentRound,
   t1p1Name,
@@ -72,6 +73,7 @@ function ActualSection({
         style={{ marginTop: '5px' }}
       >
         <PlayerInput
+          isCurrent={isCurrent}
           type={'Actual'}
           setRound={setRound}
           playerName={t1p1Name}
@@ -81,6 +83,7 @@ function ActualSection({
           playerInput={team1BidsAndActuals?.p1Actual}
         />
         <PlayerInput
+          isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}
           id='team2BidsAndActuals.p1Actual'
@@ -90,6 +93,7 @@ function ActualSection({
           type={'Actual'}
         />
         <PlayerInput
+          isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}
           playerName={t1p2Name}
@@ -99,6 +103,7 @@ function ActualSection({
           type={'Actual'}
         />
         <PlayerInput
+          isCurrent={isCurrent}
           setRound={setRound}
           currentRound={currentRound}
           playerName={t2p2Name}

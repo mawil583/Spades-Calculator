@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -15,6 +15,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { initialNames } from '../helpers/constants';
+import { GlobalContext } from '../helpers/GlobalContext';
 
 function WarningModal({
   isOpen,
@@ -23,6 +24,7 @@ function WarningModal({
   hasRoundHistory,
 }) {
   const navigate = useNavigate();
+  const { resetCurrentRound } = useContext(GlobalContext);
   const [isDataWarningQuestionVisible, setIsDataWarningQuestionVisible] =
     useState(hasRoundHistory ? true : false);
   const [isNewPlayerQuestionVisible, setIsNewPlayerQuestionVisible] = useState(
@@ -43,11 +45,13 @@ function WarningModal({
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);
     setRoundHistory([]);
+    resetCurrentRound();
   };
   const onSameTeams = () => {
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);
     setIsModalOpen(false);
+    resetCurrentRound();
   };
   const onDifferentTeams = () => {
     localStorage.setItem('names', JSON.stringify(initialNames));
