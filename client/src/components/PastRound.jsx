@@ -78,8 +78,9 @@ function PastRound(props) {
           <RoundSummary
             team1RoundScore={team1RoundScoreFromHistory?.score}
             team2RoundScore={team2RoundScoreFromHistory?.score}
-            team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
-            team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
+            // add this back, but only as accordion
+            // team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
+            // team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
             team1RoundBags={team1RoundScoreFromHistory?.bags}
             team2RoundBags={team2RoundScoreFromHistory?.bags}
           />
