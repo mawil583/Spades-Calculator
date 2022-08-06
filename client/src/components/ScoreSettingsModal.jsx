@@ -19,13 +19,16 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
       onClose={() => {
         setIsModalOpen(false);
       }}
+      style={{ backgroundColor: '#464f51' }}
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Failed-Nil Settings</ModalHeader>
+        <ModalHeader style={{ backgroundColor: '#464f51' }}>
+          Failed-Nil Settings
+        </ModalHeader>
         <ModalCloseButton />
         <Divider />
-        <ModalBody style={{ padding: '5px' }}>
+        <ModalBody style={{ padding: '5px', backgroundColor: '#464f51' }}>
           <SettingDescription
             title='Takes Bags'
             desc={`Overtricks on a failed Nil count directly as bags and do NOT count towards team's total score. Each player's score is evaluated independently.`}
