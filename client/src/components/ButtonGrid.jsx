@@ -38,10 +38,12 @@ function ButtonGrid({
         {buttonValues.map((buttonVal, i) => {
           return (
             <Button
+              variant='outline'
               key={i}
               onClick={() => {
                 onSelect(buttonVal);
               }}
+              style={{ color: 'black' }}
             >
               {buttonVal}
             </Button>
