@@ -63,16 +63,36 @@ function WarningModal({
   const DataWarningQuestion = () => {
     return (
       <Collapse in={isDataWarningQuestionVisible}>
-        <ModalHeader>Are you sure?</ModalHeader>
+        <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
+          Are you sure?
+        </ModalHeader>
         <ModalCloseButton />
         <Divider />
-        <ModalBody style={{ padding: '15px' }}>
+        <ModalBody
+          style={{
+            padding: '15px',
+            color: '#ebf5ee',
+            backgroundColor: '#464f51',
+          }}
+        >
           <Text style={{ marginBottom: '10px' }}>
             This will permanently delete your game data.
           </Text>
           <Flex direction={'row'} justifyContent={'space-between'}>
-            <Button onClick={onCancel}>Cancel</Button>
-            <Button onClick={onContinue}>Continue</Button>
+            <Button
+              variant='outline'
+              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
+              onClick={onCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant='outline'
+              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
+              onClick={onContinue}
+            >
+              Continue
+            </Button>
           </Flex>
         </ModalBody>
       </Collapse>
@@ -81,12 +101,32 @@ function WarningModal({
   const NewPlayerQuestion = () => {
     return (
       <Collapse in={isNewPlayerQuestionVisible}>
-        <ModalHeader>Would you like to keep the same teams?</ModalHeader>
+        <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
+          Would you like to keep the same teams?
+        </ModalHeader>
         <Divider />
-        <ModalBody style={{ padding: '15px' }}>
+        <ModalBody
+          style={{
+            padding: '15px',
+            color: '#ebf5ee',
+            backgroundColor: '#464f51',
+          }}
+        >
           <Flex direction={'row'} justifyContent={'space-evenly'}>
-            <Button onClick={onDifferentTeams}>Different Teams</Button>
-            <Button onClick={onSameTeams}>Same Teams</Button>
+            <Button
+              variant='outline'
+              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
+              onClick={onDifferentTeams}
+            >
+              Different Teams
+            </Button>
+            <Button
+              variant='outline'
+              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
+              onClick={onSameTeams}
+            >
+              Same Teams
+            </Button>
           </Flex>
         </ModalBody>
       </Collapse>
@@ -98,6 +138,7 @@ function WarningModal({
       onClose={() => {
         setIsModalOpen(false);
       }}
+      style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
     >
       <ModalOverlay />
       <ModalContent>
