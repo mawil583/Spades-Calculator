@@ -59,7 +59,7 @@ function GameScore({
           New Game
         </Button>
       </div>
-      <Container pb={5} borderBottom={'1px solid black'}>
+      <Container pb={5} borderBottom={'1px solid #ebf5ee'}>
         <Center>
           <Heading as='h2' size='lg' style={{ textDecoration: 'underline' }}>
             Score

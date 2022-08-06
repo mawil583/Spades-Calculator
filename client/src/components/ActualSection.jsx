@@ -62,7 +62,7 @@ function ActualSection({
       {!isValid && (
         <div
           style={{
-            color: 'red',
+            color: '#f95050',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'center',

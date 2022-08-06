@@ -5,7 +5,7 @@ import { team1Styles, team2Styles } from '../helpers/constants';
 function RoundHeading({ roundNumber, team1Name, team2Name }) {
   return (
     <div>
-      <Heading size='lg' as={'h3'}>
+      <Heading style={{ fontSize: '25px' }} as={'h3'}>
         Round {roundNumber}
       </Heading>
       <Box>
@@ -16,7 +16,9 @@ function RoundHeading({ roundNumber, team1Name, team2Name }) {
             mr={'5px'}
             ml={'5px'}
           >
-            <Center style={team1Styles}>{team1Name}</Center>
+            <Center style={team1Styles}>
+              <Heading size='15px'>{team1Name}</Heading>
+            </Center>
           </Box>
           <Box
             width={'100%'}
@@ -24,7 +26,9 @@ function RoundHeading({ roundNumber, team1Name, team2Name }) {
             mr={'5px'}
             ml={'5px'}
           >
-            <Center style={team2Styles}>{team2Name}</Center>
+            <Center style={team2Styles}>
+              <Heading size='15px'>{team2Name}</Heading>
+            </Center>
           </Box>
         </Flex>
       </Box>
