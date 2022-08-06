@@ -30,11 +30,11 @@ function InputModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader style={{ color: 'black' }}>
+          <ModalHeader style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}>
             Select {playerName}'s {type}
           </ModalHeader>
-          <ModalCloseButton style={{ color: 'black' }} />
-          <ModalBody style={{ padding: '5px' }}>
+          <ModalCloseButton style={{ color: '#ebf5ee' }} />
+          <ModalBody style={{ padding: '5px', backgroundColor: '#464f51' }}>
             <ButtonGrid
               isCurrent={isCurrent}
               setRound={setRound}

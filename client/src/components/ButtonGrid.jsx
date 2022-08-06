@@ -34,7 +34,12 @@ function ButtonGrid({
 
   return (
     <>
-      <SimpleGrid columns={3} spacingX={2} spacingY={4}>
+      <SimpleGrid
+        columns={3}
+        spacingX={2}
+        spacingY={4}
+        style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
+      >
         {buttonValues.map((buttonVal, i) => {
           return (
             <Button
@@ -43,7 +48,7 @@ function ButtonGrid({
               onClick={() => {
                 onSelect(buttonVal);
               }}
-              style={{ color: 'black' }}
+              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
             >
               {buttonVal}
             </Button>
