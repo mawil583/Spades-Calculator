@@ -14,6 +14,8 @@ function BidSection({
   t2p1Name,
   t2p2Name,
   isCurrent,
+  team1Name,
+  team2Name,
   roundHistory,
   currentRound,
 }) {
@@ -36,6 +38,8 @@ function BidSection({
   return (
     <div>
       <TeamInputHeading
+        team1Name={team1Name}
+        team2Name={team2Name}
         team1Total={team1BidTotal}
         team2Total={team2BidTotal}
         title='Bids'
@@ -43,6 +47,7 @@ function BidSection({
       <Unclaimed numUnclaimed={numUnclaimed} />
       <SimpleGrid columns={2} className='namesContainer'>
         <PlayerInput
+          teamName={team1Name}
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
@@ -55,6 +60,7 @@ function BidSection({
           fieldToUpdate='team1BidsAndActuals.p1Bid'
         />
         <PlayerInput
+          teamName={team2Name}
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
@@ -67,6 +73,7 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          teamName={team1Name}
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
@@ -79,6 +86,7 @@ function BidSection({
           type={'Bid'}
         />
         <PlayerInput
+          teamName={team2Name}
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}

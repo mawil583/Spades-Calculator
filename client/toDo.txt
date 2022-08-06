@@ -11,6 +11,9 @@ translate other large state objects to useReducer, and hook up localStorage to i
 now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.
+is getTeamClassName a bad solution for conditional styling?
+add proper theming for default chakraUI components
+instead of writing style into html body tag, look into injectGlobal function from styled-components
 simplify spadesMath - make sure calculateTeamScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory. add class for spadesMath, and extend that class to add other settings for how game is scored
 Address comments on whoWentNil function
 make it more obvious that team names are editable and that past rounds are editable. when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable

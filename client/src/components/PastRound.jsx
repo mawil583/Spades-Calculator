@@ -28,22 +28,23 @@ function PastRound(props) {
   const { team1BidsAndActuals, team2BidsAndActuals } = roundAtIndex;
   const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
 
-  const roundHistoryAtEndOfThisRound = getRoundHistoryAtCurrentRound(
-    roundHistory,
-    index
-  );
+  // const roundHistoryAtEndOfThisRound = getRoundHistoryAtCurrentRound(
+  //   roundHistory,
+  //   index
+  // );
 
-  const team1GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
-    roundHistoryAtEndOfThisRound,
-    TEAM1,
-    nilSetting
-  );
+  // will need to use when adding accordion feature
+  // const team1GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
+  //   roundHistoryAtEndOfThisRound,
+  //   TEAM1,
+  //   nilSetting
+  // );
 
-  const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
-    roundHistoryAtEndOfThisRound,
-    TEAM2,
-    nilSetting
-  );
+  // const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
+  //   roundHistoryAtEndOfThisRound,
+  //   TEAM2,
+  //   nilSetting
+  // );
 
   const team1RoundScoreFromHistory = calculateRoundScore(
     team1BidsAndActuals.p1Bid,
@@ -76,6 +77,8 @@ function PastRound(props) {
       <form>
         <Container>
           <RoundSummary
+            team2Name={team2Name}
+            team1Name={team1Name}
             team1RoundScore={team1RoundScoreFromHistory?.score}
             team2RoundScore={team2RoundScoreFromHistory?.score}
             // add this back, but only as accordion
@@ -91,6 +94,8 @@ function PastRound(props) {
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
+            team1Name={team1Name}
+            team2Name={team2Name}
             setRound={setRoundAtIndex}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}
@@ -103,6 +108,8 @@ function PastRound(props) {
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
+            team1Name={team1Name}
+            team2Name={team2Name}
             setRound={setRoundAtIndex}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}

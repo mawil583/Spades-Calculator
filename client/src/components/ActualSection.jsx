@@ -14,6 +14,8 @@ function ActualSection({
   t2p1Name,
   t2p2Name,
   isCurrent,
+  team1Name,
+  team2Name,
   roundHistory,
   currentRound,
 }) {
@@ -76,6 +78,7 @@ function ActualSection({
       >
         <PlayerInput
           roundHistory={roundHistory}
+          teamName={team1Name}
           index={index}
           isCurrent={isCurrent}
           type={'Actual'}
@@ -88,6 +91,7 @@ function ActualSection({
         />
         <PlayerInput
           roundHistory={roundHistory}
+          teamName={team2Name}
           index={index}
           isCurrent={isCurrent}
           setRound={setRound}
@@ -99,6 +103,7 @@ function ActualSection({
           type={'Actual'}
         />
         <PlayerInput
+          teamName={team1Name}
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}
@@ -111,6 +116,7 @@ function ActualSection({
           type={'Actual'}
         />
         <PlayerInput
+          teamName={team2Name}
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}

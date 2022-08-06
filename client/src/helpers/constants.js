@@ -70,3 +70,12 @@ const t1p2ID = 'team1BidsAndActuals.p2Bid';
 const t2p1ID = 'team2BidsAndActuals.p1Bid';
 const t2p2ID = 'team2BidsAndActuals.p2Bid';
 export const dealerIds = [t1p1ID, t2p1ID, t1p2ID, t2p2ID];
+
+export const team1Styles = {
+  color: '#ffc100',
+  borderColor: '#ffc100',
+};
+export const team2Styles = {
+  color: '#f06c9b',
+  borderColor: '#f06c9b',
+};

@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 
 import TeamScore from './TeamScore';
 import WarningModal from './WarningModal';
+import '../App.css';
 
 function GameScore({
   names,
@@ -48,12 +49,15 @@ function GameScore({
         }}
       >
         <IconButton
+          variant='outline'
           onClick={handleNavigateHome}
           fontSize='25px'
           style={{ width: '60px' }}
           icon={<ArrowBackIcon />}
         />
-        <Button onClick={resetGameWithSamePlayers}>New Game</Button>
+        <Button variant='outline' onClick={resetGameWithSamePlayers}>
+          New Game
+        </Button>
       </div>
       <Container pb={5} borderBottom={'1px solid black'}>
         <Center>

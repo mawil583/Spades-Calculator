@@ -3,11 +3,13 @@ import { Button, Flex, Badge } from '@chakra-ui/react';
 
 import InputModal from './InputModal';
 import { getDealerIdHistory, getCurrentDealerId } from '../helpers/spadesMath';
+import { getTeamStyle } from '../helpers/helperFunctions';
 
 const PlayerInput = ({
   id,
   type,
   index,
+  teamName,
   setRound,
   isCurrent,
   playerName,
@@ -19,6 +21,7 @@ const PlayerInput = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dealerIdHistory = getDealerIdHistory(roundHistory, isCurrent);
   const isDealer = getCurrentDealerId(dealerIdHistory, index, isCurrent) === id;
+  const style = getTeamStyle(teamName);
 
   const onEdit = () => {
     setIsModalOpen(true);
@@ -36,7 +39,7 @@ const PlayerInput = ({
         currentRound={currentRound}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
-        <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
+        <label style={{ marginRight: '15px', ...style }} htmlFor='p1Bid'>
           {playerName} {isDealer && <Badge colorScheme='purple'>D</Badge>}
         </label>
         {playerInput === '' ? (
@@ -44,6 +47,8 @@ const PlayerInput = ({
             onClick={() => {
               setIsModalOpen(true);
             }}
+            style={style}
+            variant='outline'
             value={playerInput}
             id={id}
             name={id}

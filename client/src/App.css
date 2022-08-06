@@ -1,6 +1,19 @@
-/* .App {
-  text-align: center;
-} */
+.App,
+#root {
+  background-color: #464f51;
+  color: #ebf5ee;
+}
+
+.team1 {
+  color: #ffc100;
+}
+.team2 {
+  color: #f06c9b;
+}
+
+.Button {
+  background-color: red;
+}
 
 .App-logo {
   height: 40vmin;

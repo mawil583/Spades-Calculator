@@ -1,7 +1,11 @@
 import React from 'react';
 import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
 
+import { team1Styles, team2Styles } from '../helpers/constants';
+
 function RoundSummary({
+  team2Name,
+  team1Name,
   team1RoundScore,
   team2RoundScore,
   // team1GameScore,
@@ -17,13 +21,13 @@ function RoundSummary({
         </Heading>
       </Center>
       <SimpleGrid columns={2} className='namesContainer'>
-        <Center>Score: {team1RoundScore}</Center>
-        <Center>Score: {team2RoundScore}</Center>
+        <Center style={team1Styles}>Score: {team1RoundScore}</Center>
+        <Center style={team2Styles}>Score: {team2RoundScore}</Center>
         {/* consider adding Game Score and Game bags as accordion */}
         {/* <Center>Game Score: {team1GameScore}</Center>
         <Center>Game Score: {team2GameScore}</Center> */}
-        <Center>Bags: {team1RoundBags}</Center>
-        <Center>Bags: {team2RoundBags}</Center>
+        <Center style={team1Styles}>Bags: {team1RoundBags}</Center>
+        <Center style={team2Styles}>Bags: {team2RoundBags}</Center>
       </SimpleGrid>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Center, Heading, Flex, Box } from '@chakra-ui/react';
+import { team1Styles, team2Styles } from '../helpers/constants';
 
 function RoundHeading({ roundNumber, team1Name, team2Name }) {
   return (
@@ -11,11 +12,11 @@ function RoundHeading({ roundNumber, team1Name, team2Name }) {
         <Flex direction={'row'} height={'30px'}>
           <Box
             width={'100%'}
-            borderBottom={'1px solid black'}
+            borderBottom={'1px solid gray'}
             mr={'5px'}
             ml={'5px'}
           >
-            <Center>{team1Name}</Center>
+            <Center style={team1Styles}>{team1Name}</Center>
           </Box>
           <Box
             width={'100%'}
@@ -23,7 +24,7 @@ function RoundHeading({ roundNumber, team1Name, team2Name }) {
             mr={'5px'}
             ml={'5px'}
           >
-            <Center>{team2Name}</Center>
+            <Center style={team2Styles}>{team2Name}</Center>
           </Box>
         </Flex>
       </Box>

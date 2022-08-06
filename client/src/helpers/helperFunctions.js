@@ -1,4 +1,9 @@
-import { possibleActuals, possibleBids } from './constants';
+import {
+  possibleActuals,
+  possibleBids,
+  team1Styles,
+  team2Styles,
+} from './constants';
 
 export function actualsErrorText(allActualsAreSubmitted, totalActuals) {
   const trickCountIsTooLow = allActualsAreSubmitted && totalActuals < 13;
@@ -32,4 +37,15 @@ export const getButtonValues = (type) => {
     return possibleBids;
   }
   return possibleActuals;
+};
+
+export const getTeamClassName = (teamName) => {
+  const { team1Name } = JSON.parse(localStorage.getItem('names'));
+  const className = teamName === team1Name ? 'team1' : 'team2';
+  return className;
+};
+export const getTeamStyle = (teamName) => {
+  const { team1Name } = JSON.parse(localStorage.getItem('names'));
+  const style = teamName === team1Name ? team1Styles : team2Styles;
+  return style;
 };

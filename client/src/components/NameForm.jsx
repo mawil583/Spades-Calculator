@@ -108,6 +108,7 @@ function NameForm() {
       </SimpleGrid>
       <Center>
         <Button
+          variant='outline'
           size='md'
           height='40px'
           width='200px'

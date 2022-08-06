@@ -35,6 +35,8 @@ function CurrentRound(props) {
       <form>
         <Container>
           <BidSection
+            team1Name={team1Name}
+            team2Name={team2Name}
             isCurrent={true}
             index={roundIndex}
             t1p1Name={t1p1Name}
@@ -47,6 +49,8 @@ function CurrentRound(props) {
           />
           <Divider />
           <ActualSection
+            team1Name={team1Name}
+            team2Name={team2Name}
             isCurrent={true}
             index={roundIndex}
             t1p1Name={t1p1Name}
