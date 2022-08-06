@@ -5,8 +5,10 @@ import {
   EditableInput,
   EditablePreview,
 } from '@chakra-ui/react';
+import { getTeamClassName } from '../helpers/helperFunctions';
 
 function TeamNameInput({ id, teamName, handleChange }) {
+  const teamClassName = getTeamClassName(teamName);
   return (
     <div>
       <Editable
@@ -15,6 +17,8 @@ function TeamNameInput({ id, teamName, handleChange }) {
         fontSize='lg'
         fontWeight='bold'
         placeholder={teamName}
+        className={teamClassName}
+        // style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
       >
         <Center>
           <EditablePreview />

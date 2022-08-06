@@ -72,6 +72,7 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          teamName={formik.values.team1Name}
           id='t1p1Name'
           label='Player 1 Name'
           placeholder={`Who's dealing first?`}
@@ -81,6 +82,7 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          teamName={formik.values.team2Name}
           id='t2p1Name'
           label='Player 1 Name'
           placeholder={`Who's left of dealer?`}
@@ -92,12 +94,14 @@ function NameForm() {
         <PlayerNameInput
           id='t1p2Name'
           label='Player 2 Name'
+          teamName={formik.values.team1Name}
           playerName={formik.values.t1p2Name}
           errors={formik.errors.t1p2Name}
           touched={formik.touched.t1p2Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          teamName={formik.values.team2Name}
           id='t2p2Name'
           label='Player 2 Name'
           playerName={formik.values.t2p2Name}
