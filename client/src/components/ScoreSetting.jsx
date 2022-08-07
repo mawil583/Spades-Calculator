@@ -17,7 +17,7 @@ function ScoreSetting() {
     setIsModalOpen(true);
   };
   return (
-    <>
+    <div style={{ padding: '5px' }}>
       <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
       <Text fontSize='lg' mt={3}>
         Select your preferred scoring rules for failed nil.{' '}
@@ -38,7 +38,7 @@ function ScoreSetting() {
           <Radio value={NO_BAGS_NO_HELP}>No Bags/No Help</Radio>
         </Stack>
       </RadioGroup>
-    </>
+    </div>
   );
 }
 
