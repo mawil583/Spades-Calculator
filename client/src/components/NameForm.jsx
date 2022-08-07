@@ -117,8 +117,9 @@ function NameForm() {
           height='40px'
           width='200px'
           border='2px'
-          borderColor='green.500'
+          // borderColor='green.500'
           type='submit'
+          my={4}
         >
           Start
         </Button>

@@ -19,7 +19,7 @@ function ScoreSetting() {
   return (
     <>
       <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
-      <Text fontSize='lg'>
+      <Text fontSize='lg' mt={3}>
         Select your preferred scoring rules for failed nil.{' '}
         {
           <IconButton
