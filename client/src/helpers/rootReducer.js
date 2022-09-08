@@ -39,6 +39,16 @@ const rootReducer = (state, action) => {
           },
         },
       };
+    case 'RESET_ROUND_HISTORY':
+      return {
+        ...state,
+        roundHistory: [],
+      };
+    case 'SET_ROUND_HISTORY':
+      return {
+        ...state,
+        roundHistory: [...payload.roundHistory],
+      };
     default:
       return state;
   }

@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useReducer } from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/react';
 
-import { getButtonValues } from '../helpers/helperFunctions';
+import { getButtonValues, updateInput } from '../helpers/helperFunctions';
 import { GlobalContext } from '../helpers/GlobalContext';
+import rootReducer, { initialState } from '../helpers/rootReducer';
 
 function ButtonGrid({
   isCurrent,
@@ -14,20 +15,18 @@ function ButtonGrid({
 }) {
   const { setCurrentRound } = useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
+  const [state] = useReducer(rootReducer, initialState);
 
-  const getUpdatedRound = (bid, fieldToUpdate, currentRound) => {
-    const clonedCurrentRound = { ...currentRound };
-    const [team, player] = fieldToUpdate.split('.');
-    clonedCurrentRound[team][player] = bid;
-    return clonedCurrentRound;
-  };
-
-  const onSelect = (bid) => {
+  const onSelect = (input) => {
     setIsModalOpen(false);
     if (isCurrent) {
-      setCurrentRound(bid, fieldToUpdate);
+      setCurrentRound({
+        input,
+        fieldToUpdate,
+        currentRound: { ...state.currentRound },
+      });
     } else {
-      const updatedRound = getUpdatedRound(bid, fieldToUpdate, currentRound);
+      const updatedRound = updateInput({ input, fieldToUpdate, currentRound });
       setRound(updatedRound);
     }
   };

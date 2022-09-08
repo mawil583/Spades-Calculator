@@ -44,8 +44,16 @@ export const getTeamClassName = (teamName) => {
   const className = teamName === team1Name ? 'team1' : 'team2';
   return className;
 };
+
 export const getTeamStyle = (teamName) => {
   const { team1Name } = JSON.parse(localStorage.getItem('names'));
   const style = teamName === team1Name ? team1Styles : team2Styles;
   return style;
+};
+
+export const updateInput = ({ input, currentRound, fieldToUpdate }) => {
+  const clonedCurrentRound = { ...currentRound };
+  const [team, player] = fieldToUpdate.split('.');
+  clonedCurrentRound[team][player] = input;
+  return clonedCurrentRound;
 };

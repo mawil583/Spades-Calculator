@@ -1,19 +1,18 @@
 import React, { createContext, useReducer } from 'react';
 import rootReducer, { initialState } from '../helpers/rootReducer';
+import { updateInput } from './helperFunctions';
 
 export const GlobalContext = createContext();
 
 export const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
 
-  const setCurrentRound = (input, fieldToUpdate) => {
-    const [team, player] = fieldToUpdate.split('.');
-    const clonedCurrentRound = { ...state.currentRound };
-    clonedCurrentRound[team][player] = input;
+  const setCurrentRound = ({ input, fieldToUpdate, currentRound }) => {
+    const updatedRound = updateInput({ input, fieldToUpdate, currentRound });
     dispatch({
       type: 'SET_CURRENT_ROUND',
       payload: {
-        currentRound: clonedCurrentRound,
+        currentRound: updatedRound,
       },
     });
   };
@@ -24,10 +23,24 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  const setRoundHistory = () => {
+    dispatch({
+      type: 'SET_ROUND_HISTORY',
+    });
+  };
+
+  const resetRoundHistory = () => {
+    dispatch({
+      type: 'RESET_ROUND_HISTORY',
+    });
+  };
+
   const value = {
     setCurrentRound,
     currentRound: state.currentRound,
     resetCurrentRound,
+    setRoundHistory,
+    resetRoundHistory,
   };
 
   return (
