@@ -127,9 +127,9 @@ export function overPenalty(bid, actual, nilSetting) {
     return 0;
   }
   const bags = getPlayerBags(bid, actual, nilSetting);
-  const isTypeNil = bid === NIL || bid === BLIND_NIL;
+  const playerWentNil = isTypeNil(bid);
   let penalty = 0;
-  if (isTypeNil) {
+  if (playerWentNil) {
     // taking away original value, and then subtracting that amount again so that it exists as a penalty
     penalty = -convertAchievedBidToScoreValue(bid) * 2;
     penalty += bags;
@@ -482,7 +482,8 @@ function addRounds(prev, roundScore) {
   prev.teamScore += roundScore.teamScore;
   prev.teamBags += roundScore.teamBags;
 
-  if (prev.teamBags >= 10) {
+  const hasBagPenalty = prev.teamBags >= 10;
+  if (hasBagPenalty) {
     prev.teamScore -= 100;
     prev.teamBags -= 10;
   }

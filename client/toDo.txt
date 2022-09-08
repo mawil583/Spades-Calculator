@@ -1,9 +1,11 @@
 --High Priority--
 hook up useReducer for easy global state management - do this for roundHistory, names, nilScoringRule, and currentRound form state. Make sure currentRound is added to localStorage.
 fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: either userReducer for global state or resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
-add dynamic dealer tag
+make sure dealer tag rotates between games
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
+make sure bidding is saved to localStorage as soon as the last bid is entered. This will require making another localStorage object currentRound
+redo UI for currentRound to make it resemble a table 
 
 --Backlog--
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
