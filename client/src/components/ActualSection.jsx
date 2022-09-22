@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SimpleGrid, Center } from '@chakra-ui/react';
+import { SimpleGrid } from '@chakra-ui/react';
 import PlayerInput from './PlayerInput';
 import { addInputs, isNotDefaultValue } from '../helpers/spadesMath';
 import TeamInputHeading from './TeamInputHeading';
@@ -8,7 +8,6 @@ import { actualsErrorText } from '../helpers/helperFunctions';
 
 function ActualSection({
   index,
-  setRound,
   t1p1Name,
   t1p2Name,
   t2p1Name,
@@ -82,7 +81,6 @@ function ActualSection({
           index={index}
           isCurrent={isCurrent}
           type={'Actual'}
-          setRound={setRound}
           playerName={t1p1Name}
           currentRound={currentRound}
           id='team1BidsAndActuals.p1Actual'
@@ -94,7 +92,6 @@ function ActualSection({
           teamName={team2Name}
           index={index}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           id='team2BidsAndActuals.p1Actual'
           fieldToUpdate={'team2BidsAndActuals.p1Actual'}
@@ -107,7 +104,6 @@ function ActualSection({
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           playerName={t1p2Name}
           id='team1BidsAndActuals.p2Actual'
@@ -120,7 +116,6 @@ function ActualSection({
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           playerName={t2p2Name}
           playerInput={team2BidsAndActuals?.p2Actual}

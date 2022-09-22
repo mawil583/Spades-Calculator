@@ -1,27 +1,15 @@
 import React from 'react';
 import { Container } from '@chakra-ui/react';
 
-import {
-  calculateRoundScore,
-  getRoundHistoryAtCurrentRound,
-  calculateTeamScoreFromRoundHistory,
-} from '../helpers/spadesMath';
+import { calculateRoundScore } from '../helpers/spadesMath';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import Divider from './Divider';
-import { TEAM1, TEAM2 } from '../helpers/constants';
 
 function PastRound(props) {
-  const {
-    roundHistory,
-    roundNumber,
-    index,
-    roundAtIndex,
-    setRoundHistory,
-    names,
-  } = props;
+  const { roundHistory, roundNumber, index, roundAtIndex, names } = props;
 
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     names;
@@ -61,12 +49,6 @@ function PastRound(props) {
     nilSetting
   );
 
-  const setRoundAtIndex = (round) => {
-    const clonedRoundHistory = [...roundHistory];
-    clonedRoundHistory[index] = round;
-    setRoundHistory([...clonedRoundHistory]);
-  };
-
   return (
     <>
       <RoundHeading
@@ -96,7 +78,6 @@ function PastRound(props) {
             t2p2Name={t2p2Name}
             team1Name={team1Name}
             team2Name={team2Name}
-            setRound={setRoundAtIndex}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />
@@ -110,7 +91,6 @@ function PastRound(props) {
             t2p2Name={t2p2Name}
             team1Name={team1Name}
             team2Name={team2Name}
-            setRound={setRoundAtIndex}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />

@@ -17,14 +17,9 @@ import { useNavigate } from 'react-router-dom';
 import { initialNames } from '../helpers/constants';
 import { GlobalContext } from '../helpers/GlobalContext';
 
-function WarningModal({
-  isOpen,
-  setIsModalOpen,
-  setRoundHistory,
-  hasRoundHistory,
-}) {
+function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   const navigate = useNavigate();
-  const { resetCurrentRound } = useContext(GlobalContext);
+  const { resetCurrentRound, setRoundHistory } = useContext(GlobalContext);
   const [isDataWarningQuestionVisible, setIsDataWarningQuestionVisible] =
     useState(hasRoundHistory ? true : false);
   const [isNewPlayerQuestionVisible, setIsNewPlayerQuestionVisible] = useState(
@@ -142,6 +137,7 @@ function WarningModal({
     >
       <ModalOverlay />
       <ModalContent>
+        {/* consider making these react components */}
         {DataWarningQuestion()}
         {NewPlayerQuestion()}
       </ModalContent>

@@ -44,8 +44,36 @@ export const getTeamClassName = (teamName) => {
   const className = teamName === team1Name ? 'team1' : 'team2';
   return className;
 };
+
 export const getTeamStyle = (teamName) => {
   const { team1Name } = JSON.parse(localStorage.getItem('names'));
   const style = teamName === team1Name ? team1Styles : team2Styles;
   return style;
+};
+
+// consider renaming
+export const updateInput = ({ input, currentRound, fieldToUpdate }) => {
+  const clonedCurrentRound = { ...currentRound };
+  const [team, player] = fieldToUpdate.split('.');
+  clonedCurrentRound[team][player] = input;
+  return clonedCurrentRound;
+};
+
+export const getEditedRoundHistory = ({
+  index,
+  updatedRound,
+  roundHistory,
+}) => {
+  const clonedRoundHistory = [...roundHistory];
+  clonedRoundHistory[index] = updatedRound;
+  return clonedRoundHistory;
+};
+
+export const setInitialRoundHistory = () => {
+  const item = window.localStorage.getItem('roundHistory');
+  if (!item) {
+    window.localStorage.setItem('roundHistory', JSON.stringify([]));
+    return [];
+  }
+  return JSON.parse(item);
 };

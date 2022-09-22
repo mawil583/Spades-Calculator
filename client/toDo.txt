@@ -1,11 +1,15 @@
 --High Priority--
-hook up useReducer for easy global state management - do this for roundHistory, names, nilScoringRule, and currentRound form state. Make sure currentRound is added to localStorage.
-fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: either userReducer for global state or resetRoundValues state needs to be lifted up so that we can reset CurrentRoundState when user clicks 'New Game'
-add dynamic dealer tag
+make sure dealer tag rotates between games
+fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: userReducer for global state 
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
+make sure bidding is saved to localStorage as soon as the last bid is entered. This will require making another localStorage object currentRound
+redo UI for currentRound to make it resemble a table 
+make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
 
 --Backlog--
+see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
+hook up useReducer for names, and nilScoringRule form state. 
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 translate other large state objects to useReducer, and hook up localStorage to it, including currentRound
 now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
@@ -41,6 +45,8 @@ consider implementing even more game setting options
 add more tests for calculateTeamRoundScoresFromTeamHistory, calculateTeamScoreFromRoundHistory and different failed-nil settings
 clean up BidSection Heading. Maybe split it into more components
 buggy behavior when I try to move useSetScoreWhenRoundIsFinished into the hooks.js file. I get an infinite loop after inputting all of the second round's inputs. Figure out why
+go through codebase looking for comments. Add them to the backlog and then delete the comments
+In CurrentRound.jsx, isCurrent is being passed as a prop but maybe isCurrent should be defined from within BidSection in the form of state. Each instance of BidSection will have an isCurrent state that mounts true, but when it unmounts (or is added to roundHistory), then it switches to false. 
 
 
 Matt's suggestions:

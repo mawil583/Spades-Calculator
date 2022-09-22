@@ -8,7 +8,6 @@ import Unclaimed from './Unclaimed';
 
 function BidSection({
   index,
-  setRound,
   t1p1Name,
   t1p2Name,
   t2p1Name,
@@ -52,7 +51,6 @@ function BidSection({
           roundHistory={roundHistory}
           isCurrent={isCurrent}
           type={'Bid'}
-          setRound={setRound}
           playerName={t1p1Name}
           currentRound={currentRound}
           id='team1BidsAndActuals.p1Bid'
@@ -64,7 +62,6 @@ function BidSection({
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           playerName={t2p1Name}
           playerInput={team2BidsAndActuals?.p1Bid}
@@ -77,7 +74,6 @@ function BidSection({
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           playerName={t1p2Name}
           playerInput={team1BidsAndActuals?.p2Bid}
@@ -90,7 +86,6 @@ function BidSection({
           index={index}
           roundHistory={roundHistory}
           isCurrent={isCurrent}
-          setRound={setRound}
           currentRound={currentRound}
           playerName={t2p2Name}
           playerInput={team2BidsAndActuals?.p2Bid}

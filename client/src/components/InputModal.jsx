@@ -11,12 +11,12 @@ import {
 import ButtonGrid from './ButtonGrid';
 
 function InputModal({
+  index,
   isCurrent,
   playerName,
   isOpen,
   setIsModalOpen,
   type,
-  setRound,
   fieldToUpdate,
   currentRound,
 }) {
@@ -37,11 +37,11 @@ function InputModal({
           <ModalBody style={{ padding: '5px', backgroundColor: '#464f51' }}>
             <ButtonGrid
               isCurrent={isCurrent}
-              setRound={setRound}
               fieldToUpdate={fieldToUpdate}
               currentRound={currentRound}
               setIsModalOpen={setIsModalOpen}
               type={type}
+              index={index}
             />
           </ModalBody>
         </ModalContent>

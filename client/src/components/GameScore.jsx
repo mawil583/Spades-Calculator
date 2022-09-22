@@ -20,7 +20,6 @@ function GameScore({
   team1Bags,
   team2Score,
   team2Bags,
-  setRoundHistory,
   hasRoundHistory,
 }) {
   const navigate = useNavigate();
@@ -37,7 +36,6 @@ function GameScore({
       <WarningModal
         isOpen={isOpen}
         setIsModalOpen={setIsModalOpen}
-        setRoundHistory={setRoundHistory}
         hasRoundHistory={hasRoundHistory}
       />
       <div

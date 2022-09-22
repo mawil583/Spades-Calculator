@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Flex, Badge } from '@chakra-ui/react';
+import { Button, Flex } from '@chakra-ui/react';
 
 import InputModal from './InputModal';
-import { getDealerIdHistory, getCurrentDealerId } from '../helpers/spadesMath';
+import DealerTag from './DealerTag';
 import { getTeamStyle } from '../helpers/helperFunctions';
 
 const PlayerInput = ({
@@ -10,7 +10,6 @@ const PlayerInput = ({
   type,
   index,
   teamName,
-  setRound,
   isCurrent,
   playerName,
   playerInput,
@@ -19,8 +18,6 @@ const PlayerInput = ({
   fieldToUpdate,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const dealerIdHistory = getDealerIdHistory(roundHistory, isCurrent);
-  const isDealer = getCurrentDealerId(dealerIdHistory, index, isCurrent) === id;
   const style = getTeamStyle(teamName);
 
   const onEdit = () => {
@@ -34,13 +31,19 @@ const PlayerInput = ({
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         type={type}
-        setRound={setRound}
         fieldToUpdate={fieldToUpdate}
         currentRound={currentRound}
+        index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
         <label style={{ marginRight: '15px', ...style }} htmlFor='p1Bid'>
-          {playerName} {isDealer && <Badge colorScheme='purple'>D</Badge>}
+          {playerName}{' '}
+          <DealerTag
+            id={id}
+            index={index}
+            isCurrent={isCurrent}
+            roundHistory={roundHistory}
+          />
         </label>
         {playerInput === '' ? (
           <Button

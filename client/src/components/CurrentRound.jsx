@@ -11,12 +11,13 @@ import { GlobalContext } from '../helpers/GlobalContext';
 function CurrentRound(props) {
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     props.names;
-  const { setRoundHistory, roundHistory, roundNumber } = props;
-  const { currentRound, setCurrentRound, resetCurrentRound } =
+  const { roundHistory, roundNumber } = props;
+  const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
   const roundIndex = roundHistory.length + 1;
 
+  // move this to hooks.js!
   useSetScoreWhenRoundIsFinished(
     currentRound,
     resetCurrentRound,
@@ -43,7 +44,6 @@ function CurrentRound(props) {
             t1p2Name={t1p2Name}
             t2p1Name={t2p1Name}
             t2p2Name={t2p2Name}
-            setRound={setCurrentRound}
             roundHistory={roundHistory}
             currentRound={currentRound}
           />
@@ -57,7 +57,6 @@ function CurrentRound(props) {
             t2p1Name={t2p1Name}
             t1p2Name={t1p2Name}
             t2p2Name={t2p2Name}
-            setRound={setCurrentRound}
             roundHistory={roundHistory}
             currentRound={currentRound}
           />
