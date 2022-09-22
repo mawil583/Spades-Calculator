@@ -1,21 +1,24 @@
-import React, { useContext, useReducer } from 'react';
+import React, { useContext } from 'react';
 import { Button, SimpleGrid } from '@chakra-ui/react';
 
-import { getButtonValues, updateInput } from '../helpers/helperFunctions';
+import {
+  getButtonValues,
+  getEditedRoundHistory,
+  updateInput,
+} from '../helpers/helperFunctions';
 import { GlobalContext } from '../helpers/GlobalContext';
-import rootReducer, { initialState } from '../helpers/rootReducer';
 
 function ButtonGrid({
+  index,
   isCurrent,
   type,
   setIsModalOpen,
-  setRound,
   currentRound,
   fieldToUpdate,
 }) {
-  const { setCurrentRound } = useContext(GlobalContext);
+  const { setCurrentRound, setRoundHistory, roundHistory } =
+    useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
-  const [state] = useReducer(rootReducer, initialState);
 
   const onSelect = (input) => {
     setIsModalOpen(false);
@@ -23,11 +26,16 @@ function ButtonGrid({
       setCurrentRound({
         input,
         fieldToUpdate,
-        currentRound: { ...state.currentRound },
+        currentRound: { ...currentRound },
       });
     } else {
       const updatedRound = updateInput({ input, fieldToUpdate, currentRound });
-      setRound(updatedRound);
+      const newRoundHistory = getEditedRoundHistory({
+        index,
+        updatedRound,
+        roundHistory: roundHistory,
+      });
+      setRoundHistory([...newRoundHistory]);
     }
   };
 

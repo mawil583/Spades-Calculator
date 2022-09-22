@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import '../App.css';
 import GameScore from '../components/GameScore';
 import CurrentRound from '../components/CurrentRound';
 import { calculateTeamScoreFromRoundHistory } from '../helpers/spadesMath';
-import { useLocalStorage } from '../helpers/hooks';
 import PastRounds from '../components/PastRounds';
 import { TEAM1, TEAM2 } from '../helpers/constants';
 import { useRedirectWhenFalsey } from '../helpers/hooks';
+import { GlobalContext } from '../helpers/GlobalContext';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
   const names = JSON.parse(localStorage.getItem('names'));
   useRedirectWhenFalsey(names, navigate);
-  const [roundHistory, setRoundHistory] = useLocalStorage('roundHistory', []);
+  const { roundHistory } = useContext(GlobalContext);
   const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
   const team1Score = calculateTeamScoreFromRoundHistory(
     roundHistory,
@@ -37,7 +37,6 @@ function SpadesCalculator() {
             team1Bags={team1Score.teamBags}
             team2Score={team2Score.teamScore}
             team2Bags={team2Score.teamBags}
-            setRoundHistory={setRoundHistory}
             hasRoundHistory={roundHistory.length > 0}
           />
           <CurrentRound
@@ -46,13 +45,8 @@ function SpadesCalculator() {
             team1GameScore={team1Score}
             team2GameScore={team2Score}
             roundHistory={roundHistory}
-            setRoundHistory={setRoundHistory}
           />
-          <PastRounds
-            names={names}
-            roundHistory={roundHistory}
-            setRoundHistory={setRoundHistory}
-          />
+          <PastRounds names={names} roundHistory={roundHistory} />
         </>
       )}
     </div>

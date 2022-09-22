@@ -51,9 +51,29 @@ export const getTeamStyle = (teamName) => {
   return style;
 };
 
+// consider renaming
 export const updateInput = ({ input, currentRound, fieldToUpdate }) => {
   const clonedCurrentRound = { ...currentRound };
   const [team, player] = fieldToUpdate.split('.');
   clonedCurrentRound[team][player] = input;
   return clonedCurrentRound;
+};
+
+export const getEditedRoundHistory = ({
+  index,
+  updatedRound,
+  roundHistory,
+}) => {
+  const clonedRoundHistory = [...roundHistory];
+  clonedRoundHistory[index] = updatedRound;
+  return clonedRoundHistory;
+};
+
+export const setInitialRoundHistory = () => {
+  const item = window.localStorage.getItem('roundHistory');
+  if (!item) {
+    window.localStorage.setItem('roundHistory', JSON.stringify([]));
+    return [];
+  }
+  return JSON.parse(item);
 };

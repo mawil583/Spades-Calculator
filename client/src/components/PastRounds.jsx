@@ -1,7 +1,7 @@
 import React from 'react';
 import PastRound from './PastRound';
 
-function PastRounds({ roundHistory, setRoundHistory, names }) {
+function PastRounds({ roundHistory, names }) {
   return (
     <>
       {roundHistory
@@ -13,7 +13,6 @@ function PastRounds({ roundHistory, setRoundHistory, names }) {
               index={i}
               names={names}
               roundHistory={roundHistory}
-              setRoundHistory={setRoundHistory}
               roundAtIndex={round}
             />
           );

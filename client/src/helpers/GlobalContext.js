@@ -23,9 +23,13 @@ export const StateProvider = ({ children }) => {
     });
   };
 
-  const setRoundHistory = () => {
+  const setRoundHistory = (newRoundHistory) => {
+    const clonedNewRoundHistory = [...newRoundHistory];
     dispatch({
       type: 'SET_ROUND_HISTORY',
+      payload: {
+        roundHistory: clonedNewRoundHistory,
+      },
     });
   };
 
@@ -38,6 +42,7 @@ export const StateProvider = ({ children }) => {
   const value = {
     setCurrentRound,
     currentRound: state.currentRound,
+    roundHistory: state.roundHistory,
     resetCurrentRound,
     setRoundHistory,
     resetRoundHistory,

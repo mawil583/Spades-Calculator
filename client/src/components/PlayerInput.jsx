@@ -10,7 +10,6 @@ const PlayerInput = ({
   type,
   index,
   teamName,
-  setRound,
   isCurrent,
   playerName,
   playerInput,
@@ -32,9 +31,9 @@ const PlayerInput = ({
         isOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
         type={type}
-        setRound={setRound}
         fieldToUpdate={fieldToUpdate}
         currentRound={currentRound}
+        index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
         <label style={{ marginRight: '15px', ...style }} htmlFor='p1Bid'>
