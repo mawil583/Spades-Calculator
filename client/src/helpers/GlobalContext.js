@@ -39,7 +39,7 @@ export const StateProvider = ({ children }) => {
     });
   };
 
-  const value = {
+  const globalStore = {
     setCurrentRound,
     currentRound: state.currentRound,
     roundHistory: state.roundHistory,
@@ -49,6 +49,8 @@ export const StateProvider = ({ children }) => {
   };
 
   return (
-    <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
+    <GlobalContext.Provider value={globalStore}>
+      {children}
+    </GlobalContext.Provider>
   );
 };
