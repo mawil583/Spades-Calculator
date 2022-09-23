@@ -3,7 +3,7 @@ import {
   setLocalStorage,
   getLocalStorage,
 } from './helperFunctions';
-import { t1p1ID, t1p2ID, t2p1ID, t2p2ID } from './constants';
+import { initialFirstDealerOrder } from './constants';
 
 export const initialState = {
   currentRound: {
@@ -21,12 +21,10 @@ export const initialState = {
     },
   },
   roundHistory: defaultLocalStorage('roundHistory', []),
-  firstDealerOrder: defaultLocalStorage('firstDealerOrder', [
-    t1p1ID,
-    t2p1ID,
-    t1p2ID,
-    t2p2ID,
-  ]),
+  firstDealerOrder: defaultLocalStorage(
+    'firstDealerOrder',
+    initialFirstDealerOrder
+  ),
   isFirstGameAmongTeammates: defaultLocalStorage(
     'isFirstGameAmongTeammates',
     true

@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { initialNames } from '../helpers/constants';
+import { initialNames, initialFirstDealerOrder } from '../helpers/constants';
 import { GlobalContext } from '../helpers/GlobalContext';
 import { rotateArr } from '../helpers/helperFunctions';
 
@@ -63,6 +63,7 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
 
   const onDifferentTeams = () => {
     localStorage.setItem('names', JSON.stringify(initialNames));
+    setFirstDealerOrder(initialFirstDealerOrder);
     setIsNewPlayerQuestionVisible(false);
     setIsModalOpen(false);
     navigate('/');
