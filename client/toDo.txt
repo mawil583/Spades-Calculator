@@ -11,7 +11,7 @@ make sure all instances of useLocalStorage are converted to redux. Or at least c
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
-translate other large state objects to useReducer, and hook up localStorage to it, including currentRound
+refactor getCurrentDealerId
 now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.

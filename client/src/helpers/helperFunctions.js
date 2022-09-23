@@ -69,11 +69,36 @@ export const getEditedRoundHistory = ({
   return clonedRoundHistory;
 };
 
-export const setInitialRoundHistory = () => {
-  const item = window.localStorage.getItem('roundHistory');
+/* 
+if there's anything in localStorage, then return that value;
+otherwise, set a default value for that key in localStorage
+*/
+export const defaultLocalStorage = (key, value) => {
+  const item = window.localStorage.getItem(key);
+  console.log({ item });
   if (!item) {
-    window.localStorage.setItem('roundHistory', JSON.stringify([]));
-    return [];
+    window.localStorage.setItem(key, JSON.stringify(value));
+    return value;
   }
   return JSON.parse(item);
+};
+
+export const getLocalStorage = (key) => {
+  const item = window.localStorage.getItem(key);
+  return JSON.parse(item);
+};
+
+export const setLocalStorage = (key, value) => {
+  const item = window.localStorage.getItem(key);
+  if (!item) {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  }
+  window.localStorage.setItem(key, JSON.stringify(value));
+};
+
+export const rotateArr = (arr) => {
+  const clonedArr = [...arr];
+  clonedArr.push(clonedArr[0]);
+  clonedArr.shift();
+  return clonedArr;
 };

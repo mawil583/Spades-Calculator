@@ -4,7 +4,6 @@ import {
   TAKES_BAGS,
   HELPS_TEAM_BID,
   NO_BAGS_NO_HELP,
-  dealerIds,
 } from './constants';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
@@ -419,28 +418,33 @@ export function calculateTeamRoundScoresFromTeamHistory(
   });
 }
 
-export function getDealerIdHistory(roundHistory) {
-  const clonedDealerIDs = [...dealerIds];
+export function getDealerIdHistory(roundHistory, firstDealerOrder) {
+  const clonedfirstDealerOrder = [...firstDealerOrder];
   const dealerIdHistory = [];
   roundHistory.forEach((round) => {
-    dealerIdHistory.push(clonedDealerIDs[0]);
-    clonedDealerIDs.push(clonedDealerIDs[0]);
-    clonedDealerIDs.shift();
+    dealerIdHistory.push(clonedfirstDealerOrder[0]);
+    clonedfirstDealerOrder.push(clonedfirstDealerOrder[0]);
+    clonedfirstDealerOrder.shift();
   });
   return dealerIdHistory;
 }
 
-export function getCurrentDealerId(dealerIdHistory, index, isCurrent) {
-  const clonedDealerIDs = [...dealerIds];
+export function getCurrentDealerId({
+  dealerIdHistory,
+  index,
+  isCurrent,
+  firstDealerOrder,
+}) {
+  const clonedfirstDealerOrder = [...firstDealerOrder];
   if (isCurrent) {
     if (dealerIdHistory.length < 4) {
-      if (dealerIdHistory.length === 0) return clonedDealerIDs[0];
-      return clonedDealerIDs[index - 1];
+      if (dealerIdHistory.length === 0) return clonedfirstDealerOrder[0];
+      return clonedfirstDealerOrder[index - 1];
     }
     return dealerIdHistory[index - 5];
   } else {
     if (index < 4) {
-      return clonedDealerIDs[index];
+      return clonedfirstDealerOrder[index];
     }
     return dealerIdHistory[index - 4];
   }

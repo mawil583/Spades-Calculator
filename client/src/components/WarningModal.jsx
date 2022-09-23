@@ -16,10 +16,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { initialNames } from '../helpers/constants';
 import { GlobalContext } from '../helpers/GlobalContext';
+import { rotateArr } from '../helpers/helperFunctions';
 
 function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   const navigate = useNavigate();
-  const { resetCurrentRound, setRoundHistory } = useContext(GlobalContext);
+  const {
+    resetCurrentRound,
+    setRoundHistory,
+    setFirstDealerOrder,
+    firstDealerOrder,
+    roundHistory,
+  } = useContext(GlobalContext);
   const [isDataWarningQuestionVisible, setIsDataWarningQuestionVisible] =
     useState(hasRoundHistory ? true : false);
   const [isNewPlayerQuestionVisible, setIsNewPlayerQuestionVisible] = useState(
@@ -36,18 +43,24 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   const onCancel = () => {
     setIsModalOpen(false);
   };
+
   const onContinue = () => {
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);
-    setRoundHistory([]);
     resetCurrentRound();
   };
+
   const onSameTeams = () => {
+    if (roundHistory.length > 0) {
+      setFirstDealerOrder(rotateArr(firstDealerOrder));
+    }
+    setRoundHistory([]);
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);
     setIsModalOpen(false);
     resetCurrentRound();
   };
+
   const onDifferentTeams = () => {
     localStorage.setItem('names', JSON.stringify(initialNames));
     setIsNewPlayerQuestionVisible(false);

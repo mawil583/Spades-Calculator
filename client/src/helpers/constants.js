@@ -65,11 +65,10 @@ export const TAKES_BAGS = 'takesBags';
 export const HELPS_TEAM_BID = 'helpsTeamBid';
 export const NO_BAGS_NO_HELP = 'noBagsNoHelp';
 
-const t1p1ID = 'team1BidsAndActuals.p1Bid';
-const t1p2ID = 'team1BidsAndActuals.p2Bid';
-const t2p1ID = 'team2BidsAndActuals.p1Bid';
-const t2p2ID = 'team2BidsAndActuals.p2Bid';
-export const dealerIds = [t1p1ID, t2p1ID, t1p2ID, t2p2ID];
+export const t1p1ID = 'team1BidsAndActuals.p1Bid';
+export const t1p2ID = 'team1BidsAndActuals.p2Bid';
+export const t2p1ID = 'team2BidsAndActuals.p1Bid';
+export const t2p2ID = 'team2BidsAndActuals.p2Bid';
 
 export const team1Styles = {
   color: '#ffc100',
