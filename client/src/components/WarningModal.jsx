@@ -54,6 +54,7 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
       setFirstDealerOrder(rotateArr(firstDealerOrder));
     }
     // the following two function reset state. Make naming conventions consistent
+    // also, these two functions are in onDifferentTeams(). Try to make DRY
     resetCurrentRound();
     setRoundHistory([]);
     setIsDataWarningQuestionVisible(false);
@@ -63,6 +64,8 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   };
 
   const onDifferentTeams = () => {
+    setRoundHistory([]);
+    resetCurrentRound();
     localStorage.setItem('names', JSON.stringify(initialNames));
     setFirstDealerOrder(initialFirstDealerOrder);
     setIsNewPlayerQuestionVisible(false);
