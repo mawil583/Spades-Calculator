@@ -1,4 +1,9 @@
-import { setInitialRoundHistory } from './helperFunctions';
+import {
+  defaultLocalStorage,
+  setLocalStorage,
+  getLocalStorage,
+} from './helperFunctions';
+import { t1p1ID, t1p2ID, t2p1ID, t2p2ID } from './constants';
 
 export const initialState = {
   currentRound: {
@@ -15,7 +20,17 @@ export const initialState = {
       p2Actual: '',
     },
   },
-  roundHistory: setInitialRoundHistory(),
+  roundHistory: defaultLocalStorage('roundHistory', []),
+  firstDealerOrder: defaultLocalStorage('firstDealerOrder', [
+    t1p1ID,
+    t2p1ID,
+    t1p2ID,
+    t2p2ID,
+  ]),
+  isFirstGameAmongTeammates: defaultLocalStorage(
+    'isFirstGameAmongTeammates',
+    true
+  ),
 };
 
 const rootReducer = (state, action) => {
@@ -25,7 +40,6 @@ const rootReducer = (state, action) => {
     case 'SET_CURRENT_ROUND':
       return { ...state, currentRound: payload.currentRound };
     case 'RESET_CURRENT_ROUND':
-      console.log({ state });
       return {
         ...state,
         currentRound: {
@@ -50,40 +64,29 @@ const rootReducer = (state, action) => {
       };
     case 'SET_ROUND_HISTORY':
       try {
-        const item = window.localStorage.getItem('roundHistory');
-        if (!item) {
-          window.localStorage.setItem('roundHistory', JSON.stringify([]));
-          return { ...state, roundHistory: [] };
-        }
-        console.log('set round history from reducer');
-        window.localStorage.setItem(
-          'roundHistory',
-          JSON.stringify([...payload.roundHistory])
-        );
+        setLocalStorage('roundHistory', [...payload.roundHistory]);
         return {
           ...state,
-          roundHistory: [...payload.roundHistory],
+          roundHistory: getLocalStorage('roundHistory'),
         };
       } catch (err) {
         console.error(err);
       }
       break;
-    // return {
-    //   ...state,
-    //   roundHistory: [...payload.roundHistory],
-    // };
-    default:
-      // make sure to attach roundHistory to this
-      // return state;
-      console.log('default called');
-
-      const item = window.localStorage.getItem('roundHistory');
-      if (!item) {
-        window.localStorage.setItem('roundHistory', JSON.stringify([]));
-        return { ...state, roundHistory: [] };
+    case 'SET_FIRST_DEALER_ORDER':
+      try {
+        setLocalStorage('firstDealerOrder', [...payload.firstDealerOrder]);
+        return {
+          ...state,
+          firstDealerOrder: getLocalStorage('firstDealerOrder'),
+        };
+      } catch (err) {
+        console.error(err);
       }
-      //  return JSON.parse(item);
-      return { ...state, roundHistory: JSON.parse(item) };
+      break;
+    default:
+      console.log('default called');
+      return state;
   }
 };
 

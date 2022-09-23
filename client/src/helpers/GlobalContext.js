@@ -33,6 +33,16 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  const setFirstDealerOrder = (newFirstDealerOrder) => {
+    const clonedNewFirstDealerOrder = [...newFirstDealerOrder];
+    dispatch({
+      type: 'SET_FIRST_DEALER_ORDER',
+      payload: {
+        firstDealerOrder: clonedNewFirstDealerOrder,
+      },
+    });
+  };
+
   const resetRoundHistory = () => {
     dispatch({
       type: 'RESET_ROUND_HISTORY',
@@ -41,11 +51,14 @@ export const StateProvider = ({ children }) => {
 
   const globalStore = {
     setCurrentRound,
-    currentRound: state.currentRound,
-    roundHistory: state.roundHistory,
-    resetCurrentRound,
     setRoundHistory,
     resetRoundHistory,
+    resetCurrentRound,
+    setFirstDealerOrder,
+    firstDealerOrder: state.firstDealerOrder,
+    currentRound: state.currentRound,
+    roundHistory: state.roundHistory,
+    isFirstGameAmongTeammates: state.isFirstGameAmongTeammates,
   };
 
   return (
