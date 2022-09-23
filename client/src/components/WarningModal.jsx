@@ -47,13 +47,14 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   const onContinue = () => {
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);
-    resetCurrentRound();
   };
 
   const onSameTeams = () => {
     if (roundHistory.length > 0) {
       setFirstDealerOrder(rotateArr(firstDealerOrder));
     }
+    // the following two function reset state. Make naming conventions consistent
+    resetCurrentRound();
     setRoundHistory([]);
     setIsDataWarningQuestionVisible(false);
     setIsNewPlayerQuestionVisible(true);

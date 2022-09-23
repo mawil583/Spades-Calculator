@@ -6,7 +6,7 @@ import {
 import { initialFirstDealerOrder } from './constants';
 
 export const initialState = {
-  currentRound: {
+  currentRound: defaultLocalStorage('currentRound', {
     team1BidsAndActuals: {
       p1Bid: '',
       p2Bid: '',
@@ -19,7 +19,7 @@ export const initialState = {
       p1Actual: '',
       p2Actual: '',
     },
-  },
+  }),
   roundHistory: defaultLocalStorage('roundHistory', []),
   firstDealerOrder: defaultLocalStorage(
     'firstDealerOrder',
@@ -36,11 +36,19 @@ const rootReducer = (state, action) => {
 
   switch (type) {
     case 'SET_CURRENT_ROUND':
-      return { ...state, currentRound: payload.currentRound };
+      try {
+        setLocalStorage('currentRound', { ...payload.currentRound });
+        return {
+          ...state,
+          currentRound: getLocalStorage('currentRound'),
+        };
+      } catch (err) {
+        console.error(err);
+      }
+      break;
     case 'RESET_CURRENT_ROUND':
-      return {
-        ...state,
-        currentRound: {
+      try {
+        setLocalStorage('currentRound', {
           team1BidsAndActuals: {
             p1Bid: '',
             p2Bid: '',
@@ -53,8 +61,15 @@ const rootReducer = (state, action) => {
             p1Actual: '',
             p2Actual: '',
           },
-        },
-      };
+        });
+        return {
+          ...state,
+          currentRound: getLocalStorage('currentRound'),
+        };
+      } catch (err) {
+        console.error(err);
+      }
+      break;
     case 'RESET_ROUND_HISTORY':
       return {
         ...state,
