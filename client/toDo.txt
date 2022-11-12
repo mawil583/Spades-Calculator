@@ -1,17 +1,18 @@
 --High Priority--
-make sure dealer tag rotates between games
-fix bug where if a CurrentRound is partially complete, and user clicks 'New Game', it does not clear the roundState. it only clears roundHistory. The button state does not get cleared. The fix: userReducer for global state 
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
-make sure bidding is saved to localStorage as soon as the last bid is entered. This will require making another localStorage object currentRound
-redo UI for currentRound to make it resemble a table 
+redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile)
 make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
+the chakraUI buttons have a weird default behavior where they can highlight the button if the press and hold it. When they do that, it doesn't actually fire the onClick, which requires the user to select the same button again. And it's really sensitive to where a normal click is sometimes considered a "press and hold"
+change name form to have team1 section span entire width, and team2 span entire width
+create a redux folder and put all corresponding files in it
 
 --Backlog--
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
+do i need try/catch in reducer?
 now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.
@@ -31,7 +32,7 @@ add text to PastRound Actuals. if someone went over 10 bags, or got set, or fail
 improve separation of concerns for CurrentRound vs PastRound
 names was already set in NameForm.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
-improve design
+improve visual design (CSS)
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
