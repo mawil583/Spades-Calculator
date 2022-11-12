@@ -61,9 +61,7 @@ export function useRedirectWhenFalsey(names, navigate) {
 
 export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {
   useEffect(() => {
-    const team1Inputs = Object.values(team1Bids);
-    const team2Inputs = Object.values(team2Bids);
-    const totalClaimed = addInputs(...team1Inputs, ...team2Inputs);
+    const totalClaimed = addInputs(...team1Bids, ...team2Bids);
     setNumUnclaimed(13 - totalClaimed);
   }, [setNumUnclaimed, team1Bids, team2Bids]);
 }
