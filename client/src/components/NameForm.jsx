@@ -46,6 +46,7 @@ function NameForm() {
     }
   };
 
+  // put this into hooks.
   useEffect(() => {
     function setLocalStorageTeamNames(formVals) {
       if (formVals.team1Name === '') {
@@ -58,16 +59,17 @@ function NameForm() {
     setLocalStorageTeamNames(formik.values);
     setDefaultTeamNames(formik);
   }, [formik.values, formik, setNames, names]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={2}>
         <TeamNameInput
-          id='team1Name'
+          id='team1'
           teamName={formik.values.team1Name}
           handleChange={formik.handleChange}
         />
         <TeamNameInput
-          id='team2Name'
+          id='team2'
           teamName={formik.values.team2Name}
           handleChange={formik.handleChange}
         />

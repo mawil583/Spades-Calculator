@@ -39,6 +39,7 @@ export const getButtonValues = (type) => {
   return possibleActuals;
 };
 
+// bad function. Delete this after deleting everything depending on it
 export const getTeamClassName = (teamName) => {
   const { team1Name } = JSON.parse(localStorage.getItem('names'));
   const className = teamName === team1Name ? 'team1' : 'team2';
