@@ -1,16 +1,14 @@
 import React from 'react';
 import { Center, Heading, Flex, Text } from '@chakra-ui/react';
 
-import { getTeamClassName } from '../helpers/helperFunctions';
 import '../App.css';
 
-function TeamScore({ teamName, teamScore, teamBags }) {
-  const className = getTeamClassName(teamName);
+function TeamScore({ teamName, teamScore, teamBags, teamClassName }) {
   return (
     <Flex
       direction={'column'}
       style={{ lineHeight: '45px' }}
-      className={className}
+      className={teamClassName}
     >
       <Center>
         <Heading as={'h2'} size='md' mb={0}>
