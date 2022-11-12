@@ -64,16 +64,27 @@ function NameForm() {
     <form onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={2}>
         <TeamNameInput
+<<<<<<< HEAD
           id='team1'
+=======
+          id='team1Name'
+          teamClassName='team1'
+>>>>>>> fixed color bug and deleted dumb function
           teamName={formik.values.team1Name}
           handleChange={formik.handleChange}
         />
         <TeamNameInput
+<<<<<<< HEAD
           id='team2'
+=======
+          id='team2Name'
+          teamClassName='team2'
+>>>>>>> fixed color bug and deleted dumb function
           teamName={formik.values.team2Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          teamClassName='team1'
           teamName={formik.values.team1Name}
           id='t1p1Name'
           label='Player 1 Name'
@@ -86,6 +97,7 @@ function NameForm() {
         <PlayerNameInput
           teamName={formik.values.team2Name}
           id='t2p1Name'
+          teamClassName='team2'
           label='Player 1 Name'
           placeholder={`Who's left of dealer?`}
           playerName={formik.values.t2p1Name}
@@ -94,6 +106,7 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
+          teamClassName='team1'
           id='t1p2Name'
           label='Player 2 Name'
           teamName={formik.values.team1Name}
@@ -104,6 +117,7 @@ function NameForm() {
         />
         <PlayerNameInput
           teamName={formik.values.team2Name}
+          teamClassName='team2'
           id='t2p2Name'
           label='Player 2 Name'
           playerName={formik.values.t2p2Name}

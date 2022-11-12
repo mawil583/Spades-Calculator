@@ -6,7 +6,11 @@ import {
   EditablePreview,
 } from '@chakra-ui/react';
 
+<<<<<<< HEAD
 function TeamNameInput({ id, teamName, handleChange }) {
+=======
+function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
+>>>>>>> fixed color bug and deleted dumb function
   return (
     <div>
       <Editable
@@ -15,7 +19,11 @@ function TeamNameInput({ id, teamName, handleChange }) {
         fontSize='lg'
         fontWeight='bold'
         placeholder={teamName}
+<<<<<<< HEAD
         className={id}
+=======
+        className={teamClassName}
+>>>>>>> fixed color bug and deleted dumb function
       >
         <Center>
           <EditablePreview />

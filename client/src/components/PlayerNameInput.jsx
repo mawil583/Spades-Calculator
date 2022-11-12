@@ -11,10 +11,9 @@ import 'core-js/es/set';
 import 'core-js/es/map';
 
 import '../App.css';
-import { getTeamClassName } from '../helpers/helperFunctions';
 
 function PlayerNameInput({
-  teamName,
+  teamClassName,
   id,
   label,
   placeholder,
@@ -23,7 +22,6 @@ function PlayerNameInput({
   touched,
   handleChange,
 }) {
-  const teamClassName = getTeamClassName(teamName);
   return (
     <div>
       <FormControl isInvalid={errors && touched} className={teamClassName}>

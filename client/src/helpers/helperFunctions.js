@@ -39,6 +39,7 @@ export const getButtonValues = (type) => {
   return possibleActuals;
 };
 
+<<<<<<< HEAD
 // bad function. Delete this after deleting everything depending on it
 export const getTeamClassName = (teamName) => {
   const { team1Name } = JSON.parse(localStorage.getItem('names'));
@@ -46,6 +47,8 @@ export const getTeamClassName = (teamName) => {
   return className;
 };
 
+=======
+>>>>>>> fixed color bug and deleted dumb function
 export const getTeamStyle = (teamName) => {
   const { team1Name } = JSON.parse(localStorage.getItem('names'));
   const style = teamName === team1Name ? team1Styles : team2Styles;
