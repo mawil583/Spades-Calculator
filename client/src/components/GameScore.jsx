@@ -65,11 +65,13 @@ function GameScore({
         </Center>
         <SimpleGrid columns={2}>
           <TeamScore
+            teamClassName='team1'
             teamName={names.team1Name}
             teamScore={team1Score}
             teamBags={team1Bags}
           />
           <TeamScore
+            teamClassName='team2'
             teamName={names.team2Name}
             teamScore={team2Score}
             teamBags={team2Bags}
