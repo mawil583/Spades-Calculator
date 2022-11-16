@@ -50,7 +50,7 @@ const PlayerInput = ({
             onClick={() => {
               setIsModalOpen(true);
             }}
-            style={{backgroundColor: 'transparent'}}
+            style={style}
             variant='outline'
             value={playerInput}
             id={id}

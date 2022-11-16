@@ -52,3 +52,10 @@
 .namesContainer {
   margin-bottom: 15px;
 }
+
+/* Disable hover on mobile screen sizes */
+@media only screen and (max-width: 768px) {
+  .can-hover .chakra-button:hover {
+    background-color: transparent;
+  }
+}
