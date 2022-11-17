@@ -55,7 +55,10 @@
 
 /* Disable hover on mobile screen sizes */
 @media only screen and (max-width: 768px) {
-  .can-hover .chakra-button:hover {
-    background-color: transparent;
+  /* Chakra UI default classname for the bid and actual buttons */
+  .css-4o5e5l:hover, 
+  .css-4o5e5l:active
+  {
+    background: transparent!important;
   }
 }

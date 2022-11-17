@@ -5,7 +5,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { StateProvider } from './helpers/GlobalContext';
 
 import './index.css';
-import './disableHoverBtnStyleMobile';
 import * as serviceWorker from './serviceWorker';
 import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
