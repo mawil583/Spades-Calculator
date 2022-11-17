@@ -56,6 +56,13 @@ const PlayerInput = ({
             id={id}
             name={id}
             size='sm'
+            sx={{
+              '@media screen and (max-width: 991px)': {
+                '&:hover, &:active': {
+                  backgroundColor: 'transparent',
+                }
+              }
+            }}
           >
             {type}
           </Button>

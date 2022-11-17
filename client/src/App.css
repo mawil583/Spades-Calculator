@@ -52,13 +52,3 @@
 .namesContainer {
   margin-bottom: 15px;
 }
-
-/* Disable hover on mobile screen sizes */
-@media only screen and (max-width: 768px) {
-  /* Chakra UI default className for the bid and actual buttons */
-  .css-4o5e5l:hover, 
-  .css-4o5e5l:active
-  {
-    background: transparent!important;
-  }
-}
