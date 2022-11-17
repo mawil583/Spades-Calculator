@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { StateProvider } from './helpers/GlobalContext';
 
 import './index.css';
@@ -9,8 +9,18 @@ import * as serviceWorker from './serviceWorker';
 import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
 
+const theme = extendTheme({
+  components: {
+    Button: {
+      md: {
+        bg: 'transparent',
+      }
+    }
+  }
+})
+
 ReactDOM.render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <StateProvider>
       <BrowserRouter>
         <Routes>
