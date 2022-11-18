@@ -9,19 +9,27 @@ import * as serviceWorker from './serviceWorker';
 import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
 
-const theme = extendTheme({
-  styles: {
-    global: () => ({
-       [`@media screen and (max-width: 991px)`] : {
-        Button: {
-          bg: "transparent",
-        },
-      },
-    }),
-  }
-});
+// const theme = extendTheme({
+//   styles: {
+//     global: {
+//       // styles for the `body`
+//       Button: {
+//         // _hover & _active do not work here as expected even though its written according to their documentation. However other properties like bg: 'white.400' work as expected. Reach out for bug report.
+//         // https://chakra-ui.com/docs/styled-system/style-props
+//         // https://chakra-ui.com/docs/styled-system/customize-theme
+//         _hover: {
+//           textDecoration: 'underline',
+//         },
+//         _active: {
+//           bgColor: 'transparent',
+//         }
+//       },
+//     },
+//   },
+// })
+
 ReactDOM.render(
-  <ChakraProvider theme={theme}>
+  <ChakraProvider /*theme={theme}*/>
     <StateProvider>
       <BrowserRouter>
         <Routes>
