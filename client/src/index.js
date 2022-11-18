@@ -10,15 +10,16 @@ import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
 
 const theme = extendTheme({
-  components: {
-    Button: {
-      md: {
-        bg: 'transparent',
-      }
-    }
+  styles: {
+    global: () => ({
+       [`@media screen and (max-width: 991px)`] : {
+        Button: {
+          bg: "transparent",
+        },
+      },
+    }),
   }
-})
-
+});
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <StateProvider>
