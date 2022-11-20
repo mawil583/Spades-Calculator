@@ -13,6 +13,7 @@ hook up useReducer for names, and nilScoringRule form state.
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?
+custom styles defined using defineStyle cannot be overwritten at the component level. I might be mistaken about this. Verify. If defineStyle does NOT prevent me from overwritting styles at component level, then put my border style (from the baseStyle of defineStyleConfig() of customTheme.js) into the defineStyle for better separation of concerns
 phase out classNames .team1 and .team2 inside App.css. Replace everything that uses those className's with team1 and team2 colors as defined in my customTheme object 
 there's a hover state on the question mark ButtonIcon that turns background a certain color. Given the positioning of the ButtonIcon, it looks bad. Try changing its style from padding to margin.
 BidSection and ActualsSection are logially very similar. And it's annoying how I need to make changes in both of those components when it's always the same change. This is a code smell. Consider combining the two into one component
