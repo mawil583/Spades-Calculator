@@ -41,21 +41,14 @@ function ButtonGrid({
 
   return (
     <>
-      <SimpleGrid
-        columns={3}
-        spacingX={2}
-        spacingY={4}
-        style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
-      >
+      <SimpleGrid columns={3} spacingX={2} spacingY={4}>
         {buttonValues.map((buttonVal, i) => {
           return (
             <Button
-              variant='outline'
               key={i}
               onClick={() => {
                 onSelect(buttonVal);
               }}
-              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
             >
               {buttonVal}
             </Button>

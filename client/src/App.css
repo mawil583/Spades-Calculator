@@ -1,19 +1,9 @@
-.App,
-#root {
-  background-color: #464f51;
-  color: #ebf5ee;
-}
-
+/* phase out these classNames by using team1 and team2 colors as defined in my customTheme object  */
 .team1 {
   color: #ffc100;
 }
 .team2 {
   color: #f06c9b;
-}
-
-/* Do we need this? */
-.Button {
-  background-color: red;
 }
 
 .App-logo {
@@ -27,21 +17,6 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -49,7 +24,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-.namesContainer {
-  margin-bottom: 15px;
 }

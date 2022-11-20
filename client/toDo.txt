@@ -13,6 +13,10 @@ hook up useReducer for names, and nilScoringRule form state.
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?
+phase out classNames .team1 and .team2 inside App.css. Replace everything that uses those className's with team1 and team2 colors as defined in my customTheme object 
+there's a hover state on the question mark ButtonIcon that turns background a certain color. Given the positioning of the ButtonIcon, it looks bad. Try changing its style from padding to margin.
+BidSection and ActualsSection are logially very similar. And it's annoying how I need to make changes in both of those components when it's always the same change. This is a code smell. Consider combining the two into one component
+PlayerInput accepts way too many props, and some of the props seem redundant. Refactor.
 now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.
@@ -33,6 +37,8 @@ improve separation of concerns for CurrentRound vs PastRound
 names was already set in NameForm.js. Consider making global state that I can grab from for cleaner solution than reaching for localStorage names in SpadesCalculator
 test whether a change to localStorage variable name will cause app crash for someone who already has deprecated variable name stored on their localStorage
 improve visual design (CSS)
+ChakraUI gives <Modal> a white background but only when their default initialColorMode is 'light'. When it's in dark mode, it takes my background color from where I defined it within my extendTheme styles. Why does it only use my default styling when inside dark mode? If user were to go into their localStorage and change the value to 'light', then we would have a CSS bug from within the modal. We would also have CSS bug from where people type in the input (background would turn white). They do have a _dark property you can throw into an extend theme as a workaround: https://chakra-ui.com/docs/components/button/theming
+In settings, the underline isn't the same color for teammate 1 and teammate 2
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
