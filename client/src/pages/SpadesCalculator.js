@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import '../App.css';
 import GameScore from '../components/GameScore';
 import CurrentRound from '../components/CurrentRound';
 import { calculateTeamScoreFromRoundHistory } from '../helpers/spadesMath';

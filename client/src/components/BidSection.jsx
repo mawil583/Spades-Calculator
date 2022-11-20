@@ -40,7 +40,7 @@ function BidSection({
         title='Bids'
       />
       <Unclaimed numUnclaimed={numUnclaimed} />
-      <SimpleGrid columns={2} className='namesContainer'>
+      <SimpleGrid columns={2} mb='15px'>
         <PlayerInput
           type={'Bid'}
           index={index}
@@ -52,6 +52,7 @@ function BidSection({
           id='team1BidsAndActuals.p1Bid'
           playerInput={team1BidsAndActuals.p1Bid}
           fieldToUpdate='team1BidsAndActuals.p1Bid'
+          teamClassName='team1'
         />
         <PlayerInput
           teamName={team2Name}
@@ -63,6 +64,7 @@ function BidSection({
           playerInput={team2BidsAndActuals.p1Bid}
           id='team2BidsAndActuals.p1Bid'
           fieldToUpdate='team2BidsAndActuals.p1Bid'
+          teamClassName='team2'
           type={'Bid'}
         />
         <PlayerInput
@@ -76,6 +78,7 @@ function BidSection({
           id='team1BidsAndActuals.p2Bid'
           fieldToUpdate='team1BidsAndActuals.p2Bid'
           type={'Bid'}
+          teamClassName='team1'
         />
         <PlayerInput
           teamName={team2Name}
@@ -87,6 +90,7 @@ function BidSection({
           playerInput={team2BidsAndActuals.p2Bid}
           id='team2BidsAndActuals.p2Bid'
           fieldToUpdate='team2BidsAndActuals.p2Bid'
+          teamClassName='team2'
           type={'Bid'}
         />
       </SimpleGrid>

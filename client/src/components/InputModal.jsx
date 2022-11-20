@@ -30,11 +30,11 @@ function InputModal({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}>
+          <ModalHeader>
             Select {playerName}'s {type}
           </ModalHeader>
           <ModalCloseButton style={{ color: '#ebf5ee' }} />
-          <ModalBody style={{ padding: '5px', backgroundColor: '#464f51' }}>
+          <ModalBody style={{ padding: '5px' }}>
             <ButtonGrid
               isCurrent={isCurrent}
               fieldToUpdate={fieldToUpdate}

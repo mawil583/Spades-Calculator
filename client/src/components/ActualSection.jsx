@@ -86,6 +86,7 @@ function ActualSection({
           id='team1BidsAndActuals.p1Actual'
           fieldToUpdate={'team1BidsAndActuals.p1Actual'}
           playerInput={team1BidsAndActuals?.p1Actual}
+          teamClassName='team1'
         />
         <PlayerInput
           roundHistory={roundHistory}
@@ -95,6 +96,7 @@ function ActualSection({
           currentRound={currentRound}
           id='team2BidsAndActuals.p1Actual'
           fieldToUpdate={'team2BidsAndActuals.p1Actual'}
+          teamClassName='team2'
           playerName={t2p1Name}
           playerInput={team2BidsAndActuals?.p1Actual}
           type={'Actual'}
@@ -110,6 +112,7 @@ function ActualSection({
           fieldToUpdate={'team1BidsAndActuals.p2Actual'}
           playerInput={team1BidsAndActuals?.p2Actual}
           type={'Actual'}
+          teamClassName='team1'
         />
         <PlayerInput
           teamName={team2Name}
@@ -122,6 +125,7 @@ function ActualSection({
           type={'Actual'}
           id='team2BidsAndActuals.p2Actual'
           fieldToUpdate={'team2BidsAndActuals.p2Actual'}
+          teamClassName='team2'
         />
       </SimpleGrid>
     </div>

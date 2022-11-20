@@ -8,9 +8,10 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
+import { customTheme } from './customTheme';
 
 ReactDOM.render(
-  <ChakraProvider>
+  <ChakraProvider theme={customTheme}>
     <StateProvider>
       <BrowserRouter>
         <Routes>
