@@ -10,7 +10,9 @@ import LandingPage from './pages/LandingPage';
 import SpadesCalculator from './pages/SpadesCalculator';
 import { customTheme } from './customTheme';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+
+root.render(
   <ChakraProvider theme={customTheme}>
     <StateProvider>
       <BrowserRouter>

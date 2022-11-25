@@ -25,7 +25,7 @@ function ScoreSetting() {
           <IconButton
             style={{ height: 'auto', verticalAlign: 'baseline' }}
             size='lg'
-            variant='ghost'
+            border={'none'}
             onClick={handleClick}
             icon={<QuestionIcon />}
           />

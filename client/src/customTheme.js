@@ -1,11 +1,20 @@
 import { extendTheme, defineStyle, defineStyleConfig } from '@chakra-ui/react';
 
 const outline = defineStyle({
-  // this applies these styles only to devices that can easily hover (ie. not phones/tablets)
-  '@media (hover: hover)': {
-    bg: 'gray.700',
+  bg: 'gray.700',
+  _hover: {
+    bg: 'blackAlpha.500',
+  },
+  _active: {
+    bg: 'blackAlpha.500',
+  },
+  // this applies style only to devices that can NOT easily hover (ie. phones/tablets)
+  '@media (hover: none)': {
     _hover: {
-      bg: 'blackAlpha.500',
+      bg: 'gray.700',
+    },
+    _active: {
+      bg: 'gray.700',
     },
   },
 });
