@@ -29,6 +29,7 @@ Address comments on whoWentNil function
 make it more obvious that team names are editable and that past rounds are editable. when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
 implement typescript
+rename LandingPage.js to HomePage.js
 clean up WarningModal.jsx
 figure out what to do with functions that require a lot of parameters
 change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
