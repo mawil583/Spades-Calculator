@@ -43,6 +43,7 @@ export const customTheme = extendTheme({
         bg: 'gray.700',
         color: 'gray.50',
         bgColor: 'gray.700',
+        height: '100%',
       },
     },
   },
