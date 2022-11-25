@@ -1,7 +1,7 @@
 --High Priority--
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
-redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile)
+redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
 the chakraUI buttons have a weird default behavior where they can highlight the button if the press and hold it. When they do that, it doesn't actually fire the onClick, which requires the user to select the same button again. And it's really sensitive to where a normal click is sometimes considered a "press and hold"
 change name form to have team1 section span entire width, and team2 span entire width
@@ -56,6 +56,7 @@ clean up BidSection Heading. Maybe split it into more components
 buggy behavior when I try to move useSetScoreWhenRoundIsFinished into the hooks.js file. I get an infinite loop after inputting all of the second round's inputs. Figure out why
 go through codebase looking for comments. Add them to the backlog and then delete the comments
 In CurrentRound.jsx, isCurrent is being passed as a prop but maybe isCurrent should be defined from within BidSection in the form of state. Each instance of BidSection will have an isCurrent state that mounts true, but when it unmounts (or is added to roundHistory), then it switches to false. 
+find out if it's possible to adjust click/hover timing on mobile. Background... On mobile, hover gets activated before click does. onMouseDown (when the user clicks mouse without letting go) triggers hover. It's only onMouseUp (the user letting go of the click) that actually triggers a click. On mobile, if enough time passes between onMouseDown and onMouseUp, then the click event does not register. Is this default behavior something unique to a browser, or is it something that we can control with code? In other words, can we implement some functionality that would trigger a click event even after the user held down a button for 5 seconds? If so, find out what default time lapse would be, and increase it slightly so that we can avoid the scenario when a user accidentally holds the button for too long and it doesn't register a click
 
 
 Matt's suggestions:
