@@ -58,7 +58,7 @@ const PlayerInput = ({
             {type}
           </Button>
         ) : (
-          <div onClick={onEdit}>{playerInput}</div>
+          <div className='playerInputEdit' onClick={onEdit}>{playerInput}</div>
         )}
       </Flex>
     </>
