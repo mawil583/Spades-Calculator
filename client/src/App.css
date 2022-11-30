@@ -11,36 +11,6 @@
   pointer-events: none;
 }
 
-.playerInputEdit {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid black;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0 0.5rem;
-}
-
-.playerInputEdit::after {
-  display: inline-flex;
-  content: '';
-  /* Using the background-image and
-  its related properties to add
-  the SVG content */
-  background-image: url('edit.svg');
-  background-size: 16px 16px;
-  height: 16px;
-  width: 16px;
-  margin-left: 4px; 
-}
-
-.playerInputEdit:hover {
-  background-color: rgba(0, 0, 0, 0.36);
-  -webkit-transition: background-color 50ms linear;
-  -ms-transition: background-color 50ms linear;
-  transition: background-color 50ms linear;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
