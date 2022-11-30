@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Flex } from '@chakra-ui/react';
-import {EditIcon} from '@chakra-ui/icons';
+import { EditIcon } from '@chakra-ui/icons';
 
 import InputModal from './InputModal';
 import DealerTag from './DealerTag';
@@ -60,19 +60,15 @@ const PlayerInput = ({
           </Button>
         ) : (
           <Flex
-            align="center"
-            justify="center"
-            cursor="pointer"
-            onClick={onEdit}>
-            <Flex
-              borderColor={teamClassName}
-              borderRadius="4px"
-              px="0.5rem">
+            align='center'
+            justify='center'
+            cursor='pointer'
+            onClick={onEdit}
+          >
+            <Flex borderColor={teamClassName} borderRadius='4px' px='0.5rem'>
               {playerInput}
             </Flex>
-            <EditIcon
-              color={teamClassName}>
-            </EditIcon>
+            <EditIcon color={teamClassName} boxSize={5} ml={'5px'}></EditIcon>
           </Flex>
         )}
       </Flex>
