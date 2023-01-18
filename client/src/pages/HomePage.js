@@ -7,7 +7,7 @@ import '../App.css';
 import NameForm from '../components/NameForm';
 import ScoreSetting from '../components/ScoreSetting';
 
-function LandingPage() {
+function HomePage() {
   return (
     <div className='App'>
       <NameForm />
@@ -16,4 +16,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default HomePage;
