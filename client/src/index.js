@@ -6,7 +6,7 @@ import { StateProvider } from './helpers/GlobalContext';
 
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import LandingPage from './pages/LandingPage';
+import HomePage from './pages/HomePage';
 import SpadesCalculator from './pages/SpadesCalculator';
 import { customTheme } from './customTheme';
 
@@ -17,7 +17,7 @@ root.render(
     <StateProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<LandingPage />} />
+          <Route path='/' element={<HomePage />} />
           <Route path='spades-calculator' element={<SpadesCalculator />} />
         </Routes>
       </BrowserRouter>
