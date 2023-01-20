@@ -333,8 +333,12 @@ export function calculateTeamRoundScoreWithOneNilBidder(
   actual1,
   actual2
 ) {
-  const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual, nonNilPlayerActual } =
-    whoWentNil(bid1, bid2, actual1, actual2);
+  const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual } = whoWentNil(
+    bid1,
+    bid2,
+    actual1,
+    actual2
+  );
   const wasBlind = nilPlayerBid === BLIND_NIL;
   const achievedNil = parseInt(nilPlayerActual) === 0;
   const totalActuals = parseInt(actual1) + parseInt(actual2);
