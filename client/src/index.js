@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { StateProvider } from './helpers/GlobalContext';
@@ -22,8 +22,7 @@ root.render(
         </Routes>
       </BrowserRouter>
     </StateProvider>
-  </ChakraProvider>,
-  document.getElementById('root')
+  </ChakraProvider>
 );
 
 // If you want your app to work offline and load faster, you can change

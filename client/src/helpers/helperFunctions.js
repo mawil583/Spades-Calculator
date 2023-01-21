@@ -69,7 +69,6 @@ otherwise, set a default value for that key in localStorage
 */
 export const defaultLocalStorage = (key, value) => {
   const item = window.localStorage.getItem(key);
-  console.log({ item });
   if (!item) {
     window.localStorage.setItem(key, JSON.stringify(value));
     return value;
