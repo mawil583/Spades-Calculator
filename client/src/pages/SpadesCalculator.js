@@ -45,7 +45,11 @@ function SpadesCalculator() {
             team2GameScore={team2Score}
             roundHistory={roundHistory}
           />
-          <PastRounds names={names} roundHistory={roundHistory} />
+          <PastRounds
+            names={names}
+            roundHistory={roundHistory}
+            style={{ paddingBottom: '40px' }}
+          />
         </>
       )}
     </div>

@@ -1,9 +1,9 @@
 import React from 'react';
 import PastRound from './PastRound';
 
-function PastRounds({ roundHistory, names }) {
+function PastRounds({ roundHistory, names, style }) {
   return (
-    <>
+    <div style={style}>
       {roundHistory
         .map((round, i) => {
           return (
@@ -18,7 +18,7 @@ function PastRounds({ roundHistory, names }) {
           );
         })
         .reverse()}
-    </>
+    </div>
   );
 }
 export default PastRounds;
