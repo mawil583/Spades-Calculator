@@ -1,6 +1,5 @@
 --High Priority--
-when running 'npm run start' without internet connection (i.e. when I'm on a flight), I can't get my project up and running. It has the error "Invalid options object. Dev Server has been initialized using an options object that does not match the API schema. - options.allowedHosts[0] should be a non-empty string." Fix this so that I can develop locally without internet connection. A workaround for this is to edit node_modules for react-scripts by going to node_modules/react-scripts/scripts/start.js, and adding an extra line on 120 (anywhere inside the serverConfig object AFTER the ...createDevServerConfig) the code: allowedHosts: [ '*' ],. After fixing this bug, delete that line of this node_modules file.
-figure out how to include node_modules in VSVode global keyword search so that I can debug without internet connection
+there shouldn't be a separate component for CurrentRound and PastRound. Combine them into a single Round.jsx component.
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement 'rotate dealer' button
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
@@ -32,6 +31,7 @@ make it more obvious that team names are editable and that past rounds are edita
 add color theme to more clearly delineate teams (so that users don't accidentally enter data for the wrong team)
 implement typescript
 rename LandingPage.js to HomePage.js
+figure out how to include node_modules in VSVode global keyword search so that I can debug without internet connection
 clean up WarningModal.jsx
 figure out what to do with functions that require a lot of parameters
 change text for past rounds. Instead of saying 'someone's getting set', say 'someone got set'. Or even, 'Team 1 got set'
