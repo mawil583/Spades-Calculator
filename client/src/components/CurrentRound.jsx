@@ -10,7 +10,7 @@ import { GlobalContext } from '../helpers/GlobalContext';
 
 function CurrentRound(props) {
   const { roundHistory, roundNumber } = props;
-  console.log({props})
+
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
