@@ -11,28 +11,10 @@ import Divider from './Divider';
 function PastRound(props) {
   const { roundHistory, roundNumber, index, roundAtIndex, names } = props;
 
-  const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
+  const { team1Name, team2Name } =
     names;
   const { team1BidsAndActuals, team2BidsAndActuals } = roundAtIndex;
   const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
-
-  // const roundHistoryAtEndOfThisRound = getRoundHistoryAtCurrentRound(
-  //   roundHistory,
-  //   index
-  // );
-
-  // will need to use when adding accordion feature
-  // const team1GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
-  //   roundHistoryAtEndOfThisRound,
-  //   TEAM1,
-  //   nilSetting
-  // );
-
-  // const team2GameScoreAtEndOfThisRound = calculateTeamScoreFromRoundHistory(
-  //   roundHistoryAtEndOfThisRound,
-  //   TEAM2,
-  //   nilSetting
-  // );
 
   const team1RoundScoreFromHistory = calculateRoundScore(
     team1BidsAndActuals.p1Bid,
@@ -52,8 +34,7 @@ function PastRound(props) {
   return (
     <>
       <RoundHeading
-        team1Name={team1Name}
-        team2Name={team2Name}
+        names={names}
         roundNumber={roundNumber}
       />
       <form>
@@ -72,12 +53,7 @@ function PastRound(props) {
           <BidSection
             index={index}
             isCurrent={false}
-            t1p1Name={t1p1Name}
-            t2p1Name={t2p1Name}
-            t1p2Name={t1p2Name}
-            t2p2Name={t2p2Name}
-            team1Name={team1Name}
-            team2Name={team2Name}
+            names={names}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />
@@ -85,12 +61,7 @@ function PastRound(props) {
           <ActualSection
             index={index}
             isCurrent={false}
-            t1p1Name={t1p1Name}
-            t2p1Name={t2p1Name}
-            t1p2Name={t1p2Name}
-            t2p2Name={t2p2Name}
-            team1Name={team1Name}
-            team2Name={team2Name}
+            names={names}
             roundHistory={roundHistory}
             currentRound={roundAtIndex}
           />

@@ -8,17 +8,14 @@ import Unclaimed from './Unclaimed';
 
 function BidSection({
   index,
-  t1p1Name,
-  t1p2Name,
-  t2p1Name,
-  t2p2Name,
+  names,
   isCurrent,
-  team1Name,
-  team2Name,
   roundHistory,
   currentRound,
 }) {
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
+  const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
+    names;
 
   const [numUnclaimed, setNumUnclaimed] = useState(13);
 
