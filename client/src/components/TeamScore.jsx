@@ -3,7 +3,8 @@ import { Center, Heading, Flex, Text } from '@chakra-ui/react';
 
 import '../App.css';
 
-function TeamScore({ teamName, teamScore, teamBags, teamClassName }) {
+function TeamScore({ teamName, scoreObj, teamClassName }) {
+  
   return (
     <Flex
       direction={'column'}
@@ -16,11 +17,11 @@ function TeamScore({ teamName, teamScore, teamBags, teamClassName }) {
         </Heading>
       </Center>
       <Center>
-        <Text fontSize={'4xl'}>{teamScore}</Text>
+        <Text fontSize={'4xl'}>{scoreObj.teamScore}</Text>
       </Center>
       <Center>
         <Text fontSize={'md'} style={{ lineHeight: '15px' }}>
-          {teamBags} bags
+          {scoreObj.teamBags} bags
         </Text>
       </Center>
     </Flex>

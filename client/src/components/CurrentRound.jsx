@@ -9,9 +9,8 @@ import { isNotDefaultValue } from '../helpers/spadesMath';
 import { GlobalContext } from '../helpers/GlobalContext';
 
 function CurrentRound(props) {
-  const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
-    props.names;
   const { roundHistory, roundNumber } = props;
+  console.log({props})
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
@@ -30,33 +29,22 @@ function CurrentRound(props) {
     <>
       <RoundHeading
         roundNumber={roundNumber}
-        team1Name={team1Name}
-        team2Name={team2Name}
+        names={props.names}
       />
       <form>
         <Container>
           <BidSection
-            team1Name={team1Name}
-            team2Name={team2Name}
+            names={props.names}
             isCurrent={true}
             index={roundIndex}
-            t1p1Name={t1p1Name}
-            t1p2Name={t1p2Name}
-            t2p1Name={t2p1Name}
-            t2p2Name={t2p2Name}
             roundHistory={roundHistory}
             currentRound={currentRound}
           />
           <Divider />
           <ActualSection
-            team1Name={team1Name}
-            team2Name={team2Name}
+            names={props.names}
             isCurrent={true}
             index={roundIndex}
-            t1p1Name={t1p1Name}
-            t2p1Name={t2p1Name}
-            t1p2Name={t1p2Name}
-            t2p2Name={t2p2Name}
             roundHistory={roundHistory}
             currentRound={currentRound}
           />

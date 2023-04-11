@@ -2,23 +2,17 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   Modal,
   ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Divider,
-  Button,
-  Collapse,
-  Text,
-  Flex,
+  ModalContent
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { initialNames, initialFirstDealerOrder } from '../helpers/constants';
 import { GlobalContext } from '../helpers/GlobalContext';
 import { rotateArr } from '../helpers/helperFunctions';
+import DataWarningQuestion from './DataWarningQuestion';
+import NewPlayerQuestion from './NewPlayerQuestion';
 
-function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
+function WarningModal({ isOpen, setIsModalOpen }) {
   const navigate = useNavigate();
   const {
     resetCurrentRound,
@@ -27,6 +21,8 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
     firstDealerOrder,
     roundHistory,
   } = useContext(GlobalContext);
+  const hasRoundHistory = roundHistory.length > 0;
+
   const [isDataWarningQuestionVisible, setIsDataWarningQuestionVisible] =
     useState(hasRoundHistory ? true : false);
   const [isNewPlayerQuestionVisible, setIsNewPlayerQuestionVisible] = useState(
@@ -50,7 +46,7 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
   };
 
   const onSameTeams = () => {
-    if (roundHistory.length > 0) {
+    if (hasRoundHistory) {
       setFirstDealerOrder(rotateArr(firstDealerOrder));
     }
     // the following two function reset state. Make naming conventions consistent
@@ -73,78 +69,6 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
     navigate('/');
   };
 
-  const DataWarningQuestion = () => {
-    return (
-      <Collapse in={isDataWarningQuestionVisible}>
-        <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
-          Are you sure?
-        </ModalHeader>
-        <ModalCloseButton />
-        <Divider />
-        <ModalBody
-          style={{
-            padding: '15px',
-            color: '#ebf5ee',
-            backgroundColor: '#464f51',
-          }}
-        >
-          <Text style={{ marginBottom: '10px' }}>
-            This will permanently delete your game data.
-          </Text>
-          <Flex direction={'row'} justifyContent={'space-between'}>
-            <Button
-              variant='outline'
-              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant='outline'
-              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
-              onClick={onContinue}
-            >
-              Continue
-            </Button>
-          </Flex>
-        </ModalBody>
-      </Collapse>
-    );
-  };
-  const NewPlayerQuestion = () => {
-    return (
-      <Collapse in={isNewPlayerQuestionVisible}>
-        <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
-          Would you like to keep the same teams?
-        </ModalHeader>
-        <Divider />
-        <ModalBody
-          style={{
-            padding: '15px',
-            color: '#ebf5ee',
-            backgroundColor: '#464f51',
-          }}
-        >
-          <Flex direction={'row'} justifyContent={'space-evenly'}>
-            <Button
-              variant='outline'
-              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
-              onClick={onDifferentTeams}
-            >
-              Different Teams
-            </Button>
-            <Button
-              variant='outline'
-              style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
-              onClick={onSameTeams}
-            >
-              Same Teams
-            </Button>
-          </Flex>
-        </ModalBody>
-      </Collapse>
-    );
-  };
   return (
     <Modal
       isOpen={isOpen}
@@ -155,9 +79,8 @@ function WarningModal({ isOpen, setIsModalOpen, hasRoundHistory }) {
     >
       <ModalOverlay />
       <ModalContent>
-        {/* consider making these react components */}
-        {DataWarningQuestion()}
-        {NewPlayerQuestion()}
+        <DataWarningQuestion isDataWarningQuestionVisible={isDataWarningQuestionVisible} onContinue={onContinue} onCancel={onCancel} />
+        <NewPlayerQuestion isNewPlayerQuestionVisible={isNewPlayerQuestionVisible} onDifferentTeams={onDifferentTeams} onSameTeams={onSameTeams} />
       </ModalContent>
     </Modal>
   );

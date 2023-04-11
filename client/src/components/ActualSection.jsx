@@ -8,13 +8,8 @@ import { actualsErrorText } from '../helpers/helperFunctions';
 
 function ActualSection({
   index,
-  t1p1Name,
-  t1p2Name,
-  t2p1Name,
-  t2p2Name,
+  names,
   isCurrent,
-  team1Name,
-  team2Name,
   roundHistory,
   currentRound,
 }) {
@@ -77,11 +72,11 @@ function ActualSection({
       >
         <PlayerInput
           roundHistory={roundHistory}
-          teamName={team1Name}
+          teamName={names.team1Name}
           index={index}
           isCurrent={isCurrent}
           type={'Actual'}
-          playerName={t1p1Name}
+          playerName={names.t1p1Name}
           currentRound={currentRound}
           id='team1BidsAndActuals.p1Actual'
           fieldToUpdate={'team1BidsAndActuals.p1Actual'}
@@ -90,24 +85,24 @@ function ActualSection({
         />
         <PlayerInput
           roundHistory={roundHistory}
-          teamName={team2Name}
+          teamName={names.team2Name}
           index={index}
           isCurrent={isCurrent}
           currentRound={currentRound}
           id='team2BidsAndActuals.p1Actual'
           fieldToUpdate={'team2BidsAndActuals.p1Actual'}
           teamClassName='team2'
-          playerName={t2p1Name}
+          playerName={names.t2p1Name}
           playerInput={team2BidsAndActuals?.p1Actual}
           type={'Actual'}
         />
         <PlayerInput
-          teamName={team1Name}
+          teamName={names.team1Name}
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}
           currentRound={currentRound}
-          playerName={t1p2Name}
+          playerName={names.t1p2Name}
           id='team1BidsAndActuals.p2Actual'
           fieldToUpdate={'team1BidsAndActuals.p2Actual'}
           playerInput={team1BidsAndActuals?.p2Actual}
@@ -115,12 +110,12 @@ function ActualSection({
           teamClassName='team1'
         />
         <PlayerInput
-          teamName={team2Name}
+          teamName={names.team2Name}
           roundHistory={roundHistory}
           index={index}
           isCurrent={isCurrent}
           currentRound={currentRound}
-          playerName={t2p2Name}
+          playerName={names.t2p2Name}
           playerInput={team2BidsAndActuals?.p2Actual}
           type={'Actual'}
           id='team2BidsAndActuals.p2Actual'
