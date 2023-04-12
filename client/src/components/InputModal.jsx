@@ -28,23 +28,25 @@ function InputModal({
           setIsModalOpen(false);
         }}
       >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            Select {playerName}'s {type}
-          </ModalHeader>
-          <ModalCloseButton style={{ color: '#ebf5ee' }} />
-          <ModalBody style={{ padding: '5px' }}>
-            <ButtonGrid
-              isCurrent={isCurrent}
-              fieldToUpdate={fieldToUpdate}
-              currentRound={currentRound}
-              setIsModalOpen={setIsModalOpen}
-              type={type}
-              index={index}
-            />
-          </ModalBody>
-        </ModalContent>
+        <div data-cy="bidSelectionModal">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              Select {playerName}'s {type}
+            </ModalHeader>
+            <ModalCloseButton style={{ color: '#ebf5ee' }} />
+            <ModalBody style={{ padding: '5px' }}>
+              <ButtonGrid
+                isCurrent={isCurrent}
+                fieldToUpdate={fieldToUpdate}
+                currentRound={currentRound}
+                setIsModalOpen={setIsModalOpen}
+                type={type}
+                index={index}
+              />
+            </ModalBody>
+          </ModalContent>
+        </div>
       </Modal>
     </>
   );

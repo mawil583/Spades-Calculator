@@ -52,7 +52,7 @@ export function useRedirectWhenFalsey(names, navigate) {
       navigate('/');
     } else {
       const nameVals = Object.values(names);
-      if (!nameVals.some(isNotDefaultValue)) {
+      if (!nameVals.every(isNotDefaultValue)) {
         navigate('/');
       }
     }

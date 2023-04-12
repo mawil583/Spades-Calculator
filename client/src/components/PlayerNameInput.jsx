@@ -25,17 +25,18 @@ function PlayerNameInput({
   return (
     <div>
       <FormControl isInvalid={errors && touched} className={teamClassName}>
-        <FormLabel style={{ paddingLeft: '5px' }} htmlFor='t1p1Name'>
+        <FormLabel style={{ paddingLeft: '5px' }} htmlFor="t1p1Name">
           {label}
         </FormLabel>
         <Input
           px={1}
           placeholder={`${placeholder ? placeholder : ''}`}
-          type='text'
+          type="text"
           value={playerName}
           onChange={handleChange}
           id={id}
           name={id}
+          data-cy={id + 'Input'}
         />
         {errors && touched ? (
           <FormErrorMessage>{errors}</FormErrorMessage>

@@ -1,21 +1,30 @@
-import React, { useEffect, useContext } from "react";
-import { Container } from "@chakra-ui/react";
+import React, { useEffect, useContext } from 'react';
+import { Container } from '@chakra-ui/react';
 
-import { calculateRoundScore } from "../helpers/spadesMath";
-import { isNotDefaultValue } from "../helpers/spadesMath";
-import RoundSummary from "./RoundSummary";
-import BidSection from "./BidSection";
-import ActualSection from "./ActualSection";
-import RoundHeading from "./RoundHeading";
-import Divider from "./Divider";
-import { GlobalContext } from "../helpers/GlobalContext";
+import { calculateRoundScore } from '../helpers/spadesMath';
+import { isNotDefaultValue } from '../helpers/spadesMath';
+import RoundSummary from './RoundSummary';
+import BidSection from './BidSection';
+import ActualSection from './ActualSection';
+import RoundHeading from './RoundHeading';
+import Divider from './Divider';
+import { GlobalContext } from '../helpers/GlobalContext';
 
 function Round({ roundHistory, isCurrent, roundIndex }) {
-  const names = JSON.parse(localStorage.getItem("names"));
+  const names = JSON.parse(localStorage.getItem('names'));
   const { team1Name, team2Name } = names;
-  const nilSetting = JSON.parse(localStorage.getItem("nilScoringRule"));
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
+
+  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
+
+  const currentRoundBids = [
+    team1BidsAndActuals.p1Bid,
+    team1BidsAndActuals.p2Bid,
+    team2BidsAndActuals.p1Bid,
+    team2BidsAndActuals.p2Bid,
+  ];
 
   const roundAtIndex = isCurrent ? null : roundHistory[roundIndex];
 
@@ -77,13 +86,15 @@ function Round({ roundHistory, isCurrent, roundIndex }) {
             currentRound={isCurrent ? currentRound : roundAtIndex}
           />
           <Divider />
-          <ActualSection
-            names={names}
-            isCurrent={isCurrent}
-            index={roundIndex}
-            roundHistory={roundHistory}
-            currentRound={isCurrent ? currentRound : roundAtIndex}
-          />
+          {currentRoundBids.every(isNotDefaultValue) && (
+            <ActualSection
+              names={names}
+              isCurrent={isCurrent}
+              index={roundIndex}
+              roundHistory={roundHistory}
+              currentRound={isCurrent ? currentRound : roundAtIndex}
+            />
+          )}
         </Container>
       </form>
     </>
