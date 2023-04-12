@@ -35,7 +35,7 @@ const PlayerInput = ({
         index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
-        <label style={{ marginRight: '15px' }} htmlFor='p1Bid'>
+        <label style={{ marginRight: '15px' }} htmlFor="p1Bid">
           {playerName}{' '}
           <DealerTag
             id={id}
@@ -52,24 +52,27 @@ const PlayerInput = ({
             value={playerInput}
             id={id}
             name={id}
-            size='sm'
+            size="sm"
             borderColor={teamClassName}
             color={teamClassName}
+            data-cy="bidButton"
           >
             {type}
           </Button>
         ) : (
-          <Flex
-            align='center'
-            justify='center'
-            cursor='pointer'
-            onClick={onEdit}
-          >
-            <Flex borderColor={teamClassName} borderRadius='4px' px='0.5rem'>
-              {playerInput}
+          <div data-cy="playerInput">
+            <Flex
+              align="center"
+              justify="center"
+              cursor="pointer"
+              onClick={onEdit}
+            >
+              <Flex borderColor={teamClassName} borderRadius="4px" px="0.5rem">
+                {playerInput}
+              </Flex>
+              <EditIcon color={teamClassName} boxSize={5} ml={'5px'}></EditIcon>
             </Flex>
-            <EditIcon color={teamClassName} boxSize={5} ml={'5px'}></EditIcon>
-          </Flex>
+          </div>
         )}
       </Flex>
     </>

@@ -12,15 +12,15 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
       <Editable
         defaultValue={teamName}
         mt={2}
-        fontSize='lg'
-        fontWeight='bold'
+        fontSize="lg"
+        fontWeight="bold"
         placeholder={teamName}
         className={teamClassName}
       >
         <Center>
           <EditablePreview />
           <EditableInput
-            type='text'
+            type="text"
             value={teamName}
             onChange={handleChange}
             id={id}

@@ -49,6 +49,7 @@ function ButtonGrid({
               onClick={() => {
                 onSelect(buttonVal);
               }}
+              data-cy="bidSelectionButton"
             >
               {buttonVal}
             </Button>

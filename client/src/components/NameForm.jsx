@@ -64,22 +64,22 @@ function NameForm() {
     <form onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={2}>
         <TeamNameInput
-          id='team1Name'
-          teamClassName='team1'
+          id="team1Name"
+          teamClassName="team1"
           teamName={formik.values.team1Name}
           handleChange={formik.handleChange}
         />
         <TeamNameInput
-          id='team2Name'
-          teamClassName='team2'
+          id="team2Name"
+          teamClassName="team2"
           teamName={formik.values.team2Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
-          teamClassName='team1'
+          teamClassName="team1"
           teamName={formik.values.team1Name}
-          id='t1p1Name'
-          label='Player 1 Name'
+          id="t1p1Name"
+          label="Player 1 Name"
           placeholder={`Who's dealing first?`}
           playerName={formik.values.t1p1Name}
           errors={formik.errors.t1p1Name}
@@ -88,9 +88,9 @@ function NameForm() {
         />
         <PlayerNameInput
           teamName={formik.values.team2Name}
-          id='t2p1Name'
-          teamClassName='team2'
-          label='Player 1 Name'
+          id="t2p1Name"
+          teamClassName="team2"
+          label="Player 1 Name"
           placeholder={`Who's left of dealer?`}
           playerName={formik.values.t2p1Name}
           errors={formik.errors.t2p1Name}
@@ -98,9 +98,9 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
-          teamClassName='team1'
-          id='t1p2Name'
-          label='Player 2 Name'
+          teamClassName="team1"
+          id="t1p2Name"
+          label="Player 2 Name"
           teamName={formik.values.team1Name}
           playerName={formik.values.t1p2Name}
           errors={formik.errors.t1p2Name}
@@ -109,9 +109,9 @@ function NameForm() {
         />
         <PlayerNameInput
           teamName={formik.values.team2Name}
-          teamClassName='team2'
-          id='t2p2Name'
-          label='Player 2 Name'
+          teamClassName="team2"
+          id="t2p2Name"
+          label="Player 2 Name"
           playerName={formik.values.t2p2Name}
           errors={formik.errors.t2p2Name}
           touched={formik.touched.t2p2Name}
@@ -120,14 +120,15 @@ function NameForm() {
       </SimpleGrid>
       <Center>
         <Button
-          variant='outline'
-          size='md'
-          height='40px'
-          width='200px'
-          border='2px'
+          variant="outline"
+          size="md"
+          height="40px"
+          width="200px"
+          border="2px"
           // borderColor='green.500'
-          type='submit'
+          type="submit"
           my={4}
+          data-cy="startButton"
         >
           Start
         </Button>
