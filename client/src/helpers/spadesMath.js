@@ -443,9 +443,9 @@ export function getCurrentDealerId({
   if (isCurrent) {
     if (dealerIdHistory.length < 4) {
       if (dealerIdHistory.length === 0) return clonedfirstDealerOrder[0];
-      return clonedfirstDealerOrder[index - 1];
+      return clonedfirstDealerOrder[index];
     }
-    return dealerIdHistory[index - 5];
+    return dealerIdHistory[index - 4];
   } else {
     if (index < 4) {
       return clonedfirstDealerOrder[index];
