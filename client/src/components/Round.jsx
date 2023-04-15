@@ -10,23 +10,22 @@ import RoundHeading from './RoundHeading';
 import Divider from './Divider';
 import { GlobalContext } from '../helpers/GlobalContext';
 
-function Round({ roundHistory, isCurrent, roundIndex }) {
+function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const names = JSON.parse(localStorage.getItem('names'));
   const { team1Name, team2Name } = names;
   const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
-  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
-
-  const currentRoundBids = [
-    team1BidsAndActuals.p1Bid,
-    team1BidsAndActuals.p2Bid,
-    team2BidsAndActuals.p1Bid,
-    team2BidsAndActuals.p2Bid,
-  ];
-
   const roundAtIndex = isCurrent ? null : roundHistory[roundIndex];
+  const roundInputs = isCurrent ? currentRound : roundAtIndex;
+
+  const roundInputBids = [
+    roundInputs.team1BidsAndActuals.p1Bid,
+    roundInputs.team1BidsAndActuals.p2Bid,
+    roundInputs.team2BidsAndActuals.p1Bid,
+    roundInputs.team2BidsAndActuals.p2Bid,
+  ];
 
   useSetScoreWhenRoundIsFinished(
     currentRound,
@@ -60,7 +59,7 @@ function Round({ roundHistory, isCurrent, roundIndex }) {
   const teamScores = getTeamsScoresFromHistory();
 
   return (
-    <>
+    <div className="round">
       <RoundHeading roundNumber={roundIndex + 1} names={names} />
       <form>
         <Container>
@@ -86,7 +85,7 @@ function Round({ roundHistory, isCurrent, roundIndex }) {
             currentRound={isCurrent ? currentRound : roundAtIndex}
           />
           <Divider />
-          {currentRoundBids.every(isNotDefaultValue) && (
+          {roundInputBids.every(isNotDefaultValue) && (
             <ActualSection
               names={names}
               isCurrent={isCurrent}
@@ -97,7 +96,7 @@ function Round({ roundHistory, isCurrent, roundIndex }) {
           )}
         </Container>
       </form>
-    </>
+    </div>
   );
 }
 

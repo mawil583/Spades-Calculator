@@ -47,11 +47,11 @@ function ActualSection({
   const errorMessage = actualsErrorText(allActualsAreSubmitted, totalActuals);
 
   return (
-    <div>
+    <div data-cy="actualSection">
       <TeamInputHeading
         team1Total={team1ActualTotal}
         team2Total={team2ActualTotal}
-        title='Actuals'
+        title="Actuals"
       />
       {!isValid && (
         <div
@@ -67,7 +67,7 @@ function ActualSection({
       )}
       <SimpleGrid
         columns={2}
-        className='namesContainer'
+        className="namesContainer"
         style={{ marginTop: '5px' }}
       >
         <PlayerInput
@@ -78,10 +78,10 @@ function ActualSection({
           type={'Actual'}
           playerName={names.t1p1Name}
           currentRound={currentRound}
-          id='team1BidsAndActuals.p1Actual'
+          id="team1BidsAndActuals.p1Actual"
           fieldToUpdate={'team1BidsAndActuals.p1Actual'}
           playerInput={team1BidsAndActuals?.p1Actual}
-          teamClassName='team1'
+          teamClassName="team1"
         />
         <PlayerInput
           roundHistory={roundHistory}
@@ -89,9 +89,9 @@ function ActualSection({
           index={index}
           isCurrent={isCurrent}
           currentRound={currentRound}
-          id='team2BidsAndActuals.p1Actual'
+          id="team2BidsAndActuals.p1Actual"
           fieldToUpdate={'team2BidsAndActuals.p1Actual'}
-          teamClassName='team2'
+          teamClassName="team2"
           playerName={names.t2p1Name}
           playerInput={team2BidsAndActuals?.p1Actual}
           type={'Actual'}
@@ -103,11 +103,11 @@ function ActualSection({
           isCurrent={isCurrent}
           currentRound={currentRound}
           playerName={names.t1p2Name}
-          id='team1BidsAndActuals.p2Actual'
+          id="team1BidsAndActuals.p2Actual"
           fieldToUpdate={'team1BidsAndActuals.p2Actual'}
           playerInput={team1BidsAndActuals?.p2Actual}
           type={'Actual'}
-          teamClassName='team1'
+          teamClassName="team1"
         />
         <PlayerInput
           teamName={names.team2Name}
@@ -118,9 +118,9 @@ function ActualSection({
           playerName={names.t2p2Name}
           playerInput={team2BidsAndActuals?.p2Actual}
           type={'Actual'}
-          id='team2BidsAndActuals.p2Actual'
+          id="team2BidsAndActuals.p2Actual"
           fieldToUpdate={'team2BidsAndActuals.p2Actual'}
-          teamClassName='team2'
+          teamClassName="team2"
         />
       </SimpleGrid>
     </div>
