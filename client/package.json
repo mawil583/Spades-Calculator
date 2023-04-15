@@ -28,8 +28,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "test": "npm run unit & npm run e2e",
+    "e2e": "cypress run",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
