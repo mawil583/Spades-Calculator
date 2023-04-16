@@ -6,7 +6,7 @@
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
   "husky": {
     "hooks": {
-      "pre-commit": "cd .. && GIT_DIR=/Users/michaelwilliams/code/personal/Spades-Calculator/.git && npm run test"
+      "pre-commit": "GIT_DIR=.git && cd .. && npm run test"
     }
   },
   "lint-staged": {
