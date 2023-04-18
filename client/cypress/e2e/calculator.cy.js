@@ -10,7 +10,9 @@ describe('Test the input form', () => {
   it('redirects to /spades-calculator when names are entered and you click start', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
   });
+})
 
+describe('When certain sections are visible', () => {
   it('can place bid properly', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
     // Assert that there are 4 player buttons on the page
@@ -47,6 +49,7 @@ describe('Test the input form', () => {
     t2p2Bids('1');
     cy.get('[data-cy=actualSection]').should('exist');
   });
+
   it('always displays actuals section on past rounds', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
     allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
@@ -59,6 +62,8 @@ describe('Test the input form', () => {
   });
 });
 
+
+// Helpers
 function t1p1Bids(bid) {
   cy.get('[data-cy=bidButton][id=team1BidsAndActuals\\.p1Bid]').click();
   cy.get('[data-cy=bidSelectionButton]').contains(bid.toString()).click();

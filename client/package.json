@@ -40,7 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "test": "npm run unit & npm run e2e",
-    "e2e": "cypress run",
+    "e2e": "cypress run --config video=false",
     "build": "react-scripts build",
     "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",

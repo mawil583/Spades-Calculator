@@ -1,5 +1,24 @@
 --High Priority--
-there shouldn't be a separate component for CurrentRound and PastRound. Combine them into a single Round.jsx component.
+change id attributes of playerInput (which is assigned from within BidSection and maybe even ActualSection) to inputId because there shouldn't be more than one id on a component. Maybe even call it inputClass if I expect multiple.
+then implement the following describe blocks for testing dealer feature:
+describe('dealer tag feature', () => {
+  it('mounts with t1p1 as first dealer', () => {
+    shouldRedirectWhenNamesEnteredAndClickStart();
+    // get all by className dealerTag
+    // expect that there is only 1 dealertag
+    cy.get('[data-cy=actualSection]').should('not.exist');
+  });
+  it('keeps track of dealer between rounds', () => {
+    shouldRedirectWhenNamesEnteredAndClickStart();
+    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
+    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
+    let actualSections = cy.get('[data-cy=actualSection]');
+    actualSections.should('have.length', 1);
+    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
+    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
+    cy.get('[data-cy=actualSection]').should('have.length', 2);
+  });
+})
 validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement 'rotate dealer' button
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
