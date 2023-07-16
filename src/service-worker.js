@@ -71,7 +71,7 @@ self.addEventListener('message', (event) => {
 
 // Any other custom service worker logic can go here.
 const CACHE_NAME = "cache_sample";
-const urlsToCache = ["index.html", "offline.html"];
+const urlsToCache = ["index.html", "offline.html", "https://spadescalculator.com/spades-calculator", "https://spadescalculator.com/"];
 const version = "v0.0.1";
 //install sw at first time
 //place to cache assets to speed up the loading time of web page
