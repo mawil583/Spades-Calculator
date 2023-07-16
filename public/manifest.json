@@ -25,6 +25,6 @@
       "purpose": "any"
     }
   ],
-  "start_url": "/index.html",
+  "start_url": "/",
   "background_color": "#ffffff"
 }
