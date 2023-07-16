@@ -1,7 +1,11 @@
 describe('Test the input form', () => {
   it('Visits the /spades-calculator page and gets redirected if there are no names in localStorage', () => {
     // Visit the Spades calculator page
-    cy.visit('http://localhost:3000/spades-calculator');
+    cy.visit('http://localhost:3000/spades-calculator', {
+      onBeforeLoad(win) {
+        delete win.navigator.__proto__.serviceWorker;
+      },
+    });
 
     // Assert that we were redirected to the input form page
     cy.url().should('eq', 'http://localhost:3000/');
@@ -10,14 +14,14 @@ describe('Test the input form', () => {
   it('redirects to /spades-calculator when names are entered and you click start', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
   });
-})
+});
 
 describe('When certain sections are visible', () => {
   it('can place bid properly', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
     // Assert that there are 4 player buttons on the page
     cy.get('[data-cy=bidButton]').should('have.length', 4);
-    
+
     // click first bid button
     cy.get('[data-cy=bidButton]').first().click();
 
@@ -26,10 +30,10 @@ describe('When certain sections are visible', () => {
 
     // bid 1
     cy.get('[data-cy=bidSelectionButton]').eq(2).click();
-  
+
     // Assert that the modal has closed
     cy.get('[data-cy=bidSelectionModal]').should('not.exist');
-  
+
     // Assert that the card text is now on the player button
     cy.get('[data-cy=playerInput]').first().should('have.text', '1');
   });
@@ -52,16 +56,25 @@ describe('When certain sections are visible', () => {
 
   it('always displays actuals section on past rounds', () => {
     shouldRedirectWhenNamesEnteredAndClickStart();
-    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
-    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
+    allPlayersBid({ t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4', t2p2Bid: '1' });
+    allPlayersEnterActuals({
+      t1p1Actual: '2',
+      t1p2Actual: '3',
+      t2p1Actual: '4',
+      t2p2Actual: '4',
+    });
     let actualSections = cy.get('[data-cy=actualSection]');
     actualSections.should('have.length', 1);
-    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
-    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
+    allPlayersBid({ t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4', t2p2Bid: '1' });
+    allPlayersEnterActuals({
+      t1p1Actual: '2',
+      t1p2Actual: '3',
+      t2p1Actual: '4',
+      t2p2Actual: '4',
+    });
     cy.get('[data-cy=actualSection]').should('have.length', 2);
   });
 });
-
 
 // Helpers
 function t1p1Bids(bid) {
@@ -80,7 +93,7 @@ function t2p2Bids(bid) {
   cy.get('[data-cy=bidButton][id=team2BidsAndActuals\\.p2Bid]').click();
   cy.contains('[data-cy=bidSelectionButton]', bid).click();
 }
-function allPlayersBid({t1p1Bid, t1p2Bid, t2p1Bid, t2p2Bid}) {
+function allPlayersBid({ t1p1Bid, t1p2Bid, t2p1Bid, t2p2Bid }) {
   t1p1Bids(t1p1Bid);
   t1p2Bids(t1p2Bid);
   t2p1Bids(t2p1Bid);
@@ -103,7 +116,12 @@ function t2p2EntersActual(actual) {
   cy.get('[data-cy=bidButton][id=team2BidsAndActuals\\.p2Actual]').click();
   cy.contains('[data-cy=bidSelectionButton]', actual).click();
 }
-function allPlayersEnterActuals({t1p1Actual, t1p2Actual, t2p1Actual, t2p2Actual}) {
+function allPlayersEnterActuals({
+  t1p1Actual,
+  t1p2Actual,
+  t2p1Actual,
+  t2p2Actual,
+}) {
   t1p1EntersActual(t1p1Actual);
   t1p2EntersActual(t1p2Actual);
   t2p1EntersActual(t2p1Actual);
@@ -112,13 +130,17 @@ function allPlayersEnterActuals({t1p1Actual, t1p2Actual, t2p1Actual, t2p2Actual}
 
 function shouldRedirectWhenNamesEnteredAndClickStart() {
   // Visit the app
-  cy.visit('http://localhost:3000/');
+  cy.visit('http://localhost:3000/', {
+    onBeforeLoad(win) {
+      delete win.navigator.__proto__.serviceWorker;
+    },
+  });
 
-    // enter all player names
-    cy.get('[data-cy=t1p1NameInput]').type('Mike');
-    cy.get('[data-cy=t1p2NameInput]').type('Kim');
-    cy.get('[data-cy=t2p1NameInput]').type('Mom');
-    cy.get('[data-cy=t2p2NameInput]').type('Dad');
+  // enter all player names
+  cy.get('[data-cy=t1p1NameInput]').type('Mike');
+  cy.get('[data-cy=t1p2NameInput]').type('Kim');
+  cy.get('[data-cy=t2p1NameInput]').type('Mom');
+  cy.get('[data-cy=t2p2NameInput]').type('Dad');
 
   // Find the start button and click it
   cy.get('[data-cy=startButton]').click();
