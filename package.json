@@ -57,7 +57,7 @@
     "build": "react-scripts build",
     "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "prepare": "cd .. && husky install .husky"
+    "prepare": "husky install .husky"
   },
   "eslintConfig": {
     "extends": "react-app"
