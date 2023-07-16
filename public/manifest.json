@@ -4,6 +4,7 @@
   "theme_color": "#000000",
   "display": "standalone",
   "scope": "/",
+  "id": "/",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,6 +22,6 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
   "background_color": "#ffffff"
 }
