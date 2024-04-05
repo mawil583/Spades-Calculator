@@ -29,6 +29,7 @@ change name form to have team1 section span entire width, and team2 span entire 
 --Backlog--
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
+install react devtools
 create a redux folder and put all corresponding files in it
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
