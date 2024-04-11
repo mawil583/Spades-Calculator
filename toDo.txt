@@ -19,7 +19,6 @@ describe('dealer tag feature', () => {
     cy.get('[data-cy=actualSection]').should('have.length', 2);
   });
 })
-validation for total Actuals being more than 13. Create modal containing all 4 player's actuals. It should have a 'done' button that checks for validation. If validation fails again, keep modal open.
 implement 'rotate dealer' button
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
@@ -29,7 +28,12 @@ change name form to have team1 section span entire width, and team2 span entire 
 --Backlog--
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
+Try to decrease amount of props sent to ActualSection and PlayerInput
+The ActualsValidationModal isn't being used anywhere. See if it can be used in place of ErrorModal. If not, delete it.
+The ErrorModal is copy-pasting most of ActualSection which is not DRY but if I import ActualSection into this, then I'll be in an infinite loop because I'll have an ActualSection that renders an error modal but this error modal renders an ActualSection. Refactor
+install react devtools
 create a redux folder and put all corresponding files in it
+make sure that the next round's BidSection does not show up until valid actuals of current round
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?

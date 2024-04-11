@@ -3,7 +3,7 @@
 ## In order to run the app locally,
 
 1. Clone the repository in the directory of your choice.
-2. Open your Terminal and **cd** into the **client** folder of the project repo.
+2. Open your Terminal and **cd** into the root directory of the project.
 3. Run **npm i** to download server dependencies.
 4. Run **npm start**.
 5. Now your project should be viewable in your browser at **http://localhost:3000/**.
