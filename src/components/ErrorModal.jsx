@@ -34,8 +34,6 @@ function ErrorModal({
     team2Actuals.p2Actual
   );
 
-  //   TODO: make sure that the next round's BidSection does not show up until valid actuals of current round
-
   return (
     <Modal
       isOpen={isOpen}

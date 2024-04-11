@@ -33,6 +33,7 @@ Try to decrease amount of props sent to ActualSection and PlayerInput
 The ErrorModal is copy-pasting most of ActualSection which is not DRY but if I import ActualSection into this, then I'll be in an infinite loop because I'll have an ActualSection that renders an error modal but this error modal renders an ActualSection. Refactor
 install react devtools
 create a redux folder and put all corresponding files in it
+make sure that the next round's BidSection does not show up until valid actuals of current round
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?
