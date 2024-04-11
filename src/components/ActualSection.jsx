@@ -4,7 +4,8 @@ import PlayerInput from './PlayerInput';
 import { addInputs, isNotDefaultValue } from '../helpers/spadesMath';
 import TeamInputHeading from './TeamInputHeading';
 import { useValidateActuals } from '../helpers/hooks';
-import { actualsErrorText } from '../helpers/helperFunctions';
+import { getActualsErrorText } from '../helpers/helperFunctions';
+import ErrorModal from './ErrorModal';
 
 function ActualSection({
   index,
@@ -44,27 +45,25 @@ function ActualSection({
 
   useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid);
 
-  const errorMessage = actualsErrorText(allActualsAreSubmitted, totalActuals);
+  const errorMessage = getActualsErrorText(totalActuals);
 
   return (
     <div data-cy="actualSection">
+      <ErrorModal
+        isOpen={!isValid}
+        setIsModalOpen={setIsValid}
+        index={index}
+        names={names}
+        isCurrent={isCurrent}
+        roundHistory={roundHistory}
+        currentRound={currentRound}
+        errorMessage={errorMessage}
+      />
       <TeamInputHeading
         team1Total={team1ActualTotal}
         team2Total={team2ActualTotal}
         title="Actuals"
       />
-      {!isValid && (
-        <div
-          style={{
-            color: '#f95050',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}
-        >
-          {errorMessage}
-        </div>
-      )}
       <SimpleGrid
         columns={2}
         className="namesContainer"

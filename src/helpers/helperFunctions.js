@@ -5,13 +5,9 @@ import {
   team2Styles,
 } from './constants';
 
-export function actualsErrorText(allActualsAreSubmitted, totalActuals) {
-  const trickCountIsTooLow = allActualsAreSubmitted && totalActuals < 13;
-  let text = `${totalActuals}`;
-  if (trickCountIsTooLow) {
-    text = 'only ' + text;
-  }
-  return `Error: You can't take ${text}!`;
+export function getActualsErrorText(totalActuals) {
+  let text = 'The total amount of hands must always add up to 13. Yours totaled ' + totalActuals + '. Correct this before moving on.';
+  return text;
 }
 
 export function sIfPlural(num) {
