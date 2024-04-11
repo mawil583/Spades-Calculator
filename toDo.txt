@@ -20,10 +20,12 @@ describe('dealer tag feature', () => {
   });
 })
 implement 'rotate dealer' button
+implement 'team actuals' button where you can enter a number that your team made instead of needing to individually enter each partner's bid. Incorporate conditional rendering of 'team actuals' button so that it doesn't show when one of the team member's went nill.  
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
 change name form to have team1 section span entire width, and team2 span entire width
+get rid of React icon on mobile browser tab
 
 --Backlog--
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
@@ -37,6 +39,10 @@ make sure that the next round's BidSection does not show up until valid actuals 
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?
+improve UI so that senior citizens can easily use my app
+implement animation where Total Score at the top is sticky, and it shrinks as you scroll down the page
+add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
+add animation to the ErrorModal where their wrong total actuals would look more like a button and maybe even breathe or have some moving gradient around it signifying that that's the number the user needs to edit to move on
 custom styles defined using defineStyle cannot be overwritten at the component level. I might be mistaken about this. Verify. If defineStyle does NOT prevent me from overwritting styles at component level, then put my border style (from the baseStyle of defineStyleConfig() of customTheme.js) into the defineStyle for better separation of concerns
 phase out classNames .team1 and .team2 inside App.css. Replace everything that uses those className's with team1 and team2 colors as defined in my customTheme object 
 there's a hover state on the question mark ButtonIcon that turns background a certain color. Given the positioning of the ButtonIcon, it looks bad. Try changing its style from padding to margin.
@@ -69,7 +75,6 @@ In settings, the underline isn't the same color for teammate 1 and teammate 2
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
-add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 make layout responsive for tablet/desktop usage
 make ActualsSection conditional. It should only show when all bids are entered. It should also animate downwards.
 make team names editable on SpadesCalculator page
