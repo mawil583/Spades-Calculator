@@ -433,6 +433,21 @@ export function getDealerIdHistory(roundHistory, firstDealerOrder) {
   return dealerIdHistory;
 }
 
+export function rotateDealer(roundHistory) {
+  // Old placeholder kept for compatibility. This function isn't used.
+  // Dealer rotation is determined by firstDealerOrder; use rotateDealerOrder instead.
+  return roundHistory;
+}
+
+// Rotate the initial dealer order by one position and return a new array
+export function rotateDealerOrder(firstDealerOrder) {
+  const clonedOrder = [...firstDealerOrder];
+  if (clonedOrder.length === 0) return clonedOrder;
+  clonedOrder.push(clonedOrder[0]);
+  clonedOrder.shift();
+  return clonedOrder;
+}
+
 export function getCurrentDealerId({
   dealerIdHistory,
   index,
