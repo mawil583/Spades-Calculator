@@ -60,7 +60,9 @@
     "build": "react-scripts build",
     "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "prepare": "husky install .husky"
+    "prepare": "husky install .husky",
+    "lint": "eslint src --ext .js,.jsx --fix",
+    "lint:check": "eslint src --ext .js,.jsx"
   },
   "eslintConfig": {
     "extends": "react-app"

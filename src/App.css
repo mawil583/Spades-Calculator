@@ -6,6 +6,11 @@
   color: #f06c9b;
 }
 
+/* Divider spacing for better visual balance */
+.divider-between-sections {
+  margin: 45px 0 15px 0;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
