@@ -2,11 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { StateProvider } from './helpers/GlobalContext';
+import { StateProvider } from './helpers';
 
 import './index.css';
-// import * as serviceWorker from './service-worker';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+// import * as serviceWorker from './services';
+import * as serviceWorkerRegistration from './services/serviceWorkerRegistration';
 import HomePage from './pages/HomePage';
 import SpadesCalculator from './pages/SpadesCalculator';
 import { customTheme } from './customTheme';
@@ -18,8 +18,8 @@ root.render(
     <StateProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='spades-calculator' element={<SpadesCalculator />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="spades-calculator" element={<SpadesCalculator />} />
         </Routes>
       </BrowserRouter>
     </StateProvider>

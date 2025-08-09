@@ -1,10 +1,16 @@
 {
   "name": "Spades Calculator",
   "short_name": "Spades",
-  "theme_color": "#000000",
+  "description": "A comprehensive Spades card game calculator and score tracker",
+  "theme_color": "#667eea",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "id": "/",
+  "start_url": "/",
+  "orientation": "portrait-primary",
+  "categories": ["games", "utilities"],
+  "lang": "en",
   "icons": [
     {
       "src": "favicon.ico",
@@ -16,15 +22,13 @@
       "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any"
+      "purpose": "any maskable"
     },
     {
       "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
-  ],
-  "start_url": "/",
-  "background_color": "#ffffff"
+  ]
 }

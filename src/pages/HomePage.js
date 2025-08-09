@@ -4,14 +4,16 @@ import 'core-js/es/set';
 import 'core-js/es/map';
 
 import '../App.css';
-import NameForm from '../components/NameForm';
-import ScoreSetting from '../components/ScoreSetting';
+import { NameForm } from '../components/forms';
+import { ScoreSetting } from '../components/game';
+import { DownloadButton } from '../components/ui';
 
 function HomePage() {
   return (
-    <div className='App'>
+    <div className="App">
       <NameForm />
       <ScoreSetting />
+      <DownloadButton />
     </div>
   );
 }

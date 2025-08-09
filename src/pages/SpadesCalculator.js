@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import GameScore from '../components/GameScore';
-import Rounds from '../components/Rounds';
-import { useRedirectWhenFalsey } from '../helpers/hooks';
+import { GameScore } from '../components/game';
+import { Rounds } from '../components/game';
+import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ function SpadesCalculator() {
   useRedirectWhenFalsey(names, navigate);
 
   return (
-    <div className='App'>
+    <div className="App">
       {names && (
         <>
           <GameScore />
