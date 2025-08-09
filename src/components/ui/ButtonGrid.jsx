@@ -34,7 +34,7 @@ function ButtonGrid({
       const newRoundHistory = getEditedRoundHistory({
         index,
         updatedRound,
-        roundHistory: roundHistory,
+        roundHistory: roundHistory || [],
       });
       setRoundHistory([...newRoundHistory]);
     }

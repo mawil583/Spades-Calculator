@@ -19,6 +19,7 @@ function InputModal({
   type,
   fieldToUpdate,
   currentRound,
+  roundHistory,
 }) {
   return (
     <>
@@ -27,6 +28,7 @@ function InputModal({
         onClose={() => {
           setIsModalOpen(false);
         }}
+        returnFocusOnClose={false}
       >
         <div data-cy="bidSelectionModal">
           <ModalOverlay />
@@ -40,6 +42,7 @@ function InputModal({
                 isCurrent={isCurrent}
                 fieldToUpdate={fieldToUpdate}
                 currentRound={currentRound}
+                roundHistory={roundHistory}
                 setIsModalOpen={setIsModalOpen}
                 type={type}
                 index={index}

@@ -407,7 +407,18 @@ export function calculateTeamRoundScoresFromTeamHistory(
   teamHistory,
   nilSetting
 ) {
-  return teamHistory.map((round) => {
+  // guard against null/undefined or malformed entries
+  const safeHistory = (Array.isArray(teamHistory) ? teamHistory : [])
+    .filter((round) => round && typeof round === 'object')
+    .filter(
+      (round) =>
+        round.hasOwnProperty('p1Bid') &&
+        round.hasOwnProperty('p2Bid') &&
+        round.hasOwnProperty('p1Actual') &&
+        round.hasOwnProperty('p2Actual')
+    );
+
+  return safeHistory.map((round) => {
     const teamRoundScore = calculateRoundScore(
       round.p1Bid,
       round.p2Bid,
@@ -473,9 +484,11 @@ export function getTeamHistoryFromRoundHistory(
   roundHistory,
   teamBidsAndActuals
 ) {
-  return roundHistory.map((round) => {
-    return round[teamBidsAndActuals];
-  });
+  if (!Array.isArray(roundHistory)) return [];
+  return roundHistory
+    .filter((round) => round && typeof round === 'object')
+    .map((round) => round[teamBidsAndActuals])
+    .filter((team) => team && typeof team === 'object');
 }
 
 export function calculateTeamScoreFromRoundHistory(

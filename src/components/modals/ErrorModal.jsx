@@ -40,6 +40,7 @@ function ErrorModal({
         setIsModalOpen(false);
       }}
       style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+      returnFocusOnClose={false}
     >
       <ModalOverlay />
       <ModalContent>

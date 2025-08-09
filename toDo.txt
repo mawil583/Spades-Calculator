@@ -19,7 +19,6 @@ describe('dealer tag feature', () => {
     cy.get('[data-cy=actualSection]').should('have.length', 2);
   });
 })
-implement 'rotate dealer' button. And imagine that elderly people weren't able to read the 'who's dealing first' and 'who is left of dealer'. In that case, simply rotating the dealer might not work because the positions may have been wrong. So allow the 'rotating dealer' feature to also include ability to change where players are sitting at the table. Also, you may want to implement some animation for the grayed out text to catch the user's eye. 
 implement 'team actuals' button where you can enter a number that your team made instead of needing to individually enter each partner's bid. Incorporate conditional rendering of 'team actuals' button so that it doesn't show when one of the team member's went nill.  
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good

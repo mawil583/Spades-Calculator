@@ -31,6 +31,7 @@ const PlayerInput = ({
         type={type}
         fieldToUpdate={fieldToUpdate}
         currentRound={currentRound}
+        roundHistory={roundHistory}
         index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>

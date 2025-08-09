@@ -19,16 +19,10 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
-  const roundAtIndex = isCurrent ? null : roundHistory[roundIndex];
+  const roundAtIndex = isCurrent ? null : roundHistory?.[roundIndex] ?? null;
   const roundInputs = isCurrent ? currentRound : roundAtIndex;
 
-  const roundInputBids = [
-    roundInputs.team1BidsAndActuals.p1Bid,
-    roundInputs.team1BidsAndActuals.p2Bid,
-    roundInputs.team2BidsAndActuals.p1Bid,
-    roundInputs.team2BidsAndActuals.p2Bid,
-  ];
-
+  // Always call hooks before any early returns
   useSetScoreWhenRoundIsFinished(
     currentRound,
     resetCurrentRound,
@@ -36,6 +30,24 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
     setRoundHistory,
     roundHistory
   );
+
+  // If this is a past round and the round data is missing or malformed, skip rendering this round
+  if (!isCurrent) {
+    const hasValidStructure =
+      roundInputs &&
+      roundInputs.team1BidsAndActuals &&
+      roundInputs.team2BidsAndActuals;
+    if (!hasValidStructure) {
+      return null;
+    }
+  }
+
+  const roundInputBids = [
+    roundInputs.team1BidsAndActuals.p1Bid,
+    roundInputs.team1BidsAndActuals.p2Bid,
+    roundInputs.team2BidsAndActuals.p1Bid,
+    roundInputs.team2BidsAndActuals.p2Bid,
+  ];
 
   function getTeamsScoresFromHistory() {
     if (roundAtIndex) {

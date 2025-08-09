@@ -370,3 +370,25 @@ test('calculateTeamRoundScoreWithBothBlindNil, one missing and the other making'
     bags: 1,
   });
 });
+
+test('getTeamHistoryFromRoundHistory ignores null/undefined entries', () => {
+  const round0 = roundHistoryWithTenBags[0];
+  const mixedHistory = [null, round0, undefined];
+  const result = getTeamHistoryFromRoundHistory(mixedHistory, TEAM1);
+  expect(result).deep.equals([
+    {
+      p1Bid: round0.team1BidsAndActuals.p1Bid,
+      p2Bid: round0.team1BidsAndActuals.p2Bid,
+      p1Actual: round0.team1BidsAndActuals.p1Actual,
+      p2Actual: round0.team1BidsAndActuals.p2Actual,
+    },
+  ]);
+});
+
+test('calculateTeamScoreFromRoundHistory tolerates null entries in history', () => {
+  const round0Only = [roundHistoryWithTenBags[0]];
+  const mixedHistory = [null, roundHistoryWithTenBags[0], undefined];
+  const expected = calculateTeamScoreFromRoundHistory(round0Only, TEAM1);
+  const result = calculateTeamScoreFromRoundHistory(mixedHistory, TEAM1);
+  expect(result).deep.equals(expected);
+});

@@ -22,4 +22,25 @@
 //
 //
 // -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
+  return originalFn(url, options).then(() => {
+    // Hide/remove CRA dev server overlay if it appears and blocks interactions
+    cy.window({ log: false }).then((win) => {
+      const { document } = win;
+      // Inject CSS to keep overlay hidden
+      const style = document.createElement('style');
+      style.innerHTML = `#webpack-dev-server-client-overlay, #webpack-dev-server-client-overlay-div { display: none !important; visibility: hidden !important; }`;
+      document.head.appendChild(style);
+
+      // Repeatedly try removing it, in case it's inserted after load
+      const removeOverlay = () => {
+        const overlay = document.getElementById('webpack-dev-server-client-overlay');
+        const overlayDiv = document.getElementById('webpack-dev-server-client-overlay-div');
+        if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        if (overlayDiv && overlayDiv.parentNode) overlayDiv.parentNode.removeChild(overlayDiv);
+      };
+      removeOverlay();
+      win.setInterval(removeOverlay, 250);
+    });
+  });
+});

@@ -6,7 +6,10 @@ import {
 } from './constants';
 
 export function getActualsErrorText(totalActuals) {
-  let text = 'The total amount of hands must always add up to 13. Yours totaled ' + totalActuals + '. Correct this before moving on.';
+  let text =
+    'The total amount of hands must always add up to 13. Yours totaled ' +
+    totalActuals +
+    '. Correct this before moving on.';
   return text;
 }
 
@@ -54,6 +57,12 @@ export const getEditedRoundHistory = ({
   updatedRound,
   roundHistory,
 }) => {
+  // Ensure roundHistory is an array
+  if (!Array.isArray(roundHistory)) {
+    console.warn('roundHistory is not an array, initializing as empty array');
+    roundHistory = [];
+  }
+
   const clonedRoundHistory = [...roundHistory];
   clonedRoundHistory[index] = updatedRound;
   return clonedRoundHistory;

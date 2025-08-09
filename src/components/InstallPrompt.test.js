@@ -7,7 +7,7 @@ import {
   act,
 } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { InstallPrompt } from '../components/ui';
+import InstallPrompt from './InstallPrompt';
 
 // Mock the toast hook
 const mockToast = jest.fn();

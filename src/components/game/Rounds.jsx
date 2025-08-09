@@ -14,9 +14,11 @@ function Rounds() {
       />
       {roundHistory.length > 0 &&
         roundHistory
-          .map((round, i) => {
-            return <Round roundHistory={roundHistory} roundIndex={i} key={i} />;
-          })
+          .map((round, i) => ({ round, i }))
+          .filter(({ round }) => !!round)
+          .map(({ i }) => (
+            <Round roundHistory={roundHistory} roundIndex={i} key={i} />
+          ))
           .reverse()}
     </div>
   );
