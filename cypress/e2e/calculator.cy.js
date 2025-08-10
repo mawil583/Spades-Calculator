@@ -1,14 +1,14 @@
 describe('Test the input form', () => {
   it('Visits the /spades-calculator page and gets redirected if there are no names in localStorage', () => {
     // Visit the Spades calculator page
-    cy.visit('http://localhost:3000/spades-calculator', {
+    cy.visit('http://localhost:5173/spades-calculator', {
       onBeforeLoad(win) {
         delete win.navigator.__proto__.serviceWorker;
       },
     });
 
     // Assert that we were redirected to the input form page
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.url().should('eq', 'http://localhost:5173/');
   });
 
   it('redirects to /spades-calculator when names are entered and you click start', () => {
@@ -155,7 +155,7 @@ function allPlayersEnterActuals({
 
 function shouldRedirectWhenNamesEnteredAndClickStart() {
   // Visit the app
-  cy.visit('http://localhost:3000/', {
+  cy.visit('http://localhost:5173/', {
     onBeforeLoad(win) {
       delete win.navigator.__proto__.serviceWorker;
     },
@@ -171,5 +171,5 @@ function shouldRedirectWhenNamesEnteredAndClickStart() {
   cy.get('[data-cy=startButton]').click();
 
   // Assert that we were redirected to the Spades calculator page
-  cy.url().should('eq', 'http://localhost:3000/spades-calculator');
+  cy.url().should('eq', 'http://localhost:5173/spades-calculator');
 }

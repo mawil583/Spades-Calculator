@@ -1,7 +1,7 @@
 describe('PWA Functionality', () => {
   describe('Service Worker Registration', () => {
     it('should handle service worker registration errors gracefully', () => {
-      cy.visit('http://localhost:3000', {
+      cy.visit('http://localhost:5173', {
         onBeforeLoad(win) {
           // Mock service worker registration failure
           cy.stub(win.navigator.serviceWorker, 'register').rejects(
@@ -18,7 +18,7 @@ describe('PWA Functionality', () => {
   describe('Offline Functionality', () => {
     it('should work offline after initial load', () => {
       // First visit to cache resources
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
 
       // Wait for service worker to register and cache resources
       cy.wait(2000);
@@ -33,14 +33,14 @@ describe('PWA Functionality', () => {
       cy.get('#root').should('exist');
 
       // Test that the app can still navigate
-      cy.visit('http://localhost:3000/spades-calculator');
+      cy.visit('http://localhost:5173/spades-calculator');
       cy.get('#root').should('exist');
     });
   });
 
   describe('App Installation', () => {
     it('should have proper manifest.json', () => {
-      cy.request('http://localhost:3000/manifest.json').then((response) => {
+      cy.request('http://localhost:5173/manifest.json').then((response) => {
         expect(response.status).to.eq(200);
         expect(response.body).to.have.property('name', 'Spades Calculator');
         expect(response.body).to.have.property('short_name', 'Spades');
@@ -52,7 +52,7 @@ describe('PWA Functionality', () => {
     });
 
     it('should have proper meta tags for PWA', () => {
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
 
       // Check for PWA meta tags
       cy.get('meta[name="theme-color"]').should(
@@ -78,7 +78,7 @@ describe('PWA Functionality', () => {
     });
 
     it('should have proper icons for app installation', () => {
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
 
       // Check for app icons
       cy.get('link[rel="apple-touch-icon"]').should('exist');
@@ -88,11 +88,11 @@ describe('PWA Functionality', () => {
 
   describe('Cache Management', () => {
     it('should handle navigation requests', () => {
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
       cy.wait(2000);
 
       // Navigate to another page
-      cy.visit('http://localhost:3000/spades-calculator');
+      cy.visit('http://localhost:5173/spades-calculator');
       cy.wait(1000);
 
       // Verify the page loaded successfully
@@ -102,7 +102,7 @@ describe('PWA Functionality', () => {
 
   describe('Performance and Loading', () => {
     it('should handle large data sets efficiently', () => {
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
 
       // Simulate adding multiple rounds of data
       for (let i = 0; i < 10; i++) {
@@ -124,7 +124,7 @@ describe('PWA Functionality', () => {
 
   describe('Error Handling', () => {
     it('should handle service worker errors gracefully', () => {
-      cy.visit('http://localhost:3000', {
+      cy.visit('http://localhost:5173', {
         onBeforeLoad(win) {
           // Mock service worker error
           cy.stub(win.navigator.serviceWorker, 'register').throws(
@@ -138,7 +138,7 @@ describe('PWA Functionality', () => {
     });
 
     it('should handle cache errors gracefully', () => {
-      cy.visit('http://localhost:3000', {
+      cy.visit('http://localhost:5173', {
         onBeforeLoad(win) {
           // Mock cache error
           cy.stub(win.caches, 'open').rejects(new Error('Cache error'));
@@ -152,7 +152,7 @@ describe('PWA Functionality', () => {
 
   describe('Cross-browser Compatibility', () => {
     it('should work in browsers without service worker support', () => {
-      cy.visit('http://localhost:3000', {
+      cy.visit('http://localhost:5173', {
         onBeforeLoad(win) {
           // Remove service worker support
           delete win.navigator.serviceWorker;
@@ -164,7 +164,7 @@ describe('PWA Functionality', () => {
     });
 
     it('should work in browsers without cache support', () => {
-      cy.visit('http://localhost:3000', {
+      cy.visit('http://localhost:5173', {
         onBeforeLoad(win) {
           // Remove cache support
           delete win.caches;

@@ -158,9 +158,11 @@ describe('Dealer Override Functionality', () => {
     expect(dealerForRound0).to.equal('team2BidsAndActuals.p2Bid');
   });
 
-  test('editing a past round should not affect dealer override of other rounds', () => {
+  test('editing a past round should not affect dealer override of other rounds', async () => {
     // Import the updateInput function to test it directly
-    const { updateInput } = require('../helpers/utils/helperFunctions');
+    const { updateInput } = await import(
+      '../helpers/utils/helperFunctions.jsx'
+    );
 
     // Create a round history with different dealer overrides
     const roundHistory = [
@@ -227,8 +229,10 @@ describe('Dealer Override Functionality', () => {
     );
   });
 
-  test('updateInput should preserve dealerOverride when it is null', () => {
-    const { updateInput } = require('../helpers/utils/helperFunctions');
+  test('updateInput should preserve dealerOverride when it is null', async () => {
+    const { updateInput } = await import(
+      '../helpers/utils/helperFunctions.jsx'
+    );
 
     const roundWithNullOverride = {
       team1BidsAndActuals: {
@@ -256,8 +260,10 @@ describe('Dealer Override Functionality', () => {
     expect(updatedRound.dealerOverride).to.equal(null);
   });
 
-  test('updateInput should handle rounds without dealerOverride property', () => {
-    const { updateInput } = require('../helpers/utils/helperFunctions');
+  test('updateInput should handle rounds without dealerOverride property', async () => {
+    const { updateInput } = await import(
+      '../helpers/utils/helperFunctions.jsx'
+    );
 
     const roundWithoutOverride = {
       team1BidsAndActuals: {

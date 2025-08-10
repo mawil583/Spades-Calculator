@@ -21,7 +21,9 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
   const { firstDealerOrder, currentRound, setDealerOverride } =
     useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
+
   const dealerIdHistory = getDealerIdHistory(roundHistory, firstDealerOrder);
+
   const isDealer =
     getCurrentDealerId({
       dealerIdHistory,
@@ -34,6 +36,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
 
   const dealerOptions = useMemo(() => {
     const names = JSON.parse(localStorage.getItem('names')) || {};
+
     const getNameForId = (playerId) => {
       const isTeam1 = playerId.includes('team1BidsAndActuals');
       const isP1 = playerId.includes('p1Bid');
@@ -42,10 +45,12 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
       if (!isTeam1 && isP1) return names.t2p1Name || 'Team 2 - P1';
       return names.t2p2Name || 'Team 2 - P2';
     };
-    return initialFirstDealerOrder.map((optId) => ({
+
+    const options = initialFirstDealerOrder.map((optId) => ({
       id: optId,
       label: getNameForId(optId),
     }));
+    return options;
   }, []);
 
   const onSelectDealer = (selectedId) => {
@@ -60,13 +65,20 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
     setIsOpen(false);
   };
 
+  const handleBadgeClick = () => {
+    if (isCurrent) {
+      setIsOpen(true);
+    }
+  };
+
   return (
     isDealer && (
       <>
         <Badge
           data-cy="dealerBadge"
-          onClick={() => setIsOpen(true)}
+          onClick={handleBadgeClick}
           colorScheme="purple"
+          style={{ cursor: isCurrent ? 'pointer' : 'default' }}
         >
           D
         </Badge>

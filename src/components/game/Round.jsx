@@ -105,7 +105,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const teamScores = getTeamsScoresFromHistory();
 
   return (
-    <div className="round">
+    <div className="round" data-cy="round">
       <RoundHeading roundNumber={roundIndex + 1} names={names} />
       <form>
         <Container>

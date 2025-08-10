@@ -30,11 +30,11 @@ function InputModal({
         }}
         returnFocusOnClose={false}
       >
-        <div data-cy="bidSelectionModal">
+        <div>
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent data-cy="bidSelectionModal">
             <ModalHeader>
-              Select {playerName}'s {type}
+              Select {playerName}&apos;s {type}
             </ModalHeader>
             <ModalCloseButton style={{ color: '#ebf5ee' }} />
             <ModalBody style={{ padding: '5px' }}>

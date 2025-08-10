@@ -1,4 +1,4 @@
-const browserstack = require('browserstack-local');
+import browserstack from 'browserstack-local';
 
 // BrowserStack configuration for real mobile browser testing
 const bs_local = new browserstack.Local();
@@ -57,7 +57,7 @@ const mobileBrowsers = [
   },
 ];
 
-module.exports = {
+export default {
   capabilities,
   mobileBrowsers,
   bs_local,

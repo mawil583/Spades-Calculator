@@ -2,7 +2,7 @@ describe('Offline Page Functionality', () => {
   describe('Offline Page Display', () => {
     it('should show offline page when network is unavailable', () => {
       // First visit to cache resources
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
       cy.wait(2000);
 
       // Simulate offline mode
@@ -12,7 +12,7 @@ describe('Offline Page Functionality', () => {
       });
 
       // Try to access a page that should show offline content
-      cy.visit('http://localhost:3000/offline.html', {
+      cy.visit('http://localhost:5173/offline.html', {
         failOnStatusCode: false,
       });
 
@@ -25,7 +25,7 @@ describe('Offline Page Functionality', () => {
     });
 
     it('should have proper styling and layout', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Check for offline page styling
       cy.get('body')
@@ -37,7 +37,7 @@ describe('Offline Page Functionality', () => {
     });
 
     it('should have retry functionality', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Check retry button
       cy.get('.retry-button').should('contain', 'Try Again');
@@ -47,17 +47,17 @@ describe('Offline Page Functionality', () => {
 
   describe('Offline Page Navigation', () => {
     it('should allow navigation back to main app', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Click retry button
       cy.get('.retry-button').click();
 
       // Should navigate back to main app
-      cy.url().should('include', 'localhost:3000');
+      cy.url().should('include', 'localhost:5173');
     });
 
     it('should handle online/offline state changes', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Simulate coming back online
       cy.window().then((win) => {
@@ -66,13 +66,13 @@ describe('Offline Page Functionality', () => {
       });
 
       // Should automatically reload when back online
-      cy.url().should('include', 'localhost:3000');
+      cy.url().should('include', 'localhost:5173');
     });
   });
 
   describe('Offline Page Content', () => {
     it('should have appropriate messaging', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Check for appropriate offline messaging
       cy.get('h1').should('contain', "You're Offline");
@@ -87,7 +87,7 @@ describe('Offline Page Functionality', () => {
     });
 
     it('should have proper heading structure', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Check for proper heading structure
       cy.get('h1').should('exist');
@@ -97,7 +97,7 @@ describe('Offline Page Functionality', () => {
   describe('Offline Page Integration', () => {
     it('should work with app navigation when offline', () => {
       // First visit to cache resources
-      cy.visit('http://localhost:3000');
+      cy.visit('http://localhost:5173');
       cy.wait(2000);
 
       // Simulate offline mode
@@ -107,7 +107,7 @@ describe('Offline Page Functionality', () => {
       });
 
       // Try to navigate within the app
-      cy.visit('http://localhost:3000/spades-calculator');
+      cy.visit('http://localhost:5173/spades-calculator');
       cy.get('#root').should('exist');
     });
   });
@@ -116,14 +116,14 @@ describe('Offline Page Functionality', () => {
     it('should load quickly', () => {
       const startTime = Date.now();
 
-      cy.visit('http://localhost:3000/offline.html').then(() => {
+      cy.visit('http://localhost:5173/offline.html').then(() => {
         const loadTime = Date.now() - startTime;
         expect(loadTime).to.be.lessThan(2000); // Should load in under 2 seconds
       });
     });
 
     it('should have minimal resource usage', () => {
-      cy.visit('http://localhost:3000/offline.html');
+      cy.visit('http://localhost:5173/offline.html');
 
       // Check that the page doesn't make unnecessary network requests
       cy.window().then((win) => {

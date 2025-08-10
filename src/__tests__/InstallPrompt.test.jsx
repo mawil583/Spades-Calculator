@@ -1,3 +1,10 @@
+// Mock the toast hook before importing components
+const mockToast = jest.fn();
+jest.mock('@chakra-ui/react', () => ({
+  ...jest.requireActual('@chakra-ui/react'),
+  useToast: () => mockToast,
+}));
+
 import React from 'react';
 import {
   render,
@@ -7,14 +14,7 @@ import {
   act,
 } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import InstallPrompt from './InstallPrompt';
-
-// Mock the toast hook
-const mockToast = jest.fn();
-jest.mock('@chakra-ui/react', () => ({
-  ...jest.requireActual('@chakra-ui/react'),
-  useToast: () => mockToast,
-}));
+import { InstallPrompt } from '../components/ui';
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -242,13 +242,12 @@ describe('InstallPrompt', () => {
 
     // Wait for the toast to be called
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'App Installed!',
-        description: 'Spades Calculator has been added to your home screen.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      expect(screen.getByText('App Installed!')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Spades Calculator has been added to your home screen.'
+        )
+      ).toBeInTheDocument();
     });
   });
 

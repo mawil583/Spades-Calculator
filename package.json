@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "engines": {
     "node": "18.x"
   },
@@ -14,8 +15,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "eslint --fix --max-warnings=0",
-      "git add"
+      "eslint --fix --max-warnings=0"
     ]
   },
   "dependencies": {
@@ -24,7 +24,6 @@
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@synapsestudios/fetch-client": "^2.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -35,7 +34,7 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.2.2",
-    "react-scripts": "^5.0.1",
+
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "web-vitals": "^2.1.4",
@@ -54,12 +53,14 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "test": "npm run unit && npm run e2e && npm run test:pwa",
+    "dev": "vite",
+    "start": "vite",
+    "test": "npm run unit && npm run e2e",
     "e2e": "cypress run --config video=false",
-    "build": "react-scripts build",
-    "unit": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject",
+    "build": "vite build",
+    "preview": "vite preview",
+    "unit": "vitest run",
+    "unit:watch": "vitest",
     "prepare": "husky install .husky",
     "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
     "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
@@ -68,12 +69,10 @@
     "test:pwa:ui": "playwright test --ui",
     "test:pwa:debug": "playwright test --debug",
     "test:browserstack": "node tests/browserstack.js",
-    "lighthouse": "lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json",
+    "lighthouse": "lighthouse http://localhost:5173 --output=json --output-path=./lighthouse-report.json",
     "lighthouse:ci": "lhci autorun"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
+
   "browserslist": {
     "production": [
       ">0.2%",
@@ -87,17 +86,24 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+
     "@babel/plugin-transform-private-property-in-object": "^7.27.1",
     "@playwright/test": "^1.54.2",
+    "@vitejs/plugin-react": "^4.7.0",
     "browserstack-local": "^1.5.8",
     "chai": "^4.3.7",
-    "cypress": "^12.9.0",
+    "cypress": "^14.5.4",
     "eslint-plugin-cypress": "^5.1.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^8.0.3",
+    "jsdom": "^26.1.0",
     "lhci": "^4.1.1",
     "lighthouse": "^12.8.1",
     "lint-staged": "^13.2.3",
-    "playwright": "^1.54.2"
+    "playwright": "^1.54.2",
+    "vite": "^6.3.5",
+    "vite-plugin-pwa": "^1.0.2",
+    "vitest": "^0.34.6"
   }
 }

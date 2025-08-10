@@ -1,7 +1,7 @@
 describe('Round history editing does not drop earlier rounds', () => {
   it('reproduces the 14-actuals error, edits to 13, and keeps Round 1 visible', () => {
     // Navigate to app and enter names
-    cy.visit('http://localhost:3000/', {
+    cy.visit('http://localhost:5173/', {
       onBeforeLoad(win) {
         delete win.navigator.__proto__.serviceWorker;
         win.localStorage.clear();
@@ -13,7 +13,7 @@ describe('Round history editing does not drop earlier rounds', () => {
     cy.get('[data-cy=t2p1NameInput]').type('Mom');
     cy.get('[data-cy=t2p2NameInput]').type('Dad');
     cy.get('[data-cy=startButton]').click();
-    cy.url().should('eq', 'http://localhost:3000/spades-calculator');
+    cy.url().should('eq', 'http://localhost:5173/spades-calculator');
 
     // Round 1: all bids 3
     bid('team1BidsAndActuals.p1Bid', '3');
@@ -94,7 +94,7 @@ describe('Round history editing does not drop earlier rounds', () => {
 
   it('prevents next round from showing actuals section when current round has invalid actuals', () => {
     // Navigate to app and enter names
-    cy.visit('http://localhost:3000/', {
+    cy.visit('http://localhost:5173/', {
       onBeforeLoad(win) {
         delete win.navigator.__proto__.serviceWorker;
         win.localStorage.clear();
@@ -106,7 +106,7 @@ describe('Round history editing does not drop earlier rounds', () => {
     cy.get('[data-cy=t2p1NameInput]').type('Mom');
     cy.get('[data-cy=t2p2NameInput]').type('Dad');
     cy.get('[data-cy=startButton]').click();
-    cy.url().should('eq', 'http://localhost:3000/spades-calculator');
+    cy.url().should('eq', 'http://localhost:5173/spades-calculator');
 
     // Round 1: all bids 3
     bid('team1BidsAndActuals.p1Bid', '3');
@@ -147,7 +147,7 @@ describe('Round history editing does not drop earlier rounds', () => {
 
   it('ensures next round only shows bid section after correcting error modal', () => {
     // Navigate to app and enter names
-    cy.visit('http://localhost:3000/', {
+    cy.visit('http://localhost:5173/', {
       onBeforeLoad(win) {
         delete win.navigator.__proto__.serviceWorker;
         win.localStorage.clear();
@@ -159,7 +159,7 @@ describe('Round history editing does not drop earlier rounds', () => {
     cy.get('[data-cy=t2p1NameInput]').type('Mom');
     cy.get('[data-cy=t2p2NameInput]').type('Dad');
     cy.get('[data-cy=startButton]').click();
-    cy.url().should('eq', 'http://localhost:3000/spades-calculator');
+    cy.url().should('eq', 'http://localhost:5173/spades-calculator');
 
     // Round 1: all bids 3
     bid('team1BidsAndActuals.p1Bid', '3');

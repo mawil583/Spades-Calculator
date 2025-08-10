@@ -16,6 +16,7 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
         fontWeight="bold"
         placeholder={teamName}
         className={teamClassName}
+        data-cy={id + 'Input'}
       >
         <Center>
           <EditablePreview />
