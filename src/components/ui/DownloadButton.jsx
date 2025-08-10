@@ -11,74 +11,108 @@ const DownloadButton = () => {
   useEffect(() => {
     // Check if the app is already installed
     const checkIfInstalled = () => {
-      const installed =
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true;
-      setIsInstalled(installed);
+      try {
+        const installed =
+          window.matchMedia('(display-mode: standalone)').matches ||
+          window.navigator.standalone === true;
+        setIsInstalled(installed);
+      } catch (error) {
+        console.log('Error checking if installed:', error);
+        setIsInstalled(false);
+      }
     };
 
     checkIfInstalled();
 
     // Listen for the beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-      deferredPromptRef.current = e;
+      try {
+        e.preventDefault();
+        setDeferredPrompt(e);
+        deferredPromptRef.current = e;
+      } catch (error) {
+        console.log('Error handling beforeinstallprompt:', error);
+      }
     };
 
     // Listen for the appinstalled event
     const handleAppInstalled = () => {
-      setIsInstalled(true);
-      setDeferredPrompt(null);
-      deferredPromptRef.current = null;
-      toast({
-        title: 'App Installed!',
-        description: 'Spades Calculator has been added to your home screen.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      try {
+        setIsInstalled(true);
+        setDeferredPrompt(null);
+        deferredPromptRef.current = null;
+        toast({
+          title: 'App Installed!',
+          description: 'Spades Calculator has been added to your home screen.',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      } catch (error) {
+        console.log('Error handling appinstalled:', error);
+      }
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
+    // Only add event listeners if window is available
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.addEventListener('appinstalled', handleAppInstalled);
 
-    return () => {
-      window.removeEventListener(
-        'beforeinstallprompt',
-        handleBeforeInstallPrompt
-      );
-      window.removeEventListener('appinstalled', handleAppInstalled);
-    };
+      return () => {
+        window.removeEventListener(
+          'beforeinstallprompt',
+          handleBeforeInstallPrompt
+        );
+        window.removeEventListener('appinstalled', handleAppInstalled);
+      };
+    }
   }, [toast]);
 
   const handleInstallClick = async () => {
     try {
       // First, try to use the deferred prompt if available
       const currentDeferredPrompt = deferredPromptRef.current || deferredPrompt;
-      if (currentDeferredPrompt) {
+      if (currentDeferredPrompt && currentDeferredPrompt.prompt) {
         currentDeferredPrompt.prompt();
-        const { outcome } = await currentDeferredPrompt.userChoice;
 
-        if (outcome === 'accepted') {
+        // Check if userChoice exists and is a Promise
+        if (
+          currentDeferredPrompt.userChoice &&
+          typeof currentDeferredPrompt.userChoice.then === 'function'
+        ) {
+          const { outcome } = await currentDeferredPrompt.userChoice;
+
+          if (outcome === 'accepted') {
+            toast({
+              title: 'Installation Started!',
+              description:
+                'Please follow the browser prompts to complete the installation.',
+              status: 'success',
+              duration: 3000,
+              isClosable: true,
+            });
+          } else {
+            toast({
+              title: 'Installation Cancelled',
+              description:
+                'You can try again anytime by clicking the download button.',
+              status: 'info',
+              duration: 3000,
+              isClosable: true,
+            });
+          }
+        } else {
+          // If userChoice is not available, show a generic success message
           toast({
-            title: 'Installation Started!',
+            title: 'Installation Prompt Shown',
             description:
               'Please follow the browser prompts to complete the installation.',
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-        } else {
-          toast({
-            title: 'Installation Cancelled',
-            description:
-              'You can try again anytime by clicking the download button.',
             status: 'info',
             duration: 3000,
             isClosable: true,
           });
         }
+
         setDeferredPrompt(null);
         deferredPromptRef.current = null;
         return;
@@ -90,7 +124,7 @@ const DownloadButton = () => {
 
       if (isIOS) {
         // For iOS, try to trigger the share sheet
-        if (navigator.share) {
+        if (navigator.share && typeof navigator.share === 'function') {
           try {
             await navigator.share({
               title: 'Spades Calculator',
@@ -108,6 +142,7 @@ const DownloadButton = () => {
             return;
           } catch (error) {
             // Share was cancelled or failed, continue to manual instructions
+            console.log('Share failed:', error);
           }
         }
       } else if (isAndroid || !isIOS) {

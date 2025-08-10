@@ -1,1 +1,15 @@
-npm run test
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged to lint only changed files
+echo "🔍 Running lint-staged on changed files..."
+npm run lint:staged
+
+# If lint-staged passes, run tests
+if [ $? -eq 0 ]; then
+  echo "✅ Linting passed, running tests..."
+  npm run test
+else
+  echo "❌ Linting failed. Please fix the issues before committing."
+  exit 1
+fi

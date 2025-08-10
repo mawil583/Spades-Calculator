@@ -9,3 +9,6 @@ export * from './forms';
 
 // Modal Components
 export * from './modals';
+
+// Update Notification
+export { default as UpdateNotification } from './UpdateNotification';
