@@ -13,8 +13,8 @@
     }
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
+    "*.{js,jsx}": [
+      "eslint --fix --max-warnings=0",
       "git add"
     ]
   },
@@ -60,7 +60,10 @@
     "build": "react-scripts build",
     "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
-    "prepare": "husky install .husky"
+    "prepare": "husky install .husky",
+    "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
+    "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
+    "lint:staged": "lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -82,6 +85,7 @@
     "@babel/plugin-transform-private-property-in-object": "^7.27.1",
     "chai": "^4.3.7",
     "cypress": "^12.9.0",
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3"
   }
 }

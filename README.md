@@ -21,3 +21,17 @@ npx cypress open
 ```
 
 This will launch the Cypress Test Runner, where you can select and run your tests visually.
+
+## Linting
+
+The project uses ESLint for code quality and consistency. You can run the following commands:
+
+```bash
+# Fix automatically fixable linting issues
+npm run lint
+
+# Check for linting issues without fixing them
+npm run lint:check
+```
+
+The project is configured to automatically run linting on staged files before commits using husky and lint-staged.

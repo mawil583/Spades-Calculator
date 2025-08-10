@@ -1,5 +1,6 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { Container } from '@chakra-ui/react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import {
   calculateRoundScore,
@@ -22,6 +23,9 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const roundAtIndex = isCurrent ? null : roundHistory?.[roundIndex] ?? null;
   const roundInputs = isCurrent ? currentRound : roundAtIndex;
 
+  // State to control the animation
+  const [showActuals, setShowActuals] = useState(false);
+
   // Always call hooks before any early returns
   useSetScoreWhenRoundIsFinished(
     currentRound,
@@ -30,6 +34,41 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
     setRoundHistory,
     roundHistory
   );
+
+  // Check if all bids are entered and update animation state
+  const roundInputBids = roundInputs
+    ? [
+        roundInputs.team1BidsAndActuals.p1Bid,
+        roundInputs.team1BidsAndActuals.p2Bid,
+        roundInputs.team2BidsAndActuals.p1Bid,
+        roundInputs.team2BidsAndActuals.p2Bid,
+      ]
+    : ['', '', '', '']; // Default empty values if roundInputs is null
+  const allBidsEntered = roundInputBids.every(isNotDefaultValue);
+
+  // Reset showActuals when roundIndex changes (new round created)
+  useEffect(() => {
+    setShowActuals(false);
+  }, [roundIndex]);
+
+  useEffect(() => {
+    if (allBidsEntered && isCurrent && !showActuals) {
+      // Only trigger animation when transitioning from incomplete to complete
+      // Small delay to ensure the animation triggers after the last bid is entered
+      const timer = setTimeout(() => {
+        setShowActuals(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+    // Don't hide actuals once they're shown - this prevents contraction animations
+  }, [allBidsEntered, isCurrent, showActuals]);
+
+  // For past rounds, always show actuals
+  useEffect(() => {
+    if (!isCurrent && allBidsEntered) {
+      setShowActuals(true);
+    }
+  }, [isCurrent, allBidsEntered]);
 
   // If this is a past round and the round data is missing or malformed, skip rendering this round
   if (!isCurrent) {
@@ -41,13 +80,6 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       return null;
     }
   }
-
-  const roundInputBids = [
-    roundInputs.team1BidsAndActuals.p1Bid,
-    roundInputs.team1BidsAndActuals.p2Bid,
-    roundInputs.team2BidsAndActuals.p1Bid,
-    roundInputs.team2BidsAndActuals.p2Bid,
-  ];
 
   function getTeamsScoresFromHistory() {
     if (roundAtIndex) {
@@ -91,6 +123,31 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
             />
           )}
 
+          <AnimatePresence>
+            {showActuals && (
+              <motion.div
+                initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{
+                  height: { duration: 0.5, ease: 'easeInOut' },
+                  opacity: { duration: 0.3, delay: 0.2 },
+                }}
+                style={{ overflow: 'hidden' }}
+              >
+                <ActualSection
+                  names={names}
+                  isCurrent={isCurrent}
+                  index={roundIndex}
+                  roundHistory={roundHistory}
+                  currentRound={isCurrent ? currentRound : roundAtIndex}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {showActuals && <Divider className="divider-between-sections" />}
+
           <BidSection
             names={names}
             isCurrent={isCurrent}
@@ -98,16 +155,6 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
             roundHistory={roundHistory}
             currentRound={isCurrent ? currentRound : roundAtIndex}
           />
-          <Divider />
-          {roundInputBids.every(isNotDefaultValue) && (
-            <ActualSection
-              names={names}
-              isCurrent={isCurrent}
-              index={roundIndex}
-              roundHistory={roundHistory}
-              currentRound={isCurrent ? currentRound : roundAtIndex}
-            />
-          )}
         </Container>
       </form>
     </div>
@@ -130,9 +177,28 @@ function useSetScoreWhenRoundIsFinished(
     const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
     const allBidsAndActualsAreEntered =
       team1InputsAreEntered && team2InputsAreEntered;
+
     if (allBidsAndActualsAreEntered) {
-      setRoundHistory([...roundHistory, { ...currentRound }]);
-      resetCurrentRound();
+      // Validate that actuals add up to 13 before completing the round
+      const team1Actuals = [
+        currentRound.team1BidsAndActuals.p1Actual,
+        currentRound.team1BidsAndActuals.p2Actual,
+      ];
+      const team2Actuals = [
+        currentRound.team2BidsAndActuals.p1Actual,
+        currentRound.team2BidsAndActuals.p2Actual,
+      ];
+
+      const totalActuals = [...team1Actuals, ...team2Actuals].reduce(
+        (sum, actual) => sum + parseInt(actual || 0),
+        0
+      );
+
+      // Only complete the round if actuals are valid (add up to 13)
+      if (totalActuals === 13) {
+        setRoundHistory([...roundHistory, { ...currentRound }]);
+        resetCurrentRound();
+      }
     }
   }, [
     currentRound,

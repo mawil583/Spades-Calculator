@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+
 
 describe('Service Worker', () => {
   it('should have service worker file that exists', () => {

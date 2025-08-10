@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { GameScore } from '../components/game';
 import { Rounds } from '../components/game';
+import { UpdateNotification } from '../components';
 import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
 
 function SpadesCalculator() {
@@ -12,6 +13,7 @@ function SpadesCalculator() {
 
   return (
     <div className="App">
+      <UpdateNotification />
       {names && (
         <>
           <GameScore />

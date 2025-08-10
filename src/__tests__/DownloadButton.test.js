@@ -37,12 +37,7 @@ Object.defineProperty(window.navigator, 'standalone', {
   value: false,
 });
 
-// Mock the beforeinstallprompt event
-const mockBeforeInstallPrompt = {
-  preventDefault: jest.fn(),
-  prompt: jest.fn(),
-  userChoice: Promise.resolve({ outcome: 'accepted' }),
-};
+
 
 // Mock the appinstalled event
 const mockAppInstalledEvent = new Event('appinstalled');
