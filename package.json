@@ -13,7 +13,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
+    "src/**/*.{js,jsx}": [
       "eslint --fix --max-warnings=0",
       "git add"
     ]
@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "test": "npm run unit & npm run e2e",
+    "test": "npm run unit && npm run e2e && npm run test:pwa",
     "e2e": "cypress run --config video=false",
     "build": "react-scripts build",
     "unit": "react-scripts test --watchAll=false",
@@ -63,7 +63,13 @@
     "prepare": "husky install .husky",
     "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
     "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "test:pwa": "playwright test tests/minimal-pwa-test.spec.js",
+    "test:pwa:ui": "playwright test --ui",
+    "test:pwa:debug": "playwright test --debug",
+    "test:browserstack": "node tests/browserstack.js",
+    "lighthouse": "lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-report.json",
+    "lighthouse:ci": "lhci autorun"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -83,9 +89,15 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.27.1",
+    "@playwright/test": "^1.54.2",
+    "browserstack-local": "^1.5.8",
     "chai": "^4.3.7",
     "cypress": "^12.9.0",
+    "eslint-plugin-cypress": "^5.1.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.3"
+    "lhci": "^4.1.1",
+    "lighthouse": "^12.8.1",
+    "lint-staged": "^13.2.3",
+    "playwright": "^1.54.2"
   }
 }

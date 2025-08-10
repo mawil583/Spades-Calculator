@@ -84,24 +84,59 @@ const InstallPrompt = () => {
   const showManualInstallInstructions = () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
     const isAndroid = /Android/.test(navigator.userAgent);
+    const isBrave =
+      navigator.brave?.isBrave() || /Brave/.test(navigator.userAgent);
+    const isChrome = /Chrome/.test(navigator.userAgent) && !isBrave;
+    const isFirefox = /Firefox/.test(navigator.userAgent);
 
     let instructions = '';
+    let title = 'Install Instructions';
 
     if (isIOS) {
-      instructions =
-        'Tap the Share button (📤) in Safari, then "Add to Home Screen"';
+      if (isBrave) {
+        title = 'Install in Brave Browser';
+        instructions =
+          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+      } else {
+        title = 'Install on iOS';
+        instructions =
+          'Tap the Share button (📤) in Safari, then "Add to Home Screen"';
+      }
     } else if (isAndroid) {
-      instructions = 'Tap the menu (⋮) in Chrome, then "Add to Home Screen"';
+      if (isBrave) {
+        title = 'Install in Brave Browser';
+        instructions =
+          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+      } else {
+        title = 'Install on Android';
+        instructions = 'Tap the menu (⋮) in Chrome, then "Add to Home Screen"';
+      }
     } else {
-      instructions =
-        "Look for the share/install icon (↗️) in your browser's address bar";
+      // Desktop browsers
+      if (isBrave) {
+        title = 'Install in Brave Browser';
+        instructions =
+          "Look for the install icon (↗️) in Brave's address bar, or tap the menu (⋮) and select 'Install Spades Calculator'";
+      } else if (isChrome) {
+        title = 'Install in Chrome';
+        instructions =
+          "Look for the install icon (↗️) in Chrome's address bar, or tap the menu (⋮) and select 'Install Spades Calculator'";
+      } else if (isFirefox) {
+        title = 'Install in Firefox';
+        instructions =
+          "Tap the menu (⋮) in Firefox and select 'Install Spades Calculator'";
+      } else {
+        title = 'Install Instructions';
+        instructions =
+          "Look for the share/install icon (↗️) in your browser's address bar";
+      }
     }
 
     toast({
-      title: 'Install Instructions',
+      title: title,
       description: instructions,
       status: 'info',
-      duration: 5000,
+      duration: 8000,
       isClosable: true,
     });
   };

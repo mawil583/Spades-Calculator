@@ -37,8 +37,6 @@ Object.defineProperty(window.navigator, 'standalone', {
   value: false,
 });
 
-
-
 // Mock the appinstalled event
 const mockAppInstalledEvent = new Event('appinstalled');
 
@@ -241,7 +239,7 @@ describe('DownloadButton', () => {
         title: 'Install Instructions',
         description: expect.stringContaining('install icon'),
         status: 'info',
-        duration: 5000,
+        duration: 8000,
         isClosable: true,
       });
     });
@@ -286,11 +284,11 @@ describe('DownloadButton', () => {
 
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install Instructions',
+        title: 'Install on iOS',
         description:
-          'Tap the Share button (📤) in Safari, then "Add to Home Screen"',
+          'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
         status: 'info',
-        duration: 5000,
+        duration: 8000,
         isClosable: true,
       });
     });
@@ -314,10 +312,11 @@ describe('DownloadButton', () => {
 
     await waitFor(() => {
       expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install Instructions',
-        description: 'Tap the menu (⋮) in Chrome, then "Add to Home Screen"',
+        title: 'Install on Android',
+        description:
+          'Tap the menu (⋮) in your browser, then "Add to Home Screen"',
         status: 'info',
-        duration: 5000,
+        duration: 8000,
         isClosable: true,
       });
     });
@@ -345,7 +344,7 @@ describe('DownloadButton', () => {
         description:
           "Look for the share/install icon (↗️) in your browser's address bar",
         status: 'info',
-        duration: 5000,
+        duration: 8000,
         isClosable: true,
       });
     });
@@ -376,7 +375,7 @@ describe('DownloadButton', () => {
           title: 'Install Instructions',
           description: expect.stringContaining('install icon'),
           status: 'info',
-          duration: 5000,
+          duration: 8000,
           isClosable: true,
         });
       });
@@ -390,13 +389,6 @@ describe('DownloadButton', () => {
         configurable: true,
       });
 
-      // Mock navigator.share
-      const mockShare = jest.fn().mockResolvedValue();
-      Object.defineProperty(navigator, 'share', {
-        value: mockShare,
-        configurable: true,
-      });
-
       renderWithChakra(<DownloadButton />);
 
       const downloadButton = screen.getByRole('button', {
@@ -407,22 +399,14 @@ describe('DownloadButton', () => {
         fireEvent.click(downloadButton);
       });
 
-      // Wait for the share to be called
-      await waitFor(() => {
-        expect(mockShare).toHaveBeenCalledWith({
-          title: 'Spades Calculator',
-          text: 'Add Spades Calculator to your home screen for quick access',
-          url: window.location.href,
-        });
-      });
-
-      // Check for the success toast
+      // Check for the iOS instructions toast
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
-          title: 'Share Menu Opened',
-          description: 'Look for "Add to Home Screen" in the share options.',
+          title: 'Install on iOS',
+          description:
+            'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
           status: 'info',
-          duration: 5000,
+          duration: 8000,
           isClosable: true,
         });
       });
@@ -433,15 +417,6 @@ describe('DownloadButton', () => {
       Object.defineProperty(navigator, 'userAgent', {
         value:
           'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
-        configurable: true,
-      });
-
-      // Mock navigator.share to throw an error (simulating cancellation)
-      const mockShare = jest
-        .fn()
-        .mockRejectedValue(new Error('Share cancelled'));
-      Object.defineProperty(navigator, 'share', {
-        value: mockShare,
         configurable: true,
       });
 
@@ -458,11 +433,11 @@ describe('DownloadButton', () => {
       // Wait for manual instructions to be shown
       await waitFor(() => {
         expect(mockToast).toHaveBeenCalledWith({
-          title: 'Install Instructions',
+          title: 'Install on iOS',
           description:
-            'Tap the Share button (📤) in Safari, then "Add to Home Screen"',
+            'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
           status: 'info',
-          duration: 5000,
+          duration: 8000,
           isClosable: true,
         });
       });
@@ -566,7 +541,7 @@ describe('DownloadButton', () => {
           title: 'Install Instructions',
           description: expect.stringContaining('install icon'),
           status: 'info',
-          duration: 5000,
+          duration: 8000,
           isClosable: true,
         });
       });
