@@ -18,12 +18,8 @@ import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 
 const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
-  const {
-    firstDealerOrder,
-    setFirstDealerOrder,
-    currentRound,
-    setDealerOverride,
-  } = useContext(GlobalContext);
+  const { firstDealerOrder, currentRound, setDealerOverride } =
+    useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
   const dealerIdHistory = getDealerIdHistory(roundHistory, firstDealerOrder);
   const isDealer =
