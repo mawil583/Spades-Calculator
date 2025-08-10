@@ -7,11 +7,14 @@ This project now includes comprehensive linting checks that run automatically be
 ## What's Included
 
 ### ESLint Configuration
+
 - **React App ESLint**: Uses the standard Create React App ESLint configuration
 - **File Extensions**: Checks both `.js` and `.jsx` files
 - **Auto-fix**: Automatically fixes many common issues
+- **Zero Warnings**: Treats warnings as errors - no warnings are permitted
 
 ### Pre-commit Hook
+
 The pre-commit hook runs automatically when you commit code and includes:
 
 1. **Lint-staged**: Only lints files that are staged for commit (faster performance)
@@ -19,6 +22,7 @@ The pre-commit hook runs automatically when you commit code and includes:
 3. **Fail-fast**: If linting fails, the commit is blocked
 
 ### Lint-staged Configuration
+
 - Automatically fixes linting issues in staged files
 - Only processes `.js` and `.jsx` files
 - Re-adds fixed files to the staging area
@@ -26,18 +30,20 @@ The pre-commit hook runs automatically when you commit code and includes:
 ## Available Scripts
 
 ### Linting Scripts
+
 ```bash
-# Lint all source files and auto-fix issues
+# Lint all source files and auto-fix issues (zero warnings enforced)
 npm run lint
 
-# Lint all source files (check only, no auto-fix)
+# Lint all source files (check only, no auto-fix, zero warnings enforced)
 npm run lint:check
 
-# Lint only staged files (used by pre-commit hook)
+# Lint only staged files (used by pre-commit hook, zero warnings enforced)
 npm run lint:staged
 ```
 
 ### Testing Scripts
+
 ```bash
 # Run all tests (unit + e2e)
 npm run test
@@ -52,6 +58,7 @@ npm run e2e
 ## How It Works
 
 ### Pre-commit Process
+
 1. When you run `git commit`, the pre-commit hook triggers
 2. **Lint-staged** runs on only the files you're committing
 3. If linting passes, **tests** run
@@ -59,6 +66,7 @@ npm run e2e
 5. If either fails, the commit is blocked
 
 ### Example Output
+
 ```
 🔍 Running lint-staged on changed files...
 ✅ Linting passed, running tests...
@@ -68,6 +76,7 @@ npm run e2e
 ## Fixing Linting Issues
 
 ### Automatic Fixes
+
 Most linting issues are automatically fixed by the pre-commit hook. If you want to fix them manually:
 
 ```bash
@@ -79,6 +88,7 @@ npm run lint:check
 ```
 
 ### Manual Fixes
+
 If there are issues that can't be auto-fixed:
 
 1. Run `npm run lint:check` to see the issues
@@ -88,16 +98,19 @@ If there are issues that can't be auto-fixed:
 ## Common Linting Rules
 
 ### React/JSX
+
 - Proper component naming (PascalCase)
 - Correct prop types
 - Proper hook usage
 
 ### JavaScript
+
 - No unused variables
 - Proper import/export statements
 - Consistent code formatting
 
 ### Best Practices
+
 - No console.log in production code
 - Proper error handling
 - Consistent naming conventions
@@ -105,6 +118,7 @@ If there are issues that can't be auto-fixed:
 ## Troubleshooting
 
 ### Pre-commit Hook Not Running
+
 If the pre-commit hook isn't working:
 
 1. Make sure husky is installed: `npm run prepare`
@@ -112,6 +126,7 @@ If the pre-commit hook isn't working:
 3. Verify that lint-staged is installed: `npm list lint-staged`
 
 ### Linting Fails
+
 If linting is failing:
 
 1. Check the specific error messages
@@ -120,6 +135,7 @@ If linting is failing:
 4. Try committing again
 
 ### Tests Fail
+
 If tests are failing:
 
 1. Run `npm run unit` to see unit test failures
@@ -130,7 +146,9 @@ If tests are failing:
 ## Configuration Files
 
 ### ESLint Config
+
 Located in `package.json`:
+
 ```json
 {
   "eslintConfig": {
@@ -140,20 +158,21 @@ Located in `package.json`:
 ```
 
 ### Lint-staged Config
+
 Located in `package.json`:
+
 ```json
 {
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.{js,jsx}": ["eslint --fix --max-warnings=0", "git add"]
   }
 }
 ```
 
 ### Husky Config
+
 Located in `.husky/pre-commit`:
+
 ```bash
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
@@ -179,3 +198,4 @@ fi
 3. **Team Consistency**: Everyone follows the same coding standards
 4. **Automated**: No need to remember to run linting manually
 5. **Fast**: Only checks changed files, not the entire codebase
+6. **Zero Warnings**: Enforces clean code with no warnings allowed

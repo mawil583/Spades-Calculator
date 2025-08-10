@@ -1,6 +1,6 @@
 --High Priority--
 ✅ IMPLEMENTED: Automatic update notification system - When a new deployment is pushed, users now see a notification allowing them to update immediately without closing all tabs
-✅ IMPLEMENTED: Pre-commit linting hooks - Added comprehensive linting checks that run automatically before each commit, including lint-staged for performance and ESLint for code quality
+✅ IMPLEMENTED: Pre-commit linting hooks - Added comprehensive linting checks that run automatically before each commit, including lint-staged for performance and ESLint for code quality. Zero warnings enforced - treats warnings as errors.
 change id attributes of playerInput (which is assigned from within BidSection and maybe even ActualSection) to inputId because there shouldn't be more than one id on a component. Maybe even call it inputClass if I expect multiple.
 then implement the following describe blocks for testing dealer feature:
 describe('dealer tag feature', () => {
