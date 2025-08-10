@@ -464,7 +464,19 @@ export function getCurrentDealerId({
   index,
   isCurrent,
   firstDealerOrder,
+  dealerOverride = null,
+  roundHistory = [],
 }) {
+  // If there's a dealer override for the current round, use it
+  if (isCurrent && dealerOverride) {
+    return dealerOverride;
+  }
+
+  // If there's a dealer override for a past round, use it
+  if (!isCurrent && roundHistory[index]?.dealerOverride) {
+    return roundHistory[index].dealerOverride;
+  }
+
   const clonedfirstDealerOrder = [...firstDealerOrder];
   if (isCurrent) {
     if (dealerIdHistory.length < 4) {

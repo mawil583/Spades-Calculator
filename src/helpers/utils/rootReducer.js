@@ -19,6 +19,7 @@ export const initialState = {
       p1Actual: '',
       p2Actual: '',
     },
+    dealerOverride: null, // Add dealer override for current round
   }),
   roundHistory: defaultLocalStorage('roundHistory', []),
   firstDealerOrder: defaultLocalStorage(
@@ -61,6 +62,7 @@ const rootReducer = (state, action) => {
             p1Actual: '',
             p2Actual: '',
           },
+          dealerOverride: null,
         });
         return {
           ...state,
@@ -92,6 +94,21 @@ const rootReducer = (state, action) => {
         return {
           ...state,
           firstDealerOrder: getLocalStorage('firstDealerOrder'),
+        };
+      } catch (err) {
+        console.error(err);
+      }
+      break;
+    case 'SET_DEALER_OVERRIDE':
+      try {
+        const updatedCurrentRound = {
+          ...state.currentRound,
+          dealerOverride: payload.dealerOverride,
+        };
+        setLocalStorage('currentRound', updatedCurrentRound);
+        return {
+          ...state,
+          currentRound: getLocalStorage('currentRound'),
         };
       } catch (err) {
         console.error(err);

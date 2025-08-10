@@ -46,7 +46,11 @@ export const getTeamStyle = (teamName) => {
 
 // consider renaming
 export const updateInput = ({ input, currentRound, fieldToUpdate }) => {
-  const clonedCurrentRound = { ...currentRound };
+  const clonedCurrentRound = {
+    ...currentRound,
+    team1BidsAndActuals: { ...currentRound.team1BidsAndActuals },
+    team2BidsAndActuals: { ...currentRound.team2BidsAndActuals },
+  };
   const [team, player] = fieldToUpdate.split('.');
   clonedCurrentRound[team][player] = input;
   return clonedCurrentRound;

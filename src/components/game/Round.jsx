@@ -196,7 +196,9 @@ function useSetScoreWhenRoundIsFinished(
 
       // Only complete the round if actuals are valid (add up to 13)
       if (totalActuals === 13) {
-        setRoundHistory([...roundHistory, { ...currentRound }]);
+        // Preserve the dealer override when adding to round history
+        const roundToAdd = { ...currentRound };
+        setRoundHistory([...roundHistory, roundToAdd]);
         resetCurrentRound();
       }
     }

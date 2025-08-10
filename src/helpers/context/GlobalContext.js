@@ -43,6 +43,15 @@ export const StateProvider = ({ children }) => {
     });
   };
 
+  const setDealerOverride = (dealerOverride) => {
+    dispatch({
+      type: 'SET_DEALER_OVERRIDE',
+      payload: {
+        dealerOverride,
+      },
+    });
+  };
+
   const resetRoundHistory = () => {
     dispatch({
       type: 'RESET_ROUND_HISTORY',
@@ -55,6 +64,7 @@ export const StateProvider = ({ children }) => {
     resetRoundHistory,
     resetCurrentRound,
     setFirstDealerOrder,
+    setDealerOverride,
     firstDealerOrder: state.firstDealerOrder,
     currentRound: state.currentRound,
     roundHistory: state.roundHistory,

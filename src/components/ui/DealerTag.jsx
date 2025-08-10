@@ -18,7 +18,12 @@ import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 
 const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
-  const { firstDealerOrder, setFirstDealerOrder } = useContext(GlobalContext);
+  const {
+    firstDealerOrder,
+    setFirstDealerOrder,
+    currentRound,
+    setDealerOverride,
+  } = useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
   const dealerIdHistory = getDealerIdHistory(roundHistory, firstDealerOrder);
   const isDealer =
@@ -27,6 +32,8 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
       index,
       isCurrent,
       firstDealerOrder,
+      dealerOverride: isCurrent ? currentRound?.dealerOverride : null,
+      roundHistory,
     }) === id;
 
   const dealerOptions = useMemo(() => {
@@ -46,10 +53,14 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
   }, []);
 
   const onSelectDealer = (selectedId) => {
-    const base = [...initialFirstDealerOrder];
-    const startIdx = base.indexOf(selectedId);
-    const rotated = [...base.slice(startIdx), ...base.slice(0, startIdx)];
-    setFirstDealerOrder(rotated);
+    // Only allow dealer changes for the current round (isCurrent = true)
+    if (!isCurrent) {
+      setIsOpen(false);
+      return;
+    }
+
+    // Set the dealer override for the current round instead of changing firstDealerOrder
+    setDealerOverride(selectedId);
     setIsOpen(false);
   };
 
