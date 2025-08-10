@@ -55,7 +55,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "test": "npm run unit && npm run e2e",
+    "test": "npm run unit && npm run e2e && npm run test:pwa",
     "e2e": "cypress run --config video=false",
     "build": "vite build",
     "preview": "vite preview",

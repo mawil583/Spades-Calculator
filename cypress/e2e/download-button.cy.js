@@ -31,7 +31,7 @@ describe('Download Button Functionality', () => {
 
   describe('Download Button Display', () => {
     it('should show download button on home page below settings section', () => {
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
 
       // Check for download button
       cy.get('[data-testid="download-button"]').should('exist');
@@ -53,7 +53,7 @@ describe('Download Button Functionality', () => {
 
     it('should not show download button on calculator page', () => {
       // First visit home page to set up names
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
       cy.get('input[name="t1p1Name"]').type('Player 1');
       cy.get('input[name="t1p2Name"]').type('Player 2');
       cy.get('input[name="t2p1Name"]').type('Player 3');
@@ -67,7 +67,7 @@ describe('Download Button Functionality', () => {
 
     it('should not show download button when app is already installed', () => {
       // Mock standalone mode
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock standalone mode
           cy.stub(win, 'matchMedia').returns({
@@ -90,7 +90,7 @@ describe('Download Button Functionality', () => {
 
   describe('Download Button Functionality', () => {
     it('should handle download button click with deferred prompt', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock beforeinstallprompt event
           const mockPrompt = {
@@ -149,7 +149,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should handle download button click with deferred prompt - user cancels', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock beforeinstallprompt event with user cancellation
           const mockPrompt = {
@@ -208,7 +208,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should try to trigger installation multiple times for Android/desktop', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock service worker support
           Object.defineProperty(win.navigator, 'serviceWorker', {
@@ -257,7 +257,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should handle iOS share functionality when available', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock iOS user agent
           cy.stub(win.navigator, 'userAgent').value(
@@ -275,7 +275,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should handle iOS share functionality when share is cancelled', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock iOS user agent
           cy.stub(win.navigator, 'userAgent').value(
@@ -293,7 +293,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should show manual instructions for iOS devices', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock iOS user agent
           cy.stub(win.navigator, 'userAgent').value(
@@ -311,7 +311,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should show manual instructions for Android devices', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock Android user agent
           cy.stub(win.navigator, 'userAgent').value(
@@ -329,7 +329,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should show manual instructions for desktop browsers', () => {
-      cy.visit('http://localhost:5173', {
+      cy.visit('/', {
         onBeforeLoad(win) {
           // Mock desktop user agent
           cy.stub(win.navigator, 'userAgent').value(
@@ -349,7 +349,7 @@ describe('Download Button Functionality', () => {
 
   describe('Download Button Styling', () => {
     it('should have proper styling and layout', () => {
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
 
       // Check for proper styling
       cy.get('[data-testid="download-button"]')
@@ -368,7 +368,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should have hover effects', () => {
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
 
       // Check that the button has transition property for hover effects
       cy.get('button')
@@ -380,7 +380,7 @@ describe('Download Button Functionality', () => {
 
   describe('Download Button Integration', () => {
     it('should work with the rest of the app functionality', () => {
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
 
       // Download button should be visible
       cy.get('[data-testid="download-button"]').should('exist');
@@ -402,7 +402,7 @@ describe('Download Button Functionality', () => {
     });
 
     it('should not interfere with app navigation', () => {
-      cy.visit('http://localhost:5173');
+      cy.visit('/');
 
       // Fill out the form
       cy.get('input[name="t1p1Name"]').type('Player 1');

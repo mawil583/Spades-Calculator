@@ -1,7 +1,7 @@
 describe('Dealer Override Bug Fix', () => {
   beforeEach(() => {
     // Set up test data using the same pattern as working tests
-    cy.visit('http://localhost:5173/', {
+    cy.visit('/', {
       onBeforeLoad(win) {
         delete win.navigator.__proto__.serviceWorker;
       },
@@ -18,7 +18,7 @@ describe('Dealer Override Bug Fix', () => {
     cy.get('[data-cy=startButton]').click();
 
     // Assert that we were redirected to the Spades calculator page
-    cy.url().should('eq', 'http://localhost:5173/spades-calculator');
+    cy.url().should('eq', Cypress.config().baseUrl + '/spades-calculator');
   });
 
   it('should not affect past round dealer when changing current round dealer', () => {
