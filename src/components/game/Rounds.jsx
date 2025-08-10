@@ -4,7 +4,7 @@ import { Round } from './';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
 function Rounds() {
-  const { roundHistory, currentRound } = useContext(GlobalContext);
+  const { roundHistory } = useContext(GlobalContext);
   const [isCompleting, setIsCompleting] = useState(false);
   const [showNewRound, setShowNewRound] = useState(true);
   const [previousRoundHistoryLength, setPreviousRoundHistoryLength] = useState(

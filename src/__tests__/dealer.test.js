@@ -1,5 +1,4 @@
 import { rotateDealerOrder, rotateDealer } from '../helpers/math/spadesMath';
-import { initialFirstDealerOrder } from '../helpers/utils/constants';
 import { expect } from 'chai';
 
 test('rotateDealerOrder returns a new array with the order rotated', () => {

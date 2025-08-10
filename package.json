@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "eslint --fix",
+      "eslint --fix --max-warnings=0",
       "git add"
     ]
   },
@@ -61,8 +61,8 @@
     "unit": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
     "prepare": "husky install .husky",
-    "lint": "eslint src --ext .js,.jsx --fix",
-    "lint:check": "eslint src --ext .js,.jsx",
+    "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
+    "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
     "lint:staged": "lint-staged"
   },
   "eslintConfig": {
