@@ -8,7 +8,7 @@ This project now includes comprehensive linting checks that run automatically be
 
 ### ESLint Configuration
 
-- **React App ESLint**: Uses the standard Create React App ESLint configuration
+- **React App ESLint**: Uses the standard Vite React ESLint configuration
 - **File Extensions**: Checks both `.js` and `.jsx` files
 - **Auto-fix**: Automatically fixes many common issues
 - **Zero Warnings**: Treats warnings as errors - no warnings are permitted
@@ -152,7 +152,11 @@ Located in `package.json`:
 ```json
 {
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ]
   }
 }
 ```

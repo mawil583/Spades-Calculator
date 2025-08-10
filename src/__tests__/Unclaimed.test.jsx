@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import Unclaimed from '../components/game/Unclaimed';
 import BidSection from '../components/game/BidSection';
+import { GlobalContext } from '../helpers/context/GlobalContext';
 
 // Mock the dependencies
 jest.mock('../helpers/utils/hooks', () => ({
@@ -20,23 +21,28 @@ jest.mock('../helpers/math/spadesMath', () => ({
   ),
 }));
 
-jest.mock('../components/forms', () => ({
-  PlayerInput: ({ playerName, playerInput }) => (
-    <div data-testid={`player-input-${playerName}`}>
-      {playerName}: {playerInput || 'empty'}
-    </div>
-  ),
-  TeamInputHeading: ({ title, team1Total, team2Total }) => (
-    <div data-testid="team-input-heading">
-      <span data-testid="team1-total">{team1Total}</span>
-      <span data-testid="title">{title}</span>
-      <span data-testid="team2-total">{team2Total}</span>
-    </div>
-  ),
-}));
+const mockGlobalContext = {
+  firstDealerOrder: [
+    'team1BidsAndActuals.p1Bid',
+    'team2BidsAndActuals.p1Bid',
+    'team1BidsAndActuals.p2Bid',
+    'team2BidsAndActuals.p2Bid',
+  ],
+  currentRound: {
+    team1BidsAndActuals: { p1Bid: '3', p2Bid: '2', p1Actual: '', p2Actual: '' },
+    team2BidsAndActuals: { p1Bid: '4', p2Bid: '1', p1Actual: '', p2Actual: '' },
+  },
+  setDealerOverride: jest.fn(),
+};
 
 const renderWithChakra = (component) => {
-  return render(<ChakraProvider>{component}</ChakraProvider>);
+  return render(
+    <ChakraProvider>
+      <GlobalContext.Provider value={mockGlobalContext}>
+        {component}
+      </GlobalContext.Provider>
+    </ChakraProvider>
+  );
 };
 
 describe('Unclaimed Component', () => {
@@ -104,7 +110,7 @@ describe('BidSection - Unclaimed Positioning', () => {
     expect(unclaimedSection).toBeInTheDocument();
 
     // The unclaimed section should be between the TeamInputHeading and the SimpleGrid
-    const teamInputHeading = screen.getByTestId('team-input-heading');
+    const teamInputHeading = screen.getByText('Bids');
     const unclaimedElement = unclaimedSection.closest('div');
 
     // Verify the unclaimed section is positioned after the heading but before the player inputs

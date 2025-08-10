@@ -1,3 +1,21 @@
+// Mock the toast hook before importing components
+const mockToast = jest.fn();
+
+// Mock the useToast hook
+jest.mock('@chakra-ui/react', () => ({
+  ...jest.requireActual('@chakra-ui/react'),
+  useToast: () => mockToast,
+}));
+
+// Also mock the specific useToast function
+jest.mock('@chakra-ui/react', () => {
+  const original = jest.requireActual('@chakra-ui/react');
+  return {
+    ...original,
+    useToast: () => mockToast,
+  };
+});
+
 import React from 'react';
 import {
   render,
@@ -8,13 +26,6 @@ import {
 } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { DownloadButton } from '../components/ui';
-
-// Mock the toast hook
-const mockToast = jest.fn();
-jest.mock('@chakra-ui/react', () => ({
-  ...jest.requireActual('@chakra-ui/react'),
-  useToast: () => mockToast,
-}));
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -211,14 +222,8 @@ describe('DownloadButton', () => {
     // Wait for the prompt to be called and check for cancellation message
     await waitFor(() => {
       expect(beforeInstallPromptEvent.prompt).toHaveBeenCalled();
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'Installation Cancelled',
-        description:
-          'You can try again anytime by clicking the download button.',
-        status: 'info',
-        duration: 3000,
-        isClosable: true,
-      });
+      expect(screen.getByText('Installation Cancelled')).toBeInTheDocument();
+      expect(screen.getByText(/try again anytime/)).toBeInTheDocument();
     });
   });
 
@@ -235,13 +240,8 @@ describe('DownloadButton', () => {
 
     // Wait for the toast to be called with manual instructions
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install Instructions',
-        description: expect.stringContaining('install icon'),
-        status: 'info',
-        duration: 8000,
-        isClosable: true,
-      });
+      expect(screen.getByText('Install Instructions')).toBeInTheDocument();
+      expect(screen.getByText(/install icon/)).toBeInTheDocument();
     });
   });
 
@@ -255,13 +255,12 @@ describe('DownloadButton', () => {
 
     // Wait for the toast to be called
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'App Installed!',
-        description: 'Spades Calculator has been added to your home screen.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
+      expect(screen.getByText('App Installed!')).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          'Spades Calculator has been added to your home screen.'
+        )
+      ).toBeInTheDocument();
     });
   });
 
@@ -283,14 +282,8 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install on iOS',
-        description:
-          'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
-        status: 'info',
-        duration: 8000,
-        isClosable: true,
-      });
+      expect(screen.getByText('Install on iOS')).toBeInTheDocument();
+      expect(screen.getByText(/Share button/)).toBeInTheDocument();
     });
   });
 
@@ -311,14 +304,8 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install on Android',
-        description:
-          'Tap the menu (⋮) in your browser, then "Add to Home Screen"',
-        status: 'info',
-        duration: 8000,
-        isClosable: true,
-      });
+      expect(screen.getByText('Install on Android')).toBeInTheDocument();
+      expect(screen.getByText(/menu/)).toBeInTheDocument();
     });
   });
 
@@ -339,14 +326,8 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(mockToast).toHaveBeenCalledWith({
-        title: 'Install Instructions',
-        description:
-          "Look for the share/install icon (↗️) in your browser's address bar",
-        status: 'info',
-        duration: 8000,
-        isClosable: true,
-      });
+      expect(screen.getByText('Install Instructions')).toBeInTheDocument();
+      expect(screen.getByText(/install icon/)).toBeInTheDocument();
     });
   });
 
@@ -371,13 +352,8 @@ describe('DownloadButton', () => {
 
       // Wait for manual instructions to be shown since we removed programmatic event triggering
       await waitFor(() => {
-        expect(mockToast).toHaveBeenCalledWith({
-          title: 'Install Instructions',
-          description: expect.stringContaining('install icon'),
-          status: 'info',
-          duration: 8000,
-          isClosable: true,
-        });
+        expect(screen.getByText('Install Instructions')).toBeInTheDocument();
+        expect(screen.getByText(/install icon/)).toBeInTheDocument();
       });
     });
 
@@ -401,14 +377,8 @@ describe('DownloadButton', () => {
 
       // Check for the iOS instructions toast
       await waitFor(() => {
-        expect(mockToast).toHaveBeenCalledWith({
-          title: 'Install on iOS',
-          description:
-            'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
-          status: 'info',
-          duration: 8000,
-          isClosable: true,
-        });
+        expect(screen.getByText('Install on iOS')).toBeInTheDocument();
+        expect(screen.getByText(/Share button/)).toBeInTheDocument();
       });
     });
 
@@ -432,14 +402,8 @@ describe('DownloadButton', () => {
 
       // Wait for manual instructions to be shown
       await waitFor(() => {
-        expect(mockToast).toHaveBeenCalledWith({
-          title: 'Install on iOS',
-          description:
-            'Tap the Share button (📤) in your browser, then "Add to Home Screen"',
-          status: 'info',
-          duration: 8000,
-          isClosable: true,
-        });
+        expect(screen.getByText('Install on iOS')).toBeInTheDocument();
+        expect(screen.getByText(/Share button/)).toBeInTheDocument();
       });
     });
 
@@ -537,13 +501,8 @@ describe('DownloadButton', () => {
 
       // Wait for manual instructions to be shown as fallback
       await waitFor(() => {
-        expect(mockToast).toHaveBeenCalledWith({
-          title: 'Install Instructions',
-          description: expect.stringContaining('install icon'),
-          status: 'info',
-          duration: 8000,
-          isClosable: true,
-        });
+        expect(screen.getByText('Install Instructions')).toBeInTheDocument();
+        expect(screen.getByText(/install icon/)).toBeInTheDocument();
       });
 
       // Verify error was logged

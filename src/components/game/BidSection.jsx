@@ -22,7 +22,7 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
   useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed);
 
   return (
-    <div>
+    <div data-cy="bidSection">
       <TeamInputHeading
         team1Name={team1Name}
         team2Name={team2Name}

@@ -1,3 +1,5 @@
+import { getEditedRoundHistory } from '../helpers/utils/helperFunctions';
+
 // Test the helper function directly
 describe('ButtonGrid - roundHistory Error Handling', () => {
   let warnSpy;
@@ -13,11 +15,6 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
   });
 
   it('should handle roundHistory error when roundHistory is not an array', () => {
-    // Import the helper function directly to test it
-    const {
-      getEditedRoundHistory,
-    } = require('../helpers/utils/helperFunctions');
-
     // This should not throw an error anymore
     expect(() => {
       getEditedRoundHistory({
@@ -29,10 +26,6 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
   });
 
   it('should handle roundHistory error when roundHistory is undefined', () => {
-    const {
-      getEditedRoundHistory,
-    } = require('../helpers/utils/helperFunctions');
-
     // This should not throw an error anymore
     expect(() => {
       getEditedRoundHistory({
@@ -44,10 +37,6 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
   });
 
   it('should handle roundHistory error when roundHistory is not iterable', () => {
-    const {
-      getEditedRoundHistory,
-    } = require('../helpers/utils/helperFunctions');
-
     // This should not throw an error anymore
     expect(() => {
       getEditedRoundHistory({

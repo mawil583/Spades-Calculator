@@ -1,4 +1,4 @@
-import { jest } from '@jest/globals';
+import { register, unregister } from '../services/serviceWorkerRegistration';
 
 describe('Service Worker Registration', () => {
   beforeEach(() => {
@@ -6,10 +6,6 @@ describe('Service Worker Registration', () => {
   });
 
   it('should export register and unregister functions', () => {
-    const {
-      register,
-      unregister,
-    } = require('../services/serviceWorkerRegistration');
     expect(typeof register).toBe('function');
     expect(typeof unregister).toBe('function');
   });
@@ -18,7 +14,6 @@ describe('Service Worker Registration', () => {
     const originalNavigator = global.navigator;
     global.navigator = {};
 
-    const { register } = require('../services/serviceWorkerRegistration');
     expect(() => register()).not.toThrow();
 
     global.navigator = originalNavigator;
@@ -28,7 +23,6 @@ describe('Service Worker Registration', () => {
     const originalEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = 'development';
 
-    const { register } = require('../services/serviceWorkerRegistration');
     expect(() => register()).not.toThrow();
 
     process.env.NODE_ENV = originalEnv;

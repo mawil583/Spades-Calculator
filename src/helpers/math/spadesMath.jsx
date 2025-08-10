@@ -160,12 +160,13 @@ export function getPlayerBags(bid, actual, nilSetting) {
     return bags;
   }
   switch (nilSetting) {
-    case NO_BAGS_NO_HELP:
+    case NO_BAGS_NO_HELP: {
       const didSomeoneGoNil = isTypeNil(bid);
       if (!didSomeoneGoNil) {
         bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
       }
       return bags;
+    }
     case TAKES_BAGS:
       bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
       return bags;
@@ -412,10 +413,10 @@ export function calculateTeamRoundScoresFromTeamHistory(
     .filter((round) => round && typeof round === 'object')
     .filter(
       (round) =>
-        round.hasOwnProperty('p1Bid') &&
-        round.hasOwnProperty('p2Bid') &&
-        round.hasOwnProperty('p1Actual') &&
-        round.hasOwnProperty('p2Actual')
+        Object.prototype.hasOwnProperty.call(round, 'p1Bid') &&
+        Object.prototype.hasOwnProperty.call(round, 'p2Bid') &&
+        Object.prototype.hasOwnProperty.call(round, 'p1Actual') &&
+        Object.prototype.hasOwnProperty.call(round, 'p2Actual')
     );
 
   return safeHistory.map((round) => {
@@ -436,7 +437,7 @@ export function calculateTeamRoundScoresFromTeamHistory(
 export function getDealerIdHistory(roundHistory, firstDealerOrder) {
   const clonedfirstDealerOrder = [...firstDealerOrder];
   const dealerIdHistory = [];
-  roundHistory.forEach((round) => {
+  roundHistory.forEach(() => {
     dealerIdHistory.push(clonedfirstDealerOrder[0]);
     clonedfirstDealerOrder.push(clonedfirstDealerOrder[0]);
     clonedfirstDealerOrder.shift();
@@ -478,9 +479,12 @@ export function getCurrentDealerId({
   }
 
   const clonedfirstDealerOrder = [...firstDealerOrder];
+
   if (isCurrent) {
     if (dealerIdHistory.length < 4) {
-      if (dealerIdHistory.length === 0) return clonedfirstDealerOrder[0];
+      if (dealerIdHistory.length === 0) {
+        return clonedfirstDealerOrder[0];
+      }
       return clonedfirstDealerOrder[index];
     }
     return dealerIdHistory[index - 4];

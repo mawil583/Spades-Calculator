@@ -6,9 +6,6 @@ import {
   FormErrorMessage,
   FormLabel,
 } from '@chakra-ui/react';
-import 'core-js/es/promise';
-import 'core-js/es/set';
-import 'core-js/es/map';
 
 import '../../App.css';
 

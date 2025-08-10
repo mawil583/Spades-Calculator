@@ -4,8 +4,8 @@ import { SimpleGrid, Center, Heading } from '@chakra-ui/react';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 
 function RoundSummary({
-  team2Name,
-  team1Name,
+  // team2Name, // Unused parameter
+  // team1Name, // Unused parameter
   team1RoundScore,
   team2RoundScore,
   // team1GameScore,

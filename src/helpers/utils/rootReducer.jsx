@@ -62,7 +62,7 @@ const rootReducer = (state, action) => {
             p1Actual: '',
             p2Actual: '',
           },
-          dealerOverride: null,
+          dealerOverride: state.currentRound?.dealerOverride || null, // Preserve dealer override
         });
         return {
           ...state,
@@ -105,13 +105,16 @@ const rootReducer = (state, action) => {
           ...state.currentRound,
           dealerOverride: payload.dealerOverride,
         };
+
         setLocalStorage('currentRound', updatedCurrentRound);
+        const storedRound = getLocalStorage('currentRound');
+
         return {
           ...state,
-          currentRound: getLocalStorage('currentRound'),
+          currentRound: storedRound,
         };
       } catch (err) {
-        console.error(err);
+        console.error('Error in SET_DEALER_OVERRIDE:', err);
       }
       break;
     default:

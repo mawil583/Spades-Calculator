@@ -6,8 +6,8 @@ function TeamInputHeading({
   team1Total,
   team2Total,
   title,
-  team1Name,
-  team2Name,
+  // team1Name, // Unused parameter
+  // team2Name, // Unused parameter
 }) {
   return (
     <div

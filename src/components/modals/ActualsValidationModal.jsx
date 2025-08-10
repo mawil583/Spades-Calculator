@@ -33,7 +33,7 @@ function ActualsValidationModal({
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          Total actuals must equal 13. The actuals you've entered add up to{' '}
+          Total actuals must equal 13. The actuals you&apos;ve entered add up to{' '}
           {totalActuals}
         </ModalHeader>
         <ModalCloseButton />
