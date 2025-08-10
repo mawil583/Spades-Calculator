@@ -18,7 +18,11 @@ module.exports = {
       // Cypress files
       files: ['cypress/**/*.js', 'cypress/**/*.jsx'],
       env: {
-        'cypress/globals': true,
+        browser: true,
+        es6: true,
+      },
+      rules: {
+        'no-unused-expressions': 'off',
       },
     },
     {
@@ -26,6 +30,9 @@ module.exports = {
       files: ['tests/**/*.js', 'tests/**/*.jsx'],
       env: {
         node: true,
+      },
+      rules: {
+        'no-unused-expressions': 'off',
       },
     },
   ],
