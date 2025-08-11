@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import App from '../../App';
 
 // Mock localStorage
@@ -59,10 +59,22 @@ jest.mock('../../helpers/math/spadesMath', () => ({
   }),
 }));
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component, initialEntries = ['/']) => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: component,
+      },
+    ],
+    {
+      initialEntries,
+    }
+  );
+
   return render(
     <ChakraProvider>
-      <BrowserRouter>{component}</BrowserRouter>
+      <RouterProvider router={router} />
     </ChakraProvider>
   );
 };

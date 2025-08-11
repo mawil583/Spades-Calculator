@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { BrowserRouter } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import SpadesCalculator from '../../pages/SpadesCalculator';
 import HomePage from '../../pages/HomePage';
 
@@ -34,14 +34,28 @@ jest.mock('../../helpers/math/spadesMath', () => ({
   }),
 }));
 
-const renderWithProviders = (component, contextValue) => {
+const renderWithProviders = (
+  component,
+  contextValue,
+  initialEntries = ['/']
+) => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: component,
+      },
+    ],
+    {
+      initialEntries,
+    }
+  );
+
   return render(
     <ChakraProvider>
-      <BrowserRouter>
-        <GlobalContext.Provider value={contextValue}>
-          {component}
-        </GlobalContext.Provider>
-      </BrowserRouter>
+      <GlobalContext.Provider value={contextValue}>
+        <RouterProvider router={router} />
+      </GlobalContext.Provider>
     </ChakraProvider>
   );
 };
