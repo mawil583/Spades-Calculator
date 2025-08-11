@@ -23,7 +23,7 @@
     "@chakra-ui/react": "^2.4.1",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^13.4.0",
     "browserslist": "^4.25.2",
     "caniuse-lite": "^1.0.30001734",
