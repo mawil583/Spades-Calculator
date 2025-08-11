@@ -22,9 +22,8 @@ const UpdateNotification = () => {
       'serviceWorker' in navigator &&
       typeof navigator.serviceWorker.ready !== 'undefined'
     ) {
-              navigator.serviceWorker.ready
-          .then((reg) => {
-
+      navigator.serviceWorker.ready
+        .then((reg) => {
           // Listen for updates
           if (reg && typeof reg.addEventListener === 'function') {
             reg.addEventListener('updatefound', () => {
