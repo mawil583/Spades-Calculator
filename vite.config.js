@@ -83,7 +83,6 @@ export default defineConfig({
             '@emotion/styled',
             'framer-motion',
           ],
-          redux: ['react-redux', 'redux'],
         },
       },
     },

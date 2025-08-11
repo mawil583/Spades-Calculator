@@ -354,12 +354,6 @@ describe('DownloadButton', () => {
   // New tests for enhanced installation functionality
   describe('Enhanced Installation Logic', () => {
     it('should try to trigger installation multiple times for Android/desktop', async () => {
-      // Mock service worker support
-      Object.defineProperty(navigator, 'serviceWorker', {
-        value: {},
-        configurable: true,
-      });
-
       renderWithChakra(<DownloadButton />);
 
       const downloadButton = screen.getByRole('button', {

@@ -126,3 +126,4 @@ describe('PWA Manifest', () => {
     });
   });
 });
+

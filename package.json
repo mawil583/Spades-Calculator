@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
@@ -42,7 +42,7 @@
     "dev": "vite",
     "start": "vite",
     "test": "npm run unit && npm run e2e && npm run test:pwa",
-    "e2e": "cypress run --config video=false",
+    "e2e": "start-server-and-test start http://localhost:5173 'cypress run --config video=false'",
     "build": "vite build",
     "preview": "vite preview",
     "unit": "vitest run",
@@ -82,8 +82,9 @@
     "jsdom": "^26.1.0",
     "lhci": "^4.1.1",
     "lighthouse": "^12.8.1",
-    "lint-staged": "^13.2.3",
+    "lint-staged": "^16.1.5",
     "playwright": "^1.54.2",
+    "start-server-and-test": "^2.0.13",
     "vite": "^6.3.5",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-pwa": "^1.0.2",
