@@ -29,7 +29,6 @@ describe('Download Button Functionality', () => {
     });
   });
 
-  // KEEPING: Essential installation flow test that can't be unit tested
   describe('Download Button Installation Flow', () => {
     it('should handle download button click with deferred prompt', () => {
       cy.visit('/', {
@@ -90,7 +89,6 @@ describe('Download Button Functionality', () => {
       });
     });
 
-    // KEEPING: Cross-browser installation flow test
     it('should handle iOS share functionality when available', () => {
       cy.visit('/', {
         onBeforeLoad(win) {
@@ -113,7 +111,6 @@ describe('Download Button Functionality', () => {
       cy.contains('Add to Home Screen').should('be.visible');
     });
 
-    // KEEPING: Cross-browser installation flow test
     it('should handle Android installation flow', () => {
       cy.visit('/', {
         onBeforeLoad(win) {
@@ -132,10 +129,4 @@ describe('Download Button Functionality', () => {
       cy.contains('Add to Home Screen').should('be.visible');
     });
   });
-
-  // REMOVED: All display logic tests (already covered by unit tests)
-  // REMOVED: Styling tests (already covered by unit tests)
-  // REMOVED: User agent detection tests (already covered by unit tests)
-  // REMOVED: Button visibility tests (already covered by unit tests)
-  // REMOVED: Form integration tests (already covered by unit tests)
 });
