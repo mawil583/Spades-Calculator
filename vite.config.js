@@ -1,11 +1,26 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import eslint from 'vite-plugin-eslint';
 import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [
     react(),
+    eslint({
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['node_modules/**', 'dist/**'],
+      failOnError: false,
+      failOnWarning: false,
+      cache: false,
+      emitWarning: true,
+      emitError: true,
+      overrideConfig: {
+        rules: {
+          'no-unused-vars': 'warn',
+        },
+      },
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
@@ -47,6 +62,12 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+    hmr: {
+      overlay: {
+        errors: true,
+        warnings: true,
+      },
+    },
   },
   build: {
     outDir: 'build',

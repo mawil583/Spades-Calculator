@@ -1,5 +1,36 @@
 describe('Offline Page Functionality', () => {
-  describe('Offline Page Display', () => {
+  beforeEach(() => {
+    // Clear any existing service workers and caches
+    cy.window().then((win) => {
+      if (win.navigator.serviceWorker) {
+        win.navigator.serviceWorker
+          .getRegistrations()
+          .then((registrations) => {
+            registrations.forEach((registration) => {
+              registration.unregister();
+            });
+          })
+          .catch(() => {
+            // Ignore errors if service worker is not available
+          });
+      }
+      if (win.caches) {
+        win.caches
+          .keys()
+          .then((cacheNames) => {
+            cacheNames.forEach((cacheName) => {
+              win.caches.delete(cacheName);
+            });
+          })
+          .catch(() => {
+            // Ignore errors if caches are not available
+          });
+      }
+    });
+  });
+
+  // KEEPING: Essential offline functionality that requires browser environment
+  describe('Offline Page Browser Integration', () => {
     it('should show offline page when network is unavailable', () => {
       // First visit to cache resources
       cy.visit('/');
@@ -24,38 +55,6 @@ describe('Offline Page Functionality', () => {
       );
     });
 
-    it('should have proper styling and layout', () => {
-      cy.visit('/offline.html');
-
-      // Check for offline page styling
-      cy.get('body')
-        .should('have.css', 'background')
-        .and('include', 'gradient');
-      cy.get('.offline-container').should('exist');
-      cy.get('.offline-icon').should('exist');
-      cy.get('.retry-button').should('exist');
-    });
-
-    it('should have retry functionality', () => {
-      cy.visit('/offline.html');
-
-      // Check retry button
-      cy.get('.retry-button').should('contain', 'Try Again');
-      cy.get('.retry-button').should('be.visible');
-    });
-  });
-
-  describe('Offline Page Navigation', () => {
-    it('should allow navigation back to main app', () => {
-      cy.visit('/offline.html');
-
-      // Click retry button
-      cy.get('.retry-button').click();
-
-      // Should navigate back to main app
-      cy.url().should('include', 'localhost:5173');
-    });
-
     it('should handle online/offline state changes', () => {
       cy.visit('/offline.html');
 
@@ -70,31 +69,18 @@ describe('Offline Page Functionality', () => {
     });
   });
 
-  describe('Offline Page Content', () => {
-    it('should have appropriate messaging', () => {
+  // KEEPING: Cross-browser offline functionality
+  describe('Offline Page Navigation', () => {
+    it('should allow navigation back to main app', () => {
       cy.visit('/offline.html');
 
-      // Check for appropriate offline messaging
-      cy.get('h1').should('contain', "You're Offline");
-      cy.get('p').should(
-        'contain',
-        "It looks like you don't have an internet connection right now"
-      );
-      cy.get('p').should(
-        'contain',
-        "Don't worry - you can still use Spades Calculator for basic functionality!"
-      );
+      // Click retry button
+      cy.get('.retry-button').click();
+
+      // Should navigate back to main app
+      cy.url().should('include', 'localhost:5173');
     });
 
-    it('should have proper heading structure', () => {
-      cy.visit('/offline.html');
-
-      // Check for proper heading structure
-      cy.get('h1').should('exist');
-    });
-  });
-
-  describe('Offline Page Integration', () => {
     it('should work with app navigation when offline', () => {
       // First visit to cache resources
       cy.visit('/');
@@ -112,6 +98,7 @@ describe('Offline Page Functionality', () => {
     });
   });
 
+  // KEEPING: Performance testing that requires browser environment
   describe('Offline Page Performance', () => {
     it('should load quickly', () => {
       const startTime = Date.now();
@@ -135,4 +122,10 @@ describe('Offline Page Functionality', () => {
       });
     });
   });
+
+  // REMOVED: All display logic tests (already covered by unit tests)
+  // REMOVED: Styling tests (already covered by unit tests)
+  // REMOVED: Content tests (already covered by unit tests)
+  // REMOVED: Retry functionality tests (already covered by unit tests)
+  // REMOVED: Heading structure tests (already covered by unit tests)
 });

@@ -32,7 +32,10 @@ function InputModal({
       >
         <div>
           <ModalOverlay />
-          <ModalContent data-cy="bidSelectionModal">
+          <ModalContent
+            data-cy="bidSelectionModal"
+            data-testid="bidSelectionModal"
+          >
             <ModalHeader>
               Select {playerName}&apos;s {type}
             </ModalHeader>

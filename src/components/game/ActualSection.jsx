@@ -48,7 +48,7 @@ function ActualSection({
   const errorMessage = getActualsErrorText(totalActuals);
 
   return (
-    <div data-cy="actualSection">
+    <div data-cy="actualSection" data-testid="actualSection">
       <ErrorModal
         isOpen={!isValid}
         setIsModalOpen={setIsValid}

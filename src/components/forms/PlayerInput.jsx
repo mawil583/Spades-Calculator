@@ -56,11 +56,12 @@ const PlayerInput = ({
             borderColor={teamClassName}
             color={teamClassName}
             data-cy="bidButton"
+            data-testid="bidButton"
           >
             {type}
           </Button>
         ) : (
-          <div data-cy="playerInput">
+          <div data-cy="playerInput" data-testid="playerInput">
             <Flex
               align="center"
               justify="center"
