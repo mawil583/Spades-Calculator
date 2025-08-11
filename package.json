@@ -24,7 +24,7 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@testing-library/jest-dom": "^6.6.4",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^16.3.0",
     "browserslist": "^4.25.2",
     "caniuse-lite": "^1.0.30001734",
     "formik": "^2.2.9",
