@@ -435,6 +435,12 @@ export function calculateTeamRoundScoresFromTeamHistory(
 }
 
 export function getDealerIdHistory(roundHistory, firstDealerOrder) {
+  // Safety check: ensure firstDealerOrder is an array
+  if (!Array.isArray(firstDealerOrder)) {
+    console.warn('firstDealerOrder is not an array:', firstDealerOrder);
+    return [];
+  }
+
   const clonedfirstDealerOrder = [...firstDealerOrder];
   const dealerIdHistory = [];
   roundHistory.forEach(() => {
@@ -443,12 +449,6 @@ export function getDealerIdHistory(roundHistory, firstDealerOrder) {
     clonedfirstDealerOrder.shift();
   });
   return dealerIdHistory;
-}
-
-export function rotateDealer(roundHistory) {
-  // Old placeholder kept for compatibility. This function isn't used.
-  // Dealer rotation is determined by firstDealerOrder; use rotateDealerOrder instead.
-  return roundHistory;
 }
 
 // Rotate the initial dealer order by one position and return a new array
@@ -476,6 +476,15 @@ export function getCurrentDealerId({
   // If there's a dealer override for a past round, use it
   if (!isCurrent && roundHistory[index]?.dealerOverride) {
     return roundHistory[index].dealerOverride;
+  }
+
+  // Safety check: ensure firstDealerOrder is an array
+  if (!Array.isArray(firstDealerOrder)) {
+    console.warn(
+      'firstDealerOrder is not an array in getCurrentDealerId:',
+      firstDealerOrder
+    );
+    return null;
   }
 
   const clonedfirstDealerOrder = [...firstDealerOrder];
@@ -541,14 +550,6 @@ function addRounds(prev, roundScore) {
   }
 
   return prev;
-}
-
-export function getRoundHistoryAtCurrentRound(roundHistory, index) {
-  const history = [];
-  for (let i = 0; i <= index; i++) {
-    history.push(roundHistory[i]);
-  }
-  return history;
 }
 
 export function convertAchievedBidToScoreValue(input) {

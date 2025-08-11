@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
@@ -21,42 +21,30 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.4.1",
-    "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.4.3",
-    "ansi-regex": "^6.0.1",
+    "browserslist": "^4.25.2",
+    "caniuse-lite": "^1.0.30001734",
     "formik": "^2.2.9",
     "framer-motion": "^8.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
     "react-router-dom": "^6.2.2",
-
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "web-vitals": "^2.1.4",
-    "workbox-background-sync": "^6.6.0",
-    "workbox-broadcast-update": "^6.6.0",
-    "workbox-cacheable-response": "^6.6.0",
     "workbox-core": "^6.6.0",
     "workbox-expiration": "^6.6.0",
-    "workbox-google-analytics": "^6.6.0",
-    "workbox-navigation-preload": "^6.6.0",
     "workbox-precaching": "^6.6.0",
-    "workbox-range-requests": "^6.6.0",
     "workbox-routing": "^6.6.0",
     "workbox-strategies": "^6.6.0",
-    "workbox-streams": "^6.6.0",
     "yup": "^0.32.11"
   },
   "scripts": {
     "dev": "vite",
     "start": "vite",
     "test": "npm run unit && npm run e2e && npm run test:pwa",
-    "e2e": "cypress run --config video=false",
+    "e2e": "BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start http://localhost:5173 'cypress run --config video=false'",
     "build": "vite build",
     "preview": "vite preview",
     "unit": "vitest run",
@@ -72,7 +60,6 @@
     "lighthouse": "lighthouse http://localhost:5173 --output=json --output-path=./lighthouse-report.json",
     "lighthouse:ci": "lhci autorun"
   },
-
   "browserslist": {
     "production": [
       ">0.2%",
@@ -86,24 +73,23 @@
     ]
   },
   "devDependencies": {
-
-    "@babel/plugin-transform-private-property-in-object": "^7.27.1",
     "@playwright/test": "^1.54.2",
     "@vitejs/plugin-react": "^4.7.0",
     "browserstack-local": "^1.5.8",
     "chai": "^4.3.7",
     "cypress": "^14.5.4",
-    "eslint-plugin-cypress": "^5.1.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^8.0.3",
     "jsdom": "^26.1.0",
     "lhci": "^4.1.1",
     "lighthouse": "^12.8.1",
-    "lint-staged": "^13.2.3",
+    "lint-staged": "^16.1.5",
     "playwright": "^1.54.2",
+    "start-server-and-test": "^2.0.13",
     "vite": "^6.3.5",
+    "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-pwa": "^1.0.2",
-    "vitest": "^0.34.6"
+    "vitest": "^3.2.4"
   }
 }

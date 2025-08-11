@@ -4,7 +4,6 @@ import {
   getTeamHistoryFromRoundHistory,
   calculateTeamScoreFromRoundHistory,
   nilTeamRoundScore,
-  getRoundHistoryAtCurrentRound,
   addInputs,
   whoWentNil,
   calculateTeamRoundScoreWithOneNilBidder,
@@ -317,11 +316,6 @@ test('using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRound
       teamBags: 0,
     },
   ]);
-});
-
-test('getRoundHistoryAtCurrentRound', () => {
-  const result = getRoundHistoryAtCurrentRound(roundHistoryWithTenBags, 0);
-  expect(result).deep.equals([roundHistoryWithTenBags[0]]);
 });
 
 test('addInputs', () => {

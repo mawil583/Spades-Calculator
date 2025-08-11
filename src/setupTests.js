@@ -16,3 +16,55 @@ global.console = {
   warn: vi.fn(),
   error: vi.fn(),
 };
+
+// Mock window.matchMedia for PWA-related tests
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: vi.fn().mockImplementation((query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+  })),
+});
+
+// Mock window.navigator.standalone for iOS PWA detection
+Object.defineProperty(window.navigator, 'standalone', {
+  writable: true,
+  value: false,
+});
+
+// Mock navigator.share for Web Share API
+Object.defineProperty(navigator, 'share', {
+  writable: true,
+  value: undefined,
+});
+
+// Mock navigator.brave for Brave browser detection
+Object.defineProperty(navigator, 'brave', {
+  writable: true,
+  value: undefined,
+});
+
+// Mock service worker for PWA functionality
+Object.defineProperty(navigator, 'serviceWorker', {
+  writable: true,
+  value: {
+    ready: Promise.resolve({
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      installing: null,
+      controller: null,
+    }),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    register: vi.fn(),
+    getRegistration: vi.fn(),
+    getRegistrations: vi.fn(),
+    controller: null,
+  },
+});

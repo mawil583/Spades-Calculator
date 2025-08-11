@@ -1,6 +1,5 @@
 import {
   rotateDealerOrder,
-  rotateDealer,
   getCurrentDealerId,
 } from '../helpers/math/spadesMath';
 import { expect } from 'chai';
@@ -27,13 +26,6 @@ test('rotateDealerOrder handles single element array', () => {
   const singleElementOrder = ['p1'];
   const rotatedSingle = rotateDealerOrder(singleElementOrder);
   expect(rotatedSingle).deep.equals(['p1']);
-});
-
-// Add a test for the original rotateDealer (which is now a placeholder)
-test('rotateDealer returns roundHistory unchanged (placeholder)', () => {
-  const mockRoundHistory = [{}, {}];
-  const result = rotateDealer(mockRoundHistory);
-  expect(result).deep.equals(mockRoundHistory);
 });
 
 describe('Dealer Override Functionality', () => {

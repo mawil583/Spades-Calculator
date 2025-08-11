@@ -88,12 +88,16 @@ describe('DownloadButton', () => {
     });
   });
 
-  it('should render download button when app is not installed', () => {
+  it('should render download button when app is not installed', async () => {
     renderWithChakra(<DownloadButton />);
 
-    expect(
-      screen.getByText('📱 Download Spades Calculator App')
-    ).toBeInTheDocument();
+    // Wait for the installation check to complete
+    await waitFor(() => {
+      expect(
+        screen.getByText('📱 Download Spades Calculator App')
+      ).toBeInTheDocument();
+    });
+
     expect(
       screen.getByText(
         'Add to your home screen for quick access and offline use'
@@ -104,7 +108,7 @@ describe('DownloadButton', () => {
     ).toBeInTheDocument();
   });
 
-  it('should not render when app is already installed (standalone mode)', () => {
+  it('should show already installed message when app is already installed (standalone mode)', async () => {
     // Mock standalone mode
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
@@ -122,12 +126,20 @@ describe('DownloadButton', () => {
 
     renderWithChakra(<DownloadButton />);
 
+    // Wait for the installation check to complete
+    await waitFor(() => {
+      expect(screen.getByText('✅ App Already Installed')).toBeInTheDocument();
+    });
+
     expect(
       screen.queryByText('📱 Download Spades Calculator App')
     ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Spades Calculator is already installed on your device')
+    ).toBeInTheDocument();
   });
 
-  it('should not render when app is already installed (iOS standalone)', () => {
+  it('should show already installed message when app is already installed (iOS standalone)', async () => {
     // Mock iOS standalone mode
     Object.defineProperty(window.navigator, 'standalone', {
       writable: true,
@@ -136,9 +148,17 @@ describe('DownloadButton', () => {
 
     renderWithChakra(<DownloadButton />);
 
+    // Wait for the installation check to complete
+    await waitFor(() => {
+      expect(screen.getByText('✅ App Already Installed')).toBeInTheDocument();
+    });
+
     expect(
       screen.queryByText('📱 Download Spades Calculator App')
     ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Spades Calculator is already installed on your device')
+    ).toBeInTheDocument();
   });
 
   it('should handle beforeinstallprompt event', async () => {
@@ -334,12 +354,6 @@ describe('DownloadButton', () => {
   // New tests for enhanced installation functionality
   describe('Enhanced Installation Logic', () => {
     it('should try to trigger installation multiple times for Android/desktop', async () => {
-      // Mock service worker support
-      Object.defineProperty(navigator, 'serviceWorker', {
-        value: {},
-        configurable: true,
-      });
-
       renderWithChakra(<DownloadButton />);
 
       const downloadButton = screen.getByRole('button', {
