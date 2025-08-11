@@ -4,6 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 import eslint from 'vite-plugin-eslint';
 import { resolve } from 'path';
 
+// Import configuration
+const DEV_PORT = 5173;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -60,7 +63,7 @@ export default defineConfig({
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'],
   },
   server: {
-    port: 5173,
+    port: DEV_PORT,
     open: true,
     hmr: {
       overlay: {

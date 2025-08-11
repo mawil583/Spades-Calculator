@@ -31,6 +31,7 @@ const Button = defineStyleConfig({
 
 const config = {
   initialColorMode: 'dark',
+  useSystemColorMode: false,
 };
 
 export const customTheme = extendTheme({

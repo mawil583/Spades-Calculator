@@ -107,56 +107,54 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   return (
     <div className="round" data-cy="round">
       <RoundHeading roundNumber={roundIndex + 1} names={names} />
-      <form>
-        <Container>
-          {!isCurrent && (
-            <RoundSummary
-              team2Name={team2Name}
-              team1Name={team1Name}
-              team1RoundScore={teamScores?.team1RoundScoreFromHistory?.score}
-              team2RoundScore={teamScores?.team2RoundScoreFromHistory?.score}
-              // add this back, but only as accordion
-              // team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
-              // team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
-              team1RoundBags={teamScores?.team1RoundScoreFromHistory?.bags}
-              team2RoundBags={teamScores?.team2RoundScoreFromHistory?.bags}
-            />
-          )}
-
-          <AnimatePresence>
-            {showActuals && (
-              <motion.div
-                initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{
-                  height: { duration: 0.5, ease: 'easeInOut' },
-                  opacity: { duration: 0.3, delay: 0.2 },
-                }}
-                style={{ overflow: 'hidden' }}
-              >
-                <ActualSection
-                  names={names}
-                  isCurrent={isCurrent}
-                  index={roundIndex}
-                  roundHistory={roundHistory}
-                  currentRound={isCurrent ? currentRound : roundAtIndex}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {showActuals && <Divider className="divider-between-sections" />}
-
-          <BidSection
-            names={names}
-            isCurrent={isCurrent}
-            index={roundIndex}
-            roundHistory={roundHistory}
-            currentRound={isCurrent ? currentRound : roundAtIndex}
+      <Container>
+        {!isCurrent && (
+          <RoundSummary
+            team2Name={team2Name}
+            team1Name={team1Name}
+            team1RoundScore={teamScores?.team1RoundScoreFromHistory?.score}
+            team2RoundScore={teamScores?.team2RoundScoreFromHistory?.score}
+            // add this back, but only as accordion
+            // team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
+            // team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
+            team1RoundBags={teamScores?.team1RoundScoreFromHistory?.bags}
+            team2RoundBags={teamScores?.team2RoundScoreFromHistory?.bags}
           />
-        </Container>
-      </form>
+        )}
+
+        <AnimatePresence>
+          {showActuals && (
+            <motion.div
+              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{
+                height: { duration: 0.5, ease: 'easeInOut' },
+                opacity: { duration: 0.3, delay: 0.2 },
+              }}
+              style={{ overflow: 'hidden' }}
+            >
+              <ActualSection
+                names={names}
+                isCurrent={isCurrent}
+                index={roundIndex}
+                roundHistory={roundHistory}
+                currentRound={isCurrent ? currentRound : roundAtIndex}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {showActuals && <Divider className="divider-between-sections" />}
+
+        <BidSection
+          names={names}
+          isCurrent={isCurrent}
+          index={roundIndex}
+          roundHistory={roundHistory}
+          currentRound={isCurrent ? currentRound : roundAtIndex}
+        />
+      </Container>
     </div>
   );
 }

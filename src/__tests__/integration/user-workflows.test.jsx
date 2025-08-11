@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter } from 'react-router-dom';
-import App from '../../App';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import HomePage from '../../pages/HomePage';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -32,10 +32,22 @@ jest.mock('../helpers/math/spadesMath', () => ({
   }),
 }));
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component, initialEntries = ['/']) => {
+  const router = createMemoryRouter(
+    [
+      {
+        path: '/',
+        element: component,
+      },
+    ],
+    {
+      initialEntries,
+    }
+  );
+
   return render(
     <ChakraProvider>
-      <BrowserRouter>{component}</BrowserRouter>
+      <RouterProvider router={router} />
     </ChakraProvider>
   );
 };
@@ -48,7 +60,7 @@ describe('Complete User Workflows', () => {
 
   describe('Basic Game Setup Workflow', () => {
     it('should complete full game setup process', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Fill in team names
       const team1Input = screen.getByDisplayValue('Team 1');
@@ -78,7 +90,7 @@ describe('Complete User Workflows', () => {
 
   describe('Form Validation Workflow', () => {
     it('should handle form validation errors gracefully', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Try to submit without filling required fields
       const startButton = screen.getByText('Start');
@@ -93,7 +105,7 @@ describe('Complete User Workflows', () => {
     });
 
     it('should handle valid form submission', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Fill in form with valid data
       const team1Input = screen.getByDisplayValue('Team 1');
@@ -122,14 +134,14 @@ describe('Complete User Workflows', () => {
 
   describe('PWA Integration Workflow', () => {
     it('should show download button on home page', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Verify download button is present
       expect(screen.getByText(/Download App/i)).toBeInTheDocument();
     });
 
     it('should handle PWA installation flow', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Click download button
       const downloadButton = screen.getByText(/Download App/i);
@@ -142,7 +154,7 @@ describe('Complete User Workflows', () => {
 
   describe('Settings Integration Workflow', () => {
     it('should show scoring rules settings', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Verify scoring rules are present
       expect(
@@ -154,7 +166,7 @@ describe('Complete User Workflows', () => {
     });
 
     it('should allow changing scoring rules', async () => {
-      renderWithProviders(<App />);
+      renderWithProviders(<HomePage />);
 
       // Click on different scoring rule
       const helpsTeamBidRadio = screen.getByLabelText(/Helps Team Bid/i);
