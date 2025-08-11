@@ -9,6 +9,12 @@
 /coverage
 /playwright-report
 /test-results
+*.last-run.json
+test-results/
+playwright-report/
+coverage/
+*.lcov
+*.coverage
 
 # production
 /build
