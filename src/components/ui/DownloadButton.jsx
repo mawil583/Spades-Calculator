@@ -5,6 +5,7 @@ import { DownloadIcon } from '@chakra-ui/icons';
 const DownloadButton = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isCheckingInstall, setIsCheckingInstall] = useState(true);
   const toast = useToast();
   const deferredPromptRef = useRef(null);
 
@@ -12,13 +13,35 @@ const DownloadButton = () => {
     // Check if the app is already installed
     const checkIfInstalled = () => {
       try {
-        const installed =
-          window.matchMedia('(display-mode: standalone)').matches ||
-          window.navigator.standalone === true;
+        // Multiple ways to detect if the app is installed
+        const isStandalone = window.matchMedia(
+          '(display-mode: standalone)'
+        ).matches;
+        const isIOSStandalone = window.navigator.standalone === true;
+        const isInApp =
+          window.navigator.userAgent.includes('wv') ||
+          (window.navigator.userAgent.includes('Mobile') &&
+            !window.navigator.userAgent.includes('Safari'));
+
+        const installed = isStandalone || isIOSStandalone || isInApp;
         setIsInstalled(installed);
+        setIsCheckingInstall(false);
+
+        // If already installed, show a message
+        if (installed) {
+          toast({
+            title: 'App Already Installed',
+            description:
+              'Spades Calculator is already installed on your device.',
+            status: 'info',
+            duration: 3000,
+            isClosable: true,
+          });
+        }
       } catch (error) {
         console.log('Error checking if installed:', error);
         setIsInstalled(false);
+        setIsCheckingInstall(false);
       }
     };
 
@@ -164,13 +187,13 @@ const DownloadButton = () => {
       if (isBrave) {
         title = 'Install in Brave Browser';
         instructions =
-          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+          'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else if (isSafari) {
         title = 'Install in Safari';
         instructions = 'Tap the Share button (📤), then "Add to Home Screen"';
       } else if (isChrome) {
         title = 'Install in Chrome';
-        instructions = 'Tap the menu (⋮), then "Add to Home Screen"';
+        instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
         title = 'Install on iOS';
         instructions =
@@ -180,17 +203,17 @@ const DownloadButton = () => {
       if (isBrave) {
         title = 'Install in Brave Browser';
         instructions =
-          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+          'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else if (isChrome) {
         title = 'Install in Chrome';
-        instructions = 'Tap the menu (⋮), then "Add to Home Screen"';
+        instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else if (isFirefox) {
         title = 'Install in Firefox';
-        instructions = 'Tap the menu (⋮), then "Add to Home Screen"';
+        instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
         title = 'Install on Android';
         instructions =
-          'Tap the menu (⋮) in your browser, then "Add to Home Screen"';
+          'Tap the menu (⋯) in your browser, then "Add to Home Screen"';
       }
     }
 
@@ -218,7 +241,7 @@ const DownloadButton = () => {
       if (isBrave) {
         title = 'Install in Brave Browser';
         instructions =
-          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+          'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else {
         title = 'Install on iOS';
         instructions =
@@ -228,25 +251,25 @@ const DownloadButton = () => {
       if (isBrave) {
         title = 'Install in Brave Browser';
         instructions =
-          'Tap the menu (⋮) in Brave, then "Add to Home Screen" or "Install App"';
+          'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else {
         title = 'Install on Android';
-        instructions = 'Tap the menu (⋮) in Chrome, then "Add to Home Screen"';
+        instructions = 'Tap the menu (⋯) in Chrome, then "Add to Home Screen"';
       }
     } else {
       // Desktop browsers
       if (isBrave) {
         title = 'Install in Brave Browser';
         instructions =
-          "Look for the install icon (↗️) in Brave's address bar, or tap the menu (⋮) and select 'Install Spades Calculator'";
+          "Look for the install icon (↗️) in Brave's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
       } else if (isChrome) {
         title = 'Install in Chrome';
         instructions =
-          "Look for the install icon (↗️) in Chrome's address bar, or tap the menu (⋮) and select 'Install Spades Calculator'";
+          "Look for the install icon (↗️) in Chrome's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
       } else if (isFirefox) {
         title = 'Install in Firefox';
         instructions =
-          "Tap the menu (⋮) in Firefox and select 'Install Spades Calculator'";
+          "Tap the menu (⋯) in Firefox and select 'Install Spades Calculator'";
       } else {
         title = 'Install Instructions';
         instructions =
@@ -265,7 +288,51 @@ const DownloadButton = () => {
 
   // Don't show the button if the app is already installed
   if (isInstalled) {
-    return null;
+    return (
+      <Box
+        data-testid="already-installed-message"
+        bg="green.700"
+        color="white"
+        p={4}
+        borderRadius="lg"
+        boxShadow="lg"
+        border="1px solid"
+        borderColor="green.600"
+        mb={4}
+      >
+        <VStack spacing={3}>
+          <Text fontWeight="bold" fontSize="lg">
+            ✅ App Already Installed
+          </Text>
+          <Text fontSize="sm" color="green.200" textAlign="center">
+            Spades Calculator is already installed on your device
+          </Text>
+        </VStack>
+      </Box>
+    );
+  }
+
+  // Show loading state while checking installation status
+  if (isCheckingInstall) {
+    return (
+      <Box
+        data-testid="checking-installation"
+        bg="gray.700"
+        color="white"
+        p={4}
+        borderRadius="lg"
+        boxShadow="lg"
+        border="1px solid"
+        borderColor="gray.600"
+        mb={4}
+      >
+        <VStack spacing={3}>
+          <Text fontWeight="bold" fontSize="lg">
+            🔍 Checking Installation Status...
+          </Text>
+        </VStack>
+      </Box>
+    );
   }
 
   return (
