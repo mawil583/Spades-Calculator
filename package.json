@@ -8,11 +8,6 @@
   },
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint:staged && npm run test"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "eslint --fix --max-warnings=0"
