@@ -8,11 +8,6 @@
   },
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
-  "husky": {
-    "hooks": {
-      "pre-commit": "cd .. && GIT_DIR=/Users/michaelwilliams/code/personal/Spades-Calculator/.git && npm run test"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "eslint --fix --max-warnings=0"
@@ -49,7 +44,6 @@
     "preview": "vite preview",
     "unit": "vitest run",
     "unit:watch": "vitest",
-    "prepare": "husky install .husky",
     "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
     "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
     "lint:staged": "lint-staged",

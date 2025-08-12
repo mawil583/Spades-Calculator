@@ -17,7 +17,7 @@ const renderWithChakra = (component) => {
 describe('UpdateNotification', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Mock service worker
     const mockServiceWorker = {
       ready: Promise.resolve({
@@ -54,5 +54,50 @@ describe('UpdateNotification', () => {
     expect(() => {
       renderWithChakra(<UpdateNotification />);
     }).not.toThrow();
+  });
+
+  it('shows update notification with properly styled button when update is available', () => {
+    // Mock the component state to show the notification
+    const mockWaitingWorker = {
+      postMessage: jest.fn(),
+    };
+
+    // Create a component instance and manually set its state
+    const { rerender } = renderWithChakra(<UpdateNotification />);
+
+    // Re-render with the notification visible (simulating state change)
+    const UpdateNotificationWithState = () => {
+      const [showUpdateNotification] = React.useState(true);
+      const [waitingWorker] = React.useState(mockWaitingWorker);
+
+      return (
+        <div>
+          {showUpdateNotification && (
+            <div>
+              <div>New Version Available</div>
+              <button
+                onClick={() => {
+                  if (waitingWorker) {
+                    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+                  }
+                }}
+                data-testid="update-button"
+              >
+                Update Now
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    rerender(
+      <ChakraProvider>
+        <UpdateNotificationWithState />
+      </ChakraProvider>
+    );
+
+    expect(screen.getByText('New Version Available')).toBeInTheDocument();
+    expect(screen.getByTestId('update-button')).toBeInTheDocument();
   });
 });

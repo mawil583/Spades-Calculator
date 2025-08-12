@@ -14,50 +14,65 @@ import { RepeatIcon, CloseIcon } from '@chakra-ui/icons';
 const UpdateNotification = () => {
   const [showUpdateNotification, setShowUpdateNotification] = useState(false);
   const [waitingWorker, setWaitingWorker] = useState(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   const toast = useToast();
 
   useEffect(() => {
-    // Check if service worker is supported
-    if (
-      'serviceWorker' in navigator &&
-      typeof navigator.serviceWorker.ready !== 'undefined'
-    ) {
-      navigator.serviceWorker.ready
-        .then((reg) => {
-          // Listen for updates
-          if (reg && typeof reg.addEventListener === 'function') {
-            reg.addEventListener('updatefound', () => {
-              const newWorker = reg.installing;
-              if (newWorker) {
-                newWorker.addEventListener('statechange', () => {
-                  if (
-                    newWorker.state === 'installed' &&
-                    navigator.serviceWorker.controller
-                  ) {
-                    // New content is available
-                    setWaitingWorker(newWorker);
-                    setShowUpdateNotification(true);
-                  }
-                });
-              }
-            });
-          }
-        })
-        .catch((error) => {
-          console.log('Service worker ready error:', error);
-        });
+    // Listen for service worker update events from the global event system
+    const handleServiceWorkerUpdate = (event) => {
+      const { registration } = event.detail;
+
+      // Get the waiting worker from the registration
+      if (registration.waiting) {
+        setWaitingWorker(registration.waiting);
+        setShowUpdateNotification(true);
+      }
+    };
+
+    // Add event listener for service worker updates
+    if (window.serviceWorkerUpdateEvent) {
+      window.serviceWorkerUpdateEvent.addEventListener(
+        'serviceWorkerUpdate',
+        handleServiceWorkerUpdate
+      );
     }
+
+    // Cleanup function
+    return () => {
+      if (window.serviceWorkerUpdateEvent) {
+        window.serviceWorkerUpdateEvent.removeEventListener(
+          'serviceWorkerUpdate',
+          handleServiceWorkerUpdate
+        );
+      }
+    };
   }, []);
 
   const handleUpdate = () => {
-    if (waitingWorker) {
+    if (waitingWorker && !isUpdating) {
+      setIsUpdating(true);
+
       // Send message to service worker to skip waiting
       waitingWorker.postMessage({ type: 'SKIP_WAITING' });
 
       // Listen for the controllerchange event
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
+      const handleControllerChange = () => {
         // Reload the page to use the new service worker
         window.location.reload();
+      };
+
+      navigator.serviceWorker.addEventListener(
+        'controllerchange',
+        handleControllerChange
+      );
+
+      // Show a toast to indicate the update is in progress
+      toast({
+        title: 'Updating...',
+        description: 'The app is being updated. Please wait.',
+        status: 'info',
+        duration: 2000,
+        isClosable: false,
       });
     }
   };
@@ -119,10 +134,15 @@ const UpdateNotification = () => {
           <HStack spacing="2">
             <Button
               size="sm"
-              colorScheme="whiteAlpha"
+              bg="white"
+              color="blue.500"
+              _hover={{ bg: 'gray.100' }}
+              _active={{ bg: 'gray.200' }}
               leftIcon={<RepeatIcon />}
               onClick={handleUpdate}
               flex="1"
+              isLoading={isUpdating}
+              loadingText="Updating..."
             >
               Update Now
             </Button>
