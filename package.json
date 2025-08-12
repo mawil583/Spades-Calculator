@@ -10,7 +10,7 @@
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
   "husky": {
     "hooks": {
-      "pre-commit": "cd .. && GIT_DIR=/Users/michaelwilliams/code/personal/Spades-Calculator/.git && npm run test"
+      "pre-commit": "npm run lint:staged && npm run test"
     }
   },
   "lint-staged": {
@@ -49,7 +49,6 @@
     "preview": "vite preview",
     "unit": "vitest run",
     "unit:watch": "vitest",
-    "prepare": "husky install .husky",
     "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
     "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
     "lint:staged": "lint-staged",
