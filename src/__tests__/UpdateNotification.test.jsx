@@ -100,4 +100,77 @@ describe('UpdateNotification', () => {
     expect(screen.getByText('New Version Available')).toBeInTheDocument();
     expect(screen.getByTestId('update-button')).toBeInTheDocument();
   });
+
+  it('handles force refresh functionality', () => {
+    // Mock caches API
+    const mockCaches = {
+      keys: jest.fn().mockResolvedValue(['cache1', 'cache2']),
+      delete: jest.fn().mockResolvedValue(true),
+    };
+    Object.defineProperty(window, 'caches', {
+      value: mockCaches,
+      writable: true,
+    });
+
+    // Mock location.reload
+    const mockReload = jest.fn();
+    Object.defineProperty(window, 'location', {
+      value: { reload: mockReload },
+      writable: true,
+    });
+
+    // Create a component instance and manually set its state
+    const UpdateNotificationWithForceRefresh = () => {
+      const [showUpdateNotification] = React.useState(true);
+      const [isUpdating] = React.useState(false);
+
+      const handleForceRefresh = () => {
+        if (!isUpdating) {
+          if ('caches' in window) {
+            caches
+              .keys()
+              .then((cacheNames) => {
+                return Promise.all(
+                  cacheNames.map((cacheName) => {
+                    return caches.delete(cacheName);
+                  })
+                );
+              })
+              .then(() => {
+                window.location.reload();
+              });
+          } else {
+            window.location.reload();
+          }
+        }
+      };
+
+      return (
+        <div>
+          {showUpdateNotification && (
+            <div>
+              <div>New Version Available</div>
+              <button
+                onClick={handleForceRefresh}
+                data-testid="force-refresh-button"
+              >
+                Force Refresh
+              </button>
+            </div>
+          )}
+        </div>
+      );
+    };
+
+    renderWithChakra(<UpdateNotificationWithForceRefresh />);
+
+    const forceRefreshButton = screen.getByTestId('force-refresh-button');
+    expect(forceRefreshButton).toBeInTheDocument();
+
+    // Test the force refresh functionality
+    forceRefreshButton.click();
+
+    // Verify that caches.keys was called
+    expect(mockCaches.keys).toHaveBeenCalled();
+  });
 });

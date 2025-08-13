@@ -77,6 +77,32 @@ const UpdateNotification = () => {
     }
   };
 
+  const handleForceRefresh = () => {
+    if (!isUpdating) {
+      setIsUpdating(true);
+
+      // Clear all caches and reload
+      if ('caches' in window) {
+        caches
+          .keys()
+          .then((cacheNames) => {
+            return Promise.all(
+              cacheNames.map((cacheName) => {
+                return caches.delete(cacheName);
+              })
+            );
+          })
+          .then(() => {
+            // Force reload the page
+            window.location.reload();
+          });
+      } else {
+        // Fallback for browsers without cache API
+        window.location.reload();
+      }
+    }
+  };
+
   const handleDismiss = () => {
     setShowUpdateNotification(false);
     toast({
@@ -145,6 +171,16 @@ const UpdateNotification = () => {
               loadingText="Updating..."
             >
               Update Now
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleForceRefresh}
+              _hover={{ bg: 'blue.600' }}
+              isLoading={isUpdating}
+              loadingText="Refreshing..."
+            >
+              Force Refresh
             </Button>
             <Button
               size="sm"

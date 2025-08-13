@@ -36,7 +36,6 @@ describe('Service Worker', () => {
     });
 
     it('should contain cache strategies', () => {
-      expect(serviceWorkerContent).toContain('CacheFirst');
       expect(serviceWorkerContent).toContain('NetworkFirst');
       expect(serviceWorkerContent).toContain('StaleWhileRevalidate');
     });
@@ -86,15 +85,12 @@ describe('Service Worker', () => {
   describe('Performance Optimization', () => {
     it('should implement proper caching strategies', () => {
       // Check for different caching strategies
-      const hasCacheFirst = serviceWorkerContent.includes('CacheFirst');
       const hasNetworkFirst = serviceWorkerContent.includes('NetworkFirst');
       const hasStaleWhileRevalidate = serviceWorkerContent.includes(
         'StaleWhileRevalidate'
       );
 
-      expect(hasCacheFirst || hasNetworkFirst || hasStaleWhileRevalidate).toBe(
-        true
-      );
+      expect(hasNetworkFirst && hasStaleWhileRevalidate).toBe(true);
     });
 
     it('should handle navigation requests', () => {
@@ -155,6 +151,43 @@ describe('Service Worker', () => {
 
     it('should use expiration plugins', () => {
       expect(serviceWorkerContent).toContain('ExpirationPlugin');
+    });
+  });
+
+  describe('Cache Versioning System', () => {
+    it('should define cache version constant', () => {
+      expect(serviceWorkerContent).toContain('CACHE_VERSION');
+    });
+
+    it('should use versioned cache names', () => {
+      expect(serviceWorkerContent).toContain('CACHE_NAMES');
+      expect(serviceWorkerContent).toContain(
+        'static-resources-${CACHE_VERSION}'
+      );
+      expect(serviceWorkerContent).toContain('images-${CACHE_VERSION}');
+      expect(serviceWorkerContent).toContain('api-cache-${CACHE_VERSION}');
+      expect(serviceWorkerContent).toContain('app-shell-${CACHE_VERSION}');
+      expect(serviceWorkerContent).toContain('dynamic-cache-${CACHE_VERSION}');
+    });
+
+    it('should have cache cleanup on activation', () => {
+      expect(serviceWorkerContent).toContain("addEventListener('activate'");
+      expect(serviceWorkerContent).toContain('caches.keys()');
+      expect(serviceWorkerContent).toContain('caches.delete');
+    });
+
+    it('should use StaleWhileRevalidate for CSS and JS files', () => {
+      expect(serviceWorkerContent).toContain('StaleWhileRevalidate');
+      expect(serviceWorkerContent).toContain(
+        "request.destination === 'style' || request.destination === 'script'"
+      );
+    });
+
+    it('should have app shell caching strategy', () => {
+      expect(serviceWorkerContent).toContain(
+        "url.pathname === '/' || url.pathname === '/index.html'"
+      );
+      expect(serviceWorkerContent).toContain('app-shell');
     });
   });
 });
