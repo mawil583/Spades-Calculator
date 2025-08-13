@@ -38,8 +38,10 @@
   "scripts": {
     "dev": "vite --port 5173 --open",
     "start": "vite --port 5173 --open",
+    "start:headless": "vite --port 5173",
     "test": "npm run unit && npm run e2e && npm run test:pwa",
-    "e2e": "BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start http://localhost:5173 'cypress run --config video=false'",
+    "e2e": "BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start:headless http://localhost:5173 'cypress run --config video=false'",
+    "e2e:open": "BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start:headless http://localhost:5173 'cypress open'",
     "build": "vite build",
     "preview": "vite preview",
     "unit": "vitest run",

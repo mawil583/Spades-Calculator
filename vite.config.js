@@ -64,7 +64,7 @@ export default defineConfig({
   },
   server: {
     port: DEV_PORT,
-    open: true,
+    open: process.argv.includes('--open'),
     hmr: {
       overlay: {
         errors: true,
