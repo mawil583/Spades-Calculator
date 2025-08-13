@@ -2,6 +2,8 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import BidSection from '../../components/game/BidSection';
+import ActualSection from '../../components/game/ActualSection';
+import Round from '../../components/game/Round';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
 // Mock the spadesMath functions
@@ -224,5 +226,153 @@ describe('Dealer Tag Integration at BidSection Level', () => {
       (label) => label.getAttribute('for') === bidButtonId
     );
     expect(hasAssociatedLabel).toBe(false);
+  });
+});
+
+describe('Dealer Tag Visibility Tests', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should show dealer tag only in bid section, not in actuals section', () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    const currentRoundWithBids = {
+      team1BidsAndActuals: {
+        p1Bid: '3',
+        p2Bid: '2',
+        p1Actual: '',
+        p2Actual: '',
+      },
+      team2BidsAndActuals: {
+        p1Bid: '2',
+        p2Bid: '3',
+        p1Actual: '',
+        p2Actual: '',
+      },
+    };
+
+    // Render bid section
+    const { rerender } = renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={currentRoundWithBids}
+      />
+    );
+
+    // Dealer tag should be visible in bid section
+    const dealerBadge = screen.getByTestId('dealerBadge');
+    expect(dealerBadge).toBeInTheDocument();
+
+    // Clear the screen and render actuals section
+    rerender(
+      <ChakraProvider>
+        <GlobalContext.Provider value={mockContextValue}>
+          <ActualSection
+            index={0}
+            names={names}
+            isCurrent={true}
+            roundHistory={[]}
+            currentRound={currentRoundWithBids}
+          />
+        </GlobalContext.Provider>
+      </ChakraProvider>
+    );
+
+    // Dealer tag should NOT be visible in actuals section
+    expect(screen.queryByTestId('dealerBadge')).not.toBeInTheDocument();
+  });
+
+  it('should show dealer tag only in bid section when both sections are rendered in a round', () => {
+    const currentRoundWithBidsAndActuals = {
+      team1BidsAndActuals: {
+        p1Bid: '3',
+        p2Bid: '2',
+        p1Actual: '3',
+        p2Actual: '2',
+      },
+      team2BidsAndActuals: {
+        p1Bid: '2',
+        p2Bid: '3',
+        p1Actual: '2',
+        p2Actual: '3',
+      },
+    };
+
+    // Create a context value with the current round data
+    const contextWithRoundData = {
+      ...mockContextValue,
+      currentRound: currentRoundWithBidsAndActuals,
+    };
+
+    render(
+      <ChakraProvider>
+        <GlobalContext.Provider value={contextWithRoundData}>
+          <Round roundHistory={[]} isCurrent={true} roundIndex={0} />
+        </GlobalContext.Provider>
+      </ChakraProvider>
+    );
+
+    // Dealer tag should be visible in bid section
+    const dealerBadge = screen.getByTestId('dealerBadge');
+    expect(dealerBadge).toBeInTheDocument();
+
+    // Count how many dealer badges are present - should be exactly 1 (only in bid section)
+    const dealerBadges = screen.getAllByTestId('dealerBadge');
+    expect(dealerBadges).toHaveLength(1);
+  });
+
+  it('should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals', () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    const currentRoundWithBids = {
+      team1BidsAndActuals: {
+        p1Bid: '3',
+        p2Bid: '2',
+        p1Actual: '',
+        p2Actual: '',
+      },
+      team2BidsAndActuals: {
+        p1Bid: '2',
+        p2Bid: '3',
+        p1Actual: '',
+        p2Actual: '',
+      },
+    };
+
+    renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={currentRoundWithBids}
+      />
+    );
+
+    // Dealer tag should be visible and clickable in bid section
+    const dealerBadge = screen.getByTestId('dealerBadge');
+    expect(dealerBadge).toBeInTheDocument();
+
+    // Click on dealer badge should open dealer selection modal
+    fireEvent.click(dealerBadge);
+    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
   });
 });

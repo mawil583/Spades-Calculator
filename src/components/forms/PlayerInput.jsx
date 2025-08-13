@@ -42,12 +42,14 @@ const PlayerInput = ({
           style={{ marginRight: '15px' }}
         >
           <span>{playerName}</span>{' '}
-          <DealerTag
-            id={dealerId}
-            index={index}
-            isCurrent={isCurrent}
-            roundHistory={roundHistory}
-          />
+          {type === 'Bid' && (
+            <DealerTag
+              id={dealerId}
+              index={index}
+              isCurrent={isCurrent}
+              roundHistory={roundHistory}
+            />
+          )}
         </Flex>
         {playerInput === '' ? (
           <Button
