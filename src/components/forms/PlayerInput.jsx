@@ -36,15 +36,19 @@ const PlayerInput = ({
         index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
-        <label style={{ marginRight: '15px' }} htmlFor={inputId}>
-          {playerName}{' '}
+        <Flex
+          direction={'row'}
+          align={'center'}
+          style={{ marginRight: '15px' }}
+        >
+          <span>{playerName}</span>{' '}
           <DealerTag
             id={dealerId}
             index={index}
             isCurrent={isCurrent}
             roundHistory={roundHistory}
           />
-        </label>
+        </Flex>
         {playerInput === '' ? (
           <Button
             onClick={() => {

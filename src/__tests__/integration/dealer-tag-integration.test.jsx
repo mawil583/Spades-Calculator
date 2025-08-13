@@ -1,0 +1,228 @@
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import BidSection from '../../components/game/BidSection';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+
+// Mock the spadesMath functions
+jest.mock('../../helpers/math/spadesMath', () => ({
+  getDealerIdHistory: jest.fn(() => []),
+  getCurrentDealerId: jest.fn(() => 'team1BidsAndActuals.p1Bid'),
+  addInputs: jest.fn(() => 0),
+}));
+
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(() =>
+    JSON.stringify({
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+    })
+  ),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+};
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+const mockContextValue = {
+  firstDealerOrder: [
+    'team1BidsAndActuals.p1Bid',
+    'team2BidsAndActuals.p1Bid',
+    'team1BidsAndActuals.p2Bid',
+    'team2BidsAndActuals.p2Bid',
+  ],
+  currentRound: {
+    team1BidsAndActuals: { p1Bid: '', p2Bid: '' },
+    team2BidsAndActuals: { p1Bid: '', p2Bid: '' },
+  },
+  setDealerOverride: jest.fn(),
+  setCurrentRound: jest.fn(),
+  setRoundHistory: jest.fn(),
+};
+
+const renderWithProviders = (component) => {
+  return render(
+    <ChakraProvider>
+      <GlobalContext.Provider value={mockContextValue}>
+        {component}
+      </GlobalContext.Provider>
+    </ChakraProvider>
+  );
+};
+
+describe('Dealer Tag Integration at BidSection Level', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should open dealer selection modal when dealer tag is clicked, not bid modal', () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={mockContextValue.currentRound}
+      />
+    );
+
+    // Find the dealer badge (it should be visible since Player 1 is the dealer)
+    const dealerBadge = screen.getByTestId('dealerBadge');
+    expect(dealerBadge).toBeInTheDocument();
+
+    // Click on the dealer badge
+    fireEvent.click(dealerBadge);
+
+    // Should open dealer selection modal, not bid modal
+    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+    expect(screen.queryByTestId('bidSelectionModal')).not.toBeInTheDocument();
+  });
+
+  it('should open bid modal when bid button is clicked, not dealer modal', () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={mockContextValue.currentRound}
+      />
+    );
+
+    // Find the specific bid button for Player 1 (the dealer)
+    const bidButtons = screen.getAllByRole('button', { name: /bid/i });
+    const firstBidButton = bidButtons[0];
+    expect(firstBidButton).toBeInTheDocument();
+
+    // Click on the bid button
+    fireEvent.click(firstBidButton);
+
+    // Should open bid modal, not dealer modal
+    expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(
+      screen.queryByTestId('dealerSelectionModal')
+    ).not.toBeInTheDocument();
+  });
+
+  it('should allow both modals to work independently', async () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={mockContextValue.currentRound}
+      />
+    );
+
+    // First, open dealer modal
+    const dealerBadge = screen.getByTestId('dealerBadge');
+    fireEvent.click(dealerBadge);
+    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+
+    // Close dealer modal
+    const cancelButton = screen.getByText('Cancel');
+    fireEvent.click(cancelButton);
+
+    // Wait for modal to close
+    await waitFor(
+      () => {
+        expect(
+          screen.queryByTestId('dealerSelectionModal')
+        ).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+
+    // Then, open bid modal (using the first bid button)
+    const bidButtons = screen.getAllByRole('button', { name: /bid/i });
+    const firstBidButton = bidButtons[0];
+    fireEvent.click(firstBidButton);
+    expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+
+    // Close bid modal
+    const closeButton = screen.getByLabelText('Close');
+    fireEvent.click(closeButton);
+
+    // Wait for modal to close
+    await waitFor(
+      () => {
+        expect(
+          screen.queryByTestId('bidSelectionModal')
+        ).not.toBeInTheDocument();
+      },
+      { timeout: 1000 }
+    );
+  });
+
+  it('should not have hover state association between player name and bid button', () => {
+    const names = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Player 1',
+      t1p2Name: 'Player 2',
+      t2p1Name: 'Player 3',
+      t2p2Name: 'Player 4',
+    };
+
+    const { container } = renderWithProviders(
+      <BidSection
+        index={0}
+        names={names}
+        isCurrent={true}
+        roundHistory={[]}
+        currentRound={mockContextValue.currentRound}
+      />
+    );
+
+    // Verify that the player name is a span, not a label
+    const playerNameSpan = screen.getByText('Player 1');
+    expect(playerNameSpan.tagName).toBe('SPAN');
+    expect(playerNameSpan).not.toHaveAttribute('for');
+
+    // Verify that there's no label element associated with the bid button
+    const bidButtons = screen.getAllByRole('button', { name: /bid/i });
+    const firstBidButton = bidButtons[0];
+    const bidButtonId = firstBidButton.id;
+
+    // Check that no label has htmlFor matching the bid button's id
+    const labels = container.querySelectorAll('label');
+    const hasAssociatedLabel = Array.from(labels).some(
+      (label) => label.getAttribute('for') === bidButtonId
+    );
+    expect(hasAssociatedLabel).toBe(false);
+  });
+});

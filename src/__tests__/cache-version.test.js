@@ -31,7 +31,7 @@ describe('Cache Version Update Script', () => {
 
     // Check if CACHE_VERSION is present
     expect(currentContent).toMatch(
-      /const CACHE_VERSION = ['"]v\d+\.\d+\.\d+['"];/
+      /const CACHE_VERSION = ['"]v\d+\.\d+\.\d+-\w+['"];/
     );
 
     // Check if CACHE_NAMES object is present
@@ -54,11 +54,11 @@ describe('Cache Version Update Script', () => {
 
     const version = versionMatch[1];
 
-    // Check format: v1.0.timestamp
-    expect(version).toMatch(/^v\d+\.\d+\.\d+$/);
+    // Check format: v1.0.timestamp-randomstring
+    expect(version).toMatch(/^v\d+\.\d+\.\d+-\w+$/);
 
     // Check that timestamp is recent (within last hour)
-    const timestamp = parseInt(version.split('.')[2]);
+    const timestamp = parseInt(version.split('.')[2].split('-')[0]);
     const now = Date.now();
     const oneHour = 60 * 60 * 1000;
 

@@ -14,7 +14,7 @@ import { StaleWhileRevalidate, NetworkFirst } from 'workbox-strategies';
 clientsClaim();
 
 // Add cache versioning to force invalidation on updates
-const CACHE_VERSION = 'v1.0.1755055115531'; // This will be updated with each deployment
+const CACHE_VERSION = 'v1.0.1755060226768-35zwfy'; // This will be updated with each deployment
 const CACHE_NAMES = {
   static: `static-resources-${CACHE_VERSION}`,
   images: `images-${CACHE_VERSION}`,

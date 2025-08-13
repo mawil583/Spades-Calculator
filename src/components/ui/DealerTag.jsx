@@ -76,6 +76,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
       <>
         <Badge
           data-cy="dealerBadge"
+          data-testid="dealerBadge"
           onClick={handleBadgeClick}
           colorScheme="purple"
           style={{ cursor: isCurrent ? 'pointer' : 'default' }}
@@ -84,7 +85,10 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
         </Badge>
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} isCentered>
           <ModalOverlay />
-          <ModalContent data-cy="dealerSelectionModal">
+          <ModalContent
+            data-cy="dealerSelectionModal"
+            data-testid="dealerSelectionModal"
+          >
             <ModalHeader>Select the dealer</ModalHeader>
             <ModalBody>
               <VStack align="stretch" spacing={3}>
@@ -92,6 +96,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
                   <Button
                     key={opt.id}
                     data-cy="dealerOptionButton"
+                    data-testid="dealerOptionButton"
                     data-player-id={opt.id}
                     onClick={() => onSelectDealer(opt.id)}
                   >
@@ -103,6 +108,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
             <ModalFooter>
               <Button
                 data-cy="dealerCancelButton"
+                data-testid="dealerCancelButton"
                 variant="ghost"
                 mr={3}
                 onClick={() => setIsOpen(false)}
