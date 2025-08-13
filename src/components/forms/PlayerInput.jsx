@@ -5,7 +5,8 @@ import { InputModal } from '../modals';
 import { DealerTag } from '../ui';
 
 const PlayerInput = ({
-  id,
+  inputId,
+  dealerId,
   type,
   index,
   isCurrent,
@@ -35,10 +36,10 @@ const PlayerInput = ({
         index={index}
       />
       <Flex my={'5px'} direction={'row'} justify={'space-around'}>
-        <label style={{ marginRight: '15px' }} htmlFor="p1Bid">
+        <label style={{ marginRight: '15px' }} htmlFor={inputId}>
           {playerName}{' '}
           <DealerTag
-            id={id}
+            id={dealerId}
             index={index}
             isCurrent={isCurrent}
             roundHistory={roundHistory}
@@ -50,8 +51,8 @@ const PlayerInput = ({
               setIsModalOpen(true);
             }}
             value={playerInput}
-            id={id}
-            name={id}
+            id={inputId}
+            name={inputId}
             size="sm"
             borderColor={teamClassName}
             color={teamClassName}

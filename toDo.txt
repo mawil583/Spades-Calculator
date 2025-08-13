@@ -2,26 +2,7 @@
 ✅ IMPLEMENTED: Automatic update notification system - When a new deployment is pushed, users now see a notification allowing them to update immediately without closing all tabs
 ✅ IMPLEMENTED: Pre-commit linting hooks - Added comprehensive linting checks that run automatically before each commit, including lint-staged for performance and ESLint for code quality. Zero warnings enforced - treats warnings as errors.
 Fix bug where PWA download button is more like a share when I'd like it to be either A) a download button or B) an instructions button
-change id attributes of playerInput (which is assigned from within BidSection and maybe even ActualSection) to inputId because there shouldn't be more than one id on a component. Maybe even call it inputClass if I expect multiple.
-then implement the following describe blocks for testing dealer feature:
-describe('dealer tag feature', () => {
-  it('mounts with t1p1 as first dealer', () => {
-    shouldRedirectWhenNamesEnteredAndClickStart();
-    // get all by className dealerTag
-    // expect that there is only 1 dealertag
-    cy.get('[data-cy=actualSection]').should('not.exist');
-  });
-  it('keeps track of dealer between rounds', () => {
-    shouldRedirectWhenNamesEnteredAndClickStart();
-    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
-    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
-    let actualSections = cy.get('[data-cy=actualSection]');
-    actualSections.should('have.length', 1);
-    allPlayersBid({t1p1Bid: '1', t1p2Bid: '3', t2p1Bid: '4',t2p2Bid: '1',});
-    allPlayersEnterActuals({t1p1Actual: '2', t1p2Actual: '3',t2p1Actual: '4',t2p2Actual: '4',});
-    cy.get('[data-cy=actualSection]').should('have.length', 2);
-  });
-})
+✅ IMPLEMENTED: Fixed duplicate ID attributes in PlayerInput component - Renamed id prop to inputId for form elements and added separate dealerId prop for DealerTag component to follow HTML best practices and avoid duplicate IDs.
 implement 'team actuals' button where you can enter a number that your team made instead of needing to individually enter each partner's bid. Incorporate conditional rendering of 'team actuals' button so that it doesn't show when one of the team member's went nill.  
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good

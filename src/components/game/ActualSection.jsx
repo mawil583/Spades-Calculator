@@ -77,7 +77,8 @@ function ActualSection({
           type={'Actual'}
           playerName={names.t1p1Name}
           currentRound={currentRound}
-          id="team1BidsAndActuals.p1Actual"
+          inputId="team1BidsAndActuals.p1Actual"
+          dealerId="team1BidsAndActuals.p1Bid"
           fieldToUpdate={'team1BidsAndActuals.p1Actual'}
           playerInput={team1BidsAndActuals?.p1Actual}
           teamClassName="team1"
@@ -88,7 +89,8 @@ function ActualSection({
           index={index}
           isCurrent={isCurrent}
           currentRound={currentRound}
-          id="team2BidsAndActuals.p1Actual"
+          inputId="team2BidsAndActuals.p1Actual"
+          dealerId="team2BidsAndActuals.p1Bid"
           fieldToUpdate={'team2BidsAndActuals.p1Actual'}
           teamClassName="team2"
           playerName={names.t2p1Name}
@@ -102,7 +104,8 @@ function ActualSection({
           isCurrent={isCurrent}
           currentRound={currentRound}
           playerName={names.t1p2Name}
-          id="team1BidsAndActuals.p2Actual"
+          inputId="team1BidsAndActuals.p2Actual"
+          dealerId="team1BidsAndActuals.p2Bid"
           fieldToUpdate={'team1BidsAndActuals.p2Actual'}
           playerInput={team1BidsAndActuals?.p2Actual}
           type={'Actual'}
@@ -117,7 +120,8 @@ function ActualSection({
           playerName={names.t2p2Name}
           playerInput={team2BidsAndActuals?.p2Actual}
           type={'Actual'}
-          id="team2BidsAndActuals.p2Actual"
+          inputId="team2BidsAndActuals.p2Actual"
+          dealerId="team2BidsAndActuals.p2Bid"
           fieldToUpdate={'team2BidsAndActuals.p2Actual'}
           teamClassName="team2"
         />

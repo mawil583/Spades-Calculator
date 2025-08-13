@@ -40,7 +40,8 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
           isCurrent={isCurrent}
           roundHistory={roundHistory}
           currentRound={currentRound}
-          id="team1BidsAndActuals.p1Bid"
+          inputId="team1BidsAndActuals.p1Bid"
+          dealerId="team1BidsAndActuals.p1Bid"
           playerInput={team1BidsAndActuals.p1Bid}
           fieldToUpdate="team1BidsAndActuals.p1Bid"
           teamClassName="team1"
@@ -53,7 +54,8 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
           currentRound={currentRound}
           playerName={t2p1Name}
           playerInput={team2BidsAndActuals.p1Bid}
-          id="team2BidsAndActuals.p1Bid"
+          inputId="team2BidsAndActuals.p1Bid"
+          dealerId="team2BidsAndActuals.p1Bid"
           fieldToUpdate="team2BidsAndActuals.p1Bid"
           teamClassName="team2"
           type={'Bid'}
@@ -66,7 +68,8 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
           currentRound={currentRound}
           playerName={t1p2Name}
           playerInput={team1BidsAndActuals.p2Bid}
-          id="team1BidsAndActuals.p2Bid"
+          inputId="team1BidsAndActuals.p2Bid"
+          dealerId="team1BidsAndActuals.p2Bid"
           fieldToUpdate="team1BidsAndActuals.p2Bid"
           type={'Bid'}
           teamClassName="team1"
@@ -79,7 +82,8 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
           currentRound={currentRound}
           playerName={t2p2Name}
           playerInput={team2BidsAndActuals.p2Bid}
-          id="team2BidsAndActuals.p2Bid"
+          inputId="team2BidsAndActuals.p2Bid"
+          dealerId="team2BidsAndActuals.p2Bid"
           fieldToUpdate="team2BidsAndActuals.p2Bid"
           teamClassName="team2"
           type={'Bid'}
