@@ -26,17 +26,23 @@ const CACHE_NAMES = {
 // Clean up old caches on service worker activation
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          // Delete caches that don't match our current version
-          if (!Object.values(CACHE_NAMES).includes(cacheName)) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            // Delete caches that don't match our current version
+            if (!Object.values(CACHE_NAMES).includes(cacheName)) {
+              console.log('Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        // Force clients to reload to ensure they get the latest version
+        return self.clients.claim();
+      })
   );
 });
 
@@ -75,12 +81,12 @@ registerRoute(
 // This ensures the app shell is always fresh on navigation
 registerRoute(
   ({ url }) => url.pathname === '/' || url.pathname === '/index.html',
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: CACHE_NAMES.appShell,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 1,
-        maxAgeSeconds: 60 * 60, // 1 hour - shorter cache for main HTML
+        maxAgeSeconds: 60 * 5, // 5 minutes - very short cache for main HTML
       }),
     ],
   })
@@ -96,17 +102,16 @@ registerRoute(
   })
 );
 
-// Cache CSS and JS files with a stale-while-revalidate strategy
-// This ensures updates are pulled in on refresh while maintaining fast loading
+// Cache CSS and JS files with a network-first strategy for better updates
 registerRoute(
   ({ request }) =>
     request.destination === 'style' || request.destination === 'script',
-  new StaleWhileRevalidate({
+  new NetworkFirst({
     cacheName: CACHE_NAMES.static,
     plugins: [
       new ExpirationPlugin({
         maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        maxAgeSeconds: 60 * 60 * 24, // 24 hours - shorter cache for better updates
       }),
     ],
   })

@@ -172,7 +172,7 @@ describe('Service Worker', () => {
 
     it('should have cache cleanup on activation', () => {
       expect(serviceWorkerContent).toContain("addEventListener('activate'");
-      expect(serviceWorkerContent).toContain('caches.keys()');
+      expect(serviceWorkerContent).toContain('keys()');
       expect(serviceWorkerContent).toContain('caches.delete');
     });
 

@@ -58,8 +58,12 @@ function registerValidSW(swUrl, config) {
   navigator.serviceWorker
     .register(swUrl, {
       updateViaCache: 'none',
+      scope: '/',
     })
     .then((registration) => {
+      // Check for updates immediately
+      registration.update();
+
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         if (installingWorker == null) {
@@ -80,6 +84,11 @@ function registerValidSW(swUrl, config) {
               if (config && config.onUpdate) {
                 config.onUpdate(registration);
               }
+
+              // Force skip waiting to immediately activate the new service worker
+              if (installingWorker.waiting) {
+                installingWorker.waiting.postMessage({ type: 'SKIP_WAITING' });
+              }
             } else {
               // At this point, everything has been precached.
               // It's the perfect time to display a
@@ -94,6 +103,11 @@ function registerValidSW(swUrl, config) {
           }
         };
       };
+
+      // Check for updates every hour
+      setInterval(() => {
+        registration.update();
+      }, 60 * 60 * 1000);
     })
     .catch((error) => {
       console.error('Error during service worker registration:', error);

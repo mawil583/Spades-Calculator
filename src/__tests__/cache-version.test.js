@@ -86,7 +86,7 @@ describe('Cache Version Update Script', () => {
     expect(currentContent).toContain("addEventListener('activate'");
 
     // Check for cache cleanup logic
-    expect(currentContent).toContain('caches.keys()');
+    expect(currentContent).toContain('keys()');
     expect(currentContent).toContain('caches.delete');
   });
 });
