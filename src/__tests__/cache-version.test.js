@@ -57,13 +57,17 @@ describe('Cache Version Update Script', () => {
     // Check format: v1.0.timestamp-randomstring
     expect(version).toMatch(/^v\d+\.\d+\.\d+-\w+$/);
 
-    // Check that timestamp is recent (within last hour)
+    // Check that timestamp is a valid number and reasonable
     const timestamp = parseInt(version.split('.')[2].split('-')[0]);
     const now = Date.now();
-    const oneHour = 60 * 60 * 1000;
 
-    expect(timestamp).toBeGreaterThan(now - oneHour);
+    // Validate timestamp format and range
+    expect(timestamp).toBeGreaterThan(0);
     expect(timestamp).toBeLessThanOrEqual(now);
+
+    // Check that it's not unreasonably old (more than 30 days)
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+    expect(timestamp).toBeGreaterThan(now - thirtyDays);
   });
 
   it('should have all required cache strategies', () => {
@@ -88,5 +92,87 @@ describe('Cache Version Update Script', () => {
     // Check for cache cleanup logic
     expect(currentContent).toContain('keys()');
     expect(currentContent).toContain('caches.delete');
+  });
+
+  it('should update cache version when update script runs', async () => {
+    // Create a temporary service worker file for testing
+    const tempServiceWorkerPath = path.join(
+      __dirname,
+      'temp-service-worker.js'
+    );
+    const originalContent = fs.readFileSync(serviceWorkerPath, 'utf8');
+
+    try {
+      // Copy the original content to temp file
+      fs.writeFileSync(tempServiceWorkerPath, originalContent);
+
+      // Read the current version before running the script
+      const beforeContent = fs.readFileSync(tempServiceWorkerPath, 'utf8');
+      const beforeMatch = beforeContent.match(
+        /const CACHE_VERSION = ['"]([^'"]+)['"];/
+      );
+      expect(beforeMatch).toBeTruthy();
+      const beforeVersion = beforeMatch[1];
+
+      // Temporarily modify the update script to use our temp file
+      const updateScriptPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'scripts',
+        'update-cache-version.js'
+      );
+      const originalScriptContent = fs.readFileSync(updateScriptPath, 'utf8');
+      const modifiedScriptContent = originalScriptContent.replace(
+        /const serviceWorkerPath = path\.join\([\s\S]*?\);/,
+        `const serviceWorkerPath = '${tempServiceWorkerPath.replace(
+          /\\/g,
+          '\\\\'
+        )}';`
+      );
+
+      try {
+        // Write the modified script
+        fs.writeFileSync(updateScriptPath, modifiedScriptContent);
+
+        // Run the update script
+        const { execSync } = await import('child_process');
+        execSync('node scripts/update-cache-version.js', { stdio: 'pipe' });
+
+        // Read the version after running the script
+        const afterContent = fs.readFileSync(tempServiceWorkerPath, 'utf8');
+        const afterMatch = afterContent.match(
+          /const CACHE_VERSION = ['"]([^'"]+)['"];/
+        );
+        expect(afterMatch).toBeTruthy();
+        const afterVersion = afterMatch[1];
+
+        // The version should have changed
+        expect(afterVersion).not.toBe(beforeVersion);
+
+        // The new version should have a more recent timestamp
+        const beforeTimestamp = parseInt(
+          beforeVersion.split('.')[2].split('-')[0]
+        );
+        const afterTimestamp = parseInt(
+          afterVersion.split('.')[2].split('-')[0]
+        );
+        expect(afterTimestamp).toBeGreaterThan(beforeTimestamp);
+
+        // The new version should be very recent (within last minute)
+        const now = Date.now();
+        const oneMinute = 60 * 1000;
+        expect(afterTimestamp).toBeGreaterThan(now - oneMinute);
+        expect(afterTimestamp).toBeLessThanOrEqual(now);
+      } finally {
+        // Restore the original script
+        fs.writeFileSync(updateScriptPath, originalScriptContent);
+      }
+    } finally {
+      // Clean up temp file
+      if (fs.existsSync(tempServiceWorkerPath)) {
+        fs.unlinkSync(tempServiceWorkerPath);
+      }
+    }
   });
 });
