@@ -48,6 +48,17 @@ describe('New Game Flow Integration', () => {
         roundHistory: [],
       };
 
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+
       renderWithProviders(<Navbar />, contextValue);
 
       // Click the New Game button
@@ -73,6 +84,17 @@ describe('New Game Flow Integration', () => {
         roundHistory: [],
       };
 
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+
       renderWithProviders(<Navbar />, contextValue);
 
       // Click the New Game button
@@ -90,6 +112,17 @@ describe('New Game Flow Integration', () => {
         ...mockContextValue,
         roundHistory: [],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Navbar />, contextValue);
 
@@ -110,6 +143,17 @@ describe('New Game Flow Integration', () => {
         ...mockContextValue,
         roundHistory: [],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Navbar />, contextValue);
 
@@ -140,6 +184,17 @@ describe('New Game Flow Integration', () => {
         ...mockContextValue,
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Navbar />, contextValue);
 
@@ -183,6 +238,17 @@ describe('New Game Flow Integration', () => {
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
 
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+
       renderWithProviders(<Navbar />, contextValue);
 
       // Click the New Game button
@@ -206,6 +272,17 @@ describe('New Game Flow Integration', () => {
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
 
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+
       renderWithProviders(<Navbar />, contextValue);
 
       // Click the New Game button
@@ -227,6 +304,17 @@ describe('New Game Flow Integration', () => {
         ...mockContextValue,
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Navbar />, contextValue);
 
@@ -250,6 +338,17 @@ describe('New Game Flow Integration', () => {
         ...mockContextValue,
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Navbar />, contextValue);
 
