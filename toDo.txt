@@ -9,6 +9,7 @@ redo UI for currentRound to make it resemble a cards-playing-table (consider eve
 make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
 change name form to have team1 section span entire width, and team2 span entire width
 get rid of React icon on mobile browser tab
+Make sure that when user has localstorage for bids or actuals, that instead of rendering a start button on the home page, it'll instead render two buttons side by side. One will be "coninue" and the other will be "new game". The "new game" button will have the exact same functionality as the "new game" button on the spades-calculator page.
 
 --Backlog--
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
