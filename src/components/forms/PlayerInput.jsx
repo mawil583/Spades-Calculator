@@ -22,6 +22,29 @@ const PlayerInput = ({
   const onEdit = () => {
     setIsModalOpen(true);
   };
+
+  // Determine if this player should show "Total entered"
+  const shouldShowTotalEntered = () => {
+    if (type !== 'Actual') return false;
+
+    // Check if both players on the same team have numeric values
+    const isTeam1 = fieldToUpdate.includes('team1');
+    const teamField = isTeam1 ? 'team1BidsAndActuals' : 'team2BidsAndActuals';
+
+    if (currentRound && currentRound[teamField]) {
+      const p1Actual = currentRound[teamField].p1Actual;
+      const p2Actual = currentRound[teamField].p2Actual;
+
+      // If both players have numeric values, show "Total entered"
+      return typeof p1Actual === 'number' && typeof p2Actual === 'number';
+    }
+
+    return false;
+  };
+
+  const displayValue = shouldShowTotalEntered() ? 'Total entered' : playerInput;
+  const showButton = displayValue === '' || displayValue === 'Total entered';
+
   return (
     <>
       <InputModal
@@ -51,12 +74,12 @@ const PlayerInput = ({
             />
           )}
         </Flex>
-        {playerInput === '' ? (
+        {showButton ? (
           <Button
             onClick={() => {
               setIsModalOpen(true);
             }}
-            value={playerInput}
+            value={displayValue}
             id={inputId}
             name={inputId}
             size="sm"
@@ -65,7 +88,7 @@ const PlayerInput = ({
             data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
             data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
           >
-            {type}
+            {displayValue || type}
           </Button>
         ) : (
           <div data-cy="playerInput" data-testid="playerInput">
@@ -76,7 +99,7 @@ const PlayerInput = ({
               onClick={onEdit}
             >
               <Flex borderColor={teamClassName} borderRadius="4px" px="0.5rem">
-                {playerInput}
+                {displayValue}
               </Flex>
               <EditIcon color={teamClassName} boxSize={5} ml={'5px'}></EditIcon>
             </Flex>

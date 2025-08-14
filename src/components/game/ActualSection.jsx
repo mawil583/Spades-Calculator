@@ -16,6 +16,20 @@ function ActualSection({
 }) {
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const [isValid, setIsValid] = useState(true);
+
+  // Get bids to determine if team total editing should be enabled
+  const team1Bids = [team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid];
+  const team2Bids = [team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid];
+
+  // Check if neither player on each team went nil
+  const team1CanEdit = team1Bids.every(
+    (bid) => bid !== 'Nil' && bid !== 'Blind Nil'
+  );
+  const team2CanEdit = team2Bids.every(
+    (bid) => bid !== 'Nil' && bid !== 'Blind Nil'
+  );
+  const isEditable = team1CanEdit && team2CanEdit;
+
   const team1Actuals = {
     p1Actual: team1BidsAndActuals?.p1Actual,
     p2Actual: team1BidsAndActuals?.p2Actual,
@@ -24,14 +38,28 @@ function ActualSection({
     p1Actual: team2BidsAndActuals?.p1Actual,
     p2Actual: team2BidsAndActuals?.p2Actual,
   };
-  const team1ActualTotal = addInputs(
-    team1Actuals.p1Actual,
-    team1Actuals.p2Actual
-  );
-  const team2ActualTotal = addInputs(
-    team2Actuals.p1Actual,
-    team2Actuals.p2Actual
-  );
+
+  // Handle team total display logic
+  const getTeamTotalDisplay = (teamActuals) => {
+    const p1Actual = teamActuals.p1Actual;
+    const p2Actual = teamActuals.p2Actual;
+
+    // If both are "unentered", show "unentered"
+    if (p1Actual === 'unentered' && p2Actual === 'unentered') {
+      return 'unentered';
+    }
+
+    // If both are "Total entered", show "Total entered"
+    if (p1Actual === 'Total entered' && p2Actual === 'Total entered') {
+      return 'Total entered';
+    }
+
+    // Otherwise, calculate the actual total
+    return addInputs(p1Actual, p2Actual);
+  };
+
+  const team1ActualTotal = getTeamTotalDisplay(team1Actuals);
+  const team2ActualTotal = getTeamTotalDisplay(team2Actuals);
 
   const roundActuals = [
     team1Actuals.p1Actual,
@@ -40,8 +68,29 @@ function ActualSection({
     team2Actuals.p2Actual,
   ];
 
-  const allActualsAreSubmitted = roundActuals.every(isNotDefaultValue);
-  const totalActuals = team1ActualTotal + team2ActualTotal;
+  // Handle validation for team total values
+  const isTeamTotalValue = (value) =>
+    value === 'unentered' || value === 'Total entered';
+  const allActualsAreSubmitted = roundActuals.every(
+    (actual) => isNotDefaultValue(actual) || isTeamTotalValue(actual)
+  );
+
+  // Calculate total for validation (only use numeric values)
+  const getNumericTotal = (teamActuals) => {
+    const p1Actual = teamActuals.p1Actual;
+    const p2Actual = teamActuals.p2Actual;
+
+    // If using team total, return 0 for validation (will be handled separately)
+    if (isTeamTotalValue(p1Actual) || isTeamTotalValue(p2Actual)) {
+      return 0;
+    }
+
+    return addInputs(p1Actual, p2Actual);
+  };
+
+  const team1NumericTotal = getNumericTotal(team1Actuals);
+  const team2NumericTotal = getNumericTotal(team2Actuals);
+  const totalActuals = team1NumericTotal + team2NumericTotal;
 
   useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid);
 
@@ -63,6 +112,13 @@ function ActualSection({
         team1Total={team1ActualTotal}
         team2Total={team2ActualTotal}
         title="Actuals"
+        team1Bids={team1Bids}
+        team2Bids={team2Bids}
+        isEditable={isEditable}
+        index={index}
+        isCurrent={isCurrent}
+        currentRound={currentRound}
+        roundHistory={roundHistory}
       />
       <SimpleGrid
         columns={2}

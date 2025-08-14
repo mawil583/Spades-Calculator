@@ -94,8 +94,11 @@ describe('ErrorModal Component', () => {
       );
 
       // Find the invalid actual (5) and click on it
-      const invalidActual = screen.getByText('5');
-      fireEvent.click(invalidActual);
+      // Since both players have numeric values, they show "Total entered" instead of individual values
+      // We need to click on the "Total entered" button for the player with value 5
+      const totalEnteredButtons = screen.getAllByText('Total entered');
+      // Click on the second "Total entered" button (which corresponds to the player with value 5)
+      fireEvent.click(totalEnteredButtons[1]);
 
       // Modal should open for selection
       await waitFor(() => {
@@ -185,7 +188,7 @@ describe('ErrorModal Component', () => {
         mockContextValue
       );
 
-      const playerInputs = screen.getAllByTestId('playerInput');
+      const playerInputs = screen.getAllByTestId('actualButton');
       playerInputs.forEach((input) => {
         expect(input).toBeInTheDocument();
       });
