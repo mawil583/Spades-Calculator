@@ -6,6 +6,7 @@ import {
   calculateRoundScore,
   isNotDefaultValue,
 } from '../../helpers/math/spadesMath';
+import { useIndependentTeamScoring } from '../../helpers/utils/hooks';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
@@ -27,7 +28,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const [showActuals, setShowActuals] = useState(false);
 
   // Always call hooks before any early returns
-  useSetScoreWhenRoundIsFinished(
+  useIndependentTeamScoring(
     currentRound,
     resetCurrentRound,
     isNotDefaultValue,
@@ -160,51 +161,3 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
 }
 
 export default Round;
-
-function useSetScoreWhenRoundIsFinished(
-  currentRound,
-  resetCurrentRound,
-  isNotDefaultValue,
-  setRoundHistory,
-  roundHistory
-) {
-  useEffect(() => {
-    const team1InputVals = Object.values(currentRound.team1BidsAndActuals);
-    const team2InputVals = Object.values(currentRound.team2BidsAndActuals);
-    const team1InputsAreEntered = team1InputVals.every(isNotDefaultValue);
-    const team2InputsAreEntered = team2InputVals.every(isNotDefaultValue);
-    const allBidsAndActualsAreEntered =
-      team1InputsAreEntered && team2InputsAreEntered;
-
-    if (allBidsAndActualsAreEntered) {
-      // Validate that actuals add up to 13 before completing the round
-      const team1Actuals = [
-        currentRound.team1BidsAndActuals.p1Actual,
-        currentRound.team1BidsAndActuals.p2Actual,
-      ];
-      const team2Actuals = [
-        currentRound.team2BidsAndActuals.p1Actual,
-        currentRound.team2BidsAndActuals.p2Actual,
-      ];
-
-      const totalActuals = [...team1Actuals, ...team2Actuals].reduce(
-        (sum, actual) => sum + parseInt(actual || 0),
-        0
-      );
-
-      // Only complete the round if actuals are valid (add up to 13)
-      if (totalActuals === 13) {
-        // Preserve the dealer override when adding to round history
-        const roundToAdd = { ...currentRound };
-        setRoundHistory([...roundHistory, roundToAdd]);
-        resetCurrentRound();
-      }
-    }
-  }, [
-    currentRound,
-    resetCurrentRound,
-    isNotDefaultValue,
-    setRoundHistory,
-    roundHistory,
-  ]);
-}
