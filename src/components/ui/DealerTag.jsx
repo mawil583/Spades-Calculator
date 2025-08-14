@@ -24,15 +24,30 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
 
   const dealerIdHistory = getDealerIdHistory(roundHistory, firstDealerOrder);
 
-  const isDealer =
-    getCurrentDealerId({
-      dealerIdHistory,
+  const currentDealerId = getCurrentDealerId({
+    dealerIdHistory,
+    index,
+    isCurrent,
+    firstDealerOrder,
+    dealerOverride: isCurrent ? currentRound?.dealerOverride : null,
+    roundHistory,
+  });
+
+  const isDealer = currentDealerId === id;
+
+  // Debug logging
+  if (isCurrent && (id.includes('p1Bid') || id.includes('p2Bid'))) {
+    console.log('DealerTag debug:', {
+      id,
       index,
       isCurrent,
+      dealerIdHistory,
       firstDealerOrder,
-      dealerOverride: isCurrent ? currentRound?.dealerOverride : null,
-      roundHistory,
-    }) === id;
+      currentDealerId,
+      isDealer,
+      roundHistory: roundHistory.length,
+    });
+  }
 
   const dealerOptions = useMemo(() => {
     const names = JSON.parse(localStorage.getItem('names')) || {};

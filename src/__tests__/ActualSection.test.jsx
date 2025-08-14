@@ -110,8 +110,8 @@ describe('ActualSection Component', () => {
       );
 
       // Should have 4 player inputs (one for each player)
-      const bidButtons = screen.getAllByTestId('bidButton');
-      expect(bidButtons).toHaveLength(4);
+      const actualButtons = screen.getAllByTestId('actualButton');
+      expect(actualButtons).toHaveLength(4);
     });
 
     it('should display player names correctly', () => {
@@ -244,8 +244,8 @@ describe('ActualSection Component', () => {
       );
 
       // Should have 4 player inputs (one for each player)
-      const bidButtons = screen.getAllByTestId('bidButton');
-      expect(bidButtons).toHaveLength(4);
+      const actualButtons = screen.getAllByTestId('actualButton');
+      expect(actualButtons).toHaveLength(4);
     });
 
     it('should pass correct fieldToUpdate values to player inputs', () => {
@@ -299,8 +299,8 @@ describe('ActualSection Component', () => {
         mockContextValue
       );
 
-      const bidButtons = screen.getAllByTestId('bidButton');
-      bidButtons.forEach((input) => {
+      const actualButtons = screen.getAllByTestId('actualButton');
+      actualButtons.forEach((input) => {
         expect(input).toBeInTheDocument();
       });
     });

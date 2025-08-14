@@ -441,13 +441,40 @@ export function getDealerIdHistory(roundHistory, firstDealerOrder) {
     return [];
   }
 
-  const clonedfirstDealerOrder = [...firstDealerOrder];
   const dealerIdHistory = [];
-  roundHistory.forEach(() => {
-    dealerIdHistory.push(clonedfirstDealerOrder[0]);
-    clonedfirstDealerOrder.push(clonedfirstDealerOrder[0]);
-    clonedfirstDealerOrder.shift();
+  let currentDealerOrder = [...firstDealerOrder];
+
+  roundHistory.forEach((round) => {
+    // Check if there's a dealer override for this round
+    if (round?.dealerOverride) {
+      dealerIdHistory.push(round.dealerOverride);
+    } else {
+      // Use natural dealer rotation based on the current dealer order
+      dealerIdHistory.push(currentDealerOrder[0]);
+    }
+
+    // Update the dealer order for the next round based on who actually dealt
+    // This should be the dealer that was actually used for this round
+    const actualDealer = round?.dealerOverride || currentDealerOrder[0];
+
+    // Find the next dealer in the rotation after the actual dealer
+    const actualDealerIndex = currentDealerOrder.indexOf(actualDealer);
+    if (actualDealerIndex !== -1) {
+      // Rotate the dealer order so that the next dealer comes first
+      const nextDealerIndex =
+        (actualDealerIndex + 1) % currentDealerOrder.length;
+      const rotatedOrder = [];
+
+      // Start from the next dealer and go around
+      for (let i = 0; i < currentDealerOrder.length; i++) {
+        const index = (nextDealerIndex + i) % currentDealerOrder.length;
+        rotatedOrder.push(currentDealerOrder[index]);
+      }
+
+      currentDealerOrder = rotatedOrder;
+    }
   });
+
   return dealerIdHistory;
 }
 
@@ -487,19 +514,23 @@ export function getCurrentDealerId({
     return null;
   }
 
-  const clonedfirstDealerOrder = [...firstDealerOrder];
-
   if (isCurrent) {
-    if (dealerIdHistory.length < 4) {
-      if (dealerIdHistory.length === 0) {
-        return clonedfirstDealerOrder[0];
-      }
-      return clonedfirstDealerOrder[index];
+    if (dealerIdHistory.length === 0) {
+      return firstDealerOrder[0];
     }
-    return dealerIdHistory[index - 4];
+    // For current round, calculate the next dealer based on the last dealer in history
+    const lastDealer = dealerIdHistory[dealerIdHistory.length - 1];
+    const lastDealerIndex = firstDealerOrder.indexOf(lastDealer);
+    const nextDealerIndex = (lastDealerIndex + 1) % firstDealerOrder.length;
+    return firstDealerOrder[nextDealerIndex];
   } else {
+    // For past rounds, use the dealer from the dealerIdHistory array
+    if (index < dealerIdHistory.length) {
+      return dealerIdHistory[index];
+    }
+    // If we don't have enough history, fall back to the original logic
     if (index < 4) {
-      return clonedfirstDealerOrder[index];
+      return firstDealerOrder[index];
     }
     return dealerIdHistory[index - 4];
   }

@@ -62,8 +62,8 @@ const PlayerInput = ({
             size="sm"
             borderColor={teamClassName}
             color={teamClassName}
-            data-cy="bidButton"
-            data-testid="bidButton"
+            data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
+            data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
           >
             {type}
           </Button>

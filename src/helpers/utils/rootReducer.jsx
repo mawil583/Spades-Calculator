@@ -62,7 +62,7 @@ const rootReducer = (state, action) => {
             p1Actual: '',
             p2Actual: '',
           },
-          dealerOverride: state.currentRound?.dealerOverride || null, // Preserve dealer override
+          dealerOverride: null, // Clear dealer override for new round
         });
         return {
           ...state,
