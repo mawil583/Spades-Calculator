@@ -20,9 +20,6 @@ describe('Dealer Rotation Flow with Override', () => {
 
     // Wait for the page to load and check if we're on the right page
     cy.contains('Score').should('be.visible');
-
-    // Wait a bit for the page to fully load
-    cy.wait(1000);
   });
 
   it('should handle dealer rotation with override correctly', () => {
@@ -34,49 +31,34 @@ describe('Dealer Rotation Flow with Override', () => {
       }
     });
 
-    // Wait for the interface to load
-    cy.wait(1000);
-
     // Round 1: Enter all bids and actuals
     // Team 1 bids
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Alice's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Bob's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
-
-    cy.wait(500);
 
     // Team 2 bids
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Charlie's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Diana's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
 
-    // Wait for actuals to appear
-    cy.wait(1000);
+    // Wait for actuals to appear and enter them
+    cy.get('[data-cy="actualButton"]').should('be.visible');
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
-
-    cy.wait(500);
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
-
-    cy.wait(500);
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
@@ -97,9 +79,6 @@ describe('Dealer Rotation Flow with Override', () => {
     // Select Alice (t1p1) as dealer from the modal
     cy.get('[data-cy="dealerOptionButton"]').contains('Alice').click();
 
-    // Wait for the UI to update after dealer override
-    cy.wait(1000);
-
     // Verify dealer badge moved to Alice
     cy.contains('Alice')
       .parent()
@@ -115,47 +94,32 @@ describe('Dealer Rotation Flow with Override', () => {
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Alice's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Bob's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
-
-    cy.wait(500);
 
     // Team 2 bids
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Charlie's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Diana's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
 
-    // Wait for actuals to appear
-    cy.wait(1000);
+    // Wait for actuals to appear and enter them
+    cy.get('[data-cy="actualButton"]').should('be.visible');
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
-
-    cy.wait(500);
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
-
-    // Wait for round 3 to appear
-    cy.wait(1000);
 
     // Round 3 should now be visible
     cy.contains('Round 3').should('be.visible');
@@ -172,47 +136,32 @@ describe('Dealer Rotation Flow with Override', () => {
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Alice's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('1').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Bob's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('5').click();
-
-    cy.wait(500);
 
     // Team 2 bids
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Charlie's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="bidButton"]').eq(0).click(); // Diana's bid
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
 
-    // Wait for actuals to appear
-    cy.wait(1000);
+    // Wait for actuals to appear and enter them
+    cy.get('[data-cy="actualButton"]').should('be.visible');
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('1').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('5').click();
-
-    cy.wait(500);
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
 
-    cy.wait(500);
-
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
     cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
-
-    // Wait for round 4 to appear
-    cy.wait(1000);
 
     // Round 4 should now be visible
     cy.contains('Round 4').should('be.visible');
