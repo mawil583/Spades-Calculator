@@ -55,16 +55,17 @@ function TeamInputHeading({
       });
     } else {
       // For historical rounds, update both fields
-      const actualTeamField = teamNumber === 1 ? 'team1BidsAndActuals' : 'team2BidsAndActuals';
-      
+      const actualTeamField =
+        teamNumber === 1 ? 'team1BidsAndActuals' : 'team2BidsAndActuals';
+
       // Calculate individual values (divide by 2)
       const individualValue = Math.floor(totalValue / 2);
       const remainder = totalValue % 2;
-      
+
       // Distribute the total between players
       const p1Value = individualValue + remainder; // First player gets the remainder
       const p2Value = individualValue;
-      
+
       const updatedRound = {
         ...currentRound,
         [actualTeamField]: {
@@ -127,7 +128,7 @@ function TeamInputHeading({
             cursor: team1CanEdit ? 'pointer' : 'default',
             ...team1Styles,
           }}
-          {...(team1CanEdit && { contentEditable: true })}
+          {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam1Click}
         >
           {team1Total}
@@ -144,7 +145,7 @@ function TeamInputHeading({
             cursor: team2CanEdit ? 'pointer' : 'default',
             ...team2Styles,
           }}
-          {...(team2CanEdit && { contentEditable: true })}
+          {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam2Click}
         >
           {team2Total}

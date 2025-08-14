@@ -193,5 +193,105 @@ describe('ErrorModal Component', () => {
         expect(input).toBeInTheDocument();
       });
     });
+
+    it('should have clickable team total headings', () => {
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={mockCurrentRound}
+          errorMessage="The total amount of hands must always add up to 13. Yours totaled 14."
+        />,
+        mockContextValue
+      );
+
+      // Team total headings should be clickable (have cursor pointer style)
+      const team1Heading = screen.getByText('6');
+      const team2Heading = screen.getByText('8');
+
+      expect(team1Heading).toBeInTheDocument();
+      expect(team2Heading).toBeInTheDocument();
+
+      // Check that they have the clickable cursor style
+      expect(team1Heading).toHaveStyle('cursor: pointer');
+      expect(team2Heading).toHaveStyle('cursor: pointer');
+    });
+
+    it('should open team total modal when clicking on team total headings', async () => {
+      const mockSetCurrentRound = jest.fn();
+      const contextWithSetCurrentRound = {
+        ...mockContextValue,
+        setCurrentRound: mockSetCurrentRound,
+      };
+
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={mockCurrentRound}
+          errorMessage="The total amount of hands must always add up to 13. Yours totaled 14."
+        />,
+        contextWithSetCurrentRound
+      );
+
+      // Click on team1 heading to open team total modal
+      const team1Heading = screen.getByText('6');
+      fireEvent.click(team1Heading);
+
+      // Modal should open for team total selection
+      await waitFor(() => {
+        expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+      });
+
+      // Click on a number in the modal (e.g., "10")
+      const tenButton = screen.getByText('10');
+      fireEvent.click(tenButton);
+
+      // Verify that setCurrentRound was called with team total
+      expect(mockSetCurrentRound).toHaveBeenCalledWith({
+        input: '10',
+        fieldToUpdate: 'team1Total',
+        currentRound: mockCurrentRound,
+      });
+    });
+
+    it('should not have team total headings in focus when error modal opens', () => {
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={mockCurrentRound}
+          errorMessage="The total amount of hands must always add up to 13. Yours totaled 14."
+        />,
+        mockContextValue
+      );
+
+      // Team total headings should not be focused when modal opens
+      const team1Heading = screen.getByText('6');
+      const team2Heading = screen.getByText('8');
+
+      expect(team1Heading).not.toHaveFocus();
+      expect(team2Heading).not.toHaveFocus();
+
+      // Verify that no element in the TeamInputHeading has focus
+      const teamInputHeading = screen
+        .getByTestId('actualSection')
+        .querySelector('[style*="cursor: pointer"]');
+      if (teamInputHeading) {
+        expect(teamInputHeading).not.toHaveFocus();
+      }
+    });
   });
 });

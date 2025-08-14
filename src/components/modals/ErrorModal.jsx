@@ -49,6 +49,13 @@ function ErrorModal({
             team1Total={team1ActualTotal}
             team2Total={team2ActualTotal}
             title="Actuals"
+            team1Bids={[team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid]}
+            team2Bids={[team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid]}
+            isEditable={true}
+            index={index}
+            isCurrent={isCurrent}
+            currentRound={currentRound}
+            roundHistory={roundHistory}
           />
           <div
             style={{
