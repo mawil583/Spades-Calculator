@@ -126,6 +126,9 @@ function TeamInputHeading({
             marginRight: '50%',
             paddingTop: '15px',
             cursor: team1CanEdit ? 'pointer' : 'default',
+            border: team1CanEdit ? '0.5px solid rgba(0, 0, 0, 0.3)' : 'none',
+            borderRadius: team1CanEdit ? '4px' : '0',
+            padding: team1CanEdit ? '1px 4px' : '0',
             ...team1Styles,
           }}
           {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
@@ -143,6 +146,9 @@ function TeamInputHeading({
             marginLeft: '50%',
             paddingTop: '15px',
             cursor: team2CanEdit ? 'pointer' : 'default',
+            border: team2CanEdit ? '0.5px solid rgba(0, 0, 0, 0.3)' : 'none',
+            borderRadius: team2CanEdit ? '4px' : '0',
+            padding: team2CanEdit ? '1px 4px' : '0',
             ...team2Styles,
           }}
           {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}

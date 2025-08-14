@@ -123,7 +123,7 @@ describe('ActualSection Team Total Button Behavior', () => {
       const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
       const team1Total = teamTotals[0]; // First h2 with unentered
       const team2Total = teamTotals[1]; // Second h2 with unentered
-      
+
       expect(team1Total).toHaveStyle('cursor: pointer');
       expect(team2Total).toHaveStyle('cursor: default');
     });
@@ -153,7 +153,7 @@ describe('ActualSection Team Total Button Behavior', () => {
       const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
       const team1Total = teamTotals[0]; // First h2 with unentered
       const team2Total = teamTotals[1]; // Second h2 with unentered
-      
+
       expect(team1Total).toHaveStyle('cursor: default');
       expect(team2Total).toHaveStyle('cursor: pointer');
     });
@@ -217,6 +217,70 @@ describe('ActualSection Team Total Button Behavior', () => {
       // Should trigger the modal (we can't easily test modal opening without more complex setup)
       // But we can verify the click handler was called
       expect(team1Total).toHaveStyle('cursor: pointer');
+    });
+
+    test('clickable team actual buttons have rounded borders', () => {
+      const currentRound = createMockCurrentRound([5, 3], [4, 2]);
+      mockContextValue.currentRound = currentRound;
+
+      renderWithProviders(
+        <ActualSection
+          index={0}
+          names={{
+            team1Name: 'Team 1',
+            team2Name: 'Team 2',
+            t1p1Name: 'Player 1',
+            t1p2Name: 'Player 2',
+            t2p1Name: 'Player 3',
+            t2p2Name: 'Player 4',
+          }}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={currentRound}
+        />
+      );
+
+      // Both team totals should be clickable and have borders
+      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
+      const team1Total = teamTotals[0];
+      const team2Total = teamTotals[1];
+
+      expect(team1Total).toHaveStyle('border: 0.5px solid rgba(0, 0, 0, 0.3)');
+      expect(team1Total).toHaveStyle('border-radius: 4px');
+      expect(team2Total).toHaveStyle('border: 0.5px solid rgba(0, 0, 0, 0.3)');
+      expect(team2Total).toHaveStyle('border-radius: 4px');
+    });
+
+    test('non-clickable team actual buttons do not have borders', () => {
+      const currentRound = createMockCurrentRound(['Nil', 3], [4, 'Blind Nil']);
+      mockContextValue.currentRound = currentRound;
+
+      renderWithProviders(
+        <ActualSection
+          index={0}
+          names={{
+            team1Name: 'Team 1',
+            team2Name: 'Team 2',
+            t1p1Name: 'Player 1',
+            t1p2Name: 'Player 2',
+            t2p1Name: 'Player 3',
+            t2p2Name: 'Player 4',
+          }}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={currentRound}
+        />
+      );
+
+      // Both team totals should not be clickable and should not have borders
+      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
+      const team1Total = teamTotals[0];
+      const team2Total = teamTotals[1];
+
+      expect(team1Total).toHaveStyle('border: none');
+      expect(team1Total).toHaveStyle('border-radius: 0');
+      expect(team2Total).toHaveStyle('border: none');
+      expect(team2Total).toHaveStyle('border-radius: 0');
     });
   });
 });
