@@ -106,4 +106,52 @@ describe('New Game Flow', () => {
       cy.contains('Would you like to keep the same teams?').should('not.exist');
     });
   });
+
+  describe('actual section visibility after new game', () => {
+    it('should hide actual section when starting new game with same teams after entering bids', () => {
+      // Wait for bid buttons to be available
+      cy.get('[data-cy="bidButton"]').should('have.length', 4);
+
+      // Enter bids for both teams to make actual section appear
+      // Click on the first bid button to open modal
+      cy.get('[data-cy="bidButton"]').eq(0).click();
+      cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+
+      cy.wait(500);
+
+      // Click on the second bid button to open modal
+      cy.get('[data-cy="bidButton"]').eq(0).click();
+      cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
+
+      cy.wait(500);
+
+      // Click on the third bid button to open modal
+      cy.get('[data-cy="bidButton"]').eq(0).click();
+      cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+
+      cy.wait(500);
+
+      // Click on the fourth bid button to open modal
+      cy.get('[data-cy="bidButton"]').eq(0).click();
+      cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+
+      // Verify actual section is visible
+      cy.get('[data-cy="actualSection"]').should('be.visible');
+
+      // Click New Game button
+      cy.get('button').contains('New Game').click();
+
+      // Click Same Teams
+      cy.contains('Same Teams').click();
+
+      // Verify we're still on the spades calculator page
+      cy.url().should('eq', Cypress.config().baseUrl + '/spades-calculator');
+
+      // Verify actual section is NOT visible (should be hidden after new game)
+      cy.get('[data-cy="actualSection"]').should('not.exist');
+
+      // Verify bid inputs are empty (confirming reset worked)
+      cy.get('[data-cy="bidButton"]').should('have.length', 4);
+    });
+  });
 });
