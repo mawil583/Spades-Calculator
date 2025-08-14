@@ -21,14 +21,8 @@ function ActualSection({
   const team1Bids = [team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid];
   const team2Bids = [team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid];
 
-  // Check if neither player on each team went nil
-  const team1CanEdit = team1Bids.every(
-    (bid) => bid !== 'Nil' && bid !== 'Blind Nil'
-  );
-  const team2CanEdit = team2Bids.every(
-    (bid) => bid !== 'Nil' && bid !== 'Blind Nil'
-  );
-  const isEditable = team1CanEdit && team2CanEdit;
+  // Each team's editability will be determined individually in TeamInputHeading
+  const isEditable = true;
 
   const team1Actuals = {
     p1Actual: team1BidsAndActuals?.p1Actual,
