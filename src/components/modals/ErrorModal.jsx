@@ -65,9 +65,8 @@ function ErrorModal({
               justifyContent: 'center',
               padding: '20px',
             }}
-          >
-            {errorMessage}
-          </div>
+            dangerouslySetInnerHTML={{ __html: errorMessage }}
+          />
           <SimpleGrid
             columns={2}
             className="namesContainer"
