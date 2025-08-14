@@ -162,23 +162,59 @@ describe('PlayerInput', () => {
       expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
     });
 
-    it('should allow editing individual inputs when team total shows "Total entered"', () => {
-      const props = {
-        ...defaultProps,
-        playerInput: 'Total entered',
-        type: 'Actual',
+    it('should show "N/A" with edit icon when team total shows "Total entered"', () => {
+      const mockSetCurrentRound = jest.fn();
+      const mockSetRoundHistory = jest.fn();
+
+      const testContextValue = {
+        ...mockContextValue,
+        setCurrentRound: mockSetCurrentRound,
+        setRoundHistory: mockSetRoundHistory,
       };
 
-      renderWithContext(<PlayerInput {...props} />);
+      const mockCurrentRound = {
+        team1BidsAndActuals: {
+          p1Bid: '1',
+          p2Bid: '2',
+          p1Actual: 3,
+          p2Actual: 3,
+        },
+        team2BidsAndActuals: {
+          p1Bid: '3',
+          p2Bid: '4',
+          p1Actual: '',
+          p2Actual: '',
+        },
+      };
 
-      // Should show "Total entered" but still be clickable
-      const totalEnteredElement = screen.getByText('Total entered');
-      expect(totalEnteredElement).toBeInTheDocument();
+      render(
+        <GlobalContext.Provider value={testContextValue}>
+          <PlayerInput
+            teamName="Team 1"
+            roundHistory={[]}
+            index={0}
+            isCurrent={true}
+            currentRound={mockCurrentRound}
+            playerName="Mike"
+            inputId="team1BidsAndActuals.p1Actual"
+            dealerId="team1BidsAndActuals.p1Bid"
+            fieldToUpdate={'team1BidsAndActuals.p1Actual'}
+            playerInput={mockCurrentRound.team1BidsAndActuals.p1Actual}
+            type={'Actual'}
+            teamClassName="team1"
+          />
+        </GlobalContext.Provider>
+      );
+
+      // Should show "N/A" text instead of "Total entered" button
+      expect(screen.getByText('N/A')).toBeInTheDocument();
+
+      // Should show edit icon
+      expect(screen.getByTestId('editIcon')).toBeInTheDocument();
 
       // Should be clickable to open modal
-      fireEvent.click(totalEnteredElement);
-
-      // Modal should open
+      const naElement = screen.getByText('N/A');
+      fireEvent.click(naElement);
       expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
     });
   });

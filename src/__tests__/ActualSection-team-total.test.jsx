@@ -165,30 +165,34 @@ describe('ActualSection Team Total Functionality', () => {
       expect(headings).toHaveLength(2);
     });
 
-    it('should show "Total entered" when team total has been entered', () => {
+    it('should show "N/A" when team total has been entered', () => {
       const props = {
         ...defaultProps,
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '1',
             p2Bid: '2',
-            p1Actual: 'Total entered',
-            p2Actual: 'Total entered',
+            p1Actual: 3,
+            p2Actual: 3,
           },
           team2BidsAndActuals: {
             p1Bid: '3',
             p2Bid: '4',
-            p1Actual: 'Total entered',
-            p2Actual: 'Total entered',
+            p1Actual: 4,
+            p2Actual: 4,
           },
         },
       };
 
       renderWithContext(<ActualSection {...props} />);
 
-      // Check that the TeamInputHeading shows "Total entered"
-      const headings = screen.getAllByText('Total entered', { selector: 'h2' });
-      expect(headings).toHaveLength(2);
+      // Check that the individual players show "N/A"
+      // Look specifically for N/A elements within playerInput containers
+      const playerInputs = screen.getAllByTestId('playerInput');
+      const naElements = playerInputs.filter((container) =>
+        container.textContent.includes('N/A')
+      );
+      expect(naElements).toHaveLength(8); // All player inputs show "N/A" when team totals are used
     });
   });
 
@@ -304,7 +308,7 @@ describe('ActualSection Team Total Integration', () => {
 });
 
 describe('ActualSection Team Total Display Updates', () => {
-  it('should show "Total entered" for both individual players when team total is selected', () => {
+  it('should show "N/A" for both individual players when team total is selected', () => {
     const mockSetCurrentRound = jest.fn();
     const mockSetRoundHistory = jest.fn();
 
@@ -424,9 +428,9 @@ describe('ActualSection Team Total Display Updates', () => {
       </GlobalContext.Provider>
     );
 
-    // After team total is selected, both players on team 1 should show "Total entered"
+    // After team total is selected, both players on team 1 should show "N/A"
     // and team 2 players should still show "Actual"
-    expect(screen.getAllByText('Total entered')).toHaveLength(2);
+    expect(screen.getAllByText('N/A')).toHaveLength(2);
     expect(screen.getAllByText('Actual')).toHaveLength(2); // Team 2 players still show "Actual"
   });
 });

@@ -42,8 +42,8 @@ const PlayerInput = ({
     return false;
   };
 
-  const displayValue = shouldShowTotalEntered() ? 'Total entered' : playerInput;
-  const showButton = displayValue === '' || displayValue === 'Total entered';
+  const displayValue = shouldShowTotalEntered() ? 'N/A' : playerInput;
+  const showButton = displayValue === '' && !shouldShowTotalEntered();
 
   return (
     <>
@@ -90,6 +90,25 @@ const PlayerInput = ({
           >
             {displayValue || type}
           </Button>
+        ) : shouldShowTotalEntered() ? (
+          <div data-cy="playerInput" data-testid="playerInput">
+            <Flex
+              align="center"
+              justify="center"
+              cursor="pointer"
+              onClick={onEdit}
+            >
+              <Flex borderColor={teamClassName} borderRadius="4px" px="0.5rem">
+                {displayValue}
+              </Flex>
+              <EditIcon
+                color={teamClassName}
+                boxSize={5}
+                ml={'5px'}
+                data-testid="editIcon"
+              ></EditIcon>
+            </Flex>
+          </div>
         ) : (
           <div data-cy="playerInput" data-testid="playerInput">
             <Flex
