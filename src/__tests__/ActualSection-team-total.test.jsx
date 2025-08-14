@@ -56,14 +56,14 @@ describe('ActualSection Team Total Button Behavior', () => {
     team1BidsAndActuals: {
       p1Bid: team1Bids[0],
       p2Bid: team1Bids[1],
-      p1Actual: 'unentered',
-      p2Actual: 'unentered',
+      p1Actual: '',
+      p2Actual: '',
     },
     team2BidsAndActuals: {
       p1Bid: team2Bids[0],
       p2Bid: team2Bids[1],
-      p1Actual: 'unentered',
-      p2Actual: 'unentered',
+      p1Actual: '',
+      p2Actual: '',
     },
   });
 
@@ -90,9 +90,9 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Both team totals should be clickable
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
-      const team1Total = teamTotals[0]; // First h2 with unentered
-      const team2Total = teamTotals[1]; // Second h2 with unentered
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
+      const team1Total = teamTotals[0]; // First h2 with 0
+      const team2Total = teamTotals[1]; // Second h2 with 0
 
       expect(team1Total).toHaveStyle('cursor: pointer');
       expect(team2Total).toHaveStyle('cursor: pointer');
@@ -120,9 +120,9 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Team 1 should be clickable (no nil bids)
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
-      const team1Total = teamTotals[0]; // First h2 with unentered
-      const team2Total = teamTotals[1]; // Second h2 with unentered
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
+      const team1Total = teamTotals[0]; // First h2 with 0
+      const team2Total = teamTotals[1]; // Second h2 with 0
 
       expect(team1Total).toHaveStyle('cursor: pointer');
       expect(team2Total).toHaveStyle('cursor: default');
@@ -150,9 +150,9 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Team 1 should not be clickable (has blind nil bid)
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
-      const team1Total = teamTotals[0]; // First h2 with unentered
-      const team2Total = teamTotals[1]; // Second h2 with unentered
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
+      const team1Total = teamTotals[0]; // First h2 with 0
+      const team2Total = teamTotals[1]; // Second h2 with 0
 
       expect(team1Total).toHaveStyle('cursor: default');
       expect(team2Total).toHaveStyle('cursor: pointer');
@@ -180,9 +180,9 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Both team totals should not be clickable
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
-      const team1Total = teamTotals[0]; // First h2 with unentered
-      const team2Total = teamTotals[1]; // Second h2 with unentered
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
+      const team1Total = teamTotals[0]; // First h2 with 0
+      const team2Total = teamTotals[1]; // Second h2 with 0
 
       expect(team1Total).toHaveStyle('cursor: default');
       expect(team2Total).toHaveStyle('cursor: default');
@@ -210,8 +210,8 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Click on Team 1's total (should be clickable)
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
-      const team1Total = teamTotals[0]; // First h2 with unentered
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
+      const team1Total = teamTotals[0]; // First h2 with 0
       fireEvent.click(team1Total);
 
       // Should trigger the modal (we can't easily test modal opening without more complex setup)
@@ -241,7 +241,7 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Both team totals should be clickable and have borders
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
       const team1Total = teamTotals[0];
       const team2Total = teamTotals[1];
 
@@ -273,7 +273,7 @@ describe('ActualSection Team Total Button Behavior', () => {
       );
 
       // Both team totals should not be clickable and should not have borders
-      const teamTotals = screen.getAllByText('unentered', { selector: 'h2' });
+      const teamTotals = screen.getAllByText('0', { selector: 'h2' });
       const team1Total = teamTotals[0];
       const team2Total = teamTotals[1];
 

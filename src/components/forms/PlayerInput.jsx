@@ -23,8 +23,8 @@ const PlayerInput = ({
     setIsModalOpen(true);
   };
 
-  // Determine if this player should show "Total entered"
-  const shouldShowTotalEntered = () => {
+  // Determine if this player should show "N/A" (when both players have numeric values)
+  const shouldShowNA = () => {
     if (type !== 'Actual') return false;
 
     // Check if both players on the same team have numeric values
@@ -35,15 +35,15 @@ const PlayerInput = ({
       const p1Actual = currentRound[teamField].p1Actual;
       const p2Actual = currentRound[teamField].p2Actual;
 
-      // If both players have numeric values, show "Total entered"
+      // If both players have numeric values, show "N/A"
       return typeof p1Actual === 'number' && typeof p2Actual === 'number';
     }
 
     return false;
   };
 
-  const displayValue = shouldShowTotalEntered() ? 'N/A' : playerInput;
-  const showButton = displayValue === '' && !shouldShowTotalEntered();
+  const displayValue = shouldShowNA() ? 'N/A' : playerInput;
+  const showButton = displayValue === '' && !shouldShowNA();
 
   return (
     <>
@@ -90,7 +90,7 @@ const PlayerInput = ({
           >
             {displayValue || type}
           </Button>
-        ) : shouldShowTotalEntered() ? (
+        ) : shouldShowNA() ? (
           <div data-cy="playerInput" data-testid="playerInput">
             <Flex
               align="center"

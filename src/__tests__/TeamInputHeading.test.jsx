@@ -102,35 +102,19 @@ describe('TeamInputHeading', () => {
   });
 
   describe('team total input functionality', () => {
-    it('should show "unentered" instead of "Actual" button when team total is being used', () => {
+    it('should show calculated team totals when individual values are empty', () => {
       const props = {
         ...defaultProps,
         team1Bids: ['1', '2'], // Neither is nil
         team2Bids: ['3', '4'], // Neither is nil
         isEditable: true,
-        team1Total: 'unentered',
-        team2Total: 'unentered',
+        team1Total: 0, // Calculated from empty individual values
+        team2Total: 0, // Calculated from empty individual values
       };
 
       renderWithContext(<TeamInputHeading {...props} />);
 
-      const headings = screen.getAllByText('unentered', { selector: 'h2' });
-      expect(headings).toHaveLength(2);
-    });
-
-    it('should show "Total entered" when team total has been entered', () => {
-      const props = {
-        ...defaultProps,
-        team1Bids: ['1', '2'], // Neither is nil
-        team2Bids: ['3', '4'], // Neither is nil
-        isEditable: true,
-        team1Total: 'Total entered',
-        team2Total: 'Total entered',
-      };
-
-      renderWithContext(<TeamInputHeading {...props} />);
-
-      const headings = screen.getAllByText('Total entered', { selector: 'h2' });
+      const headings = screen.getAllByText('0', { selector: 'h2' });
       expect(headings).toHaveLength(2);
     });
   });

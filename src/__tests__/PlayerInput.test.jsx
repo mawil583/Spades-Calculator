@@ -86,30 +86,30 @@ describe('PlayerInput', () => {
   };
 
   describe('when team total is being used', () => {
-    it('should show "unentered" instead of "Actual" button when playerInput is "unentered"', () => {
+    it('should show empty string instead of "Actual" button when playerInput is empty', () => {
       const props = {
         ...defaultProps,
-        playerInput: 'unentered',
+        playerInput: '',
         type: 'Actual',
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('unentered')).toBeInTheDocument();
-      expect(screen.queryByText('Actual')).not.toBeInTheDocument();
+      expect(screen.getByText('Actual')).toBeInTheDocument();
+      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
     });
 
-    it('should show "unentered" instead of "Bid" button when playerInput is "unentered" and type is Bid', () => {
+    it('should show empty string instead of "Bid" button when playerInput is empty and type is Bid', () => {
       const props = {
         ...defaultProps,
-        playerInput: 'unentered',
+        playerInput: '',
         type: 'Bid',
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('unentered')).toBeInTheDocument();
-      expect(screen.queryByText('Bid')).not.toBeInTheDocument();
+      expect(screen.getByText('Bid')).toBeInTheDocument();
+      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
     });
   });
 
@@ -145,24 +145,23 @@ describe('PlayerInput', () => {
     it('should allow editing individual inputs even when team total is being used', () => {
       const props = {
         ...defaultProps,
-        playerInput: 'unentered',
+        playerInput: '',
         type: 'Actual',
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      // Should show "unentered" but still be clickable
-      const unenteredElement = screen.getByText('unentered');
-      expect(unenteredElement).toBeInTheDocument();
+      // Should show "Actual" button when empty
+      expect(screen.getByText('Actual')).toBeInTheDocument();
 
       // Should be clickable to open modal
-      fireEvent.click(unenteredElement);
+      fireEvent.click(screen.getByText('Actual'));
 
       // Modal should open
       expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
     });
 
-    it('should show "N/A" with edit icon when team total shows "Total entered"', () => {
+    it('should show "N/A" with edit icon when both players have numeric values', () => {
       const mockSetCurrentRound = jest.fn();
       const mockSetRoundHistory = jest.fn();
 
@@ -206,7 +205,7 @@ describe('PlayerInput', () => {
         </GlobalContext.Provider>
       );
 
-      // Should show "N/A" text instead of "Total entered" button
+      // Should show "N/A" text when both players have numeric values
       expect(screen.getByText('N/A')).toBeInTheDocument();
 
       // Should show edit icon

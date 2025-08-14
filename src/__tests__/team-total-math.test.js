@@ -44,12 +44,6 @@ describe('Team Total Math Functions', () => {
   });
 
   describe('team total storage', () => {
-    it('should store team total as "Total entered" in display', () => {
-      const displayValue = 'Total entered';
-
-      expect(displayValue).toBe('Total entered');
-    });
-
     it('should store actual numeric values behind the scenes', () => {
       const player1Value = Math.floor(8 / 2);
       const player2Value = Math.ceil(8 / 2);

@@ -25,12 +25,12 @@ function ActualSection({
   const isEditable = true;
 
   const team1Actuals = {
-    p1Actual: team1BidsAndActuals?.p1Actual,
-    p2Actual: team1BidsAndActuals?.p2Actual,
+    p1Actual: team1BidsAndActuals?.p1Actual || '',
+    p2Actual: team1BidsAndActuals?.p2Actual || '',
   };
   const team2Actuals = {
-    p1Actual: team2BidsAndActuals?.p1Actual,
-    p2Actual: team2BidsAndActuals?.p2Actual,
+    p1Actual: team2BidsAndActuals?.p1Actual || '',
+    p2Actual: team2BidsAndActuals?.p2Actual || '',
   };
 
   // Handle team total display logic
@@ -38,14 +38,9 @@ function ActualSection({
     const p1Actual = teamActuals.p1Actual;
     const p2Actual = teamActuals.p2Actual;
 
-    // If both are "unentered", show "unentered"
-    if (p1Actual === 'unentered' && p2Actual === 'unentered') {
-      return 'unentered';
-    }
-
-    // If both are "Total entered", show "Total entered"
-    if (p1Actual === 'Total entered' && p2Actual === 'Total entered') {
-      return 'Total entered';
+    // If both are empty, show 0
+    if (p1Actual === '' && p2Actual === '') {
+      return 0;
     }
 
     // Otherwise, calculate the actual total
@@ -63,10 +58,9 @@ function ActualSection({
   ];
 
   // Handle validation for team total values
-  const isTeamTotalValue = (value) =>
-    value === 'unentered' || value === 'Total entered';
+  const isTeamTotalValue = (value) => value === '';
   const allActualsAreSubmitted = roundActuals.every(
-    (actual) => isNotDefaultValue(actual) || isTeamTotalValue(actual)
+    (actual) => isNotDefaultValue(actual) && !isTeamTotalValue(actual)
   );
 
   // Calculate total for validation (only use numeric values)
