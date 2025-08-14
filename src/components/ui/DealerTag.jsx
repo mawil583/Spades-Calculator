@@ -35,20 +35,6 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
 
   const isDealer = currentDealerId === id;
 
-  // Debug logging
-  if (isCurrent && (id.includes('p1Bid') || id.includes('p2Bid'))) {
-    console.log('DealerTag debug:', {
-      id,
-      index,
-      isCurrent,
-      dealerIdHistory,
-      firstDealerOrder,
-      currentDealerId,
-      isDealer,
-      roundHistory: roundHistory.length,
-    });
-  }
-
   const dealerOptions = useMemo(() => {
     const names = JSON.parse(localStorage.getItem('names')) || {};
 
