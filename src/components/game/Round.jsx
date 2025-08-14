@@ -46,10 +46,26 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
     : ['', '', '', '']; // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
 
-  // Reset showActuals when roundIndex changes (new round created)
+  // Reset showActuals when roundIndex changes (new round created) or when roundHistory becomes empty (new game)
   useEffect(() => {
     setShowActuals(false);
-  }, [roundIndex]);
+  }, [roundIndex, roundHistory.length]);
+
+  // Reset showActuals when currentRound is reset (new game with same teams)
+  useEffect(() => {
+    if (isCurrent && currentRound) {
+      const hasAnyBids = [
+        currentRound.team1BidsAndActuals.p1Bid,
+        currentRound.team1BidsAndActuals.p2Bid,
+        currentRound.team2BidsAndActuals.p1Bid,
+        currentRound.team2BidsAndActuals.p2Bid,
+      ].some(isNotDefaultValue);
+
+      if (!hasAnyBids && showActuals) {
+        setShowActuals(false);
+      }
+    }
+  }, [currentRound, isCurrent, showActuals]);
 
   useEffect(() => {
     if (allBidsEntered && isCurrent && !showActuals) {
