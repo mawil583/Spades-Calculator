@@ -16,6 +16,7 @@ const PlayerInput = ({
   currentRound,
   teamClassName,
   fieldToUpdate,
+  showIndividualValues = false,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -26,6 +27,7 @@ const PlayerInput = ({
   // Determine if this player should show "N/A" (when both players have numeric values)
   const shouldShowNA = () => {
     if (type !== 'Actual') return false;
+    if (showIndividualValues) return false; // Always show individual values when this prop is true
 
     // Check if both players on the same team have numeric values
     const isTeam1 = fieldToUpdate.includes('team1');
