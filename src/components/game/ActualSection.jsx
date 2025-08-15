@@ -186,6 +186,7 @@ function ActualSection({
         <div
           style={{
             marginTop: '10px',
+            marginBottom: '0',
             textAlign: 'center',
             fontSize: '0.8em',
             color: 'gray',

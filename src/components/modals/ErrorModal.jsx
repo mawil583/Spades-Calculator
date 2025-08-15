@@ -62,7 +62,11 @@ function ErrorModal({
     >
       <ModalOverlay />
       <ModalContent>
-        <div data-cy="actualSection" data-testid="actualSection">
+        <div
+          data-cy="actualSection"
+          data-testid="actualSection"
+          style={{ paddingTop: '20px' }}
+        >
           <TeamInputHeading
             team1Total={team1ActualTotal}
             team2Total={team2ActualTotal}

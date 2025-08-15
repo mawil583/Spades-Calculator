@@ -80,7 +80,11 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
           data-testid="dealerBadge"
           onClick={handleBadgeClick}
           colorScheme="purple"
-          style={{ cursor: isCurrent ? 'pointer' : 'default' }}
+          style={{
+            cursor: isCurrent ? 'pointer' : 'default',
+            marginLeft: '5px',
+            marginRight: '5px',
+          }}
         >
           D
         </Badge>

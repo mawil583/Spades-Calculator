@@ -14,7 +14,7 @@ function RoundSummary({
   team2RoundBags,
 }) {
   return (
-    <div>
+    <div style={{ marginBottom: '20px' }}>
       <Center>
         <Heading mt={'20px'} mb={'10px'} size={'lg'}>
           Round Summary
