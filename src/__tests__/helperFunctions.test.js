@@ -11,28 +11,28 @@ describe('getActualsErrorText', () => {
   it('returns correct error message for total of 14', () => {
     const result = getActualsErrorText(14);
     expect(result).toBe(
-      'The total amount of hands must always add up to 13. Yours totaled 14. Correct this before moving on.'
+      'The total amount of hands must always add up to 13. Yours totaled 14. You need 1 less to continue.'
     );
   });
 
   it('returns correct error message for total of 12', () => {
     const result = getActualsErrorText(12);
     expect(result).toBe(
-      'The total amount of hands must always add up to 13. Yours totaled 12. Correct this before moving on.'
+      'The total amount of hands must always add up to 13. Yours totaled 12. You need 1 more to continue.'
     );
   });
 
   it('returns correct error message for total of 0', () => {
     const result = getActualsErrorText(0);
     expect(result).toBe(
-      'The total amount of hands must always add up to 13. Yours totaled 0. Correct this before moving on.'
+      'The total amount of hands must always add up to 13. Yours totaled 0. You need 13 more to continue.'
     );
   });
 
   it('returns correct error message for total of 13 (edge case)', () => {
     const result = getActualsErrorText(13);
     expect(result).toBe(
-      'The total amount of hands must always add up to 13. Yours totaled 13. Correct this before moving on.'
+      'The total amount of hands must always add up to 13. Yours totaled 13. You need 0 more to continue.'
     );
   });
 });

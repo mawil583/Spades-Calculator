@@ -20,6 +20,7 @@ function InputModal({
   fieldToUpdate,
   currentRound,
   roundHistory,
+  onCustomUpdate,
 }) {
   return (
     <>
@@ -49,6 +50,7 @@ function InputModal({
                 setIsModalOpen={setIsModalOpen}
                 type={type}
                 index={index}
+                onCustomUpdate={onCustomUpdate}
               />
             </ModalBody>
           </ModalContent>

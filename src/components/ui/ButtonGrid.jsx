@@ -15,6 +15,7 @@ function ButtonGrid({
   roundHistory,
   isCurrent,
   setIsModalOpen,
+  onCustomUpdate,
 }) {
   const { setCurrentRound, setRoundHistory } = useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
@@ -23,6 +24,13 @@ function ButtonGrid({
     if (setIsModalOpen) {
       setIsModalOpen(false);
     }
+
+    // If there's a custom update handler, use it instead of the default behavior
+    if (onCustomUpdate) {
+      onCustomUpdate(input);
+      return;
+    }
+
     if (isCurrent) {
       setCurrentRound({
         input,

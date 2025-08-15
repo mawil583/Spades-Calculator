@@ -8,7 +8,7 @@ function RoundHeading({ roundNumber, names }) {
       <Heading style={{ fontSize: '25px' }} as={'h3'}>
         Round {roundNumber}
       </Heading>
-      <Box>
+      <Box mb={'8px'}>
         <Flex direction={'row'} height={'30px'}>
           <Box
             width={'100%'}

@@ -6,10 +6,11 @@ import {
 } from './constants';
 
 export function getActualsErrorText(totalActuals) {
-  let text =
-    'The total amount of hands must always add up to 13. Yours totaled ' +
-    totalActuals +
-    '. Correct this before moving on.';
+  const difference = 13 - totalActuals;
+  const num = Math.abs(difference);
+  const moreOrLess = difference >= 0 ? 'more' : 'less';
+
+  let text = `The total amount of hands must always add up to 13. Yours totaled ${totalActuals}. You need ${num} ${moreOrLess} to continue.`;
   return text;
 }
 
