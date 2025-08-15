@@ -100,7 +100,7 @@ describe('ErrorModal Component', () => {
       );
 
       // Find the invalid actual (5) and click on it
-      // Since showIndividualValues is true, we see individual values instead of "N/A*"
+      // Since we always show individual values now, we see "5*" for the auto-generated value
       // We need to click on the "5*" text for the player with value 5
       const actualElements = screen.getAllByText('5*');
       // Click on the "5*" element (which corresponds to the player with value 5)
