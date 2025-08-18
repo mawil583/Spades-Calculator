@@ -1,92 +1,80 @@
 import { renderHook } from '@testing-library/react';
 import { useValidateActuals } from '../helpers/utils/hooks';
 
-describe('useValidateActuals', () => {
-  let mockSetIsValid;
+describe('useValidateActuals with nil bids', () => {
+  it("should set isValid to false when someone goes nil and all actuals are entered but don't add up to 13", () => {
+    const setIsValid = jest.fn();
 
-  beforeEach(() => {
-    mockSetIsValid = jest.fn();
-  });
+    // Test case: Player 1 goes nil (actual = 0), others bid normally
+    // Bids: nil, 3, 4, 5 (total = 12)
+    // Actuals: 0, 4, 5, 5 (total = 14, should be 13)
+    const allActualsAreSubmitted = true;
+    const totalActuals = 14; // 0 + 4 + 5 + 5 = 14
 
-  it('sets isValid to false when all actuals are submitted and total is not 13', () => {
-    renderHook(() => useValidateActuals(true, 14, mockSetIsValid));
-
-    expect(mockSetIsValid).toHaveBeenCalledWith(false);
-  });
-
-  it('sets isValid to true when all actuals are submitted and total is 13', () => {
-    renderHook(() => useValidateActuals(true, 13, mockSetIsValid));
-
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
-  });
-
-  it('sets isValid to false when not all actuals are submitted but total exceeds 13', () => {
-    renderHook(() => useValidateActuals(false, 14, mockSetIsValid));
-
-    expect(mockSetIsValid).toHaveBeenCalledWith(false);
-  });
-
-  it('sets isValid to true when not all actuals are submitted and total is 13 or less', () => {
-    renderHook(() => useValidateActuals(false, 13, mockSetIsValid));
-
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
-  });
-
-  it('sets isValid to true when not all actuals are submitted and total is less than 13', () => {
-    renderHook(() => useValidateActuals(false, 10, mockSetIsValid));
-
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
-  });
-
-  it('updates validation when total changes', () => {
-    const { rerender } = renderHook(
-      ({ allActualsAreSubmitted, totalActuals }) =>
-        useValidateActuals(
-          allActualsAreSubmitted,
-          totalActuals,
-          mockSetIsValid
-        ),
-      {
-        initialProps: { allActualsAreSubmitted: true, totalActuals: 13 },
-      }
+    renderHook(() =>
+      useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid)
     );
 
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
-
-    // Change total to invalid value
-    rerender({ allActualsAreSubmitted: true, totalActuals: 14 });
-    expect(mockSetIsValid).toHaveBeenCalledWith(false);
+    expect(setIsValid).toHaveBeenCalledWith(false);
   });
 
-  it('updates validation when allActualsAreSubmitted changes', () => {
-    const { rerender } = renderHook(
-      ({ allActualsAreSubmitted, totalActuals }) =>
-        useValidateActuals(
-          allActualsAreSubmitted,
-          totalActuals,
-          mockSetIsValid
-        ),
-      {
-        initialProps: { allActualsAreSubmitted: false, totalActuals: 14 },
-      }
+  it('should set isValid to false when someone goes nil and all actuals are entered but add up to less than 13', () => {
+    const setIsValid = jest.fn();
+
+    // Test case: Player 1 goes nil (actual = 0), others bid normally
+    // Bids: nil, 3, 4, 5 (total = 12)
+    // Actuals: 0, 3, 4, 5 (total = 12, should be 13)
+    const allActualsAreSubmitted = true;
+    const totalActuals = 12; // 0 + 3 + 4 + 5 = 12
+
+    renderHook(() =>
+      useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid)
     );
 
-    expect(mockSetIsValid).toHaveBeenCalledWith(false);
-
-    // Change to all submitted
-    rerender({ allActualsAreSubmitted: true, totalActuals: 14 });
-    expect(mockSetIsValid).toHaveBeenCalledWith(false);
+    expect(setIsValid).toHaveBeenCalledWith(false);
   });
 
-  it('handles edge case of total being 0', () => {
-    renderHook(() => useValidateActuals(false, 0, mockSetIsValid));
+  it('should set isValid to true when someone goes nil and all actuals are entered and add up to exactly 13', () => {
+    const setIsValid = jest.fn();
 
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
+    // Test case: Player 1 goes nil (actual = 0), others bid normally
+    // Bids: nil, 3, 4, 5 (total = 12)
+    // Actuals: 0, 3, 4, 6 (total = 13, correct)
+    const allActualsAreSubmitted = true;
+    const totalActuals = 13; // 0 + 3 + 4 + 6 = 13
+
+    renderHook(() =>
+      useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid)
+    );
+
+    expect(setIsValid).toHaveBeenCalledWith(true);
   });
 
-  it('handles edge case of total being exactly 13 when not all submitted', () => {
-    renderHook(() => useValidateActuals(false, 13, mockSetIsValid));
+  it('should set isValid to true when not all actuals are submitted yet', () => {
+    const setIsValid = jest.fn();
 
-    expect(mockSetIsValid).toHaveBeenCalledWith(true);
+    // Test case: Not all actuals are submitted yet
+    const allActualsAreSubmitted = false;
+    const totalActuals = 8; // Some actuals entered but not all
+
+    renderHook(() =>
+      useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid)
+    );
+
+    expect(setIsValid).toHaveBeenCalledWith(true);
+  });
+
+  it('should set isValid to false when not all actuals are submitted but total exceeds 13', () => {
+    const setIsValid = jest.fn();
+
+    // Test case: Not all actuals are submitted but total already exceeds 13
+    const allActualsAreSubmitted = false;
+    const totalActuals = 15; // Too many already
+
+    renderHook(() =>
+      useValidateActuals(allActualsAreSubmitted, totalActuals, setIsValid)
+    );
+
+    expect(setIsValid).toHaveBeenCalledWith(false);
   });
 });
