@@ -381,4 +381,69 @@ describe('ErrorModal Component', () => {
       expect(screen.queryByText('4*')).not.toBeInTheDocument();
     });
   });
+
+  describe('Nil scenarios with error modal', () => {
+    beforeEach(() => {
+      // Set required localStorage values used internally
+      window.localStorage.setItem('names', JSON.stringify(mockNames));
+      window.localStorage.setItem('nilScoringRule', JSON.stringify('blind'));
+    });
+
+    it('should show error modal when someone goes nil and all actuals are entered but total != 13', async () => {
+      const currentRound = {
+        team1BidsAndActuals: {
+          p1Bid: 'Nil',
+          p2Bid: '3',
+          p1Actual: 0,
+          p2Actual: '4',
+        },
+        team2BidsAndActuals: {
+          p1Bid: '4',
+          p2Bid: '5',
+          p1Actual: '5',
+          p2Actual: '5',
+        },
+      };
+
+      const contextValue = {
+        ...mockContextValue,
+        currentRound,
+        resetCurrentRound: jest.fn(),
+        setRoundHistory: jest.fn(),
+        setFirstDealerOrder: jest.fn(),
+        setDealerOverride: jest.fn(),
+        setCurrentRound: jest.fn(),
+        firstDealerOrder: [
+          'team1BidsAndActuals.p1Bid',
+          'team2BidsAndActuals.p1Bid',
+          'team1BidsAndActuals.p2Bid',
+          'team2BidsAndActuals.p2Bid',
+        ],
+        roundHistory: [],
+      };
+
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={currentRound}
+          errorMessage="The total amount of hands must always add up to 13. Yours totaled 14."
+        />,
+        contextValue
+      );
+
+      // The modal should render with the error text
+      await waitFor(() => {
+        expect(
+          screen.getByText(
+            /The total amount of hands must always add up to 13/i
+          )
+        ).toBeInTheDocument();
+      });
+    });
+  });
 });

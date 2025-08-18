@@ -25,12 +25,12 @@ function ActualSection({
   const isEditable = true;
 
   const team1Actuals = {
-    p1Actual: team1BidsAndActuals?.p1Actual || '',
-    p2Actual: team1BidsAndActuals?.p2Actual || '',
+    p1Actual: team1BidsAndActuals?.p1Actual ?? '',
+    p2Actual: team1BidsAndActuals?.p2Actual ?? '',
   };
   const team2Actuals = {
-    p1Actual: team2BidsAndActuals?.p1Actual || '',
-    p2Actual: team2BidsAndActuals?.p2Actual || '',
+    p1Actual: team2BidsAndActuals?.p1Actual ?? '',
+    p2Actual: team2BidsAndActuals?.p2Actual ?? '',
   };
 
   // Handle team total display logic
