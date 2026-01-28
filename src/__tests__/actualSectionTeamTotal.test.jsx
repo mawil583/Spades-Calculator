@@ -245,9 +245,14 @@ describe('ActualSection Team Total Button Behavior', () => {
       const team1Total = teamTotals[0];
       const team2Total = teamTotals[1];
 
-      expect(team1Total).toHaveStyle('border: 0.5px solid rgba(0, 0, 0, 0.3)');
+      expect(team1Total).toHaveStyle('border-width: 0.5px');
+      expect(team1Total).toHaveStyle('border-style: solid');
+      expect(team1Total).toHaveStyle('border-color: #ffc100');
       expect(team1Total).toHaveStyle('border-radius: 4px');
-      expect(team2Total).toHaveStyle('border: 0.5px solid rgba(0, 0, 0, 0.3)');
+
+      expect(team2Total).toHaveStyle('border-width: 0.5px');
+      expect(team2Total).toHaveStyle('border-style: solid');
+      expect(team2Total).toHaveStyle('border-color: #f06c9b');
       expect(team2Total).toHaveStyle('border-radius: 4px');
     });
 
@@ -277,9 +282,9 @@ describe('ActualSection Team Total Button Behavior', () => {
       const team1Total = teamTotals[0];
       const team2Total = teamTotals[1];
 
-      expect(team1Total).toHaveStyle('border: none');
+      expect(team1Total).toHaveStyle('border-style: none');
       expect(team1Total).toHaveStyle('border-radius: 0');
-      expect(team2Total).toHaveStyle('border: none');
+      expect(team2Total).toHaveStyle('border-style: none');
       expect(team2Total).toHaveStyle('border-radius: 0');
     });
   });
