@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { StateProvider } from '../../helpers/context/GlobalContext';
 import HomePage from '../../pages/HomePage';
 
 // Mock localStorage
@@ -47,7 +48,9 @@ const renderWithProviders = (component, initialEntries = ['/']) => {
 
   return render(
     <ChakraProvider>
-      <RouterProvider router={router} />
+      <StateProvider>
+        <RouterProvider router={router} />
+      </StateProvider>
     </ChakraProvider>
   );
 };

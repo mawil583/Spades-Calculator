@@ -1,4 +1,15 @@
 // Mock the toast hook before importing components
+import React from 'react';
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
+import { ChakraProvider } from '@chakra-ui/react';
+import { DownloadButton } from '../components/ui';
+
 const mockToast = jest.fn();
 
 // Mock the useToast hook
@@ -15,17 +26,6 @@ jest.mock('@chakra-ui/react', () => {
     useToast: () => mockToast,
   };
 });
-
-import React from 'react';
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { DownloadButton } from '../components/ui';
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {

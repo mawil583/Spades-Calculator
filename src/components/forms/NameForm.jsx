@@ -1,17 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import { Button, SimpleGrid, Center } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLocalStorage } from '../../helpers/utils/hooks';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { WarningModal } from '../modals';
+import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
 import { TeamNameInput, PlayerNameInput } from './';
 import { initialNames } from '../../helpers/utils/constants';
 
 function NameForm() {
   const navigate = useNavigate();
-
+  const { roundHistory, currentRound } = useContext(GlobalContext);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [names, setNames] = useLocalStorage('names', initialNames);
+
+  const hasGameData =
+    roundHistory.length > 0 ||
+    (currentRound &&
+      (Object.values(currentRound.team1BidsAndActuals).some(
+        isNotDefaultValue
+      ) ||
+        Object.values(currentRound.team2BidsAndActuals).some(
+          isNotDefaultValue
+        ))) ||
+    JSON.stringify(names) !== JSON.stringify(initialNames);
+
+  const handleContinue = () => {
+    navigate('/spades-calculator', { state: names });
+  };
+
+  const handleNewGame = () => {
+    setIsWarningModalOpen(true);
+  };
 
   const validationSchema = Yup.object({
     t1p1Name: Yup.string().required('Required'),
@@ -30,6 +53,7 @@ function NameForm() {
       t2p2Name: names.t2p2Name,
     },
     validationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
       setNames(values);
       navigate('/spades-calculator', { state: values });
@@ -60,7 +84,13 @@ function NameForm() {
   }, [formik.values, formik, setNames, names]);
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <>
+      <WarningModal
+        isOpen={isWarningModalOpen}
+        setIsModalOpen={setIsWarningModalOpen}
+        resetNames={setNames}
+      />
+      <form onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={2}>
         <TeamNameInput
           id="team1Name"
@@ -117,22 +147,52 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
       </SimpleGrid>
-      <Center>
-        <Button
-          variant="outline"
-          size="md"
-          height="40px"
-          width="200px"
-          border="2px"
-          // borderColor='green.500'
-          type="submit"
-          my={4}
-          data-cy="startButton"
-        >
-          Start
-        </Button>
-      </Center>
+        {hasGameData ? (
+          <SimpleGrid columns={2} spacing={4} my={4}>
+            <Button
+              variant="outline"
+              size="md"
+              height="40px"
+              width="100%"
+              border="2px"
+              onClick={handleContinue}
+              data-cy="continueButton"
+              type="button"
+            >
+              Continue
+            </Button>
+            <Button
+              variant="outline"
+              size="md"
+              height="40px"
+              width="100%"
+              border="2px"
+              onClick={handleNewGame}
+              data-cy="newGameButton"
+              type="button"
+            >
+              New Game
+            </Button>
+          </SimpleGrid>
+        ) : (
+          <Center>
+            <Button
+              variant="outline"
+              size="md"
+              height="40px"
+              width="200px"
+              border="2px"
+              // borderColor='green.500'
+              type="submit"
+              my={4}
+              data-cy="startButton"
+            >
+              Start
+            </Button>
+          </Center>
+        )}
     </form>
+    </>
   );
 }
 

@@ -48,7 +48,6 @@
     "preview": "vite preview",
     "unit": "vitest run",
     "unit:watch": "vitest",
-
     "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
     "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
     "lint:staged": "lint-staged",
@@ -77,6 +76,7 @@
     "browserstack-local": "^1.5.8",
     "chai": "^5.2.1",
     "cypress": "^14.5.4",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",

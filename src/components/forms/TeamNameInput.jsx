@@ -10,7 +10,8 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
   return (
     <div>
       <Editable
-        defaultValue={teamName}
+        value={teamName}
+        onChange={(nextValue) => handleChange({ target: { id, value: nextValue } })}
         mt={2}
         fontSize="lg"
         fontWeight="bold"

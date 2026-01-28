@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import importPlugin from 'eslint-plugin-import';
 
 export default [
   js.configs.recommended,
@@ -43,7 +44,8 @@ export default [
     },
     plugins: {
       react: reactPlugin,
-      'react-hooks': reactHooksPlugin
+      'react-hooks': reactHooksPlugin,
+      import: importPlugin,
     },
     settings: {
       react: {
@@ -59,6 +61,7 @@ export default [
       'no-case-declarations': 'warn',
       'no-prototype-builtins': 'warn',
       'react/no-unescaped-entities': 'warn',
+      'import/first': 'warn',
     }
   },
   {

@@ -9,7 +9,7 @@ import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { rotateArr } from '../../helpers/utils/helperFunctions';
 import { DataWarningQuestion, NewPlayerQuestion } from '../forms';
 
-function WarningModal({ isOpen, setIsModalOpen }) {
+function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
   const navigate = useNavigate();
   const {
     resetCurrentRound,
@@ -58,12 +58,17 @@ function WarningModal({ isOpen, setIsModalOpen }) {
     resetCurrentRound();
     setRoundHistory([]);
     setIsModalOpen(false);
+    navigate('/spades-calculator');
   };
 
   const onDifferentTeams = () => {
     setRoundHistory([]);
     resetCurrentRound();
-    localStorage.setItem('names', JSON.stringify(initialNames));
+    if (resetNames) {
+      resetNames(initialNames);
+    } else {
+      localStorage.setItem('names', JSON.stringify(initialNames));
+    }
     setFirstDealerOrder(initialFirstDealerOrder);
     setIsModalOpen(false);
     navigate('/');

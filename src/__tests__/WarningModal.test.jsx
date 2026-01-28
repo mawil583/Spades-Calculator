@@ -1,4 +1,5 @@
 import React from 'react';
+import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -15,6 +16,18 @@ const mockContextValue = {
   roundHistory: [],
 };
 
+const { mockedNavigate } = vi.hoisted(() => {
+  return { mockedNavigate: vi.fn() };
+});
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockedNavigate,
+  };
+});
+
 const renderWithProviders = (component, contextValue = mockContextValue) => {
   return render(
     <BrowserRouter>
@@ -30,6 +43,7 @@ const renderWithProviders = (component, contextValue = mockContextValue) => {
 describe('WarningModal', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedNavigate.mockClear();
     // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
@@ -114,6 +128,7 @@ describe('WarningModal', () => {
       );
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/');
     });
 
     it('should handle "Same Teams" selection', () => {
@@ -133,6 +148,7 @@ describe('WarningModal', () => {
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
   });
 
@@ -230,6 +246,7 @@ describe('WarningModal', () => {
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
 
     it('should handle "Different Teams" selection with round history', () => {
@@ -287,6 +304,7 @@ describe('WarningModal', () => {
         })
       );
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/');
     });
   });
 
