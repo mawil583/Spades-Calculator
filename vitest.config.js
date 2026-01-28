@@ -8,13 +8,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/setupTests.js'],
     globals: true,
-    deps: {
-      optimizer: {
-        web: {
-          include: ['@jest/globals'],
-        },
-      },
-    },
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
     exclude: [
       'node_modules/**',
