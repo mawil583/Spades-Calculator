@@ -1,9 +1,6 @@
 --High Priority--
 Fix automatic update notification system - When a new deployment is pushed, users now see a notification allowing them to update immediately without closing all tabs. PWA doesn't seem to work across devices.
 make sure that the dealer tag also rotates once between games. Do this in TDD
-get rid of React icon on mobile browser tab
-fix iTerm issue where there are multiple greyed boxes per pane
-fix iTerm issue where autocomplete suggestions isn't working
 consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 Make the 'new game' modal match the color theme of the buttonGrid modal.
 Translate my app into vanilla CSS with BEM and scoped CSS
