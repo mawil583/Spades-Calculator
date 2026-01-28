@@ -1,9 +1,14 @@
 --High Priority--
-redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
+Fix automatic update notification system - When a new deployment is pushed, users now see a notification allowing them to update immediately without closing all tabs. PWA doesn't seem to work across devices.
+make sure that the dealer tag also rotates once between games. Do this in TDD
 get rid of React icon on mobile browser tab
+consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
+Make the 'new game' modal match the color theme of the buttonGrid modal.
+Translate my app into vanilla CSS with BEM and scoped CSS
+In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
+redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 
 --Backlog--
-Fix automatic update notification system - When a new deployment is pushed, users now see a notification allowing them to update immediately without closing all tabs. PWA doesn't seem to work across devices.
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput
@@ -52,7 +57,6 @@ improve visual design (CSS)
 ChakraUI gives <Modal> a white background but only when their default initialColorMode is 'light'. When it's in dark mode, it takes my background color from where I defined it within my extendTheme styles. Why does it only use my default styling when inside dark mode? If user were to go into their localStorage and change the value to 'light', then we would have a CSS bug from within the modal. We would also have CSS bug from where people type in the input (background would turn white). They do have a _dark property you can throw into an extend theme as a workaround: https://chakra-ui.com/docs/components/button/theming
 In settings, the underline isn't the same color for teammate 1 and teammate 2
 implement accordions for past rounds, except for the most recent past round. That one should always be open because it's the most common past round to inquire about
-consider adding more info to RoundSummary: [game score at start of round (but find a way to make it shorter), game score at end of round, bags taken, total bags at current round]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
 make sure that the RoundSummary for the most recent past round is fully within view on all mobile devices
 make layout responsive for tablet/desktop usage
 make ActualsSection conditional. It should only show when all bids are entered. It should also animate downwards.
