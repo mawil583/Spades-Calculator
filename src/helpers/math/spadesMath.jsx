@@ -15,8 +15,10 @@ export function calculateRoundScore(
   nilSetting = HELPS_TEAM_BID
 ) {
   const someoneWentNil = isTypeNil(bid1) || isTypeNil(bid2);
-  const teamBid = parseInt(bid1) + parseInt(bid2);
-  const teamActual = parseInt(actual1) + parseInt(actual2);
+  const teamBid =
+    convertStringInputToNum(bid1) + convertStringInputToNum(bid2);
+  const teamActual =
+    convertStringInputToNum(actual1) + convertStringInputToNum(actual2);
   const score = someoneWentNil
     ? nilTeamRoundScore(bid1, bid2, actual1, actual2, nilSetting)
     : teamRoundScore(teamBid, teamActual);
@@ -232,8 +234,8 @@ export function calculateNilTeamRoundBags(
 
 // only gets called if HELPS_TEAM_BID setting
 export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
-  const player1AchievedNil = parseInt(actual1) === 0;
-  const player2AchievedNil = parseInt(actual2) === 0;
+  const player1AchievedNil = convertStringInputToNum(actual1) === 0;
+  const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
     (player1AchievedNil && !player2AchievedNil) ||
     (!player1AchievedNil && player2AchievedNil);
@@ -244,13 +246,14 @@ export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
     };
   } else if (onlyOnePlayerAchievedNil) {
     const actualFromPlayerWhoFailedNil = player1AchievedNil ? actual2 : actual1;
-    const bags = parseInt(actualFromPlayerWhoFailedNil);
+    const bags = convertStringInputToNum(actualFromPlayerWhoFailedNil);
     return {
       score: 100 + -100 + bags,
       bags,
     };
   } else {
-    const bags = parseInt(actual1) + parseInt(actual2);
+    const bags =
+      convertStringInputToNum(actual1) + convertStringInputToNum(actual2);
     return {
       score: -100 + -100 + bags,
       bags,
@@ -279,19 +282,21 @@ export function calculateScoreForDualNilWithOneBlind(
       bags: 0,
     };
   } else if (nilPlayerAchievedNil && !blindNilPlayerAchievedNil) {
-    const bags = parseInt(blindNilPlayerActual);
+    const bags = convertStringInputToNum(blindNilPlayerActual);
     return {
       score: 100 + -200 + bags,
       bags,
     };
   } else if (!nilPlayerAchievedNil && blindNilPlayerAchievedNil) {
-    const bags = parseInt(nilPlayerAchievedNil);
+    const bags = convertStringInputToNum(nilPlayerActual);
     return {
       score: -100 + 200 + bags,
       bags,
     };
   } else {
-    const bags = parseInt(nilPlayerActual) + parseInt(blindNilPlayerActual);
+    const bags =
+      convertStringInputToNum(nilPlayerActual) +
+      convertStringInputToNum(blindNilPlayerActual);
     return {
       score: -100 + -200 + bags,
       bags,
@@ -301,8 +306,8 @@ export function calculateScoreForDualNilWithOneBlind(
 
 // only gets called if HELPS_TEAM_BID setting
 export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
-  const player1AchievedNil = parseInt(actual1) === 0;
-  const player2AchievedNil = parseInt(actual2) === 0;
+  const player1AchievedNil = convertStringInputToNum(actual1) === 0;
+  const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
     (player1AchievedNil && !player2AchievedNil) ||
     (!player1AchievedNil && player2AchievedNil);
@@ -313,13 +318,14 @@ export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
     };
   } else if (onlyOnePlayerAchievedNil) {
     const actualFromPlayerWhoFailedNil = player1AchievedNil ? actual2 : actual1;
-    const bags = parseInt(actualFromPlayerWhoFailedNil);
+    const bags = convertStringInputToNum(actualFromPlayerWhoFailedNil);
     return {
       score: 200 + -200 + bags,
       bags,
     };
   } else {
-    const bags = parseInt(actual1) + parseInt(actual2);
+    const bags =
+      convertStringInputToNum(actual1) + convertStringInputToNum(actual2);
     return {
       score: -200 + -200 + bags,
       bags,
@@ -341,16 +347,17 @@ export function calculateTeamRoundScoreWithOneNilBidder(
     actual2
   );
   const wasBlind = nilPlayerBid === BLIND_NIL;
-  const achievedNil = parseInt(nilPlayerActual) === 0;
-  const totalActuals = parseInt(actual1) + parseInt(actual2);
-  const didntGetSet = totalActuals >= parseInt(nonNilPlayerBid);
+  const achievedNil = convertStringInputToNum(nilPlayerActual) === 0;
+  const totalActuals =
+    convertStringInputToNum(actual1) + convertStringInputToNum(actual2);
+  const didntGetSet = totalActuals >= convertStringInputToNum(nonNilPlayerBid);
   const bags =
-    totalActuals > parseInt(nonNilPlayerBid)
-      ? totalActuals - parseInt(nonNilPlayerBid)
+    totalActuals > convertStringInputToNum(nonNilPlayerBid)
+      ? totalActuals - convertStringInputToNum(nonNilPlayerBid)
       : 0;
   const nonNilPlayerScore = didntGetSet
-    ? parseInt(nonNilPlayerBid) * 10 + bags
-    : parseInt(-nonNilPlayerBid) * 10;
+    ? convertStringInputToNum(nonNilPlayerBid) * 10 + bags
+    : -convertStringInputToNum(nonNilPlayerBid) * 10;
 
   if (achievedNil && didntGetSet) {
     return {

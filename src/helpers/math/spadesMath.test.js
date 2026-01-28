@@ -386,3 +386,20 @@ test('calculateTeamScoreFromRoundHistory tolerates null entries in history', () 
   const result = calculateTeamScoreFromRoundHistory(mixedHistory, TEAM1);
   expect(result).deep.equals(expected);
 });
+
+describe('NaN Bug in calculateRoundScore', () => {
+  test('should not return NaN when bids or actuals are empty strings', () => {
+    // This replicates the case where a round is initialized with empty strings
+    const result = calculateRoundScore('', '', '', '');
+    expect(result.score).to.not.be.NaN;
+    expect(result.bags).to.not.be.NaN;
+    expect(result.score).to.equal(0);
+    expect(result.bags).to.equal(0);
+  });
+
+  test('should not return NaN when some actuals are empty strings', () => {
+    const result = calculateRoundScore('3', '4', '', '2');
+    expect(result.score).to.not.be.NaN;
+    expect(result.bags).to.not.be.NaN;
+  });
+});

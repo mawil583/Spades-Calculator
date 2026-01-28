@@ -129,6 +129,7 @@ function TeamInputHeading({
         }}
       >
         <Heading
+          data-cy="team1Total"
           size="lg"
           style={{
             position: 'absolute',
@@ -149,6 +150,7 @@ function TeamInputHeading({
           {title}
         </Heading>
         <Heading
+          data-cy="team2Total"
           size="lg"
           style={{
             position: 'absolute',

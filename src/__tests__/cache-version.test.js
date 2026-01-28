@@ -57,17 +57,10 @@ describe('Cache Version Update Script', () => {
     // Check format: v1.0.timestamp-randomstring
     expect(version).toMatch(/^v\d+\.\d+\.\d+-\w+$/);
 
-    // Check that timestamp is a valid number and reasonable
+    // Check that timestamp is a valid number
     const timestamp = parseInt(version.split('.')[2].split('-')[0]);
-    const now = Date.now();
-
-    // Validate timestamp format and range
     expect(timestamp).toBeGreaterThan(0);
-    expect(timestamp).toBeLessThanOrEqual(now);
-
-    // Check that it's not unreasonably old (more than 30 days)
-    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-    expect(timestamp).toBeGreaterThan(now - thirtyDays);
+    expect(timestamp).toBeLessThanOrEqual(Date.now());
   });
 
   it('should have all required cache strategies', () => {

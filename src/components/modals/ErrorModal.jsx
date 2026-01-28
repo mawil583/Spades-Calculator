@@ -18,17 +18,16 @@ function ErrorModal({
 }) {
   const { currentRound: contextCurrentRound } = useContext(GlobalContext);
 
-  // Use context currentRound if available, otherwise fall back to prop
-  const currentRound = contextCurrentRound || propCurrentRound;
-
+  const currentRound = propCurrentRound || contextCurrentRound;
+  
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const team1Actuals = {
-    p1Actual: team1BidsAndActuals?.p1Actual || '',
-    p2Actual: team1BidsAndActuals?.p2Actual || '',
+    p1Actual: team1BidsAndActuals?.p1Actual ?? '',
+    p2Actual: team1BidsAndActuals?.p2Actual ?? '',
   };
   const team2Actuals = {
-    p1Actual: team2BidsAndActuals?.p1Actual || '',
-    p2Actual: team2BidsAndActuals?.p2Actual || '',
+    p1Actual: team2BidsAndActuals?.p1Actual ?? '',
+    p2Actual: team2BidsAndActuals?.p2Actual ?? '',
   };
   const team1ActualTotal = addInputs(
     team1Actuals.p1Actual,
@@ -63,7 +62,7 @@ function ErrorModal({
       <ModalOverlay />
       <ModalContent>
         <div
-          data-cy="actualSection"
+          data-cy="errorModalActualSection"
           data-testid="actualSection"
           style={{ paddingTop: '20px' }}
         >

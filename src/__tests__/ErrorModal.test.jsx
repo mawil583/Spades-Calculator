@@ -446,4 +446,89 @@ describe('ErrorModal Component', () => {
       });
     });
   });
+
+  describe('Bug Reproduction: ErrorModal 0 actuals and data prioritization', () => {
+    it('should display "0" in the heading when actual is numeric 0', () => {
+      const mockCurrentRoundWithZeros = {
+        team1BidsAndActuals: {
+          p1Bid: '2',
+          p2Bid: '5',
+          p1Actual: 0,
+          p2Actual: 0,
+        },
+        team2BidsAndActuals: {
+          p1Bid: '4',
+          p2Bid: '1',
+          p1Actual: 0,
+          p2Actual: 0,
+        },
+      };
+
+      const contextValue = {
+        ...mockContextValue,
+        currentRound: mockCurrentRoundWithZeros,
+      };
+
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={mockCurrentRoundWithZeros}
+          errorMessage="Error message"
+        />,
+        contextValue
+      );
+
+      // In ErrorModal, TeamInputHeading is used which renders the totals.
+      // If p1Actual and p2Actual are 0, team1Total should be 0.
+      const teamTotals = screen.getAllByText('0');
+      // We expect at least 2 zeros for the team totals in the header (if they are 0)
+      expect(teamTotals.length).toBeGreaterThanOrEqual(2);
+    });
+
+    it('should display numeric values correctly even when the bug prioritized context incorrectly', () => {
+      const roundWithValues = {
+        team1BidsAndActuals: {
+          p1Bid: '2',
+          p2Bid: '5',
+          p1Actual: 4,
+          p2Actual: 3,
+        },
+        team2BidsAndActuals: {
+          p1Bid: '4',
+          p2Bid: '1',
+          p1Actual: 3,
+          p2Actual: 2,
+        },
+      };
+
+      // Mock context with EMPTY values to simulate the bug scenario
+      const emptyRound = {
+        team1BidsAndActuals: { p1Actual: '', p2Actual: '' },
+        team2BidsAndActuals: { p1Actual: '', p2Actual: '' },
+      };
+
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={false}
+          roundHistory={[]}
+          currentRound={roundWithValues} // This should be prioritized!
+          errorMessage="Error message"
+        />,
+        { ...mockContextValue, currentRound: emptyRound }
+      );
+
+      // Team 1 Total: 4+3=7. Team 2 Total: 3+2=5.
+      expect(screen.getByText('7')).toBeInTheDocument();
+      expect(screen.getByText('5')).toBeInTheDocument();
+    });
+  });
 });
