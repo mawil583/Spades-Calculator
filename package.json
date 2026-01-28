@@ -33,6 +33,7 @@
     "workbox-precaching": "^7.3.0",
     "workbox-routing": "^7.3.0",
     "workbox-strategies": "^7.3.0",
+    "workbox-window": "^7.4.0",
     "yup": "^1.7.0"
   },
   "scripts": {
@@ -43,8 +44,7 @@
     "e2e": "ELECTRON_RUN_AS_NODE= BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start:headless http://localhost:5173 'cypress run --config video=false'",
     "e2e:open": "ELECTRON_RUN_AS_NODE= BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start:headless http://localhost:5173 'cypress open'",
     "e2e:headless": "ELECTRON_RUN_AS_NODE= BROWSERSLIST_IGNORE_OLD_DATA=1 start-server-and-test start:headless http://localhost:5173 'cypress run --config video=false --headless'",
-    "prebuild": "node scripts/update-cache-version.js",
-    "build": "npm run prebuild && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "unit": "vitest run",
     "unit:watch": "vitest",
