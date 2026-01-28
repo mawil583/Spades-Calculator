@@ -74,7 +74,7 @@ function ButtonGrid({
               onClick={() => {
                 onSelect(buttonVal);
               }}
-              data-cy="bidSelectionButton"
+              data-cy={`${type.toLowerCase()}SelectionButton`}
             >
               {buttonVal}
             </Button>

@@ -98,7 +98,8 @@ function TeamInputHeading({
         playerName="Team 1"
         isOpen={isTeam1ModalOpen}
         setIsModalOpen={setIsTeam1ModalOpen}
-        type="Team Total"
+        type="Actual"
+        typeLabel="Actuals"
         fieldToUpdate="team1Total"
         currentRound={currentRound}
         roundHistory={roundHistory}
@@ -112,7 +113,8 @@ function TeamInputHeading({
         playerName="Team 2"
         isOpen={isTeam2ModalOpen}
         setIsModalOpen={setIsTeam2ModalOpen}
-        type="Team Total"
+        type="Actual"
+        typeLabel="Actuals"
         fieldToUpdate="team2Total"
         currentRound={currentRound}
         roundHistory={roundHistory}

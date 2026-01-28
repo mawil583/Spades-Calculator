@@ -87,13 +87,31 @@ describe('ButtonGrid Component', () => {
       }
     });
 
-    it('should have correct data-cy attributes on buttons', () => {
-      renderWithProviders(<ButtonGrid {...defaultProps} />, mockContextValue);
+    it('should have correct data-cy attributes on buttons based on type', () => {
+      // Test Bid type
+      const { rerender } = renderWithProviders(
+        <ButtonGrid {...defaultProps} type="Bid" />,
+        mockContextValue
+      );
 
-      const buttons = screen.getAllByRole('button');
+      let buttons = screen.getAllByRole('button');
       expect(buttons.length).toBeGreaterThan(0);
       buttons.forEach((button) => {
         expect(button).toHaveAttribute('data-cy', 'bidSelectionButton');
+      });
+
+      // Test Actual type
+      rerender(
+        <ChakraProvider>
+          <GlobalContext.Provider value={mockContextValue}>
+            <ButtonGrid {...defaultProps} type="Actual" />
+          </GlobalContext.Provider>
+        </ChakraProvider>
+      );
+
+      buttons = screen.getAllByRole('button');
+      buttons.forEach((button) => {
+        expect(button).toHaveAttribute('data-cy', 'actualSelectionButton');
       });
     });
   });

@@ -38,13 +38,13 @@ describe('Bug Reproduction E2E', () => {
     cy.get('[data-cy="actualSection"]').within(() => {
         cy.get('[data-cy="team1Total"]').click();
     });
-    cy.get('[data-cy="bidSelectionButton"]').contains('7').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('7').click();
 
     // 3. Use Team Actuals button to enter 5 for M Squared
     cy.get('[data-cy="actualSection"]').within(() => {
         cy.get('[data-cy="team2Total"]').click();
     });
-    cy.get('[data-cy="bidSelectionButton"]').contains('5').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('5').click();
 
     // 4. Verify ErrorModal shows up (total is 12, should be 13)
     cy.get('.chakra-modal__content').should('be.visible');
@@ -66,7 +66,7 @@ describe('Bug Reproduction E2E', () => {
     });
     // Wait for the InputModal to appear
     cy.get('[data-cy="bidSelectionModal"]').should('be.visible');
-    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('3').click();
 
     // 6. Round 1 should be in history, and we should be on Round 2
     cy.get('[data-cy="round"]').should('have.length.at.least', 1);
@@ -97,13 +97,13 @@ describe('Bug Reproduction E2E', () => {
     cy.get('[data-cy="actualSection"]').within(() => {
         cy.get('[data-cy="team1Total"]').click();
     });
-    cy.get('[data-cy="bidSelectionButton"]').contains('7').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('7').click();
 
     // 3. Enter 6 for Team 2 to make total 13 and complete round
     cy.get('[data-cy="actualSection"]').within(() => {
         cy.get('[data-cy="team2Total"]').click();
     });
-    cy.get('[data-cy="bidSelectionButton"]').contains('6').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('6').click();
 
     // 4. Round 1 should be in history with asterisks
     cy.get('[data-cy="round"]').should('have.length.at.least', 1);
@@ -130,7 +130,7 @@ describe('Bug Reproduction E2E', () => {
     // Wait for the InputModal to appear
     cy.get('[data-cy="bidSelectionModal"]').should('be.visible');
     // Reselect 4 manually
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
     // Wait for the UI to update
     cy.wait(500);
 

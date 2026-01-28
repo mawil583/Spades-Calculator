@@ -51,17 +51,17 @@ describe('Dealer Rotation Flow with Override', () => {
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('3').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('2').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
 
     // Round 2 should now be visible
     cy.contains('Round 2').should('be.visible');
@@ -109,17 +109,17 @@ describe('Dealer Rotation Flow with Override', () => {
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('2').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('2').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('3').click();
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
 
     // Round 3 should now be visible
     cy.contains('Round 3').should('be.visible');
@@ -151,17 +151,17 @@ describe('Dealer Rotation Flow with Override', () => {
 
     // Team 1 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Alice's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('1').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('1').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Bob's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('5').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('5').click();
 
     // Team 2 actuals
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Charlie's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('3').click();
 
     cy.get('[data-cy="actualButton"]').eq(0).click(); // Diana's actual
-    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="actualSelectionButton"]').contains('4').click();
 
     // Round 4 should now be visible
     cy.contains('Round 4').should('be.visible');

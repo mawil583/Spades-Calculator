@@ -17,6 +17,7 @@ function InputModal({
   isOpen,
   setIsModalOpen,
   type,
+  typeLabel,
   fieldToUpdate,
   currentRound,
   roundHistory,
@@ -38,7 +39,7 @@ function InputModal({
             data-testid="bidSelectionModal"
           >
             <ModalHeader>
-              Select {playerName}&apos;s {type}
+              Select {playerName}&apos;s {typeLabel || type}
             </ModalHeader>
             <ModalCloseButton style={{ color: '#ebf5ee' }} />
             <ModalBody style={{ padding: '5px' }}>
