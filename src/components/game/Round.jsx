@@ -24,9 +24,6 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   const roundAtIndex = isCurrent ? null : roundHistory?.[roundIndex] ?? null;
   const roundInputs = isCurrent ? currentRound : roundAtIndex;
 
-  // State to control the animation
-  const [showActuals, setShowActuals] = useState(false);
-
   // Always call hooks before any early returns
   useIndependentTeamScoring(
     currentRound,
@@ -47,45 +44,32 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
     : ['', '', '', '']; // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
 
-  // Reset showActuals when roundIndex changes (new round created) or when roundHistory becomes empty (new game)
-  useEffect(() => {
-    setShowActuals(false);
-  }, [roundIndex, roundHistory.length]);
+  // State to control the animation for the current round
+  const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
 
-  // Reset showActuals when currentRound is reset (new game with same teams)
-  useEffect(() => {
-    if (isCurrent && currentRound) {
-      const hasAnyBids = [
-        currentRound.team1BidsAndActuals.p1Bid,
-        currentRound.team1BidsAndActuals.p2Bid,
-        currentRound.team2BidsAndActuals.p1Bid,
-        currentRound.team2BidsAndActuals.p2Bid,
-      ].some(isNotDefaultValue);
+  // Derive visibility:
+  // 1. For past rounds, show if all bids are entered.
+  // 2. For current round, use internal state (which has the animation delay).
+  const showActuals = (!isCurrent && allBidsEntered) || isActualsSectionVisible;
 
-      if (!hasAnyBids && showActuals) {
-        setShowActuals(false);
-      }
+  // Reset animation state if we're in the current round and bids are cleared
+  if (isCurrent && isActualsSectionVisible) {
+    const hasAnyBids = roundInputBids.some(isNotDefaultValue);
+    if (!hasAnyBids) {
+      setIsActualsSectionVisible(false);
     }
-  }, [currentRound, isCurrent, showActuals]);
+  }
 
+  // Handle the triggered animation with delay when all bids are entered in current round
   useEffect(() => {
-    if (allBidsEntered && isCurrent && !showActuals) {
+    if (isCurrent && allBidsEntered && !isActualsSectionVisible) {
       // Only trigger animation when transitioning from incomplete to complete
-      // Small delay to ensure the animation triggers after the last bid is entered
       const timer = setTimeout(() => {
-        setShowActuals(true);
+        setIsActualsSectionVisible(true);
       }, 100);
       return () => clearTimeout(timer);
     }
-    // Don't hide actuals once they're shown - this prevents contraction animations
-  }, [allBidsEntered, isCurrent, showActuals]);
-
-  // For past rounds, always show actuals
-  useEffect(() => {
-    if (!isCurrent && allBidsEntered) {
-      setShowActuals(true);
-    }
-  }, [isCurrent, allBidsEntered]);
+  }, [allBidsEntered, isCurrent, isActualsSectionVisible]);
 
   // If this is a past round and the round data is missing or malformed, skip rendering this round
   if (!isCurrent) {

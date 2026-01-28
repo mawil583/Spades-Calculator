@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
 import {
@@ -20,35 +20,28 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
   } = useContext(GlobalContext);
   const hasRoundHistory = roundHistory.length > 0;
 
-  const [isDataWarningQuestionVisible, setIsDataWarningQuestionVisible] =
-    useState(false);
-  const [isNewPlayerQuestionVisible, setIsNewPlayerQuestionVisible] =
-    useState(false);
+  // State to track if the user has clicked "Continue" on the data warning
+  const [hasClickedContinue, setHasClickedContinue] = useState(false);
+  const [previousIsOpenValue, setPreviousIsOpenValue] = useState(isOpen);
 
-  // Reset modal state when it opens or closes
-  useEffect(() => {
-    if (isOpen) {
-      if (hasRoundHistory) {
-        setIsDataWarningQuestionVisible(true);
-        setIsNewPlayerQuestionVisible(false);
-      } else {
-        setIsDataWarningQuestionVisible(false);
-        setIsNewPlayerQuestionVisible(true);
-      }
-    } else {
-      // Reset state when modal closes
-      setIsDataWarningQuestionVisible(false);
-      setIsNewPlayerQuestionVisible(false);
+  // Derived visibility state
+  const showDataWarning = isOpen && hasRoundHistory && !hasClickedContinue;
+  const showNewPlayer = isOpen && (!hasRoundHistory || hasClickedContinue);
+
+  // Adjust state during render when isOpen changes
+  if (isOpen !== previousIsOpenValue) {
+    setPreviousIsOpenValue(isOpen);
+    if (!isOpen) {
+      setHasClickedContinue(false);
     }
-  }, [isOpen, hasRoundHistory]);
+  }
 
   const onCancel = () => {
     setIsModalOpen(false);
   };
 
   const onContinue = () => {
-    setIsDataWarningQuestionVisible(false);
-    setIsNewPlayerQuestionVisible(true);
+    setHasClickedContinue(true);
   };
 
   const onSameTeams = () => {
@@ -86,10 +79,10 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
     >
       <ModalOverlay />
       <ModalContent>
-        {isDataWarningQuestionVisible && (
+        {showDataWarning && (
           <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
         )}
-        {isNewPlayerQuestionVisible && (
+        {showNewPlayer && (
           <NewPlayerQuestion
             onDifferentTeams={onDifferentTeams}
             onSameTeams={onSameTeams}

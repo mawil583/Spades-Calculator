@@ -11,24 +11,26 @@ function Rounds() {
     roundHistory.length
   );
 
-  // Detect when a round is completed (roundHistory length increases)
-  useEffect(() => {
+  // Adjust state during render when roundHistory length changes
+  if (roundHistory.length !== previousRoundHistoryLength) {
     if (roundHistory.length > previousRoundHistoryLength) {
-      // A round was just completed - start the animation sequence
       setIsCompleting(true);
       setShowNewRound(false);
+    }
+    setPreviousRoundHistoryLength(roundHistory.length);
+  }
 
-      // After the slide-down animation completes, show the new round
+  // Handle the completion of the animation sequence
+  useEffect(() => {
+    if (isCompleting) {
       const timer = setTimeout(() => {
         setShowNewRound(true);
         setIsCompleting(false);
-      }, 600); // Slightly shorter than the slide animation
+      }, 600);
 
       return () => clearTimeout(timer);
     }
-
-    setPreviousRoundHistoryLength(roundHistory.length);
-  }, [roundHistory.length, previousRoundHistoryLength]);
+  }, [isCompleting]);
 
   return (
     <div style={{ paddingBottom: '40px' }}>
