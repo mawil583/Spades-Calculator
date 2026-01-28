@@ -75,7 +75,7 @@
     "@vitejs/plugin-react": "^5.0.0",
     "browserstack-local": "^1.5.8",
     "chai": "^6.2.2",
-    "cypress": "^14.5.4",
+    "cypress": "^15.9.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
