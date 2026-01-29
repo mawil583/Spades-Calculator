@@ -1,10 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  DialogRoot,
-  DialogContent,
-  DialogCloseTrigger,
-} from '../ui/dialog';
+import { AppModal } from '../ui';
 import {
   initialNames,
   initialFirstDealerOrder,
@@ -73,26 +69,22 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
   };
 
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={(e) => setIsModalOpen(e.open)}
+    <AppModal
+      isOpen={isOpen}
+      onClose={setIsModalOpen}
+      contentStyle={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+      contentProps={{ 'data-testid': 'warning-modal' }}
     >
-      <DialogContent 
-        style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
-        data-testid="warning-modal"
-      >
-        <DialogCloseTrigger />
-        {showDataWarning && (
-          <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
-        )}
-        {showNewPlayer && (
-          <NewPlayerQuestion
-            onDifferentTeams={onDifferentTeams}
-            onSameTeams={onSameTeams}
-          />
-        )}
-      </DialogContent>
-    </DialogRoot>
+      {showDataWarning && (
+        <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
+      )}
+      {showNewPlayer && (
+        <NewPlayerQuestion
+          onDifferentTeams={onDifferentTeams}
+          onSameTeams={onSameTeams}
+        />
+      )}
+    </AppModal>
   );
 }
 

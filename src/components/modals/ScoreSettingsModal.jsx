@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  DialogRoot,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogCloseTrigger,
-} from '../ui/dialog';
+import { AppModal } from '../ui';
 import { SettingDescription, SettingExample } from '../game';
 import { calculateRoundScore } from '../../helpers/math/spadesMath';
 import {
@@ -53,39 +47,37 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
 
   return (
     <>
-    <DialogRoot open={isOpen} onOpenChange={(e) => setIsModalOpen(e.open)}>
-      <DialogContent>
-        <DialogHeader>Score Settings</DialogHeader>
-        <DialogCloseTrigger />
-        <DialogBody style={{ padding: '5px' }}>
-            {sections.map((section, idx) => (
-              <div key={idx} style={{ marginBottom: '12px' }}>
-                <SettingDescription title={section.title} desc={section.desc} />
-                {section.examples.map((ex, j) => {
-                  const result = calculateRoundScore(
-                    ex.p1Bid,
-                    ex.p2Bid,
-                    ex.p1Actual,
-                    ex.p2Actual,
-                    section.nilSetting
-                  );
-                  return (
-                    <SettingExample
-                      key={`${idx}-${j}`}
-                      p1Bid={ex.p1Bid}
-                      p1Actual={ex.p1Actual}
-                      p2Bid={ex.p2Bid}
-                      p2Actual={ex.p2Actual}
-                      score={result.score}
-                      bags={result.bags}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-        </DialogBody>
-      </DialogContent>
-    </DialogRoot>
+    <AppModal
+      isOpen={isOpen}
+      onClose={setIsModalOpen}
+      title="Score Settings"
+    >
+      {sections.map((section, idx) => (
+        <div key={idx} style={{ marginBottom: '12px' }}>
+          <SettingDescription title={section.title} desc={section.desc} />
+          {section.examples.map((ex, j) => {
+            const result = calculateRoundScore(
+              ex.p1Bid,
+              ex.p2Bid,
+              ex.p1Actual,
+              ex.p2Actual,
+              section.nilSetting
+            );
+            return (
+              <SettingExample
+                key={`${idx}-${j}`}
+                p1Bid={ex.p1Bid}
+                p1Actual={ex.p1Actual}
+                p2Bid={ex.p2Bid}
+                p2Actual={ex.p2Actual}
+                score={result.score}
+                bags={result.bags}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </AppModal>
     </>
   );
 }

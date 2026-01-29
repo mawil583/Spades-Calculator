@@ -1,5 +1,6 @@
 export { default as InstallPrompt } from './InstallPrompt';
 export { default as DownloadButton } from './DownloadButton';
+export { default as AppModal } from './AppModal';
 export { default as DealerTag } from './DealerTag';
 export { default as Navbar } from './Navbar';
 export { default as ButtonGrid } from './ButtonGrid';
