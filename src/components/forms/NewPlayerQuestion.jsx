@@ -8,34 +8,28 @@ import { Separator, Button, Flex } from '../ui';
 const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
   return (
     <>
-      <DialogHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
+    <>
+      <DialogHeader>
         Would you like to keep the same teams?
       </DialogHeader>
       <Separator />
-      <DialogBody
-        style={{
-          padding: '15px',
-          color: '#ebf5ee',
-          backgroundColor: '#464f51',
-        }}
-      >
+      <DialogBody style={{ padding: '15px' }}>
         <Flex direction={'row'} justifyContent={'space-evenly'}>
           <Button
             variant="outline"
-            style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
             onClick={onDifferentTeams}
           >
             Different Teams
           </Button>
           <Button
             variant="outline"
-            style={{ backgroundColor: '#464f51', color: '#ebf5ee' }}
             onClick={onSameTeams}
           >
             Same Teams
           </Button>
         </Flex>
       </DialogBody>
+    </>
     </>
   );
 };

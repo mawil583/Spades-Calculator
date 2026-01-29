@@ -97,11 +97,17 @@ describe('External Integrations', () => {
       renderWithProviders(<App />);
 
       // Enter game data
+      const team1Display = screen.getByText('Team 1');
+      fireEvent.click(team1Display);
       const team1Input = screen.getByDisplayValue('Team 1');
-      const team2Input = screen.getByDisplayValue('Team 2');
-
       fireEvent.change(team1Input, { target: { value: 'Test Team 1' } });
+      fireEvent.blur(team1Input);
+
+      const team2Display = screen.getByText('Team 2');
+      fireEvent.click(team2Display);
+      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team2Input, { target: { value: 'Test Team 2' } });
+      fireEvent.blur(team2Input);
 
       // Enter player names
       const playerInputs = screen.getAllByPlaceholderText(/who's/i);
@@ -139,8 +145,8 @@ describe('External Integrations', () => {
 
       // Verify saved data is loaded
       await waitFor(() => {
-        expect(screen.getByDisplayValue('Saved Team 1')).toBeInTheDocument();
-        expect(screen.getByDisplayValue('Saved Team 2')).toBeInTheDocument();
+        expect(screen.getByText('Saved Team 1')).toBeInTheDocument();
+        expect(screen.getByText('Saved Team 2')).toBeInTheDocument();
       });
     });
   });
@@ -184,10 +190,18 @@ describe('External Integrations', () => {
       renderWithProviders(<App />);
 
       // Fill in form data
+      // Fill in form data
+      const team1Display = screen.getByText('Team 1');
+      fireEvent.click(team1Display);
       const team1Input = screen.getByDisplayValue('Team 1');
-      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team1Input, { target: { value: 'Team A' } });
+      fireEvent.blur(team1Input);
+
+      const team2Display = screen.getByText('Team 2');
+      fireEvent.click(team2Display);
+      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team2Input, { target: { value: 'Team B' } });
+      fireEvent.blur(team2Input);
 
       const playerInputs = screen.getAllByPlaceholderText(/who's/i);
       fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });

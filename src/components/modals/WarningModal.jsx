@@ -72,7 +72,6 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
-      contentStyle={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
       contentProps={{ 'data-testid': 'warning-modal' }}
     >
       {showDataWarning && (

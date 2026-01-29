@@ -32,6 +32,7 @@ function PlayerNameInput({
           id={id}
           name={id}
           data-cy={id + 'Input'}
+          fontSize="lg"
         />
       </Field>
     </div>

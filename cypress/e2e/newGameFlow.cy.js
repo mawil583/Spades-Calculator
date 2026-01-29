@@ -67,8 +67,8 @@ describe('New Game Flow', () => {
       cy.get('#t2p2Name').should('have.value', '');
 
       // Verify team name inputs have default values
-      cy.get('#team1Name').should('have.value', 'Team 1');
-      cy.get('#team2Name').should('have.value', 'Team 2');
+      cy.get('#team1Name').should('have.text', 'Team 1');
+      cy.get('#team2Name').should('have.text', 'Team 2');
     });
 
     it('should handle "Same Teams" selection', () => {

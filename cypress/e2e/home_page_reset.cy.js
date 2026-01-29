@@ -7,11 +7,15 @@ describe('Home Page Reset', () => {
 
     it('should clear inputs when selecting Different Teams after New Game', () => {
         // 1. Enter names
-        // Team Name inputs use Chakra Editable, need to click to activate or force type
-        // The input is hidden, so we can't clear/type directly without activation
-        // Targeting the container or preview
-        cy.get('[data-cy="team1NameInput"]').click().find('input').clear({force: true}).type('Team A', {force: true});
-        cy.get('[data-cy="team2NameInput"]').click().find('input').clear({force: true}).type('Team B', {force: true});
+        // Team Name inputs use click-to-edit.
+        // We click the div (which has the data-cy) to enter edit mode, then type in the input (which replaces it).
+        cy.get('[data-cy="team1NameInput"]').click();
+        cy.get('input[data-cy="team1NameInput"]').clear().type('Team A');
+        cy.get('input[data-cy="team1NameInput"]').blur();
+
+        cy.get('[data-cy="team2NameInput"]').click();
+        cy.get('input[data-cy="team2NameInput"]').clear().type('Team B');
+        cy.get('input[data-cy="team2NameInput"]').blur();
         cy.get('#t1p1Name').type('Alice');
         cy.get('#t1p2Name').type('Bob');
         cy.get('#t2p1Name').type('Charlie');
@@ -50,8 +54,8 @@ describe('Home Page Reset', () => {
         // 7. Assert inputs are empty
         // Different Teams should reset to defaults: "Team 1", "Team 2", and empty players
         // We check the input value (even if hidden)
-        cy.get('#team1Name').should('have.value', 'Team 1');
-        cy.get('#team2Name').should('have.value', 'Team 2');
+        cy.get('#team1Name').should('have.text', 'Team 1');
+        cy.get('#team2Name').should('have.text', 'Team 2');
         cy.get('#t1p1Name').should('have.value', '');
         cy.get('#t1p2Name').should('have.value', '');
         cy.get('#t2p1Name').should('have.value', '');

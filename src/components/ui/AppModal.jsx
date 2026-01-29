@@ -34,12 +34,12 @@ function AppModal({
         }}
       />
       <DialogContent
-        style={{
-          backgroundColor: '#2D3748',
-          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          ...contentStyle,
-        }}
+        bg="#252d3d"
+        boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+        borderColor="rgba(255, 255, 255, 0.1)"
+        borderWidth="1px"
+        m={4}
+        {...contentStyle}
         {...contentProps}
       >
         {title && (
