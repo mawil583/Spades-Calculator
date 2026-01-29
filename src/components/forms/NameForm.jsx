@@ -153,7 +153,10 @@ function NameForm() {
               variant="outline"
               size="lg"
               height="40px"
-              width="100%"
+              width="auto"
+              minW="120px"
+              px={4}
+              justifySelf="center"
               border="1px solid"
               borderColor="#4A5568"
               onClick={handleNewGame}
@@ -167,7 +170,10 @@ function NameForm() {
               variant="outline"
               size="lg"
               height="40px"
-              width="100%"
+              width="auto"
+              minW="120px"
+              px={4}
+              justifySelf="center"
               border="1px solid"
               borderColor="#4A5568"
               onClick={handleContinue}

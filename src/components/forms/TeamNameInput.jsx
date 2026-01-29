@@ -1,36 +1,77 @@
 import React from 'react';
 import { Center } from '../ui/center';
-import { EditableRoot, EditableInput, EditablePreview } from '../ui/editable';
 
 function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
-  // Use key to force re-render when external teamName changes (e.g. reset)
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [value, setValue] = React.useState(teamName);
+  const inputRef = React.useRef(null);
+
+  // Sync internal state with external prop
+  React.useEffect(() => {
+    setValue(teamName);
+  }, [teamName]);
+
+  // Focus and select text when entering edit mode
+  React.useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const onCommit = () => {
+    setIsEditing(false);
+    if (value !== teamName) {
+      handleChange({ target: { id, value } });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      onCommit();
+    }
+  };
+
   return (
     <Center width="100%" mt={4}>
-      <EditableRoot
-        key={teamName}
-        defaultValue={teamName}
-        onValueCommit={(details) => handleChange({ target: { id, value: details.value } })}
-        fontSize="xl"
-        fontWeight="bold"
-        placeholder={teamName}
-        className={teamClassName}
-        data-cy={id + 'Input'}
-        textAlign="center"
-        width="100%"
-        selectAllOnFocus
-        submitOnBlur={false}
-      >
-        <EditablePreview 
-          width="100%" 
-          style={{ textAlign: 'center', display: 'block' }} 
-          cursor="pointer" 
-        />
-        <EditableInput
+      {isEditing ? (
+        <input
+          ref={inputRef}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={onCommit}
+          onKeyDown={handleKeyDown}
+          className={teamClassName}
           id={id}
-          width="100%"
-          style={{ textAlign: 'center' }}
+          data-cy={id + 'Input'}
+          style={{
+            fontSize: 'var(--chakra-fontSizes-xl)',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            width: '100%',
+            background: 'transparent',
+            border: '1px solid transparent', // maintain sizing
+            outline: 'none',
+            fontFamily: 'inherit',
+          }}
         />
-      </EditableRoot>
+      ) : (
+        <div
+          onClick={() => setIsEditing(true)}
+          className={teamClassName}
+          id={id}
+          data-cy={id + 'Input'}
+          style={{
+            fontSize: 'var(--chakra-fontSizes-xl)',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            width: '100%',
+            cursor: 'pointer',
+          }}
+        >
+          {value || 'Enter Team Name'}
+        </div>
+      )}
     </Center>
   );
 }

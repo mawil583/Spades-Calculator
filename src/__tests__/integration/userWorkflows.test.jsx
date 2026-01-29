@@ -66,10 +66,18 @@ describe('Complete User Workflows', () => {
       renderWithProviders(<HomePage />);
 
       // Fill in team names
+      // Fill in team names
+      const team1Display = screen.getByText('Team 1');
+      fireEvent.click(team1Display);
       const team1Input = screen.getByDisplayValue('Team 1');
-      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team1Input, { target: { value: 'Team A' } });
+      fireEvent.blur(team1Input);
+
+      const team2Display = screen.getByText('Team 2');
+      fireEvent.click(team2Display);
+      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team2Input, { target: { value: 'Team B' } });
+      fireEvent.blur(team2Input);
 
       // Fill in player names
       const playerInputs = screen.getAllByPlaceholderText(/who's/i);
@@ -111,10 +119,18 @@ describe('Complete User Workflows', () => {
       renderWithProviders(<HomePage />);
 
       // Fill in form with valid data
+      // Fill in form with valid data
+      const team1Display = screen.getByText('Team 1');
+      fireEvent.click(team1Display);
       const team1Input = screen.getByDisplayValue('Team 1');
-      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team1Input, { target: { value: 'Team A' } });
+      fireEvent.blur(team1Input);
+
+      const team2Display = screen.getByText('Team 2');
+      fireEvent.click(team2Display);
+      const team2Input = screen.getByDisplayValue('Team 2');
       fireEvent.change(team2Input, { target: { value: 'Team B' } });
+      fireEvent.blur(team2Input);
 
       const playerInputs = screen.getAllByPlaceholderText(/who's/i);
       fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });

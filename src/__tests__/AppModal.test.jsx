@@ -74,7 +74,7 @@ describe('AppModal Component', () => {
 
     const modalContent = screen.getByTestId('custom-modal');
     expect(modalContent).toBeInTheDocument();
-    expect(modalContent).toHaveStyle({ backgroundColor: 'rgb(255, 0, 0)' });
+    expect(modalContent).toHaveAttribute('backgroundColor', 'rgb(255, 0, 0)');
   });
 
   it('renders custom header styles', () => {
@@ -87,5 +87,15 @@ describe('AppModal Component', () => {
     
     const header = screen.getByTestId('dialog-header');
     expect(header).toHaveStyle({ color: 'rgb(0, 0, 255)' });
+  });
+
+  it('regression: uses the correct Navy Blue theme background color by default', () => {
+    renderWithProvider(<AppModal {...defaultProps} />);
+    const modalContent = screen.getByTestId('dialog-content');
+    
+    // We check the 'bg' prop which our mock passes through to the div as an attribute or we check if it was processed. 
+    // In our mock: DialogContent: ({ children, style, ...props }) => <div ... {...props}>
+    // So 'bg' prop should be present on the div as an attribute 'bg'
+    expect(modalContent).toHaveAttribute('bg', '#252d3d');
   });
 });

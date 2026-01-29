@@ -2,6 +2,7 @@
 .team1 {
   color: #ffc100;
 }
+
 .team2 {
   color: #f06c9b;
 }
@@ -26,6 +27,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -33,10 +35,23 @@
 
 /* Override browser autofill background */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px #2D3748 inset !important;
-    -webkit-text-fill-color: white !important;
-    transition: background-color 5000s ease-in-out 0s;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #2D3748 inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.team1 input:-webkit-autofill,
+.team1 input:-webkit-autofill:hover,
+.team1 input:-webkit-autofill:focus,
+.team1 input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffc100 !important;
+}
+
+.team2 input:-webkit-autofill,
+.team2 input:-webkit-autofill:hover,
+.team2 input:-webkit-autofill:focus,
+.team2 input:-webkit-autofill:active {
+  -webkit-text-fill-color: #f06c9b !important;
 }
