@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
-import { DownloadIcon } from '@chakra-ui/icons';
+import { Download } from 'lucide-react';
 
 const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -192,7 +192,7 @@ const InstallPrompt = () => {
         <HStack spacing={2}>
           <Button
             data-testid="install-app-button"
-            leftIcon={<DownloadIcon />}
+            leftIcon={<Download />}
             colorScheme="blue"
             size="sm"
             onClick={handleInstallClick}

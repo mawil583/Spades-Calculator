@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../../components/ui/provider';
 import BidSection from '../../components/game/BidSection';
 import ActualSection from '../../components/game/ActualSection';
 import Round from '../../components/game/Round';
@@ -50,11 +50,11 @@ const mockContextValue = {
 
 const renderWithProviders = (component) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={mockContextValue}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 
@@ -63,7 +63,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
     jest.clearAllMocks();
   });
 
-  it('should open dealer selection modal when dealer tag is clicked, not bid modal', () => {
+  it('should open dealer selection modal when dealer tag is clicked, not bid modal', async () => {
     const names = {
       team1Name: 'Team 1',
       team2Name: 'Team 2',
@@ -91,11 +91,11 @@ describe('Dealer Tag Integration at BidSection Level', () => {
     fireEvent.click(dealerBadge);
 
     // Should open dealer selection modal, not bid modal
-    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+    expect(await screen.findByTestId('dealerSelectionModal')).toBeInTheDocument();
     expect(screen.queryByTestId('bidSelectionModal')).not.toBeInTheDocument();
   });
 
-  it('should open bid modal when bid button is clicked, not dealer modal', () => {
+  it('should open bid modal when bid button is clicked, not dealer modal', async () => {
     const names = {
       team1Name: 'Team 1',
       team2Name: 'Team 2',
@@ -124,7 +124,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
     fireEvent.click(firstBidButton);
 
     // Should open bid modal, not dealer modal
-    expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
     expect(
       screen.queryByTestId('dealerSelectionModal')
     ).not.toBeInTheDocument();
@@ -153,7 +153,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
     // First, open dealer modal
     const dealerBadge = screen.getByTestId('dealerBadge');
     fireEvent.click(dealerBadge);
-    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+    expect(await screen.findByTestId('dealerSelectionModal')).toBeInTheDocument();
 
     // Close dealer modal
     const cancelButton = screen.getByText('Cancel');
@@ -173,10 +173,10 @@ describe('Dealer Tag Integration at BidSection Level', () => {
     const bidButtons = screen.getAllByRole('button', { name: /bid/i });
     const firstBidButton = bidButtons[0];
     fireEvent.click(firstBidButton);
-    expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
 
     // Close bid modal
-    const closeButton = screen.getByLabelText('Close');
+    const closeButton = await screen.findByLabelText('Close');
     fireEvent.click(closeButton);
 
     // Wait for modal to close
@@ -276,7 +276,7 @@ describe('Dealer Tag Visibility Tests', () => {
 
     // Clear the screen and render actuals section
     rerender(
-      <ChakraProvider>
+      <Provider>
         <GlobalContext.Provider value={mockContextValue}>
           <ActualSection
             index={0}
@@ -286,7 +286,7 @@ describe('Dealer Tag Visibility Tests', () => {
             currentRound={currentRoundWithBids}
           />
         </GlobalContext.Provider>
-      </ChakraProvider>
+      </Provider>
     );
 
     // Dealer tag should NOT be visible in actuals section
@@ -316,11 +316,11 @@ describe('Dealer Tag Visibility Tests', () => {
     };
 
     render(
-      <ChakraProvider>
+      <Provider>
         <GlobalContext.Provider value={contextWithRoundData}>
           <Round roundHistory={[]} isCurrent={true} roundIndex={0} />
         </GlobalContext.Provider>
-      </ChakraProvider>
+      </Provider>
     );
 
     // Dealer tag should be visible in bid section
@@ -332,7 +332,7 @@ describe('Dealer Tag Visibility Tests', () => {
     expect(dealerBadges).toHaveLength(1);
   });
 
-  it('should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals', () => {
+  it('should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals', async () => {
     const names = {
       team1Name: 'Team 1',
       team2Name: 'Team 2',
@@ -373,6 +373,6 @@ describe('Dealer Tag Visibility Tests', () => {
 
     // Click on dealer badge should open dealer selection modal
     fireEvent.click(dealerBadge);
-    expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+    expect(await screen.findByTestId('dealerSelectionModal')).toBeInTheDocument();
   });
 });

@@ -66,7 +66,7 @@ function ButtonGrid({
 
   return (
     <>
-      <SimpleGrid columns={3} spacingX={2} spacingY={4}>
+      <SimpleGrid columns={3} gap={4}>
         {buttonValues.map((buttonVal, i) => {
           return (
             <Button
@@ -75,6 +75,8 @@ function ButtonGrid({
                 onSelect(buttonVal);
               }}
               data-cy={`${type.toLowerCase()}SelectionButton`}
+              variant="outline"
+              borderColor="whiteAlpha.400"
             >
               {buttonVal}
             </Button>

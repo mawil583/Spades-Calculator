@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import ButtonGrid from '../components/ui/ButtonGrid';
 
@@ -18,11 +18,11 @@ jest.mock('../helpers/utils/helperFunctions', () => ({
 
 const renderWithProviders = (component, contextValue) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={contextValue}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 
@@ -102,11 +102,11 @@ describe('ButtonGrid Component', () => {
 
       // Test Actual type
       rerender(
-        <ChakraProvider>
+        <Provider>
           <GlobalContext.Provider value={mockContextValue}>
             <ButtonGrid {...defaultProps} type="Actual" />
           </GlobalContext.Provider>
-        </ChakraProvider>
+        </Provider>
       );
 
       buttons = screen.getAllByRole('button');

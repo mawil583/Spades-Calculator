@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Text, Radio, RadioGroup, Stack, IconButton } from '@chakra-ui/react';
-import { QuestionIcon } from '@chakra-ui/icons';
+import { Text, Stack } from '@chakra-ui/react';
+import { Radio, RadioGroup } from '../ui/radio';
+import { HelpCircle } from 'lucide-react';
 import {
   HELPS_TEAM_BID,
   NO_BAGS_NO_HELP,
@@ -21,17 +22,22 @@ function ScoreSetting() {
       <Text fontSize="lg" mt={3}>
         Select your preferred scoring rules for failed nil.{' '}
         {
-          <IconButton
-            style={{ height: 'auto', verticalAlign: 'baseline' }}
-            size="lg"
-            border={'none'}
-            onClick={handleClick}
-            icon={<QuestionIcon />}
-          />
+        <HelpCircle
+          size={18}
+          onClick={handleClick}
+          style={{
+            cursor: 'pointer',
+            verticalAlign: 'middle',
+            marginLeft: '8px',
+            display: 'inline',
+            position: 'relative',
+            top: '-2px',
+          }}
+        />
         }
       </Text>
-      <RadioGroup onChange={setNilRule} value={nilRule}>
-        <Stack>
+      <RadioGroup onValueChange={(e) => setNilRule(e.value)} value={nilRule}>
+        <Stack alignItems="start">
           <Radio value={TAKES_BAGS}>Takes Bags</Radio>
           <Radio value={HELPS_TEAM_BID}>Helps Team Bid</Radio>
           <Radio value={NO_BAGS_NO_HELP}>No Bags/No Help</Radio>

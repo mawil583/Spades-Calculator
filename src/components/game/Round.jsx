@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Container } from '@chakra-ui/react';
+import { Container, Separator } from '@chakra-ui/react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import {
@@ -11,7 +11,6 @@ import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
-import { Divider } from '../../components/ui';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
 function Round({ roundHistory, isCurrent = false, roundIndex }) {
@@ -146,7 +145,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
           )}
         </AnimatePresence>
 
-        {showActuals && <Divider className="divider-between-sections" />}
+        {showActuals && <Separator className="divider-between-sections" />}
 
         <BidSection
           names={names}

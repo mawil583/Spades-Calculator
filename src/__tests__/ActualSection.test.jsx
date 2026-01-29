@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import ActualSection from '../components/game/ActualSection';
 
@@ -30,16 +30,23 @@ jest.mock('../helpers/utils/helperFunctions', () => ({
 
 // Mock the useValidateActuals hook
 jest.mock('../helpers/utils/hooks', () => ({
-  useValidateActuals: jest.fn(),
+  useValidateActuals: jest.fn((allSubmitted, total, setIsValid) => {
+    // If all actuals are submitted and they don't add up to 13, it's invalid
+    if (allSubmitted && total !== 13) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  }),
 }));
 
 const renderWithProviders = (component, contextValue) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={contextValue}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 
@@ -344,7 +351,7 @@ describe('ActualSection Component', () => {
       );
 
       // Should show the auto-generated key
-      expect(screen.getAllByText('* auto-generated')).toHaveLength(2); // One from ActualSection, one from ErrorModal
+      expect(screen.getByText('* auto-generated')).toBeInTheDocument();
     });
 
     it('should not show auto-generated key when team totals are not auto-generated', () => {

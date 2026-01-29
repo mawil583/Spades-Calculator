@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Box, Text, VStack, useToast } from '@chakra-ui/react';
-import { DownloadIcon } from '@chakra-ui/icons';
+import { Button, Box, Text, VStack } from '@chakra-ui/react';
+import { Download } from 'lucide-react';
+import { toaster } from './toaster';
 
 const DownloadButton = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isCheckingInstall, setIsCheckingInstall] = useState(true);
-  const toast = useToast();
   const deferredPromptRef = useRef(null);
 
   useEffect(() => {
@@ -29,13 +29,12 @@ const DownloadButton = () => {
 
         // If already installed, show a message
         if (installed) {
-          toast({
+          toaster.create({
             title: 'App Already Installed',
             description:
               'Spades Calculator is already installed on your device.',
-            status: 'info',
+            type: 'info',
             duration: 3000,
-            isClosable: true,
           });
         }
       } catch (error) {
@@ -64,12 +63,11 @@ const DownloadButton = () => {
         setIsInstalled(true);
         setDeferredPrompt(null);
         deferredPromptRef.current = null;
-        toast({
+        toaster.create({
           title: 'App Installed!',
           description: 'Spades Calculator has been added to your home screen.',
-          status: 'success',
+          type: 'success',
           duration: 3000,
-          isClosable: true,
         });
       } catch (error) {
         console.log('Error handling appinstalled:', error);
@@ -89,7 +87,7 @@ const DownloadButton = () => {
         window.removeEventListener('appinstalled', handleAppInstalled);
       };
     }
-  }, [toast]);
+  }, []);
 
   const handleInstallClick = async () => {
     try {
@@ -106,33 +104,30 @@ const DownloadButton = () => {
           const { outcome } = await currentDeferredPrompt.userChoice;
 
           if (outcome === 'accepted') {
-            toast({
+            toaster.create({
               title: 'Installation Started!',
               description:
                 'Please follow the browser prompts to complete the installation.',
-              status: 'success',
+              type: 'success',
               duration: 3000,
-              isClosable: true,
             });
           } else {
-            toast({
+            toaster.create({
               title: 'Installation Cancelled',
               description:
                 'You can try again anytime by clicking the download button.',
-              status: 'info',
+              type: 'info',
               duration: 3000,
-              isClosable: true,
             });
           }
         } else {
           // If userChoice is not available, show a generic success message
-          toast({
+          toaster.create({
             title: 'Installation Prompt Shown',
             description:
               'Please follow the browser prompts to complete the installation.',
-            status: 'info',
+            type: 'info',
             duration: 3000,
-            isClosable: true,
           });
         }
 
@@ -217,12 +212,11 @@ const DownloadButton = () => {
       }
     }
 
-    toast({
+    toaster.create({
       title: title,
       description: instructions,
-      status: 'info',
+      type: 'info',
       duration: 8000,
-      isClosable: true,
     });
   };
 
@@ -277,12 +271,11 @@ const DownloadButton = () => {
       }
     }
 
-    toast({
+    toaster.create({
       title: title,
       description: instructions,
-      status: 'info',
+      type: 'info',
       duration: 8000,
-      isClosable: true,
     });
   };
 
@@ -300,7 +293,7 @@ const DownloadButton = () => {
         borderColor="green.600"
         mb={4}
       >
-        <VStack spacing={3}>
+        <VStack gap={3}>
           <Text fontWeight="bold" fontSize="lg">
             ✅ App Already Installed
           </Text>
@@ -326,7 +319,7 @@ const DownloadButton = () => {
         borderColor="gray.600"
         mb={4}
       >
-        <VStack spacing={3}>
+        <VStack gap={3}>
           <Text fontWeight="bold" fontSize="lg">
             🔍 Checking Installation Status...
           </Text>
@@ -338,32 +331,36 @@ const DownloadButton = () => {
   return (
     <Box
       data-testid="download-button"
-      bg="gray.700"
+      bg="#2d3748"
       color="white"
-      p={4}
-      borderRadius="lg"
-      boxShadow="lg"
+      p={6}
+      borderRadius="xl"
+      boxShadow="2xl"
       border="1px solid"
-      borderColor="gray.600"
-      mb={4}
+      borderColor="rgba(255, 255, 255, 0.1)"
+      mb={10}
+      mx={2}
     >
-      <VStack spacing={3}>
-        <Text fontWeight="bold" fontSize="lg">
+      <VStack gap={4}>
+        <Text fontWeight="bold" fontSize="xl" letterSpacing="tight">
           📱 Download Spades Calculator App
         </Text>
-        <Text fontSize="sm" color="gray.300" textAlign="center">
+        <Text fontSize="sm" color="gray.300" textAlign="center" px={4}>
           Add to your home screen for quick access and offline use
         </Text>
         <Button
           data-testid="download-app-button"
-          leftIcon={<DownloadIcon />}
-          colorScheme="blue"
+          variant="outline"
           size="lg"
           onClick={handleInstallClick}
           w="full"
-          _hover={{ transform: 'translateY(-2px)', boxShadow: 'lg' }}
-          transition="all 0.2s"
+          height="54px"
+          fontSize="md"
+          fontWeight="bold"
+          border="2px solid"
+          borderColor="whiteAlpha.400"
         >
+          <Download size={22} />
           Download App
         </Button>
       </VStack>

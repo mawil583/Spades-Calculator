@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+  DialogRoot,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogCloseTrigger,
+} from '../ui/dialog';
 import { SettingDescription, SettingExample } from '../game';
 import { calculateRoundScore } from '../../helpers/math/spadesMath';
 import {
@@ -54,12 +53,11 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => setIsModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Score Settings</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody style={{ padding: '5px' }}>
+    <DialogRoot open={isOpen} onOpenChange={(e) => setIsModalOpen(e.open)}>
+      <DialogContent>
+        <DialogHeader>Score Settings</DialogHeader>
+        <DialogCloseTrigger />
+        <DialogBody style={{ padding: '5px' }}>
             {sections.map((section, idx) => (
               <div key={idx} style={{ marginBottom: '12px' }}>
                 <SettingDescription title={section.title} desc={section.desc} />
@@ -85,9 +83,9 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
                 })}
               </div>
             ))}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
     </>
   );
 }

@@ -123,6 +123,7 @@ function ActualSection({
       <SimpleGrid
         columns={2}
         className="namesContainer"
+        gap={2}
         style={{ marginTop: '5px' }}
       >
         <PlayerInput

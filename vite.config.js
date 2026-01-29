@@ -84,9 +84,7 @@ export default defineConfig({
           vendor: ['react', 'react-dom'],
           chakra: [
             '@chakra-ui/react',
-            '@chakra-ui/icons',
             '@emotion/react',
-            '@emotion/styled',
             'framer-motion',
           ],
         },

@@ -1,23 +1,18 @@
 import React from 'react';
 import {
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Divider,
-  Button,
-  Text,
-  Flex,
-} from '@chakra-ui/react';
+  DialogHeader,
+  DialogBody,
+} from '../ui/dialog';
+import { Separator, Button, Text, Flex } from '@chakra-ui/react';
 
 const DataWarningQuestion = ({ onContinue, onCancel }) => {
   return (
     <>
-      <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
+      <DialogHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
         Are you sure?
-      </ModalHeader>
-      <ModalCloseButton onClick={onCancel} />
-      <Divider />
-      <ModalBody
+      </DialogHeader>
+      <Separator />
+      <DialogBody
         style={{
           padding: '15px',
           color: '#ebf5ee',
@@ -43,7 +38,7 @@ const DataWarningQuestion = ({ onContinue, onCancel }) => {
             Continue
           </Button>
         </Flex>
-      </ModalBody>
+      </DialogBody>
     </>
   );
 };

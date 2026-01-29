@@ -132,7 +132,7 @@ function TeamInputHeading({
       >
         <Heading
           data-cy="team1Total"
-          size="lg"
+          size="3xl"
           style={{
             position: 'absolute',
             marginRight: '50%',
@@ -153,7 +153,7 @@ function TeamInputHeading({
         </Heading>
         <Heading
           data-cy="team2Total"
-          size="lg"
+          size="3xl"
           style={{
             position: 'absolute',
             marginLeft: '50%',

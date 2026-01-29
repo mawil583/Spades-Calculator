@@ -1,20 +1,18 @@
 import React from 'react';
 import {
-  ModalHeader,
-  ModalBody,
-  Divider,
-  Button,
-  Flex,
-} from '@chakra-ui/react';
+  DialogHeader,
+  DialogBody,
+} from '../ui/dialog';
+import { Separator, Button, Flex } from '@chakra-ui/react';
 
 const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
   return (
     <>
-      <ModalHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
+      <DialogHeader style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}>
         Would you like to keep the same teams?
-      </ModalHeader>
-      <Divider />
-      <ModalBody
+      </DialogHeader>
+      <Separator />
+      <DialogBody
         style={{
           padding: '15px',
           color: '#ebf5ee',
@@ -37,7 +35,7 @@ const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
             Same Teams
           </Button>
         </Flex>
-      </ModalBody>
+      </DialogBody>
     </>
   );
 };

@@ -47,7 +47,7 @@ describe('Bug Reproduction E2E', () => {
     cy.get('[data-cy="actualSelectionButton"]').contains('5').click();
 
     // 4. Verify ErrorModal shows up (total is 12, should be 13)
-    cy.get('.chakra-modal__content').should('be.visible');
+    cy.get('[data-cy="errorModalActualSection"]').should('be.visible');
     cy.contains("The total amount of hands must always add up to 13").should('be.visible');
 
     // BUG VERIFICATION: ErrorModal should show "7 Actuals 5" 

@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import { customTheme } from '../customTheme';
+import { Provider } from '../components/ui/provider';
 import SpadesCalculator from '../pages/SpadesCalculator';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
@@ -16,11 +15,11 @@ jest.mock('../helpers/math/spadesMath', () => ({
 const renderWithProviders = (component, contextValue) => {
   return render(
     <BrowserRouter>
-      <ChakraProvider theme={customTheme}>
+      <Provider>
         <GlobalContext.Provider value={contextValue}>
           {component}
         </GlobalContext.Provider>
-      </ChakraProvider>
+      </Provider>
     </BrowserRouter>
   );
 };
@@ -294,11 +293,11 @@ describe('Independent Team Scoring', () => {
 
       rerender(
         <BrowserRouter>
-          <ChakraProvider theme={customTheme}>
+          <Provider>
             <GlobalContext.Provider value={updatedContextValue}>
               <SpadesCalculator />
             </GlobalContext.Provider>
-          </ChakraProvider>
+          </Provider>
         </BrowserRouter>
       );
 

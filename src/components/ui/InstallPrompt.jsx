@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
-import { DownloadIcon } from '@chakra-ui/icons';
+import { Box, Button, Text, VStack, HStack } from '@chakra-ui/react';
+import { Download } from 'lucide-react';
+import { toaster } from './toaster';
 
 const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
-  const toast = useToast();
 
   useEffect(() => {
     // Check if the app is already installed
@@ -35,12 +35,11 @@ const InstallPrompt = () => {
     const handleAppInstalled = () => {
       setShowInstallPrompt(false);
       setDeferredPrompt(null);
-      toast({
+      toaster.create({
         title: 'App Installed!',
         description: 'Spades Calculator has been added to your home screen.',
-        status: 'success',
+        type: 'success',
         duration: 3000,
-        isClosable: true,
       });
     };
 
@@ -55,7 +54,7 @@ const InstallPrompt = () => {
       );
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
-  }, [deferredPrompt, toast]);
+  }, [deferredPrompt]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
@@ -132,12 +131,11 @@ const InstallPrompt = () => {
       }
     }
 
-    toast({
+    toaster.create({
       title: title,
       description: instructions,
-      status: 'info',
+      type: 'info',
       duration: 8000,
-      isClosable: true,
     });
   };
 
@@ -168,7 +166,7 @@ const InstallPrompt = () => {
       maxW="400px"
       w="90%"
     >
-      <VStack spacing={3} align="stretch">
+      <VStack gap={3} align="stretch">
         <HStack justify="space-between" align="center">
           <Text fontWeight="bold" fontSize="sm">
             📱 Install Spades Calculator
@@ -189,15 +187,15 @@ const InstallPrompt = () => {
           Add to your home screen for quick access and offline use
         </Text>
 
-        <HStack spacing={2}>
+        <HStack gap={2}>
           <Button
             data-testid="install-app-button"
-            leftIcon={<DownloadIcon />}
-            colorScheme="blue"
+            colorPalette="blue"
             size="sm"
             onClick={handleInstallClick}
             flex={1}
           >
+            <Download />
             Install App
           </Button>
           <Button variant="outline" size="sm" onClick={handleDismiss} flex={1}>

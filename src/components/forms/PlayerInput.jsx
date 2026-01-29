@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, Flex } from '@chakra-ui/react';
-import { EditIcon } from '@chakra-ui/icons';
+import { Pencil } from 'lucide-react';
 import { InputModal } from '../modals';
-import { DealerTag } from '../ui';
+import DealerTag from '../ui/DealerTag';
 
 const PlayerInput = ({
   inputId,
@@ -83,9 +83,9 @@ const PlayerInput = ({
             value={displayValue}
             id={inputId}
             name={inputId}
-            size="sm"
-            borderColor={teamClassName}
-            color={teamClassName}
+            size="xs"
+            borderColor={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
+            color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
             data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
             data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
           >
@@ -102,12 +102,12 @@ const PlayerInput = ({
               <Flex borderColor={teamClassName} borderRadius="4px" px="0.5rem">
                 {displayValue}
               </Flex>
-              <EditIcon
-                color={teamClassName}
-                boxSize={5}
-                ml={'5px'}
+              <Pencil
+                color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
+                size={20}
+                style={{ marginLeft: '5px' }}
                 data-testid="editIcon"
-              ></EditIcon>
+              />
             </Flex>
           </div>
         )}

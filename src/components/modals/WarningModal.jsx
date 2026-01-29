@@ -1,13 +1,18 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
+import {
+  DialogRoot,
+  DialogContent,
+  DialogCloseTrigger,
+} from '../ui/dialog';
 import {
   initialNames,
   initialFirstDealerOrder,
 } from '../../helpers/utils/constants';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { rotateArr } from '../../helpers/utils/helperFunctions';
-import { DataWarningQuestion, NewPlayerQuestion } from '../forms';
+import DataWarningQuestion from '../forms/DataWarningQuestion';
+import NewPlayerQuestion from '../forms/NewPlayerQuestion';
 
 function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
   const navigate = useNavigate();
@@ -67,18 +72,16 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
     navigate('/');
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={handleModalClose}
-      style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => setIsModalOpen(e.open)}
     >
-      <ModalOverlay />
-      <ModalContent>
+      <DialogContent 
+        style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+        data-testid="warning-modal"
+      >
+        <DialogCloseTrigger />
         {showDataWarning && (
           <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
         )}
@@ -88,8 +91,8 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
             onSameTeams={onSameTeams}
           />
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </DialogRoot>
   );
 }
 

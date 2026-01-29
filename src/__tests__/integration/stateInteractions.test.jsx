@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../../components/ui/provider';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import SpadesCalculator from '../../pages/SpadesCalculator';
@@ -52,11 +52,11 @@ const renderWithProviders = (
   );
 
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={contextValue}>
         <RouterProvider router={router} />
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 

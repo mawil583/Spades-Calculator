@@ -2,8 +2,7 @@ import React from 'react';
 import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import { customTheme } from '../customTheme';
+import { Provider } from '../components/ui/provider';
 import WarningModal from '../components/modals/WarningModal';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
@@ -31,11 +30,11 @@ vi.mock('react-router-dom', async () => {
 const renderWithProviders = (component, contextValue = mockContextValue) => {
   return render(
     <BrowserRouter>
-      <ChakraProvider theme={customTheme}>
+      <Provider>
         <GlobalContext.Provider value={contextValue}>
           {component}
         </GlobalContext.Provider>
-      </ChakraProvider>
+      </Provider>
     </BrowserRouter>
   );
 };
@@ -56,7 +55,7 @@ describe('WarningModal', () => {
   });
 
   describe('when there is no round history', () => {
-    it('should show only the NewPlayerQuestion modal', () => {
+    it('should show only the NewPlayerQuestion modal', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [],
@@ -69,7 +68,7 @@ describe('WarningModal', () => {
 
       // Should show the team question directly
       expect(
-        screen.getByText('Would you like to keep the same teams?')
+        await screen.findByText('Would you like to keep the same teams?')
       ).toBeInTheDocument();
       expect(screen.getByText('Different Teams')).toBeInTheDocument();
       expect(screen.getByText('Same Teams')).toBeInTheDocument();
@@ -81,7 +80,7 @@ describe('WarningModal', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('should handle "Different Teams" selection', () => {
+    it('should handle "Different Teams" selection', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -93,14 +92,14 @@ describe('WarningModal', () => {
         contextValue
       );
 
-      fireEvent.click(screen.getByText('Different Teams'));
+      fireEvent.click(await screen.findByText('Different Teams'));
 
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('should reset names to empty and navigate to home when selecting "Different Teams"', () => {
+    it('should reset names to empty and navigate to home when selecting "Different Teams"', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -112,7 +111,7 @@ describe('WarningModal', () => {
         contextValue
       );
 
-      fireEvent.click(screen.getByText('Different Teams'));
+      fireEvent.click(await screen.findByText('Different Teams'));
 
       // Verify that localStorage.setItem was called with initialNames (empty player names)
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -131,7 +130,7 @@ describe('WarningModal', () => {
       expect(mockedNavigate).toHaveBeenCalledWith('/');
     });
 
-    it('should handle "Same Teams" selection', () => {
+    it('should handle "Same Teams" selection', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -143,7 +142,7 @@ describe('WarningModal', () => {
         contextValue
       );
 
-      fireEvent.click(screen.getByText('Same Teams'));
+      fireEvent.click(await screen.findByText('Same Teams'));
 
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
@@ -153,7 +152,7 @@ describe('WarningModal', () => {
   });
 
   describe('when there is round history', () => {
-    it('should show the DataWarningQuestion first', () => {
+    it('should show the DataWarningQuestion first', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
@@ -165,7 +164,7 @@ describe('WarningModal', () => {
       );
 
       // Should show the data warning first
-      expect(screen.getByText('Are you sure?')).toBeInTheDocument();
+      expect(await screen.findByText('Are you sure?')).toBeInTheDocument();
       expect(
         screen.getByText('This will permanently delete your game data.')
       ).toBeInTheDocument();
@@ -178,7 +177,7 @@ describe('WarningModal', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('should handle "Cancel" from DataWarningQuestion', () => {
+    it('should handle "Cancel" from DataWarningQuestion', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -190,7 +189,7 @@ describe('WarningModal', () => {
         contextValue
       );
 
-      fireEvent.click(screen.getByText('Cancel'));
+      fireEvent.click(await screen.findByText('Cancel'));
 
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
@@ -207,7 +206,7 @@ describe('WarningModal', () => {
       );
 
       // Click Continue to proceed to the next modal
-      fireEvent.click(screen.getByText('Continue'));
+      fireEvent.click(await screen.findByText('Continue'));
 
       await waitFor(() => {
         expect(
@@ -224,7 +223,7 @@ describe('WarningModal', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('should handle "Same Teams" selection with round history', () => {
+    it('should handle "Same Teams" selection with round history', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -237,10 +236,10 @@ describe('WarningModal', () => {
       );
 
       // Click Continue first
-      fireEvent.click(screen.getByText('Continue'));
+      fireEvent.click(await screen.findByText('Continue'));
 
       // Then click Same Teams
-      fireEvent.click(screen.getByText('Same Teams'));
+      fireEvent.click(await screen.findByText('Same Teams'));
 
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
@@ -249,7 +248,7 @@ describe('WarningModal', () => {
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
 
-    it('should handle "Different Teams" selection with round history', () => {
+    it('should handle "Different Teams" selection with round history', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -262,10 +261,10 @@ describe('WarningModal', () => {
       );
 
       // Click Continue first
-      fireEvent.click(screen.getByText('Continue'));
+      fireEvent.click(await screen.findByText('Continue'));
 
       // Then click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      fireEvent.click(await screen.findByText('Different Teams'));
 
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
@@ -273,7 +272,7 @@ describe('WarningModal', () => {
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', () => {
+    it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -286,10 +285,10 @@ describe('WarningModal', () => {
       );
 
       // Click Continue first
-      fireEvent.click(screen.getByText('Continue'));
+      fireEvent.click(await screen.findByText('Continue'));
 
       // Then click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      fireEvent.click(await screen.findByText('Different Teams'));
 
       // Verify that localStorage.setItem was called with initialNames (empty player names)
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -309,7 +308,7 @@ describe('WarningModal', () => {
   });
 
   describe('modal state management', () => {
-    it('should handle modal close', () => {
+    it('should handle modal close', async () => {
       const setIsModalOpen = jest.fn();
       const contextValue = {
         ...mockContextValue,
@@ -321,11 +320,13 @@ describe('WarningModal', () => {
         contextValue
       );
 
-      // The modal should have a close button (ModalCloseButton from DataWarningQuestion)
-      const closeButton = screen.getByRole('button', { name: /close/i });
+      // The modal should have a close button
+      const closeButton = await screen.findByRole('button', { name: /close/i });
       fireEvent.click(closeButton);
 
-      expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      await waitFor(() => {
+        expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      });
     });
   });
 });
