@@ -62,6 +62,27 @@ export default [
       'no-prototype-builtins': 'warn',
       'react/no-unescaped-entities': 'warn',
       'import/first': 'warn',
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@chakra-ui/react',
+              message: 'Architecture Violation: Direct imports from @chakra-ui/react are banned in feature files. Please import from "src/components/ui" or designated adapter files instead.'
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    // Whitelist the adapter layer and theme config from strict import rules
+    files: [
+      'src/components/ui/**/*.{js,jsx}',
+      'src/customTheme.js',
+    ],
+    rules: {
+      'no-restricted-imports': 'off'
     }
   },
   {

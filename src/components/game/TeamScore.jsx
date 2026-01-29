@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center, Heading, Flex, Text } from '@chakra-ui/react';
+import { Center, Heading, Flex, Text } from '../ui';
 
 import '../../App.css';
 

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '../ui';
 import {
   DialogRoot,
   DialogContent,

@@ -5,7 +5,7 @@ import {
   Text,
   VStack,
   HStack,
-} from '@chakra-ui/react';
+} from './ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, X } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';

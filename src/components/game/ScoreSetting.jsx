@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, Stack } from '@chakra-ui/react';
+import { Text, Stack } from '../ui';
 import { Radio, RadioGroup } from '../ui/radio';
 import { HelpCircle } from 'lucide-react';
 import {

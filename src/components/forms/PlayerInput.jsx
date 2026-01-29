@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Flex } from '@chakra-ui/react';
+import { Button, Flex } from '../ui';
 import { Pencil } from 'lucide-react';
 import { InputModal } from '../modals';
 import DealerTag from '../ui/DealerTag';

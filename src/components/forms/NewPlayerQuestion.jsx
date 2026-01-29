@@ -3,7 +3,7 @@ import {
   DialogHeader,
   DialogBody,
 } from '../ui/dialog';
-import { Separator, Button, Flex } from '@chakra-ui/react';
+import { Separator, Button, Flex } from '../ui';
 
 const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
   return (

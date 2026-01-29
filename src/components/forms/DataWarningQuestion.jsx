@@ -3,7 +3,7 @@ import {
   DialogHeader,
   DialogBody,
 } from '../ui/dialog';
-import { Separator, Button, Text, Flex } from '@chakra-ui/react';
+import { Separator, Button, Text, Flex } from '../ui';
 
 const DataWarningQuestion = ({ onContinue, onCancel }) => {
   return (

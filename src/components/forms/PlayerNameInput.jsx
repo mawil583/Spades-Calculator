@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@chakra-ui/react';
+import { Input } from '../ui/input';
 import { Field } from '../ui/field';
 
 import '../../App.css';

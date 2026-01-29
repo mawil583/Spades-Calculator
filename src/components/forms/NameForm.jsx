@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useFormik } from 'formik';
-import { Button, SimpleGrid, Center } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLocalStorage } from '../../helpers/utils/hooks';
@@ -9,6 +8,7 @@ import WarningModal from '../modals/WarningModal';
 import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
 import { TeamNameInput, PlayerNameInput } from './';
+import { Button, SimpleGrid, Center } from '../ui';
 import { initialNames } from '../../helpers/utils/constants';
 
 function NameForm() {

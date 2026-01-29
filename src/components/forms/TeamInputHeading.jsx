@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Heading } from '@chakra-ui/react';
+import { Heading } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import { InputModal } from '../modals';
 import { GlobalContext } from '../../helpers/context/GlobalContext';

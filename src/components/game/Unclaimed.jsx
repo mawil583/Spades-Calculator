@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Center } from '@chakra-ui/react';
+import { Text, Center } from '../ui';
 import { getUnclaimedText } from '../../helpers/utils/helperFunctions';
 
 function Unclaimed({ numUnclaimed }) {

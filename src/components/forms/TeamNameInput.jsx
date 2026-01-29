@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center } from '@chakra-ui/react';
+import { Center } from '../ui/center';
 import { EditableRoot, EditableInput, EditablePreview } from '../ui/editable';
 
 function TeamNameInput({ id, teamName, handleChange, teamClassName }) {

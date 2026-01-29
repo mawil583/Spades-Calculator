@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Container, SimpleGrid, Center, Heading } from '@chakra-ui/react';
+import { Container, SimpleGrid, Center, Heading } from '../ui';
 
 import TeamScore from './TeamScore';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
