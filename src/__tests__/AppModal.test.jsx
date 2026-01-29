@@ -1,0 +1,91 @@
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { vi, describe, it, expect } from 'vitest';
+import { AppModal } from '../components/ui';
+import { Provider } from '../components/ui/provider';
+
+// Mock Lucide icons
+vi.mock('lucide-react', () => ({
+  X: () => <div data-testid="close-icon" />,
+}));
+
+// Mock Dialog components to isolate AppModal logic
+vi.mock('../components/ui/dialog', () => {
+  return {
+    DialogRoot: ({ open, onOpenChange, children }) => (
+      <div data-testid="dialog-root" data-open={open} onClick={() => onOpenChange({ open: false })}>
+        {children}
+      </div>
+    ),
+    DialogBackdrop: ({ style }) => <div data-testid="dialog-backdrop" style={style} />,
+    DialogContent: ({ children, style, ...props }) => (
+      <div data-testid="dialog-content" style={style} {...props}>
+        {children}
+      </div>
+    ),
+    DialogHeader: ({ children, style }) => <div data-testid="dialog-header" style={style}>{children}</div>,
+    DialogBody: ({ children, style }) => <div data-testid="dialog-body" style={style}>{children}</div>,
+    DialogCloseTrigger: ({ children, style }) => (
+      <button data-testid="dialog-close-trigger" style={style}>
+        {children}
+      </button>
+    ),
+  };
+});
+
+const renderWithProvider = (ui) => {
+  return render(<Provider>{ui}</Provider>);
+};
+
+describe('AppModal Component', () => {
+  const defaultProps = {
+    isOpen: true,
+    onClose: vi.fn(),
+    title: 'Test Modal',
+    children: <div>Modal Content</div>,
+  };
+
+  it('renders correctly when open', () => {
+    renderWithProvider(<AppModal {...defaultProps} />);
+    
+    expect(screen.getByText('Test Modal')).toBeInTheDocument();
+    expect(screen.getByText('Modal Content')).toBeInTheDocument();
+  });
+
+  it('wiring: triggers onClose when close event occurs', () => {
+    renderWithProvider(<AppModal {...defaultProps} />);
+    
+    // In our mock, clicking DialogRoot triggers onOpenChange(false)
+    // This allows us to verify AppModal's onOpenChange handler wires up to props.onClose
+    const dialogRoot = screen.getByTestId('dialog-root');
+    fireEvent.click(dialogRoot);
+    
+    expect(defaultProps.onClose).toHaveBeenCalledWith(false);
+  });
+
+  it('applies custom content styles', async () => {
+    renderWithProvider(
+      <AppModal 
+        {...defaultProps} 
+        contentStyle={{ backgroundColor: 'rgb(255, 0, 0)' }} 
+        contentProps={{ 'data-testid': 'custom-modal' }}
+      />
+    );
+
+    const modalContent = screen.getByTestId('custom-modal');
+    expect(modalContent).toBeInTheDocument();
+    expect(modalContent).toHaveStyle({ backgroundColor: 'rgb(255, 0, 0)' });
+  });
+
+  it('renders custom header styles', () => {
+    renderWithProvider(
+      <AppModal 
+        {...defaultProps} 
+        headerStyle={{ color: 'rgb(0, 0, 255)' }}
+      />
+    );
+    
+    const header = screen.getByTestId('dialog-header');
+    expect(header).toHaveStyle({ color: 'rgb(0, 0, 255)' });
+  });
+});
