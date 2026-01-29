@@ -1,4 +1,4 @@
-// Mock the toast hook before importing components
+import { vi } from 'vitest';
 import React from 'react';
 import {
   render,
@@ -7,25 +7,19 @@ import {
   waitFor,
   act,
 } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import { DownloadButton } from '../components/ui';
 
-const mockToast = jest.fn();
-
-// Mock the useToast hook
-jest.mock('@chakra-ui/react', () => ({
-  ...jest.requireActual('@chakra-ui/react'),
-  useToast: () => mockToast,
-}));
-
-// Also mock the specific useToast function
-jest.mock('@chakra-ui/react', () => {
-  const original = jest.requireActual('@chakra-ui/react');
-  return {
-    ...original,
-    useToast: () => mockToast,
-  };
+const { mockToast } = vi.hoisted(() => {
+  return { mockToast: vi.fn() };
 });
+
+// Mock the toaster instead of useToast since we converted to it
+vi.mock('../components/ui/toaster', () => ({
+  toaster: {
+    create: mockToast,
+  },
+}));
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -36,9 +30,9 @@ Object.defineProperty(window, 'matchMedia', {
     onchange: null,
     addListener: jest.fn(),
     removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
@@ -51,13 +45,13 @@ Object.defineProperty(window.navigator, 'standalone', {
 // Mock the appinstalled event
 const mockAppInstalledEvent = new Event('appinstalled');
 
-const renderWithChakra = (component) => {
-  return render(<ChakraProvider>{component}</ChakraProvider>);
+const renderWithProvider = (component) => {
+  return render(<Provider>{component}</Provider>);
 };
 
 describe('DownloadButton', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Reset window.navigator.standalone
     Object.defineProperty(window.navigator, 'standalone', {
       writable: true,
@@ -66,15 +60,15 @@ describe('DownloadButton', () => {
     // Reset window.matchMedia
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation((query) => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
     // Reset navigator.share
@@ -89,7 +83,7 @@ describe('DownloadButton', () => {
   });
 
   it('should render download button when app is not installed', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Wait for the installation check to complete
     await waitFor(() => {
@@ -112,19 +106,19 @@ describe('DownloadButton', () => {
     // Mock standalone mode
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation((query) => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: query === '(display-mode: standalone)',
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
 
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Wait for the installation check to complete
     await waitFor(() => {
@@ -146,7 +140,7 @@ describe('DownloadButton', () => {
       value: true,
     });
 
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Wait for the installation check to complete
     await waitFor(() => {
@@ -162,12 +156,12 @@ describe('DownloadButton', () => {
   });
 
   it('should handle beforeinstallprompt event', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'accepted',
     });
@@ -183,12 +177,12 @@ describe('DownloadButton', () => {
   });
 
   it('should handle install button click with deferred prompt', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event first
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'accepted',
     });
@@ -217,12 +211,12 @@ describe('DownloadButton', () => {
   });
 
   it('should handle install button click with deferred prompt - user cancels', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event first
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'dismissed',
     });
@@ -242,13 +236,17 @@ describe('DownloadButton', () => {
     // Wait for the prompt to be called and check for cancellation message
     await waitFor(() => {
       expect(beforeInstallPromptEvent.prompt).toHaveBeenCalled();
-      expect(screen.getByText('Installation Cancelled')).toBeInTheDocument();
-      expect(screen.getByText(/try again anytime/)).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Installation Cancelled',
+          description: expect.stringMatching(/try again anytime/),
+        })
+      );
     });
   });
 
   it('should show manual instructions when no deferred prompt is available', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Click the download button without a deferred prompt
     const downloadButton = screen.getByRole('button', {
@@ -260,13 +258,17 @@ describe('DownloadButton', () => {
 
     // Wait for the toast to be called with manual instructions
     await waitFor(() => {
-      expect(screen.getByText('Install Instructions')).toBeInTheDocument();
-      expect(screen.getByText(/install icon/)).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Install Instructions',
+          description: expect.stringMatching(/install icon/),
+        })
+      );
     });
   });
 
   it('should handle appinstalled event', async () => {
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     // Simulate appinstalled event
     await act(async () => {
@@ -275,12 +277,13 @@ describe('DownloadButton', () => {
 
     // Wait for the toast to be called
     await waitFor(() => {
-      expect(screen.getByText('App Installed!')).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Spades Calculator has been added to your home screen.'
-        )
-      ).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'App Installed!',
+          description: 'Spades Calculator has been added to your home screen.',
+          type: 'success',
+        })
+      );
     });
   });
 
@@ -292,7 +295,7 @@ describe('DownloadButton', () => {
       configurable: true,
     });
 
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     const downloadButton = screen.getByRole('button', {
       name: /download app/i,
@@ -302,8 +305,12 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Install on iOS')).toBeInTheDocument();
-      expect(screen.getByText(/Share button/)).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Install on iOS',
+          description: expect.stringMatching(/Share button/),
+        })
+      );
     });
   });
 
@@ -314,7 +321,7 @@ describe('DownloadButton', () => {
       configurable: true,
     });
 
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     const downloadButton = screen.getByRole('button', {
       name: /download app/i,
@@ -324,8 +331,12 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Install on Android')).toBeInTheDocument();
-      expect(screen.getByText(/menu/)).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Install on Android',
+          description: expect.stringMatching(/menu/),
+        })
+      );
     });
   });
 
@@ -336,7 +347,7 @@ describe('DownloadButton', () => {
       configurable: true,
     });
 
-    renderWithChakra(<DownloadButton />);
+    renderWithProvider(<DownloadButton />);
 
     const downloadButton = screen.getByRole('button', {
       name: /download app/i,
@@ -346,65 +357,19 @@ describe('DownloadButton', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Install Instructions')).toBeInTheDocument();
-      expect(screen.getByText(/install icon/)).toBeInTheDocument();
+      expect(mockToast).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'Install Instructions',
+          description: expect.stringMatching(/install icon/),
+        })
+      );
     });
   });
 
   // New tests for enhanced installation functionality
   describe('Enhanced Installation Logic', () => {
     it('should try to trigger installation multiple times for Android/desktop', async () => {
-      renderWithChakra(<DownloadButton />);
-
-      const downloadButton = screen.getByRole('button', {
-        name: /download app/i,
-      });
-
-      await act(async () => {
-        fireEvent.click(downloadButton);
-      });
-
-      // Wait for manual instructions to be shown since we removed programmatic event triggering
-      await waitFor(() => {
-        expect(screen.getByText('Install Instructions')).toBeInTheDocument();
-        expect(screen.getByText(/install icon/)).toBeInTheDocument();
-      });
-    });
-
-    it('should handle iOS share functionality when available', async () => {
-      // Mock iOS user agent
-      Object.defineProperty(navigator, 'userAgent', {
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
-        configurable: true,
-      });
-
-      renderWithChakra(<DownloadButton />);
-
-      const downloadButton = screen.getByRole('button', {
-        name: /download app/i,
-      });
-
-      await act(async () => {
-        fireEvent.click(downloadButton);
-      });
-
-      // Check for the iOS instructions toast
-      await waitFor(() => {
-        expect(screen.getByText('Install on iOS')).toBeInTheDocument();
-        expect(screen.getByText(/Share button/)).toBeInTheDocument();
-      });
-    });
-
-    it('should handle iOS share functionality when share is cancelled', async () => {
-      // Mock iOS user agent
-      Object.defineProperty(navigator, 'userAgent', {
-        value:
-          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
-        configurable: true,
-      });
-
-      renderWithChakra(<DownloadButton />);
+      renderWithProvider(<DownloadButton />);
 
       const downloadButton = screen.getByRole('button', {
         name: /download app/i,
@@ -416,13 +381,75 @@ describe('DownloadButton', () => {
 
       // Wait for manual instructions to be shown
       await waitFor(() => {
-        expect(screen.getByText('Install on iOS')).toBeInTheDocument();
-        expect(screen.getByText(/Share button/)).toBeInTheDocument();
+        expect(mockToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Install Instructions',
+            description: expect.stringMatching(/install icon/),
+          })
+        );
+      });
+    });
+
+    it('should handle iOS share functionality when available', async () => {
+      // Mock iOS user agent
+      Object.defineProperty(navigator, 'userAgent', {
+        value:
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
+        configurable: true,
+      });
+
+      renderWithProvider(<DownloadButton />);
+
+      const downloadButton = screen.getByRole('button', {
+        name: /download app/i,
+      });
+
+      await act(async () => {
+        fireEvent.click(downloadButton);
+      });
+
+      // Check for the iOS instructions toast
+      await waitFor(() => {
+        expect(mockToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Install on iOS',
+            description: expect.stringMatching(/Share button/),
+          })
+        );
+      });
+    });
+
+    it('should handle iOS share functionality when share is cancelled', async () => {
+      // Mock iOS user agent
+      Object.defineProperty(navigator, 'userAgent', {
+        value:
+          'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15',
+        configurable: true,
+      });
+
+      renderWithProvider(<DownloadButton />);
+
+      const downloadButton = screen.getByRole('button', {
+        name: /download app/i,
+      });
+
+      await act(async () => {
+        fireEvent.click(downloadButton);
+      });
+
+      // Wait for manual instructions to be shown
+      await waitFor(() => {
+        expect(mockToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Install on iOS',
+            description: expect.stringMatching(/Share button/),
+          })
+        );
       });
     });
 
     it('should use deferredPromptRef when state is not updated yet', async () => {
-      const { container } = renderWithChakra(<DownloadButton />);
+      const { container } = renderWithProvider(<DownloadButton />);
 
       // Wait for the component to be fully mounted
       await waitFor(() => {
@@ -433,8 +460,8 @@ describe('DownloadButton', () => {
 
       // Create a proper mock for the beforeinstallprompt event
       const beforeInstallPromptEvent = {
-        preventDefault: jest.fn(),
-        prompt: jest.fn(),
+        preventDefault: vi.fn(),
+        prompt: vi.fn(),
         userChoice: Promise.resolve({
           outcome: 'accepted',
         }),
@@ -481,7 +508,7 @@ describe('DownloadButton', () => {
         .spyOn(console, 'error')
         .mockImplementation(() => {});
 
-      renderWithChakra(<DownloadButton />);
+      renderWithProvider(<DownloadButton />);
 
       const downloadButton = screen.getByRole('button', {
         name: /download app/i,
@@ -491,14 +518,14 @@ describe('DownloadButton', () => {
       // by mocking the deferredPrompt.prompt method to throw an error
       const mockError = new Error('Installation failed');
       const originalPrompt = window.Event.prototype.prompt;
-      window.Event.prototype.prompt = jest.fn().mockImplementation(() => {
+      window.Event.prototype.prompt = vi.fn().mockImplementation(() => {
         throw mockError;
       });
 
       // Create a beforeinstallprompt event to trigger the error
       const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-      beforeInstallPromptEvent.preventDefault = jest.fn();
-      beforeInstallPromptEvent.prompt = jest.fn().mockImplementation(() => {
+      beforeInstallPromptEvent.preventDefault = vi.fn();
+      beforeInstallPromptEvent.prompt = vi.fn().mockImplementation(() => {
         throw mockError;
       });
       beforeInstallPromptEvent.userChoice = Promise.resolve({
@@ -515,8 +542,12 @@ describe('DownloadButton', () => {
 
       // Wait for manual instructions to be shown as fallback
       await waitFor(() => {
-        expect(screen.getByText('Install Instructions')).toBeInTheDocument();
-        expect(screen.getByText(/install icon/)).toBeInTheDocument();
+        expect(mockToast).toHaveBeenCalledWith(
+          expect.objectContaining({
+            title: 'Install Instructions',
+            description: expect.stringMatching(/install icon/),
+          })
+        );
       });
 
       // Verify error was logged
@@ -530,7 +561,7 @@ describe('DownloadButton', () => {
     });
 
     it('should clean up event listeners on unmount', () => {
-      const { unmount } = renderWithChakra(<DownloadButton />);
+      const { unmount } = renderWithProvider(<DownloadButton />);
 
       // Spy on removeEventListener
       const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');

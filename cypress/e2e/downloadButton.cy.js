@@ -55,38 +55,7 @@ describe('Download Button Functionality', () => {
       cy.get('button').contains('Download App').click();
 
       // Should show some kind of installation-related message
-      cy.get('body').then(($body) => {
-        const bodyText = $body.text();
-        const hasInstallInstructions = bodyText.includes(
-          'Install Instructions'
-        );
-        const hasInstallationStarted = bodyText.includes(
-          'Installation Started'
-        );
-        const hasInstallationPromptShown = bodyText.includes(
-          'Installation Prompt Shown'
-        );
-        const hasInstallationCancelled = bodyText.includes(
-          'Installation Cancelled'
-        );
-        const hasInstallOnIOS = bodyText.includes('Install on iOS');
-        const hasInstallOnAndroid = bodyText.includes('Install on Android');
-        const hasInstallInBrave = bodyText.includes('Install in Brave');
-        const hasInstallInChrome = bodyText.includes('Install in Chrome');
-        const hasInstallInFirefox = bodyText.includes('Install in Firefox');
-
-        expect(
-          hasInstallInstructions ||
-            hasInstallationStarted ||
-            hasInstallationPromptShown ||
-            hasInstallationCancelled ||
-            hasInstallOnIOS ||
-            hasInstallOnAndroid ||
-            hasInstallInBrave ||
-            hasInstallInChrome ||
-            hasInstallInFirefox
-        ).to.be.true;
-      });
+      cy.contains(/Install Instructions|Installation Started|Installation Prompt Shown|Installation Cancelled|Install on iOS|Install on Android|Install in Brave|Install in Chrome|Install in Firefox/i).should('be.visible');
     });
 
     it('should handle iOS share functionality when available', () => {
@@ -107,7 +76,7 @@ describe('Download Button Functionality', () => {
       cy.get('button').contains('Download App').click();
 
       // Should show iOS-specific instructions
-      cy.contains('Share').should('be.visible');
+      cy.contains('Share button').should('be.visible');
       cy.contains('Add to Home Screen').should('be.visible');
     });
 

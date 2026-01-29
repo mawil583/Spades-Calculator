@@ -1,15 +1,12 @@
 import React, { useContext, useMemo, useState } from 'react';
+import { Button, VStack } from '@chakra-ui/react';
 import {
-  Badge,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  VStack,
-} from '@chakra-ui/react';
+  DialogRoot,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from './dialog';
 import {
   getDealerIdHistory,
   getCurrentDealerId,
@@ -75,28 +72,41 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
   return (
     isDealer && (
       <>
-        <Badge
+        <div
           data-cy="dealerBadge"
           data-testid="dealerBadge"
           onClick={handleBadgeClick}
-          colorScheme="purple"
           style={{
             cursor: isCurrent ? 'pointer' : 'default',
-            marginLeft: '5px',
-            marginRight: '5px',
+            marginLeft: '8px',
+            marginRight: '8px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '20px',
+            height: '20px',
+            backgroundColor: 'rgba(159, 122, 234, 0.3)',
+            color: '#E2E8F0',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            verticalAlign: 'middle',
           }}
         >
           D
-        </Badge>
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} isCentered>
-          <ModalOverlay />
-          <ModalContent
+        </div>
+        <DialogRoot
+          open={isOpen}
+          onOpenChange={(e) => setIsOpen(e.open)}
+          centered
+        >
+          <DialogContent
             data-cy="dealerSelectionModal"
             data-testid="dealerSelectionModal"
           >
-            <ModalHeader>Select the dealer</ModalHeader>
-            <ModalBody>
-              <VStack align="stretch" spacing={3}>
+            <DialogHeader>Select the dealer</DialogHeader>
+            <DialogBody>
+              <VStack align="stretch" gap={3}>
                 {dealerOptions.map((opt) => (
                   <Button
                     key={opt.id}
@@ -109,20 +119,20 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
                   </Button>
                 ))}
               </VStack>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button
                 data-cy="dealerCancelButton"
                 data-testid="dealerCancelButton"
                 variant="ghost"
-                mr={3}
+                style={{ marginRight: '12px' }}
                 onClick={() => setIsOpen(false)}
               >
                 Cancel
               </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+            </DialogFooter>
+          </DialogContent>
+        </DialogRoot>
       </>
     )
   );

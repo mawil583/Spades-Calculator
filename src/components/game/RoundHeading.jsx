@@ -1,5 +1,5 @@
 import React from 'react';
-import { Center, Heading, Flex, Box } from '@chakra-ui/react';
+import { Center, Heading, Flex, Box } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 
 function RoundHeading({ roundNumber, names }) {

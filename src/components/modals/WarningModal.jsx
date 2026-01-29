@@ -1,13 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Modal, ModalOverlay, ModalContent } from '@chakra-ui/react';
+import { AppModal } from '../ui';
 import {
   initialNames,
   initialFirstDealerOrder,
 } from '../../helpers/utils/constants';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { rotateArr } from '../../helpers/utils/helperFunctions';
-import { DataWarningQuestion, NewPlayerQuestion } from '../forms';
+import DataWarningQuestion from '../forms/DataWarningQuestion';
+import NewPlayerQuestion from '../forms/NewPlayerQuestion';
 
 function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
   const navigate = useNavigate();
@@ -67,29 +68,23 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
     navigate('/');
   };
 
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
-
   return (
-    <Modal
+    <AppModal
       isOpen={isOpen}
-      onClose={handleModalClose}
-      style={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+      onClose={setIsModalOpen}
+      contentStyle={{ color: '#ebf5ee', backgroundColor: '#464f51' }}
+      contentProps={{ 'data-testid': 'warning-modal' }}
     >
-      <ModalOverlay />
-      <ModalContent>
-        {showDataWarning && (
-          <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
-        )}
-        {showNewPlayer && (
-          <NewPlayerQuestion
-            onDifferentTeams={onDifferentTeams}
-            onSameTeams={onSameTeams}
-          />
-        )}
-      </ModalContent>
-    </Modal>
+      {showDataWarning && (
+        <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />
+      )}
+      {showNewPlayer && (
+        <NewPlayerQuestion
+          onDifferentTeams={onDifferentTeams}
+          onSameTeams={onSameTeams}
+        />
+      )}
+    </AppModal>
   );
 }
 

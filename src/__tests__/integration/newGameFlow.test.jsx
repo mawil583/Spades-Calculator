@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
-import { customTheme } from '../../customTheme';
+import { Provider } from '../../components/ui/provider';
 import Navbar from '../../components/ui/Navbar';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
@@ -18,11 +17,11 @@ const mockContextValue = {
 const renderWithProviders = (component, contextValue = mockContextValue) => {
   return render(
     <BrowserRouter>
-      <ChakraProvider theme={customTheme}>
+      <Provider>
         <GlobalContext.Provider value={contextValue}>
           {component}
         </GlobalContext.Provider>
-      </ChakraProvider>
+      </Provider>
     </BrowserRouter>
   );
 };
@@ -42,7 +41,7 @@ describe('New Game Flow Integration', () => {
   });
 
   describe('when there is no round history', () => {
-    it('should show only the team selection modal when clicking New Game', () => {
+    it('should show only the team selection modal when clicking New Game', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [],
@@ -66,7 +65,7 @@ describe('New Game Flow Integration', () => {
 
       // Should show the team question directly (no data warning)
       expect(
-        screen.getByText('Would you like to keep the same teams?')
+        await screen.findByText('Would you like to keep the same teams?')
       ).toBeInTheDocument();
       expect(screen.getByText('Different Teams')).toBeInTheDocument();
       expect(screen.getByText('Same Teams')).toBeInTheDocument();
@@ -78,7 +77,7 @@ describe('New Game Flow Integration', () => {
       ).not.toBeInTheDocument();
     });
 
-    it('should handle "Same Teams" selection from New Game button', () => {
+    it('should handle "Same Teams" selection from New Game button', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [],
@@ -100,14 +99,15 @@ describe('New Game Flow Integration', () => {
       // Click the New Game button
       fireEvent.click(screen.getByText('New Game'));
 
-      // Click Same Teams
-      fireEvent.click(screen.getByText('Same Teams'));
+      // Wait for modal and click Same Teams
+      const sameTeamsButton = await screen.findByText('Same Teams');
+      fireEvent.click(sameTeamsButton);
 
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
     });
 
-    it('should handle "Different Teams" selection from New Game button', () => {
+    it('should handle "Different Teams" selection from New Game button', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [],
@@ -129,8 +129,9 @@ describe('New Game Flow Integration', () => {
       // Click the New Game button
       fireEvent.click(screen.getByText('New Game'));
 
-      // Click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      // Wait for modal and click Different Teams
+      const differentTeamsButton = await screen.findByText('Different Teams');
+      fireEvent.click(differentTeamsButton);
 
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
@@ -138,7 +139,7 @@ describe('New Game Flow Integration', () => {
       expect(window.localStorage.setItem).toHaveBeenCalled();
     });
 
-    it('should reset names to empty and navigate to home when selecting "Different Teams"', () => {
+    it('should reset names to empty and navigate to home when selecting "Different Teams"', async () => {
       const contextValue = {
         ...mockContextValue,
         roundHistory: [],
@@ -160,8 +161,9 @@ describe('New Game Flow Integration', () => {
       // Click the New Game button
       fireEvent.click(screen.getByText('New Game'));
 
-      // Click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      // Wait for modal and click Different Teams
+      const differentTeamsButton = await screen.findByText('Different Teams');
+      fireEvent.click(differentTeamsButton);
 
       // Verify that localStorage.setItem was called with initialNames (empty player names)
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -201,8 +203,8 @@ describe('New Game Flow Integration', () => {
       // Click the New Game button
       fireEvent.click(screen.getByText('New Game'));
 
-      // Should show the data warning first
-      expect(screen.getByText('Are you sure?')).toBeInTheDocument();
+      // Wait for the data warning
+      expect(await screen.findByText('Are you sure?')).toBeInTheDocument();
       expect(
         screen.getByText('This will permanently delete your game data.')
       ).toBeInTheDocument();
@@ -217,13 +219,12 @@ describe('New Game Flow Integration', () => {
       // Click Continue to proceed to the next modal
       fireEvent.click(screen.getByText('Continue'));
 
-      await waitFor(() => {
-        expect(
-          screen.getByText('Would you like to keep the same teams?')
-        ).toBeInTheDocument();
-        expect(screen.getByText('Different Teams')).toBeInTheDocument();
-        expect(screen.getByText('Same Teams')).toBeInTheDocument();
-      });
+      // Use findByText to wait for the next step in the flow
+      expect(
+        await screen.findByText('Would you like to keep the same teams?')
+      ).toBeInTheDocument();
+      expect(screen.getByText('Different Teams')).toBeInTheDocument();
+      expect(screen.getByText('Same Teams')).toBeInTheDocument();
 
       // The data warning should no longer be visible
       expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument();
@@ -254,8 +255,9 @@ describe('New Game Flow Integration', () => {
       // Click the New Game button
       fireEvent.click(screen.getByText('New Game'));
 
-      // Click Cancel
-      fireEvent.click(screen.getByText('Cancel'));
+      // Wait for the data warning and click Cancel
+      const cancelButton = await screen.findByText('Cancel');
+      fireEvent.click(cancelButton);
 
       // Modal should be closed
       await waitFor(() => {
@@ -289,10 +291,12 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
-      fireEvent.click(screen.getByText('Continue'));
+      const continueButton = await screen.findByText('Continue');
+      fireEvent.click(continueButton);
 
       // Click Same Teams
-      fireEvent.click(screen.getByText('Same Teams'));
+      const sameTeamsButton = await screen.findByText('Same Teams');
+      fireEvent.click(sameTeamsButton);
 
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
@@ -322,10 +326,12 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
-      fireEvent.click(screen.getByText('Continue'));
+      const continueButton = await screen.findByText('Continue');
+      fireEvent.click(continueButton);
 
       // Click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      const differentTeamsButton = await screen.findByText('Different Teams');
+      fireEvent.click(differentTeamsButton);
 
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
@@ -356,10 +362,12 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
-      fireEvent.click(screen.getByText('Continue'));
+      const continueButton = await screen.findByText('Continue');
+      fireEvent.click(continueButton);
 
       // Click Different Teams
-      fireEvent.click(screen.getByText('Different Teams'));
+      const differentTeamsButton = await screen.findByText('Different Teams');
+      fireEvent.click(differentTeamsButton);
 
       // Verify that localStorage.setItem was called with initialNames (empty player names)
       expect(window.localStorage.setItem).toHaveBeenCalledWith(
@@ -389,7 +397,7 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(screen.getByText('New Game'));
 
       // Find and click the close button
-      const closeButton = screen.getByRole('button', { name: /close/i });
+      const closeButton = await screen.findByRole('button', { name: /close/i });
       fireEvent.click(closeButton);
 
       // Modal should be closed

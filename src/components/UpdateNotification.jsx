@@ -5,10 +5,9 @@ import {
   Text,
   VStack,
   HStack,
-  SlideFade,
-  Icon,
-} from '@chakra-ui/react';
-import { RepeatIcon, CloseIcon } from '@chakra-ui/icons';
+} from './ui';
+import { motion, AnimatePresence } from 'framer-motion';
+import { RefreshCw, X } from 'lucide-react';
 import { useRegisterSW } from 'virtual:pwa-register/react';
 
 const UpdateNotification = () => {
@@ -34,77 +33,88 @@ const UpdateNotification = () => {
     setNeedRefresh(false);
   };
 
-  if (!offlineReady && !needRefresh) {
-    return null;
-  }
-
   return (
-    <SlideFade in={offlineReady || needRefresh} offsetY="20px">
-      <Box
-        position="fixed"
-        top="4"
-        right="4"
-        zIndex="9999"
-        bg="blue.500"
-        color="white"
-        p="4"
-        borderRadius="lg"
-        boxShadow="lg"
-        maxW="sm"
-        border="1px solid"
-        borderColor="blue.600"
-      >
-        <VStack spacing="3" align="stretch">
-          <HStack justify="space-between" align="start">
-            <Text fontWeight="bold" fontSize="sm">
-              {needRefresh ? 'New Version Available' : 'Ready for Offline Use'}
-            </Text>
-            <Button
-              size="sm"
-              variant="ghost"
-              color="white"
-              _hover={{ bg: 'blue.600' }}
-              onClick={handleDismiss}
-              p="0"
-              minW="auto"
-            >
-              <Icon as={CloseIcon} boxSize="3" />
-            </Button>
-          </HStack>
+    <AnimatePresence>
+      {(offlineReady || needRefresh) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.2 }}
+          style={{
+            position: 'fixed',
+            top: '16px',
+            right: '16px',
+            zIndex: 9999,
+          }}
+        >
+          <Box
+            bg="blue.600"
+            color="white"
+            px="5"
+            py="4"
+            borderRadius="xl"
+            boxShadow="2xl"
+            maxW="sm"
+            border="1px solid"
+            borderColor="blue.400"
+          >
+            <VStack gap="4" align="stretch">
+              <HStack justify="space-between" align="center">
+                <Text fontWeight="extrabold" fontSize="md" letterSpacing="tight">
+                  {needRefresh
+                    ? '🚀 New Version Available'
+                    : '✨ Ready for Offline Use'}
+                </Text>
+                <Button
+                  size="xs"
+                  variant="ghost"
+                  color="white"
+                  _hover={{ bg: 'blue.500' }}
+                  onClick={handleDismiss}
+                  p="1"
+                  minW="auto"
+                  borderRadius="full"
+                >
+                  <X size={16} />
+                </Button>
+              </HStack>
 
-          <Text fontSize="sm" opacity="0.9">
-            {needRefresh
-              ? 'A new version of Spades Calculator is ready. Update now to get the latest features and improvements.'
-              : 'The app has been cached and is ready to work offline.'}
-          </Text>
+              <Text fontSize="sm" opacity="0.9">
+                {needRefresh
+                  ? 'A new version of Spades Calculator is ready. Update now to get the latest features and improvements.'
+                  : 'The app has been cached and is ready to work offline.'}
+              </Text>
 
-          <HStack spacing="2">
-            {needRefresh && (
-              <Button
-                size="sm"
-                bg="white"
-                color="blue.500"
-                _hover={{ bg: 'gray.100' }}
-                _active={{ bg: 'gray.200' }}
-                leftIcon={<RepeatIcon />}
-                onClick={handleUpdate}
-                flex="1"
-              >
-                Update Now
-              </Button>
-            )}
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={handleDismiss}
-              _hover={{ bg: 'blue.600' }}
-            >
-              {needRefresh ? 'Later' : 'Dismiss'}
-            </Button>
-          </HStack>
-        </VStack>
-      </Box>
-    </SlideFade>
+              <HStack gap="2">
+                {needRefresh && (
+                  <Button
+                    size="sm"
+                    bg="white"
+                    color="blue.500"
+                    _hover={{ bg: 'gray.100' }}
+                    _active={{ bg: 'gray.200' }}
+                    onClick={handleUpdate}
+                    flex="1"
+                  >
+                    <RefreshCw size={16} />
+                    Update Now
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={handleDismiss}
+                  _hover={{ bg: 'blue.600' }}
+                >
+                  {needRefresh ? 'Later' : 'Dismiss'}
+                </Button>
+              </HStack>
+            </VStack>
+          </Box>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

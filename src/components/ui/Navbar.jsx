@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Button, IconButton } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { WarningModal } from '../modals';
+import WarningModal from '../modals/WarningModal';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -30,9 +30,21 @@ const Navbar = () => {
           onClick={handleNavigateHome}
           fontSize="25px"
           style={{ width: '60px' }}
-          icon={<ArrowBackIcon />}
-        />
-        <Button onClick={resetGameWithSamePlayers}>New Game</Button>
+          borderColor="#4A5568"
+          borderWidth="1px"
+          color="white"
+        >
+          <ArrowLeft />
+        </IconButton>
+        <Button 
+          onClick={resetGameWithSamePlayers}
+          variant="outline"
+          borderColor="#4A5568"
+          borderWidth="1px"
+          color="white"
+        >
+          New Game
+        </Button>
       </div>
     </>
   );

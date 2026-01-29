@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Heading } from '@chakra-ui/react';
+import { Heading } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import { InputModal } from '../modals';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
@@ -132,7 +132,7 @@ function TeamInputHeading({
       >
         <Heading
           data-cy="team1Total"
-          size="lg"
+          size="3xl"
           style={{
             position: 'absolute',
             marginRight: '50%',
@@ -153,7 +153,7 @@ function TeamInputHeading({
         </Heading>
         <Heading
           data-cy="team2Total"
-          size="lg"
+          size="3xl"
           style={{
             position: 'absolute',
             marginLeft: '50%',

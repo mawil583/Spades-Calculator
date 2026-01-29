@@ -1,20 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { Provider } from '../components/ui/provider';
 import TeamInputHeading from '../components/forms/TeamInputHeading';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
-// Mock the InputModal component
-jest.mock('../components/modals/InputModal', () => {
-  return function MockInputModal({ isOpen, setIsModalOpen }) {
-    if (!isOpen) return null;
-    return (
-      <div data-testid="inputModal">
-        <button onClick={() => setIsModalOpen(false)}>Close</button>
-      </div>
-    );
-  };
-});
+// No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
 const mockContextValue = {
   firstDealerOrder: [
@@ -44,9 +34,11 @@ const mockContextValue = {
 
 const renderWithContext = (component) => {
   return render(
-    <GlobalContext.Provider value={mockContextValue}>
-      {component}
-    </GlobalContext.Provider>
+    <Provider>
+      <GlobalContext.Provider value={mockContextValue}>
+        {component}
+      </GlobalContext.Provider>
+    </Provider>
   );
 };
 
@@ -121,10 +113,10 @@ describe('TeamInputHeading', () => {
 });
 
 describe('TeamInputHeading Modal Integration', () => {
-  it('should open InputModal when clicking on editable team heading', () => {
+  it('should open InputModal when clicking on editable team heading', async () => {
     const mockOnTeamTotalChange = jest.fn();
 
-    const { getAllByText, getByTestId } = renderWithContext(
+    const { getAllByText, findByTestId } = renderWithContext(
       <TeamInputHeading
         team1Total="0"
         team2Total="0"
@@ -146,10 +138,10 @@ describe('TeamInputHeading Modal Integration', () => {
     fireEvent.click(team1Heading);
 
     // Verify modal opened
-    expect(getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(await findByTestId('bidSelectionModal')).toBeInTheDocument();
   });
 
-  it('should not open InputModal when clicking on non-editable team heading', () => {
+  it('should not open InputModal when clicking on non-editable team heading', async () => {
     const mockOnTeamTotalChange = jest.fn();
 
     const { getAllByText, queryByTestId } = renderWithContext(
@@ -179,7 +171,7 @@ describe('TeamInputHeading Modal Integration', () => {
 });
 
 describe('TeamInputHeading Team Total Updates', () => {
-  it('should update individual player actuals when team total is selected', () => {
+  it('should update individual player actuals when team total is selected', async () => {
     const mockSetCurrentRound = jest.fn();
     const mockSetRoundHistory = jest.fn();
 
@@ -190,34 +182,36 @@ describe('TeamInputHeading Team Total Updates', () => {
       setRoundHistory: mockSetRoundHistory,
     };
 
-    const { getAllByText, getByTestId } = render(
-      <GlobalContext.Provider value={testContextValue}>
-        <TeamInputHeading
-          team1Total="0"
-          team2Total="0"
-          title="Actuals"
-          team1Bids={['1', '2']}
-          team2Bids={['3', '4']}
-          isEditable={true}
-          index={0}
-          isCurrent={true}
-          currentRound={{
-            team1BidsAndActuals: {
-              p1Bid: '1',
-              p2Bid: '2',
-              p1Actual: '',
-              p2Actual: '',
-            },
-            team2BidsAndActuals: {
-              p1Bid: '3',
-              p2Bid: '4',
-              p1Actual: '',
-              p2Actual: '',
-            },
-          }}
-          roundHistory={[]}
-        />
-      </GlobalContext.Provider>
+    const { getAllByText, findByTestId } = render(
+      <Provider>
+        <GlobalContext.Provider value={testContextValue}>
+          <TeamInputHeading
+            team1Total="0"
+            team2Total="0"
+            title="Actuals"
+            team1Bids={['1', '2']}
+            team2Bids={['3', '4']}
+            isEditable={true}
+            index={0}
+            isCurrent={true}
+            currentRound={{
+              team1BidsAndActuals: {
+                p1Bid: '1',
+                p2Bid: '2',
+                p1Actual: '',
+                p2Actual: '',
+              },
+              team2BidsAndActuals: {
+                p1Bid: '3',
+                p2Bid: '4',
+                p1Actual: '',
+                p2Actual: '',
+              },
+            }}
+            roundHistory={[]}
+          />
+        </GlobalContext.Provider>
+      </Provider>
     );
 
     // Click on team1 heading to open modal
@@ -226,10 +220,10 @@ describe('TeamInputHeading Team Total Updates', () => {
     fireEvent.click(team1Heading);
 
     // Verify modal opened
-    expect(getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(await findByTestId('bidSelectionModal')).toBeInTheDocument();
 
     // Simulate clicking on the "10" button in the modal
-    const tenButton = screen.getByText('10');
+    const tenButton = await screen.findByText('10');
     fireEvent.click(tenButton);
 
     // Verify that setCurrentRound was called with the team total
@@ -240,7 +234,7 @@ describe('TeamInputHeading Team Total Updates', () => {
     });
   });
 
-  it('should handle odd team totals by giving remainder to first player', () => {
+  it('should handle odd team totals by giving remainder to first player', async () => {
     const mockSetCurrentRound = jest.fn();
     const mockSetRoundHistory = jest.fn();
 
@@ -251,33 +245,35 @@ describe('TeamInputHeading Team Total Updates', () => {
     };
 
     const { getAllByText } = render(
-      <GlobalContext.Provider value={testContextValue2}>
-        <TeamInputHeading
-          team1Total="0"
-          team2Total="0"
-          title="Actuals"
-          team1Bids={['1', '2']}
-          team2Bids={['3', '4']}
-          isEditable={true}
-          index={0}
-          isCurrent={true}
-          currentRound={{
-            team1BidsAndActuals: {
-              p1Bid: '1',
-              p2Bid: '2',
-              p1Actual: '',
-              p2Actual: '',
-            },
-            team2BidsAndActuals: {
-              p1Bid: '3',
-              p2Bid: '4',
-              p1Actual: '',
-              p2Actual: '',
-            },
-          }}
-          roundHistory={[]}
-        />
-      </GlobalContext.Provider>
+      <Provider>
+        <GlobalContext.Provider value={testContextValue2}>
+          <TeamInputHeading
+            team1Total="0"
+            team2Total="0"
+            title="Actuals"
+            team1Bids={['1', '2']}
+            team2Bids={['3', '4']}
+            isEditable={true}
+            index={0}
+            isCurrent={true}
+            currentRound={{
+              team1BidsAndActuals: {
+                p1Bid: '1',
+                p2Bid: '2',
+                p1Actual: '',
+                p2Actual: '',
+              },
+              team2BidsAndActuals: {
+                p1Bid: '3',
+                p2Bid: '4',
+                p1Actual: '',
+                p2Actual: '',
+              },
+            }}
+            roundHistory={[]}
+          />
+        </GlobalContext.Provider>
+      </Provider>
     );
 
     // Click on team1 heading
@@ -286,7 +282,7 @@ describe('TeamInputHeading Team Total Updates', () => {
     fireEvent.click(team1Heading);
 
     // Simulate clicking on the "7" button in the modal
-    const sevenButton = screen.getByText('7');
+    const sevenButton = await screen.findByText('7');
     fireEvent.click(sevenButton);
 
     // Verify that setCurrentRound was called with the team total
@@ -299,7 +295,7 @@ describe('TeamInputHeading Team Total Updates', () => {
 });
 
 describe('TeamInputHeading Integration Tests', () => {
-  it('should update both individual players and team total display when team total is selected', () => {
+  it('should update both individual players and team total display when team total is selected', async () => {
     const mockSetCurrentRound = jest.fn();
     const mockSetRoundHistory = jest.fn();
 
@@ -325,21 +321,23 @@ describe('TeamInputHeading Integration Tests', () => {
       },
     };
 
-    const { getAllByText, getByTestId } = render(
-      <GlobalContext.Provider value={testContextValue}>
-        <TeamInputHeading
-          team1Total="0"
-          team2Total="0"
-          title="Actuals"
-          team1Bids={['1', '2']}
-          team2Bids={['3', '4']}
-          isEditable={true}
-          index={0}
-          isCurrent={true}
-          currentRound={mockCurrentRound}
-          roundHistory={[]}
-        />
-      </GlobalContext.Provider>
+    const { getAllByText, findByTestId } = render(
+      <Provider>
+        <GlobalContext.Provider value={testContextValue}>
+          <TeamInputHeading
+            team1Total="0"
+            team2Total="0"
+            title="Actuals"
+            team1Bids={['1', '2']}
+            team2Bids={['3', '4']}
+            isEditable={true}
+            index={0}
+            isCurrent={true}
+            currentRound={mockCurrentRound}
+            roundHistory={[]}
+          />
+        </GlobalContext.Provider>
+      </Provider>
     );
 
     // Click on team1 heading to open modal
@@ -348,10 +346,10 @@ describe('TeamInputHeading Integration Tests', () => {
     fireEvent.click(team1Heading);
 
     // Verify modal opened
-    expect(getByTestId('bidSelectionModal')).toBeInTheDocument();
+    expect(await findByTestId('bidSelectionModal')).toBeInTheDocument();
 
     // Simulate clicking on the "10" button in the modal
-    const tenButton = screen.getByText('10');
+    const tenButton = await screen.findByText('10');
     fireEvent.click(tenButton);
 
     // Verify that setCurrentRound was called exactly once with team total
@@ -365,7 +363,7 @@ describe('TeamInputHeading Integration Tests', () => {
     });
   });
 
-  it('should handle odd team totals correctly (remainder to first player)', () => {
+  it('should handle odd team totals correctly (remainder to first player)', async () => {
     const mockSetCurrentRound = jest.fn();
     const mockSetRoundHistory = jest.fn();
 
@@ -390,21 +388,23 @@ describe('TeamInputHeading Integration Tests', () => {
       },
     };
 
-    const { getAllByText } = render(
-      <GlobalContext.Provider value={testContextValue}>
-        <TeamInputHeading
-          team1Total="0"
-          team2Total="0"
-          title="Actuals"
-          team1Bids={['1', '2']}
-          team2Bids={['3', '4']}
-          isEditable={true}
-          index={0}
-          isCurrent={true}
-          currentRound={mockCurrentRound}
-          roundHistory={[]}
-        />
-      </GlobalContext.Provider>
+    const { getAllByText, findByTestId } = render(
+      <Provider>
+        <GlobalContext.Provider value={testContextValue}>
+          <TeamInputHeading
+            team1Total="0"
+            team2Total="0"
+            title="Actuals"
+            team1Bids={['1', '2']}
+            team2Bids={['3', '4']}
+            isEditable={true}
+            index={0}
+            isCurrent={true}
+            currentRound={mockCurrentRound}
+            roundHistory={[]}
+          />
+        </GlobalContext.Provider>
+      </Provider>
     );
 
     // Click on team1 heading to open modal
@@ -412,8 +412,11 @@ describe('TeamInputHeading Integration Tests', () => {
     const team1Heading = teamHeadings[0];
     fireEvent.click(team1Heading);
 
+    // Verify modal opened
+    expect(await findByTestId('bidSelectionModal')).toBeInTheDocument();
+
     // Simulate clicking on the "7" button in the modal (odd number)
-    const sevenButton = screen.getByText('7');
+    const sevenButton = await screen.findByText('7');
     fireEvent.click(sevenButton);
 
     // Verify that setCurrentRound was called exactly once with team total

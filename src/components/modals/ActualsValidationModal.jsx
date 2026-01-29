@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+  DialogRoot,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogCloseTrigger,
+} from '../ui/dialog';
 import { ActualSection } from '../game';
 
 function ActualsValidationModal({
@@ -24,20 +23,19 @@ function ActualsValidationModal({
   currentRound,
 }) {
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={() => {
-        setIsValid(true);
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => {
+        if (!e.open) setIsValid(true);
       }}
     >
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
+      <DialogContent>
+        <DialogHeader>
           Total actuals must equal 13. The actuals you&apos;ve entered add up to{' '}
           {totalActuals}
-        </ModalHeader>
-        <ModalCloseButton />
-        <ModalBody style={{ padding: '5px' }}>
+        </DialogHeader>
+        <DialogCloseTrigger />
+        <DialogBody style={{ padding: '5px' }}>
           <ActualSection
             index={index}
             setRound={setRound}
@@ -49,9 +47,9 @@ function ActualsValidationModal({
             roundHistory={roundHistory}
             currentRound={currentRound}
           />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </DialogRoot>
   );
 }
 

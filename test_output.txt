@@ -1,0 +1,253 @@
+
+> client@0.1.0 unit
+> vitest run
+
+
+ RUN  v3.2.4 /Users/michaelwilliams/code/personal/Spades-Calculator
+
+ ❯ src/__tests__/ButtonGrid.test.jsx (12 tests | 12 failed) 201ms
+   × ButtonGrid Component > Button Display > should display all button values for Bid type 104ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Button Display > should display all button values for Actual type 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Button Display > should have correct data-cy attributes on buttons based on type 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Current Round Interactions > should call setCurrentRound when button is clicked for current round 19ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Current Round Interactions > should close modal when button is clicked 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Current Round Interactions > should handle different field updates correctly 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Past Round Interactions > should call setRoundHistory when button is clicked for past round 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Past Round Interactions > should close modal when button is clicked for past round 32ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Edge Cases > should handle null setIsModalOpen gracefully 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Edge Cases > should handle empty roundHistory for past rounds 20ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Accessibility > should have clickable buttons 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ButtonGrid Component > Accessibility > should have proper button text content 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/DealerTag.test.jsx (4 tests | 4 failed) 182ms
+   × DealerTag > Unit Tests > should render dealer badge when player is dealer 123ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should open dealer selection modal when clicked on current round 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should not open modal when clicked on non-current round 49ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should call setDealerOverride when a dealer option is selected 3ms
+     → Cannot read properties of undefined (reading '_config')
+ ✓ src/__tests__/useValidateActuals.test.js (5 tests) 66ms
+ ✓ src/__tests__/teamTotalStorage.test.js (3 tests) 7ms
+ ✓ src/__tests__/pwaManifest.test.js (20 tests) 71ms
+ ✓ src/helpers/math/spadesMath.test.js (38 tests) 68ms
+stdout | src/__tests__/dealer.test.js > Dealer Functionality > Dealer Calculation Logic > bug demonstration: dealer calculation is wrong when dealerIdHistory.length > 0 but < 4
+Current dealer: team2BidsAndActuals.p1Bid
+Expected: team2BidsAndActuals.p1Bid
+Bug returns: team1BidsAndActuals.p2Bid (clonedfirstDealerOrder[1])
+
+ ✓ src/__tests__/dealer.test.js (17 tests) 123ms
+ ✓ src/__tests__/helperFunctions.test.js (23 tests) 9ms
+ ✓ src/__tests__/updateInput.test.js (5 tests) 5ms
+ ✓ src/__tests__/offline.test.js (16 tests) 10ms
+ ✓ src/__tests__/pwaMetaTags.test.js (18 tests) 12ms
+ ✓ src/__tests__/getEditedRoundHistory.test.js (3 tests) 15ms
+ ✓ src/__tests__/dealerOverrideScenario.test.js (1 test) 4ms
+ ✓ src/__tests__/teamTotalMath.test.js (6 tests) 20ms
+ ✓ src/__tests__/dealerRotationUnit.test.js (8 tests) 8ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 19 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/__tests__/ActualSection.test.jsx [ src/__tests__/ActualSection.test.jsx ]
+ FAIL  src/__tests__/Unclaimed.test.jsx [ src/__tests__/Unclaimed.test.jsx ]
+ FAIL  src/__tests__/WarningModal.test.jsx [ src/__tests__/WarningModal.test.jsx ]
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx [ src/__tests__/actualSectionTeamTotal.test.jsx ]
+ FAIL  src/__tests__/roundNullHistory.test.jsx [ src/__tests__/roundNullHistory.test.jsx ]
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx [ src/__tests__/integration/dealerTagIntegration.test.jsx ]
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx [ src/__tests__/integration/externalIntegrations.test.jsx ]
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx [ src/__tests__/integration/userWorkflows.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/game/ScoreSetting.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/game/ScoreSetting.jsx:3:29
+  2  |  import React, { useState } from "react";
+  3  |  import { Text, Radio, RadioGroup, Stack, IconButton } from "@chakra-ui/react";
+  4  |  import { QuestionIcon } from "@chakra-ui/icons";
+     |                                ^
+  5  |  import {
+  6  |    HELPS_TEAM_BID,
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/35]⎯
+
+ FAIL  src/__tests__/DownloadButton.test.jsx [ src/__tests__/DownloadButton.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/ui/InstallPrompt.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/ui/InstallPrompt.jsx:3:29
+  2  |  import React, { useState, useEffect } from "react";
+  3  |  import { Box, Button, Text, VStack, HStack, useToast } from "@chakra-ui/react";
+  4  |  import { DownloadIcon } from "@chakra-ui/icons";
+     |                                ^
+  5  |  const InstallPrompt = () => {
+  6  |    const [deferredPrompt, setDeferredPrompt] = useState(null);
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/35]⎯
+
+ FAIL  src/__tests__/ErrorModal.test.jsx [ src/__tests__/ErrorModal.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/game/ScoreSetting.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/game/ScoreSetting.jsx:3:29
+  2  |  import React, { useState } from "react";
+  3  |  import { Text, Radio, RadioGroup, Stack, IconButton } from "@chakra-ui/react";
+  4  |  import { QuestionIcon } from "@chakra-ui/icons";
+     |                                ^
+  5  |  import {
+  6  |    HELPS_TEAM_BID,
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/35]⎯
+
+ FAIL  src/__tests__/HomePage_buttons.test.jsx [ src/__tests__/HomePage_buttons.test.jsx ]
+ FAIL  src/__tests__/HomePage_teams_reset.test.jsx [ src/__tests__/HomePage_teams_reset.test.jsx ]
+ FAIL  src/__tests__/ScoreSettingsModal.test.jsx [ src/__tests__/ScoreSettingsModal.test.jsx ]
+ FAIL  src/__tests__/TeamInputHeading.test.jsx [ src/__tests__/TeamInputHeading.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/forms/PlayerInput.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/forms/PlayerInput.jsx:3:25
+  2  |  import React, { useState } from "react";
+  3  |  import { Button, Flex } from "@chakra-ui/react";
+  4  |  import { EditIcon } from "@chakra-ui/icons";
+     |                            ^
+  5  |  import { InputModal } from "../modals";
+  6  |  import { DealerTag } from "../ui";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/35]⎯
+
+ FAIL  src/__tests__/InstallPrompt.test.jsx [ src/__tests__/InstallPrompt.test.jsx ]
+ FAIL  src/__tests__/independentTeamScoring.test.jsx [ src/__tests__/independentTeamScoring.test.jsx ]
+ FAIL  src/__tests__/integration/stateInteractions.test.jsx [ src/__tests__/integration/stateInteractions.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/ui/InstallPrompt.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/ui/InstallPrompt.jsx:3:29
+  2  |  import React, { useState, useEffect } from "react";
+  3  |  import { Box, Button, Text, VStack, HStack, useToast } from "@chakra-ui/react";
+  4  |  import { DownloadIcon } from "@chakra-ui/icons";
+     |                                ^
+  5  |  const InstallPrompt = () => {
+  6  |    const [deferredPrompt, setDeferredPrompt] = useState(null);
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/35]⎯
+
+ FAIL  src/__tests__/PlayerInput.test.jsx [ src/__tests__/PlayerInput.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/forms/PlayerInput.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/forms/PlayerInput.jsx:3:25
+  2  |  import React, { useState } from "react";
+  3  |  import { Button, Flex } from "@chakra-ui/react";
+  4  |  import { EditIcon } from "@chakra-ui/icons";
+     |                            ^
+  5  |  import { InputModal } from "../modals";
+  6  |  import { DealerTag } from "../ui";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/35]⎯
+
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx [ src/__tests__/integration/newGameFlow.test.jsx ]
+Error: Failed to resolve import "@chakra-ui/icons" from "src/components/ui/Navbar.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/michaelwilliams/code/personal/Spades-Calculator/src/components/ui/Navbar.jsx:3:30
+  2  |  import React, { useState } from "react";
+  3  |  import { Button, IconButton } from "@chakra-ui/react";
+  4  |  import { ArrowBackIcon } from "@chakra-ui/icons";
+     |                                 ^
+  5  |  import { useNavigate } from "react-router-dom";
+  6  |  import { WarningModal } from "../modals";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/config.js:28999:43
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/config.js:28996:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/config.js:27119:18
+ ❯ node_modules/vite/dist/node/chunks/config.js:27177:32
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/config.js:27145:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/config.js:28797:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/config.js:22670:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/35]⎯
+
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Button Display > should display all button values for Bid type
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Button Display > should display all button values for Actual type
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Button Display > should have correct data-cy attributes on buttons based on type
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Current Round Interactions > should call setCurrentRound when button is clicked for current round
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Current Round Interactions > should close modal when button is clicked
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Current Round Interactions > should handle different field updates correctly
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Past Round Interactions > should call setRoundHistory when button is clicked for past round
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Past Round Interactions > should close modal when button is clicked for past round
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Edge Cases > should handle null setIsModalOpen gracefully
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Edge Cases > should handle empty roundHistory for past rounds
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Accessibility > should have clickable buttons
+ FAIL  src/__tests__/ButtonGrid.test.jsx > ButtonGrid Component > Accessibility > should have proper button text content
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should render dealer badge when player is dealer
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should open dealer selection modal when clicked on current round
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should not open modal when clicked on non-current round
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should call setDealerOverride when a dealer option is selected
+TypeError: Cannot read properties of undefined (reading '_config')
+ ❯ ChakraProvider node_modules/@chakra-ui/react/dist/esm/styled-system/provider.js:15:10
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:16583:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/35]⎯
+
+
+ Test Files  21 failed | 13 passed (34)
+      Tests  16 failed | 163 passed (179)
+   Start at  15:27:39
+   Duration  25.59s (transform 696ms, setup 11.04s, collect 14.07s, tests 800ms, environment 78.43s, prepare 13.84s)
+

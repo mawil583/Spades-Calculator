@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Text, VStack, HStack, useToast } from '@chakra-ui/react';
-import { DownloadIcon } from '@chakra-ui/icons';
+import { Box, Button, Text, VStack, HStack } from './ui';
+import { toaster } from './ui/toaster';
+import { Download } from 'lucide-react';
 
 const InstallPrompt = () => {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
-  const toast = useToast();
 
   useEffect(() => {
     // Check if the app is already installed
@@ -35,12 +35,11 @@ const InstallPrompt = () => {
     const handleAppInstalled = () => {
       setShowInstallPrompt(false);
       setDeferredPrompt(null);
-      toast({
+      toaster.create({
         title: 'App Installed!',
         description: 'Spades Calculator has been added to your home screen.',
-        status: 'success',
+        type: 'success',
         duration: 3000,
-        isClosable: true,
       });
     };
 
@@ -55,7 +54,7 @@ const InstallPrompt = () => {
       );
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
-  }, [deferredPrompt, toast]);
+  }, [deferredPrompt]);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) {
@@ -132,12 +131,11 @@ const InstallPrompt = () => {
       }
     }
 
-    toast({
+    toaster.create({
       title: title,
       description: instructions,
-      status: 'info',
+      type: 'info',
       duration: 8000,
-      isClosable: true,
     });
   };
 
@@ -192,7 +190,7 @@ const InstallPrompt = () => {
         <HStack spacing={2}>
           <Button
             data-testid="install-app-button"
-            leftIcon={<DownloadIcon />}
+            leftIcon={<Download />}
             colorScheme="blue"
             size="sm"
             onClick={handleInstallClick}

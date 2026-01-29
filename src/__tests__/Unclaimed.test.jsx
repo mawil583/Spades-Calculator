@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import Unclaimed from '../components/game/Unclaimed';
 import BidSection from '../components/game/BidSection';
 import { GlobalContext } from '../helpers/context/GlobalContext';
@@ -37,11 +37,11 @@ const mockGlobalContext = {
 
 const renderWithChakra = (component) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={mockGlobalContext}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 

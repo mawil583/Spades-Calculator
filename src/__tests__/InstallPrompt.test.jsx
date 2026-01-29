@@ -1,4 +1,5 @@
 // Mock the toast hook before importing components
+import { vi } from 'vitest';
 import React from 'react';
 import {
   render,
@@ -7,13 +8,19 @@ import {
   waitFor,
   act,
 } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import { InstallPrompt } from '../components/ui';
 
-const mockToast = jest.fn();
-jest.mock('@chakra-ui/react', () => ({
-  ...jest.requireActual('@chakra-ui/react'),
-  useToast: () => mockToast,
+const { mockToaster } = vi.hoisted(() => {
+  return {
+    mockToaster: {
+      create: vi.fn(),
+    },
+  };
+});
+
+vi.mock('../components/ui/toaster', () => ({
+  toaster: mockToaster,
 }));
 
 // Mock window.matchMedia
@@ -38,16 +45,16 @@ Object.defineProperty(window.navigator, 'standalone', {
 });
 
 // Mock setTimeout
-jest.useFakeTimers();
+vi.useFakeTimers();
 
-const renderWithChakra = (component) => {
-  return render(<ChakraProvider>{component}</ChakraProvider>);
+const renderWithProvider = (component) => {
+  return render(<Provider>{component}</Provider>);
 };
 
 describe('InstallPrompt', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    jest.clearAllTimers();
+    vi.clearAllMocks();
+    vi.clearAllTimers();
     // Reset window.navigator.standalone
     Object.defineProperty(window.navigator, 'standalone', {
       writable: true,
@@ -70,16 +77,16 @@ describe('InstallPrompt', () => {
   });
 
   afterEach(() => {
-    jest.clearAllTimers();
-    jest.runOnlyPendingTimers();
+    vi.clearAllTimers();
+    vi.runOnlyPendingTimers();
   });
 
   afterAll(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it('should not render initially when app is not installed', () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     expect(
       screen.queryByText('📱 Install Spades Calculator')
@@ -102,7 +109,7 @@ describe('InstallPrompt', () => {
       })),
     });
 
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     expect(
       screen.queryByText('📱 Install Spades Calculator')
@@ -116,7 +123,7 @@ describe('InstallPrompt', () => {
       value: true,
     });
 
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     expect(
       screen.queryByText('📱 Install Spades Calculator')
@@ -124,7 +131,7 @@ describe('InstallPrompt', () => {
   });
 
   it('should show prompt after 10 seconds when beforeinstallprompt event is fired', async () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
@@ -140,7 +147,7 @@ describe('InstallPrompt', () => {
 
     // Fast-forward time by 10 seconds
     await act(async () => {
-      jest.advanceTimersByTime(10000);
+      vi.advanceTimersByTime(10000);
     });
 
     // Wait for the prompt to appear
@@ -152,7 +159,7 @@ describe('InstallPrompt', () => {
   });
 
   it('should handle install button click with deferred prompt', async () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event first
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
@@ -168,7 +175,7 @@ describe('InstallPrompt', () => {
 
     // Fast-forward time by 10 seconds
     await act(async () => {
-      jest.advanceTimersByTime(10000);
+      vi.advanceTimersByTime(10000);
     });
 
     // Wait for the prompt to appear
@@ -191,7 +198,7 @@ describe('InstallPrompt', () => {
   });
 
   it('should handle dismiss button click', async () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event first
     const beforeInstallPromptEvent = new Event('beforeinstallprompt');
@@ -207,7 +214,7 @@ describe('InstallPrompt', () => {
 
     // Fast-forward time by 10 seconds
     await act(async () => {
-      jest.advanceTimersByTime(10000);
+      vi.advanceTimersByTime(10000);
     });
 
     // Wait for the prompt to appear
@@ -232,7 +239,7 @@ describe('InstallPrompt', () => {
   });
 
   it('should handle appinstalled event', async () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     // Simulate appinstalled event
     const appInstalledEvent = new Event('appinstalled');
@@ -242,17 +249,18 @@ describe('InstallPrompt', () => {
 
     // Wait for the toast to be called
     await waitFor(() => {
-      expect(screen.getByText('App Installed!')).toBeInTheDocument();
-      expect(
-        screen.getByText(
-          'Spades Calculator has been added to your home screen.'
-        )
-      ).toBeInTheDocument();
+      expect(mockToaster.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          title: 'App Installed!',
+          description: 'Spades Calculator has been added to your home screen.',
+          type: 'success',
+        })
+      );
     });
   });
 
   it('should show manual instructions when no deferred prompt is available', async () => {
-    renderWithChakra(<InstallPrompt />);
+    renderWithProvider(<InstallPrompt />);
 
     // Fast-forward time by 10 seconds to trigger the prompt
     await act(async () => {
@@ -266,7 +274,7 @@ describe('InstallPrompt', () => {
   });
 
   it('should clean up event listeners on unmount', () => {
-    const { unmount } = renderWithChakra(<InstallPrompt />);
+    const { unmount } = renderWithProvider(<InstallPrompt />);
 
     // Spy on removeEventListener
     const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');

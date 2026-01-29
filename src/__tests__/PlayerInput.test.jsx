@@ -1,20 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { Provider } from '../components/ui/provider';
 import PlayerInput from '../components/forms/PlayerInput';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
-// Mock the InputModal component
-jest.mock('../components/modals/InputModal', () => {
-  return function MockInputModal({ isOpen, setIsModalOpen }) {
-    if (!isOpen) return null;
-    return (
-      <div data-testid="inputModal">
-        <button onClick={() => setIsModalOpen(false)}>Close</button>
-      </div>
-    );
-  };
-});
+// No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
 // Mock the DealerTag component
 jest.mock('../components/ui/DealerTag', () => {
@@ -79,9 +69,11 @@ describe('PlayerInput', () => {
 
   const renderWithContext = (component) => {
     return render(
-      <GlobalContext.Provider value={mockContextValue}>
-        {component}
-      </GlobalContext.Provider>
+      <Provider>
+        <GlobalContext.Provider value={mockContextValue}>
+          {component}
+        </GlobalContext.Provider>
+      </Provider>
     );
   };
 
@@ -142,7 +134,7 @@ describe('PlayerInput', () => {
   });
 
   describe('individual input override capability', () => {
-    it('should allow editing individual inputs even when team total is being used', () => {
+    it('should allow editing individual inputs even when team total is being used', async () => {
       const props = {
         ...defaultProps,
         playerInput: '',
@@ -158,10 +150,10 @@ describe('PlayerInput', () => {
       fireEvent.click(screen.getByText('Actual'));
 
       // Modal should open
-      expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+      expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
     });
 
-    it('should show individual values with asterisks when both players have numeric values and are auto-generated', () => {
+    it('should show individual values with asterisks when both players have numeric values and are auto-generated', async () => {
       const mockSetCurrentRound = jest.fn();
       const mockCurrentRound = {
         team1BidsAndActuals: {
@@ -196,7 +188,7 @@ describe('PlayerInput', () => {
       // Should be clickable to open modal
       const valueElement = screen.getByText('3*');
       fireEvent.click(valueElement);
-      expect(screen.getByTestId('bidSelectionModal')).toBeInTheDocument();
+      expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
     });
 
     it('should show individual values without asterisks when manually entered', () => {
@@ -264,22 +256,24 @@ describe('PlayerInput', () => {
       };
 
       render(
-        <GlobalContext.Provider value={testContextValue}>
-          <PlayerInput
-            teamName="Team 1"
-            roundHistory={[]}
-            index={0}
-            isCurrent={true}
-            currentRound={mockCurrentRound}
-            playerName="Kim"
-            inputId="team1BidsAndActuals.p2Actual"
-            dealerId="team1BidsAndActuals.p2Bid"
-            fieldToUpdate={'team1BidsAndActuals.p2Actual'}
-            playerInput={mockCurrentRound.team1BidsAndActuals.p2Actual}
-            type={'Actual'}
-            teamClassName="team1"
-          />
-        </GlobalContext.Provider>
+        <Provider>
+          <GlobalContext.Provider value={testContextValue}>
+            <PlayerInput
+              teamName="Team 1"
+              roundHistory={[]}
+              index={0}
+              isCurrent={true}
+              currentRound={mockCurrentRound}
+              playerName="Kim"
+              inputId="team1BidsAndActuals.p2Actual"
+              dealerId="team1BidsAndActuals.p2Bid"
+              fieldToUpdate={'team1BidsAndActuals.p2Actual'}
+              playerInput={mockCurrentRound.team1BidsAndActuals.p2Actual}
+              type={'Actual'}
+              teamClassName="team1"
+            />
+          </GlobalContext.Provider>
+        </Provider>
       );
 
       // Should show "2*" for auto-generated actual
@@ -321,22 +315,24 @@ describe('PlayerInput', () => {
       };
 
       render(
-        <GlobalContext.Provider value={testContextValue}>
-          <PlayerInput
-            teamName="Team 1"
-            roundHistory={[]}
-            index={0}
-            isCurrent={true}
-            currentRound={mockCurrentRound}
-            playerName="Mike"
-            inputId="team1BidsAndActuals.p1Actual"
-            dealerId="team1BidsAndActuals.p1Bid"
-            fieldToUpdate={'team1BidsAndActuals.p1Actual'}
-            playerInput={mockCurrentRound.team1BidsAndActuals.p1Actual}
-            type={'Actual'}
-            teamClassName="team1"
-          />
-        </GlobalContext.Provider>
+        <Provider>
+          <GlobalContext.Provider value={testContextValue}>
+            <PlayerInput
+              teamName="Team 1"
+              roundHistory={[]}
+              index={0}
+              isCurrent={true}
+              currentRound={mockCurrentRound}
+              playerName="Mike"
+              inputId="team1BidsAndActuals.p1Actual"
+              dealerId="team1BidsAndActuals.p1Bid"
+              fieldToUpdate={'team1BidsAndActuals.p1Actual'}
+              playerInput={mockCurrentRound.team1BidsAndActuals.p1Actual}
+              type={'Actual'}
+              teamClassName="team1"
+            />
+          </GlobalContext.Provider>
+        </Provider>
       );
 
       // Should show "4" without asterisk for manually entered actual

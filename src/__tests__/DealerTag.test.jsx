@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
@@ -40,11 +40,11 @@ const mockContextValue = {
 
 const renderWithProviders = (component) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={mockContextValue}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 
@@ -68,7 +68,7 @@ describe('DealerTag', () => {
       expect(screen.getByTestId('dealerBadge')).toBeInTheDocument();
     });
 
-    it('should open dealer selection modal when clicked on current round', () => {
+    it('should open dealer selection modal when clicked on current round', async () => {
       renderWithProviders(
         <DealerTag
           id="team1BidsAndActuals.p1Bid"
@@ -81,11 +81,11 @@ describe('DealerTag', () => {
       const dealerBadge = screen.getByTestId('dealerBadge');
       fireEvent.click(dealerBadge);
 
-      expect(screen.getByText('Select the dealer')).toBeInTheDocument();
-      expect(screen.getByTestId('dealerSelectionModal')).toBeInTheDocument();
+      expect(await screen.findByText('Select the dealer')).toBeInTheDocument();
+      expect(await screen.findByTestId('dealerSelectionModal')).toBeInTheDocument();
     });
 
-    it('should not open modal when clicked on non-current round', () => {
+    it('should not open modal when clicked on non-current round', async () => {
       renderWithProviders(
         <DealerTag
           id="team1BidsAndActuals.p1Bid"
@@ -101,7 +101,7 @@ describe('DealerTag', () => {
       expect(screen.queryByText('Select the dealer')).not.toBeInTheDocument();
     });
 
-    it('should call setDealerOverride when a dealer option is selected', () => {
+    it('should call setDealerOverride when a dealer option is selected', async () => {
       renderWithProviders(
         <DealerTag
           id="team1BidsAndActuals.p1Bid"
@@ -114,7 +114,7 @@ describe('DealerTag', () => {
       const dealerBadge = screen.getByTestId('dealerBadge');
       fireEvent.click(dealerBadge);
 
-      const dealerOption = screen.getByText('Player 1');
+      const dealerOption = await screen.findByText('Player 1');
       fireEvent.click(dealerOption);
 
       expect(mockContextValue.setDealerOverride).toHaveBeenCalledWith(

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '../ui';
 import { PlayerInput } from '../forms';
 import { addInputs, isNotDefaultValue } from '../../helpers/math/spadesMath';
 import { TeamInputHeading } from '../forms';
@@ -123,6 +123,7 @@ function ActualSection({
       <SimpleGrid
         columns={2}
         className="namesContainer"
+        gap={2}
         style={{ marginTop: '5px' }}
       >
         <PlayerInput

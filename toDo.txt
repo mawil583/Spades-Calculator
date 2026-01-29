@@ -7,6 +7,7 @@ In places where I'm doing a ton of prop drilling, spred props so that it's easie
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 
 --Backlog--
+There is a popup that says "ready for offline use". It has an X button to dismiss and it has y padding but not x padding, so it looks bad.
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput

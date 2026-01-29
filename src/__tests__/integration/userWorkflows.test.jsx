@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../../components/ui/provider';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { StateProvider } from '../../helpers/context/GlobalContext';
 import HomePage from '../../pages/HomePage';
@@ -47,11 +47,11 @@ const renderWithProviders = (component, initialEntries = ['/']) => {
   );
 
   return render(
-    <ChakraProvider>
+    <Provider>
       <StateProvider>
         <RouterProvider router={router} />
       </StateProvider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 

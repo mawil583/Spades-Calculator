@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SimpleGrid } from '@chakra-ui/react';
+import { SimpleGrid } from '../ui';
 import { PlayerInput } from '../forms';
 import { useSetUnclaimed } from '../../helpers/utils/hooks';
 import { TeamInputHeading } from '../forms';

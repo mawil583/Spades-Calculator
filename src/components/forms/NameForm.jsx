@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useFormik } from 'formik';
-import { Button, SimpleGrid, Center } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLocalStorage } from '../../helpers/utils/hooks';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { WarningModal } from '../modals';
+import WarningModal from '../modals/WarningModal';
 import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
 import { TeamNameInput, PlayerNameInput } from './';
+import { Button, SimpleGrid, Center } from '../ui';
 import { initialNames } from '../../helpers/utils/constants';
 
 function NameForm() {
@@ -148,44 +148,49 @@ function NameForm() {
         />
       </SimpleGrid>
         {hasGameData ? (
-          <SimpleGrid columns={2} spacing={4} my={4}>
+          <SimpleGrid columns={2} gap={6} my={8}>
             <Button
               variant="outline"
-              size="md"
+              size="lg"
               height="40px"
               width="100%"
-              border="2px"
-              onClick={handleContinue}
-              data-cy="continueButton"
-              type="button"
-            >
-              Continue
-            </Button>
-            <Button
-              variant="outline"
-              size="md"
-              height="40px"
-              width="100%"
-              border="2px"
+              border="1px solid"
+              borderColor="#4A5568"
               onClick={handleNewGame}
               data-cy="newGameButton"
               type="button"
+              fontSize="lg"
             >
               New Game
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              height="40px"
+              width="100%"
+              border="1px solid"
+              borderColor="#4A5568"
+              onClick={handleContinue}
+              data-cy="continueButton"
+              type="button"
+              fontSize="lg"
+            >
+              Continue
             </Button>
           </SimpleGrid>
         ) : (
           <Center>
             <Button
               variant="outline"
-              size="md"
+              size="lg"
               height="40px"
               width="200px"
-              border="2px"
-              // borderColor='green.500'
+              border="1px solid"
+              borderColor="#4A5568"
               type="submit"
-              my={4}
+              my={8}
               data-cy="startButton"
+              fontSize="lg"
             >
               Start
             </Button>

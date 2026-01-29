@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import { MemoryRouter } from 'react-router-dom';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import NameForm from '../components/forms/NameForm';
@@ -17,8 +17,8 @@ vi.mock('../helpers/utils/hooks', () => ({
 }));
 
 // Mock WarningModal to simulate trigger
-vi.mock('../components/modals', () => ({
-  WarningModal: ({ isOpen, resetNames }) => {
+vi.mock('../components/modals/WarningModal', () => ({
+  default: ({ isOpen, resetNames }) => {
     return isOpen ? (
       <div data-testid="warning-modal">
         <button 
@@ -44,13 +44,13 @@ vi.mock('../helpers/math/spadesMath', () => ({
 
 const renderWithProviders = (component, contextValue) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={contextValue}>
         <MemoryRouter>
           {component}
         </MemoryRouter>
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 

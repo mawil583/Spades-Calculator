@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
+import { AppModal } from '../ui';
 import { SettingDescription, SettingExample } from '../game';
 import { calculateRoundScore } from '../../helpers/math/spadesMath';
 import {
@@ -54,40 +47,37 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={() => setIsModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Score Settings</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody style={{ padding: '5px' }}>
-            {sections.map((section, idx) => (
-              <div key={idx} style={{ marginBottom: '12px' }}>
-                <SettingDescription title={section.title} desc={section.desc} />
-                {section.examples.map((ex, j) => {
-                  const result = calculateRoundScore(
-                    ex.p1Bid,
-                    ex.p2Bid,
-                    ex.p1Actual,
-                    ex.p2Actual,
-                    section.nilSetting
-                  );
-                  return (
-                    <SettingExample
-                      key={`${idx}-${j}`}
-                      p1Bid={ex.p1Bid}
-                      p1Actual={ex.p1Actual}
-                      p2Bid={ex.p2Bid}
-                      p2Actual={ex.p2Actual}
-                      score={result.score}
-                      bags={result.bags}
-                    />
-                  );
-                })}
-              </div>
-            ))}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+    <AppModal
+      isOpen={isOpen}
+      onClose={setIsModalOpen}
+      title="Score Settings"
+    >
+      {sections.map((section, idx) => (
+        <div key={idx} style={{ marginBottom: '12px' }}>
+          <SettingDescription title={section.title} desc={section.desc} />
+          {section.examples.map((ex, j) => {
+            const result = calculateRoundScore(
+              ex.p1Bid,
+              ex.p2Bid,
+              ex.p1Actual,
+              ex.p2Actual,
+              section.nilSetting
+            );
+            return (
+              <SettingExample
+                key={`${idx}-${j}`}
+                p1Bid={ex.p1Bid}
+                p1Actual={ex.p1Actual}
+                p2Bid={ex.p2Bid}
+                p2Actual={ex.p2Actual}
+                score={result.score}
+                bags={result.bags}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </AppModal>
     </>
   );
 }

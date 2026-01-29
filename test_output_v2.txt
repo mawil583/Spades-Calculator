@@ -1,0 +1,585 @@
+
+> client@0.1.0 unit
+> vitest run
+
+
+ RUN  v3.2.4 /Users/michaelwilliams/code/personal/Spades-Calculator
+
+ ❯ src/__tests__/DealerTag.test.jsx (4 tests | 4 failed) 134ms
+   × DealerTag > Unit Tests > should render dealer badge when player is dealer 120ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should open dealer selection modal when clicked on current round 7ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should not open modal when clicked on non-current round 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × DealerTag > Unit Tests > should call setDealerOverride when a dealer option is selected 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/HomePage_teams_reset.test.jsx (1 test | 1 failed) 78ms
+   × Team Name Reset Verification > should reset team names to "Team 1" and "Team 2" when Different Teams is selected 77ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/HomePage_buttons.test.jsx (6 tests | 6 failed) 97ms
+   × NameForm Button Logic > should render "Start" button when no game data exists 83ms
+     → Cannot read properties of undefined (reading '_config')
+   × NameForm Button Logic > should render "Continue" and "New Game" buttons when round history exists 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × NameForm Button Logic > should render "Continue" and "New Game" buttons when current round has data 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × NameForm Button Logic > should render "Continue" and "New Game" buttons when names are modified 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × NameForm Button Logic > should open WarningModal when "New Game" is clicked 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × NameForm Button Logic > should navigate when "Continue" is clicked 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/InstallPrompt.test.jsx (9 tests | 9 failed) 167ms
+   × InstallPrompt > should not render initially when app is not installed 136ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should not render when app is already installed (standalone mode) 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should not render when app is already installed (iOS standalone) 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should show prompt after 10 seconds when beforeinstallprompt event is fired 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should handle install button click with deferred prompt 9ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should handle dismiss button click 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should handle appinstalled event 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should show manual instructions when no deferred prompt is available 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × InstallPrompt > should clean up event listeners on unmount 1ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/Unclaimed.test.jsx (5 tests | 5 failed) 251ms
+   × Unclaimed Component > should display unclaimed text correctly 154ms
+     → Cannot read properties of undefined (reading '_config')
+   × Unclaimed Component > should display overbid text when numUnclaimed is negative 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × Unclaimed Component > should display singular overbid text when numUnclaimed is -1 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × BidSection - Unclaimed Positioning > should position unclaimed section in the center between both teams bids 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × BidSection - Unclaimed Positioning > should calculate unclaimed correctly based on team bids 9ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/TeamInputHeading.test.jsx (9 tests | 9 failed) 206ms
+   × TeamInputHeading > when neither player on a team went nil > should be editable for team total input 84ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading > when at least one player on a team went nil > should not be editable for team total input 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading > team total input functionality > should show calculated team totals when individual values are empty 71ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Modal Integration > should open InputModal when clicking on editable team heading 28ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Modal Integration > should not open InputModal when clicking on non-editable team heading 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Team Total Updates > should update individual player actuals when team total is selected 3ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Team Total Updates > should handle odd team totals by giving remainder to first player 2ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Integration Tests > should update both individual players and team total display when team total is selected 2ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × TeamInputHeading Integration Tests > should handle odd team totals correctly (remainder to first player) 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+ ❯ src/__tests__/ScoreSettingsModal.test.jsx (2 tests | 2 failed) 54ms
+   × ScoreSettingsModal > renders examples without NaN values for score or bags 49ms
+     → Cannot read properties of undefined (reading '_config')
+   × ScoreSettingsModal > renders all sections with visible content (not blank) 3ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/ActualSection.test.jsx (19 tests | 19 failed) 265ms
+   × ActualSection Component > Component Rendering > should render actuals section with correct data-cy attribute 137ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Component Rendering > should display team input heading with "Actuals" title 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Component Rendering > should display all four player inputs 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Component Rendering > should display player names correctly 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Team Totals Display > should display correct team totals when actuals are entered 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Team Totals Display > should display zero totals when no actuals are entered 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Validation Logic > should call useValidateActuals with correct parameters 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Validation Logic > should call useValidateActuals with correct parameters when all actuals are entered 33ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Error Modal Integration > should render ErrorModal component 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Error Modal Integration > should pass correct props to ErrorModal 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Player Input Configuration > should configure player inputs with correct props 23ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Player Input Configuration > should pass correct fieldToUpdate values to player inputs 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Current vs Past Round Behavior > should handle current round correctly 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Current vs Past Round Behavior > should handle past round correctly 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Accessibility > should have proper structure for screen readers 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Accessibility > should have clickable player inputs 25ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Auto-generated Key > should show auto-generated key when team totals are auto-generated 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Auto-generated Key > should not show auto-generated key when team totals are not auto-generated 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Component > Auto-generated Key > should show auto-generated key when only one team has auto-generated totals 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/DownloadButton.test.jsx (17 tests | 17 failed) 258ms
+   × DownloadButton > should render download button when app is not installed 94ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show already installed message when app is already installed (standalone mode) 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show already installed message when app is already installed (iOS standalone) 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should handle beforeinstallprompt event 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should handle install button click with deferred prompt 52ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should handle install button click with deferred prompt - user cancels 18ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show manual instructions when no deferred prompt is available 8ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should handle appinstalled event 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show iOS instructions for iOS devices 32ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show Android instructions for Android devices 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > should show desktop instructions for desktop browsers 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should try to trigger installation multiple times for Android/desktop 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should handle iOS share functionality when available 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should handle iOS share functionality when share is cancelled 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should use deferredPromptRef when state is not updated yet 1ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should handle errors during installation gracefully 28ms
+     → Cannot read properties of undefined (reading '_config')
+   × DownloadButton > Enhanced Installation Logic > should clean up event listeners on unmount 3ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/ErrorModal.test.jsx (13 tests | 13 failed) 172ms
+   × ErrorModal Component > Modal Interaction > should render modal correctly 112ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Modal Interaction > should allow editing actuals from within error modal 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Error Modal Content > should display correct modal structure 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Error Modal Content > should display player names correctly 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Accessibility > should have proper modal role 9ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Accessibility > should have clickable player inputs 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Accessibility > should have clickable team total headings 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Accessibility > should open team total modal when clicking on team total headings 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Accessibility > should not have team total headings in focus when error modal opens 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Auto-generated tracking in ErrorModal > should remove asterisk when user manually edits an auto-generated actual 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Nil scenarios with error modal > should show error modal when someone goes nil and all actuals are entered but total != 13 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Bug Reproduction: ErrorModal 0 actuals and data prioritization > should display "0" in the heading when actual is numeric 0 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ErrorModal Component > Bug Reproduction: ErrorModal 0 actuals and data prioritization > should display numeric values correctly even when the bug prioritized context incorrectly 3ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/PlayerInput.test.jsx (9 tests | 9 failed) 249ms
+   × PlayerInput > when team total is being used > should show empty string instead of "Actual" button when playerInput is empty 155ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > when team total is being used > should show empty string instead of "Bid" button when playerInput is empty and type is Bid 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > when team total is not being used > should show "Actual" button when playerInput is empty and type is Actual 43ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > when team total is not being used > should show "Bid" button when playerInput is empty and type is Bid 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > individual input override capability > should allow editing individual inputs even when team total is being used 4ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > individual input override capability > should show individual values with asterisks when both players have numeric values and are auto-generated 3ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > individual input override capability > should show individual values without asterisks when manually entered 17ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > individual input override capability > should show asterisk on auto-generated actual when other player is manually entered 8ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+   × PlayerInput > individual input override capability > should not show asterisk on manually entered actual 7ms
+     → Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+stdout | src/__tests__/dealer.test.js > Dealer Functionality > Dealer Calculation Logic > bug demonstration: dealer calculation is wrong when dealerIdHistory.length > 0 but < 4
+Current dealer: team2BidsAndActuals.p1Bid
+Expected: team2BidsAndActuals.p1Bid
+Bug returns: team1BidsAndActuals.p2Bid (clonedfirstDealerOrder[1])
+
+ ✓ src/__tests__/dealer.test.js (17 tests) 51ms
+ ✓ src/__tests__/pwaManifest.test.js (20 tests) 18ms
+ ✓ src/helpers/math/spadesMath.test.js (38 tests) 81ms
+ ❯ src/__tests__/WarningModal.test.jsx (11 tests | 11 failed) 231ms
+   × WarningModal > when there is no round history > should show only the NewPlayerQuestion modal 163ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is no round history > should handle "Different Teams" selection 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is no round history > should reset names to empty and navigate to home when selecting "Different Teams" 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is no round history > should handle "Same Teams" selection 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should show the DataWarningQuestion first 37ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should handle "Cancel" from DataWarningQuestion 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should show NewPlayerQuestion after clicking "Continue" 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should handle "Same Teams" selection with round history 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should handle "Different Teams" selection with round history 6ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > when there is round history > should reset names to empty and navigate to home when selecting "Different Teams" with round history 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × WarningModal > modal state management > should handle modal close 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/actualSectionTeamTotal.test.jsx (7 tests | 7 failed) 190ms
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > both teams can click team actual buttons when neither team has nil bids 114ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > only team with no nil bids can click their team actual button 6ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > team with blind nil bid cannot click their team actual button 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > both teams cannot click team actual buttons when both teams have nil bids 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > team actual button click opens modal for clickable team 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > clickable team actual buttons have rounded borders 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × ActualSection Team Total Button Behavior > Team Actual Button Clickability > non-clickable team actual buttons do not have borders 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/independentTeamScoring.test.jsx (6 tests | 6 failed) 135ms
+   × Independent Team Scoring > when only one team completes their actuals > should update only that team's score when they complete their actuals 66ms
+     → Cannot read properties of undefined (reading '_config')
+   × Independent Team Scoring > when only one team completes their actuals > should not allow progression to next round until both teams complete actuals 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × Independent Team Scoring > when both teams complete their actuals > should complete the round and allow progression when both teams finish 41ms
+     → Cannot read properties of undefined (reading '_config')
+   × Independent Team Scoring > score calculation timing > should calculate team scores independently as each team completes 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × Independent Team Scoring > validation still works > should still validate that total actuals equal 13 before completing round 14ms
+     → Cannot read properties of undefined (reading '_config')
+   × Independent Team Scoring > validation still works > should not complete round if total actuals do not equal 13 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ✓ src/__tests__/roundNullHistory.test.jsx (1 test) 83ms
+ ❯ src/__tests__/integration/dealerTagIntegration.test.jsx (7 tests | 7 failed) 171ms
+   × Dealer Tag Integration at BidSection Level > should open dealer selection modal when dealer tag is clicked, not bid modal 143ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Integration at BidSection Level > should open bid modal when bid button is clicked, not dealer modal 8ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Integration at BidSection Level > should allow both modals to work independently 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Integration at BidSection Level > should not have hover state association between player name and bid button 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Visibility Tests > should show dealer tag only in bid section, not in actuals section 6ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Visibility Tests > should show dealer tag only in bid section when both sections are rendered in a round 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × Dealer Tag Visibility Tests > should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/integration/newGameFlow.test.jsx (10 tests | 10 failed) 219ms
+   × New Game Flow Integration > when there is no round history > should show only the team selection modal when clicking New Game 157ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is no round history > should handle "Same Teams" selection from New Game button 17ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is no round history > should handle "Different Teams" selection from New Game button 5ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is no round history > should reset names to empty and navigate to home when selecting "Different Teams" 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is round history > should show data warning first, then team selection when clicking New Game 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is round history > should handle "Cancel" from data warning 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is round history > should handle complete flow: Continue -> Same Teams 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is round history > should handle complete flow: Continue -> Different Teams 16ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > when there is round history > should reset names to empty and navigate to home when selecting "Different Teams" with round history 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × New Game Flow Integration > modal accessibility > should close modal when clicking the close button 6ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/integration/userWorkflows.test.jsx (7 tests | 7 failed) 215ms
+   × Complete User Workflows > Basic Game Setup Workflow > should complete full game setup process 138ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > Form Validation Workflow > should handle form validation errors gracefully 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > Form Validation Workflow > should handle valid form submission 6ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > PWA Integration Workflow > should show download button on home page 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > PWA Integration Workflow > should handle PWA installation flow 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > Settings Integration Workflow > should show scoring rules settings 2ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complete User Workflows > Settings Integration Workflow > should allow changing scoring rules 55ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/integration/externalIntegrations.test.jsx (8 tests | 8 failed) 177ms
+   × External Integrations > localStorage Integration > should save and load game data from localStorage 126ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > localStorage Integration > should load existing game data on app start 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > Cache Integration > should handle cache operations for offline functionality 20ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > PWA Integration > should show download button when PWA is installable 11ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > PWA Integration > should handle beforeinstallprompt event 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > Navigation Integration > should handle browser navigation correctly 6ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > Error Handling Integration > should handle localStorage errors gracefully 3ms
+     → Cannot read properties of undefined (reading '_config')
+   × External Integrations > Error Handling Integration > should handle network errors gracefully 2ms
+     → Cannot read properties of undefined (reading '_config')
+ ❯ src/__tests__/integration/stateInteractions.test.jsx (4 tests | 4 failed) 196ms
+   × Complex State Interactions Between Unrelated Components > Component Rendering > should render SpadesCalculator component with initial state 127ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complex State Interactions Between Unrelated Components > Component Rendering > should render HomePage component 4ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complex State Interactions Between Unrelated Components > Score Calculation State Propagation > should update team scores when round is completed 53ms
+     → Cannot read properties of undefined (reading '_config')
+   × Complex State Interactions Between Unrelated Components > Context Integration > should use context values correctly 8ms
+     → Cannot read properties of undefined (reading '_config')
+ ✓ src/__tests__/ButtonGrid.test.jsx (12 tests) 2850ms
+   ✓ ButtonGrid Component > Button Display > should display all button values for Bid type  684ms
+   ✓ ButtonGrid Component > Button Display > should have correct data-cy attributes on buttons based on type  719ms
+ ✓ src/__tests__/teamTotalMath.test.js (6 tests) 8ms
+ ✓ src/__tests__/getEditedRoundHistory.test.js (3 tests) 6ms
+ ✓ src/__tests__/useValidateActuals.test.js (5 tests) 113ms
+ ✓ src/__tests__/pwaMetaTags.test.js (18 tests) 11ms
+ ✓ src/__tests__/offline.test.js (16 tests) 8ms
+ ✓ src/__tests__/helperFunctions.test.js (23 tests) 9ms
+ ✓ src/__tests__/dealerRotationUnit.test.js (8 tests) 8ms
+ ✓ src/__tests__/teamTotalStorage.test.js (3 tests) 7ms
+ ✓ src/__tests__/updateInput.test.js (5 tests) 8ms
+ ✓ src/__tests__/dealerOverrideScenario.test.js (1 test) 4ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 154 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Component Rendering > should render actuals section with correct data-cy attribute
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Component Rendering > should display team input heading with "Actuals" title
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Component Rendering > should display all four player inputs
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Component Rendering > should display player names correctly
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Team Totals Display > should display correct team totals when actuals are entered
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Team Totals Display > should display zero totals when no actuals are entered
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Validation Logic > should call useValidateActuals with correct parameters
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Validation Logic > should call useValidateActuals with correct parameters when all actuals are entered
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Error Modal Integration > should render ErrorModal component
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Error Modal Integration > should pass correct props to ErrorModal
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Player Input Configuration > should configure player inputs with correct props
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Player Input Configuration > should pass correct fieldToUpdate values to player inputs
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Current vs Past Round Behavior > should handle current round correctly
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Current vs Past Round Behavior > should handle past round correctly
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Accessibility > should have proper structure for screen readers
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Accessibility > should have clickable player inputs
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Auto-generated Key > should show auto-generated key when team totals are auto-generated
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Auto-generated Key > should not show auto-generated key when team totals are not auto-generated
+ FAIL  src/__tests__/ActualSection.test.jsx > ActualSection Component > Auto-generated Key > should show auto-generated key when only one team has auto-generated totals
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should render dealer badge when player is dealer
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should open dealer selection modal when clicked on current round
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should not open modal when clicked on non-current round
+ FAIL  src/__tests__/DealerTag.test.jsx > DealerTag > Unit Tests > should call setDealerOverride when a dealer option is selected
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should render download button when app is not installed
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show already installed message when app is already installed (standalone mode)
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show already installed message when app is already installed (iOS standalone)
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should handle beforeinstallprompt event
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should handle install button click with deferred prompt
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should handle install button click with deferred prompt - user cancels
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show manual instructions when no deferred prompt is available
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should handle appinstalled event
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show iOS instructions for iOS devices
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show Android instructions for Android devices
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > should show desktop instructions for desktop browsers
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should try to trigger installation multiple times for Android/desktop
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should handle iOS share functionality when available
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should handle iOS share functionality when share is cancelled
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should use deferredPromptRef when state is not updated yet
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should handle errors during installation gracefully
+ FAIL  src/__tests__/DownloadButton.test.jsx > DownloadButton > Enhanced Installation Logic > should clean up event listeners on unmount
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Modal Interaction > should render modal correctly
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Modal Interaction > should allow editing actuals from within error modal
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Error Modal Content > should display correct modal structure
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Error Modal Content > should display player names correctly
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Accessibility > should have proper modal role
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Accessibility > should have clickable player inputs
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Accessibility > should have clickable team total headings
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Accessibility > should open team total modal when clicking on team total headings
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Accessibility > should not have team total headings in focus when error modal opens
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Auto-generated tracking in ErrorModal > should remove asterisk when user manually edits an auto-generated actual
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Nil scenarios with error modal > should show error modal when someone goes nil and all actuals are entered but total != 13
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Bug Reproduction: ErrorModal 0 actuals and data prioritization > should display "0" in the heading when actual is numeric 0
+ FAIL  src/__tests__/ErrorModal.test.jsx > ErrorModal Component > Bug Reproduction: ErrorModal 0 actuals and data prioritization > should display numeric values correctly even when the bug prioritized context incorrectly
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should render "Start" button when no game data exists
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should render "Continue" and "New Game" buttons when round history exists
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should render "Continue" and "New Game" buttons when current round has data
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should render "Continue" and "New Game" buttons when names are modified
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should open WarningModal when "New Game" is clicked
+ FAIL  src/__tests__/HomePage_buttons.test.jsx > NameForm Button Logic > should navigate when "Continue" is clicked
+ FAIL  src/__tests__/HomePage_teams_reset.test.jsx > Team Name Reset Verification > should reset team names to "Team 1" and "Team 2" when Different Teams is selected
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should not render initially when app is not installed
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should not render when app is already installed (standalone mode)
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should not render when app is already installed (iOS standalone)
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should show prompt after 10 seconds when beforeinstallprompt event is fired
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should handle install button click with deferred prompt
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should handle dismiss button click
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should handle appinstalled event
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should show manual instructions when no deferred prompt is available
+ FAIL  src/__tests__/InstallPrompt.test.jsx > InstallPrompt > should clean up event listeners on unmount
+ FAIL  src/__tests__/ScoreSettingsModal.test.jsx > ScoreSettingsModal > renders examples without NaN values for score or bags
+ FAIL  src/__tests__/ScoreSettingsModal.test.jsx > ScoreSettingsModal > renders all sections with visible content (not blank)
+ FAIL  src/__tests__/Unclaimed.test.jsx > Unclaimed Component > should display unclaimed text correctly
+ FAIL  src/__tests__/Unclaimed.test.jsx > Unclaimed Component > should display overbid text when numUnclaimed is negative
+ FAIL  src/__tests__/Unclaimed.test.jsx > Unclaimed Component > should display singular overbid text when numUnclaimed is -1
+ FAIL  src/__tests__/Unclaimed.test.jsx > BidSection - Unclaimed Positioning > should position unclaimed section in the center between both teams bids
+ FAIL  src/__tests__/Unclaimed.test.jsx > BidSection - Unclaimed Positioning > should calculate unclaimed correctly based on team bids
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is no round history > should show only the NewPlayerQuestion modal
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is no round history > should handle "Different Teams" selection
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is no round history > should reset names to empty and navigate to home when selecting "Different Teams"
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is no round history > should handle "Same Teams" selection
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should show the DataWarningQuestion first
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should handle "Cancel" from DataWarningQuestion
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should show NewPlayerQuestion after clicking "Continue"
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should handle "Same Teams" selection with round history
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should handle "Different Teams" selection with round history
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > when there is round history > should reset names to empty and navigate to home when selecting "Different Teams" with round history
+ FAIL  src/__tests__/WarningModal.test.jsx > WarningModal > modal state management > should handle modal close
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > both teams can click team actual buttons when neither team has nil bids
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > only team with no nil bids can click their team actual button
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > team with blind nil bid cannot click their team actual button
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > both teams cannot click team actual buttons when both teams have nil bids
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > team actual button click opens modal for clickable team
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > clickable team actual buttons have rounded borders
+ FAIL  src/__tests__/actualSectionTeamTotal.test.jsx > ActualSection Team Total Button Behavior > Team Actual Button Clickability > non-clickable team actual buttons do not have borders
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > when only one team completes their actuals > should update only that team's score when they complete their actuals
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > when only one team completes their actuals > should not allow progression to next round until both teams complete actuals
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > when both teams complete their actuals > should complete the round and allow progression when both teams finish
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > score calculation timing > should calculate team scores independently as each team completes
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > validation still works > should still validate that total actuals equal 13 before completing round
+ FAIL  src/__tests__/independentTeamScoring.test.jsx > Independent Team Scoring > validation still works > should not complete round if total actuals do not equal 13
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Integration at BidSection Level > should open dealer selection modal when dealer tag is clicked, not bid modal
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Integration at BidSection Level > should open bid modal when bid button is clicked, not dealer modal
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Integration at BidSection Level > should allow both modals to work independently
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Integration at BidSection Level > should not have hover state association between player name and bid button
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Visibility Tests > should show dealer tag only in bid section, not in actuals section
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Visibility Tests > should show dealer tag only in bid section when both sections are rendered in a round
+ FAIL  src/__tests__/integration/dealerTagIntegration.test.jsx > Dealer Tag Visibility Tests > should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > localStorage Integration > should save and load game data from localStorage
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > localStorage Integration > should load existing game data on app start
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > Cache Integration > should handle cache operations for offline functionality
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > PWA Integration > should show download button when PWA is installable
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > PWA Integration > should handle beforeinstallprompt event
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > Navigation Integration > should handle browser navigation correctly
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > Error Handling Integration > should handle localStorage errors gracefully
+ FAIL  src/__tests__/integration/externalIntegrations.test.jsx > External Integrations > Error Handling Integration > should handle network errors gracefully
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is no round history > should show only the team selection modal when clicking New Game
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is no round history > should handle "Same Teams" selection from New Game button
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is no round history > should handle "Different Teams" selection from New Game button
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is no round history > should reset names to empty and navigate to home when selecting "Different Teams"
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is round history > should show data warning first, then team selection when clicking New Game
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is round history > should handle "Cancel" from data warning
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is round history > should handle complete flow: Continue -> Same Teams
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is round history > should handle complete flow: Continue -> Different Teams
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > when there is round history > should reset names to empty and navigate to home when selecting "Different Teams" with round history
+ FAIL  src/__tests__/integration/newGameFlow.test.jsx > New Game Flow Integration > modal accessibility > should close modal when clicking the close button
+ FAIL  src/__tests__/integration/stateInteractions.test.jsx > Complex State Interactions Between Unrelated Components > Component Rendering > should render SpadesCalculator component with initial state
+ FAIL  src/__tests__/integration/stateInteractions.test.jsx > Complex State Interactions Between Unrelated Components > Component Rendering > should render HomePage component
+ FAIL  src/__tests__/integration/stateInteractions.test.jsx > Complex State Interactions Between Unrelated Components > Score Calculation State Propagation > should update team scores when round is completed
+ FAIL  src/__tests__/integration/stateInteractions.test.jsx > Complex State Interactions Between Unrelated Components > Context Integration > should use context values correctly
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > Basic Game Setup Workflow > should complete full game setup process
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > Form Validation Workflow > should handle form validation errors gracefully
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > Form Validation Workflow > should handle valid form submission
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > PWA Integration Workflow > should show download button on home page
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > PWA Integration Workflow > should handle PWA installation flow
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > Settings Integration Workflow > should show scoring rules settings
+ FAIL  src/__tests__/integration/userWorkflows.test.jsx > Complete User Workflows > Settings Integration Workflow > should allow changing scoring rules
+TypeError: Cannot read properties of undefined (reading '_config')
+ ❯ ChakraProvider node_modules/@chakra-ui/react/dist/esm/styled-system/provider.js:15:10
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:16583:35
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/154]⎯
+
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > when team total is being used > should show empty string instead of "Actual" button when playerInput is empty
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > when team total is being used > should show empty string instead of "Bid" button when playerInput is empty and type is Bid
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > when team total is not being used > should show "Actual" button when playerInput is empty and type is Actual
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > when team total is not being used > should show "Bid" button when playerInput is empty and type is Bid
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > individual input override capability > should allow editing individual inputs even when team total is being used
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > individual input override capability > should show individual values with asterisks when both players have numeric values and are auto-generated
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > individual input override capability > should show individual values without asterisks when manually entered
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > individual input override capability > should show asterisk on auto-generated actual when other player is manually entered
+ FAIL  src/__tests__/PlayerInput.test.jsx > PlayerInput > individual input override capability > should not show asterisk on manually entered actual
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading > when neither player on a team went nil > should be editable for team total input
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading > when at least one player on a team went nil > should not be editable for team total input
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading > team total input functionality > should show calculated team totals when individual values are empty
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Modal Integration > should open InputModal when clicking on editable team heading
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Modal Integration > should not open InputModal when clicking on non-editable team heading
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Team Total Updates > should update individual player actuals when team total is selected
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Team Total Updates > should handle odd team totals by giving remainder to first player
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Integration Tests > should update both individual players and team total display when team total is selected
+ FAIL  src/__tests__/TeamInputHeading.test.jsx > TeamInputHeading Integration Tests > should handle odd team totals correctly (remainder to first player)
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `InputModal`.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5021:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5035:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:6920:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7098:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:9701:13
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10182:7
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/154]⎯
+
+
+ Test Files  19 failed | 15 passed (34)
+      Tests  154 failed | 176 passed (330)
+   Start at  15:30:18
+   Duration  25.86s (transform 777ms, setup 10.48s, collect 153.30s, tests 6.73s, environment 74.60s, prepare 12.64s)
+

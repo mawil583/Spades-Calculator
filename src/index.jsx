@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from './components/ui/provider';
 import { StateProvider } from './helpers';
 
 
 import './index.css';
 import HomePage from './pages/HomePage';
 import SpadesCalculator from './pages/SpadesCalculator';
-import { customTheme } from './customTheme';
 
+
+
+import { Toaster } from './components/ui/toaster';
 
 
 const router = createBrowserRouter([
@@ -26,11 +28,12 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <ChakraProvider theme={customTheme}>
+  <Provider>
     <StateProvider>
       <RouterProvider router={router} />
+      <Toaster />
     </StateProvider>
-  </ChakraProvider>
+  </Provider>
 );
 
 

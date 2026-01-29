@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '../components/ui/provider';
 import ActualSection from '../components/game/ActualSection';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
@@ -29,11 +29,11 @@ Object.defineProperty(window, 'localStorage', {
 
 const renderWithProviders = (component) => {
   return render(
-    <ChakraProvider>
+    <Provider>
       <GlobalContext.Provider value={mockContextValue}>
         {component}
       </GlobalContext.Provider>
-    </ChakraProvider>
+    </Provider>
   );
 };
 
