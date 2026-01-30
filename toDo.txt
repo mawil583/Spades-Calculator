@@ -1,7 +1,6 @@
 --High Priority--
 make sure that the dealer tag also rotates once between games. Do this in TDD
 consider adding more info to RoundSummary: ["game score at start of round" (but find a way to make it shorter), "game score at end of round", "bags taken", "total bags at current round"]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
-Translate my app into vanilla CSS with BEM and scoped CSS
 In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 
@@ -11,6 +10,7 @@ see if it's possible to architect my app in such a way that past rounds and curr
 hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput
 implement typescript
+Translate my app into Ark UI and apply vanilla CSS with BEM and scoped CSS
 The ActualsValidationModal isn't being used anywhere. See if it can be used in place of ErrorModal. If not, delete it.
 The ErrorModal is copy-pasting most of ActualSection which is not DRY but if I import ActualSection into this, then I'll be in an infinite loop because I'll have an ActualSection that renders an error modal but this error modal renders an ActualSection. Refactor
 install react devtools
