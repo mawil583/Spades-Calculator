@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AppModal } from '../ui';
 import { SettingDescription, SettingExample } from '../game';
 import { calculateRoundScore } from '../../helpers/math/spadesMath';

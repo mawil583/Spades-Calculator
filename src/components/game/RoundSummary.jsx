@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { SimpleGrid, Center, Heading } from '../ui';
 
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { render, screen } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import Unclaimed from '../components/game/Unclaimed';

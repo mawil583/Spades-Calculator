@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Container, SimpleGrid, Center, Heading } from '../ui';
 
 import TeamScore from './TeamScore';

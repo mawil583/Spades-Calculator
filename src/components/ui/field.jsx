@@ -4,9 +4,9 @@ import {
   FieldHelperText,
   FieldErrorText,
 } from "@chakra-ui/react"
-import * as React from "react"
+import { forwardRef } from "react"
 
-export const Field = React.forwardRef(function Field(props, ref) {
+export const Field = forwardRef(function Field(props, ref) {
   const { label, children, helperText, errorText, optionalText, ...rest } = props
   return (
     <FieldRoot ref={ref} {...rest}>

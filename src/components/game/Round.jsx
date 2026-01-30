@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { Container, Separator } from '../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 

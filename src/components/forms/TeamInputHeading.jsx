@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { Heading } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import { InputModal } from '../modals';

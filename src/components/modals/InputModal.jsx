@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { AppModal, ButtonGrid } from '../ui';
 
 function InputModal({

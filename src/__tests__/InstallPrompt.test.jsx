@@ -1,6 +1,6 @@
 // Mock the toast hook before importing components
 import { vi } from 'vitest';
-import React from 'react';
+
 import {
   render,
   screen,

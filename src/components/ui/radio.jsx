@@ -1,9 +1,9 @@
 import { RadioGroup as ChakraRadioGroup } from "@chakra-ui/react"
-import * as React from "react"
+import { forwardRef } from "react"
 
 export const RadioGroup = ChakraRadioGroup.Root
 
-export const Radio = React.forwardRef(function Radio(props, ref) {
+export const Radio = forwardRef(function Radio(props, ref) {
   const { children, inputProps, ...rest } = props
   return (
     <ChakraRadioGroup.Item ref={ref} {...rest} sx={{ cursor: 'pointer', padding: '4px 0', display: 'flex !important', alignItems: 'center !important', width: 'fit-content !important' }}>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Round } from './';
 import { GlobalContext } from '../../helpers/context/GlobalContext';

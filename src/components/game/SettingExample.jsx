@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Box, Text, Flex, Center, SimpleGrid } from '../ui';
 
 function SettingExample({ score, bags, p1Bid, p1Actual, p2Bid, p2Actual }) {

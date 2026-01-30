@@ -57,7 +57,9 @@ export default [
       ...reactHooksPlugin.configs.recommended.rules,
       'no-unused-expressions': 'off',
       'react/prop-types': 'off', // Disable prop-types for now
-      'no-unused-vars': 'warn',
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-uses-react': 'off',
+      'no-unused-vars': 'error',
       'no-case-declarations': 'warn',
       'no-prototype-builtins': 'warn',
       'react/no-unescaped-entities': 'warn',

@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import rootReducer, { initialState } from '../utils/rootReducer';
 import { updateInput } from '../utils/helperFunctions';
 

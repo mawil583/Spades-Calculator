@@ -1,7 +1,7 @@
 import { Text as ChakraText, Heading as ChakraHeading } from '@chakra-ui/react';
-import React from 'react';
+import { forwardRef } from 'react';
 
-export const Text = React.forwardRef((props, ref) => <ChakraText ref={ref} {...props} />);
+export const Text = forwardRef((props, ref) => <ChakraText ref={ref} {...props} />);
 Text.displayName = 'Text';
-export const Heading = React.forwardRef((props, ref) => <ChakraHeading ref={ref} {...props} />);
+export const Heading = forwardRef((props, ref) => <ChakraHeading ref={ref} {...props} />);
 Heading.displayName = 'Heading';

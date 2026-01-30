@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { SimpleGrid, Button } from '@chakra-ui/react';
 import {
   getButtonValues,

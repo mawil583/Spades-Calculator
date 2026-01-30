@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Center, Heading, Flex, Text } from '../ui';
 
 import '../../App.css';

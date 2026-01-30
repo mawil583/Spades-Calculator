@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SimpleGrid, Text } from '../ui';
 import { PlayerInput } from '../forms';
 import { addInputs, isNotDefaultValue } from '../../helpers/math/spadesMath';

@@ -1,18 +1,18 @@
-import React from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Center } from '../ui/center';
 
 function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [value, setValue] = React.useState(teamName);
-  const inputRef = React.useRef(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [value, setValue] = useState(teamName);
+  const inputRef = useRef(null);
 
   // Sync internal state with external prop
-  React.useEffect(() => {
+  useEffect(() => {
     setValue(teamName);
   }, [teamName]);
 
   // Focus and select text when entering edit mode
-  React.useEffect(() => {
+  useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
       inputRef.current.select();

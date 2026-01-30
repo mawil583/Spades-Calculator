@@ -1,7 +1,7 @@
 import { Button as ChakraButton } from '@chakra-ui/react';
-import React from 'react';
+import { forwardRef } from 'react';
 
-export const Button = React.forwardRef((props, ref) => {
+export const Button = forwardRef((props, ref) => {
   const { ...rest } = props;
   return <ChakraButton ref={ref} {...rest} />;
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Text, Center } from '../ui';
 import { getUnclaimedText } from '../../helpers/utils/helperFunctions';
 

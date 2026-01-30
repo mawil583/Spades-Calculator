@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Flex } from '../ui';
 import { Pencil } from 'lucide-react';
 import { InputModal } from '../modals';

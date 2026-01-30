@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, Stack } from '../ui';
 import { Radio, RadioGroup } from '../ui/radio';
 import { HelpCircle } from 'lucide-react';

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Button, Text, VStack, HStack } from './ui';
 import { toaster } from './ui/toaster';
 import { Download } from 'lucide-react';

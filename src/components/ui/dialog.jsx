@@ -1,5 +1,5 @@
 import { Dialog as ChakraDialog, Portal } from "@chakra-ui/react"
-import * as React from "react"
+import { forwardRef } from "react"
 
 export const DialogRoot = ChakraDialog.Root
 export const DialogFooter = ChakraDialog.Footer
@@ -11,7 +11,7 @@ export const DialogDescription = ChakraDialog.Description
 export const DialogTrigger = ChakraDialog.Trigger
 export const DialogActionTrigger = ChakraDialog.ActionTrigger
 
-export const DialogContent = React.forwardRef(
+export const DialogContent = forwardRef(
   function DialogContent(props, ref) {
 const { children, portalled = typeof process !== 'undefined' && process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
     return (
@@ -26,7 +26,7 @@ const { children, portalled = typeof process !== 'undefined' && process.env.NODE
   },
 )
 
-export const DialogCloseTrigger = React.forwardRef(
+export const DialogCloseTrigger = forwardRef(
   function DialogCloseTrigger(props, ref) {
     return (
       <ChakraDialog.CloseTrigger

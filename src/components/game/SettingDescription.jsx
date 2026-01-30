@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Heading, Text, Flex } from '../ui';
 
 function SettingDescription({ title, desc }) {

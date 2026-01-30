@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SimpleGrid } from '../ui';
 import { PlayerInput } from '../forms';
 import { useSetUnclaimed } from '../../helpers/utils/hooks';

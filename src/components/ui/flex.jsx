@@ -1,5 +1,5 @@
 import { Flex as ChakraFlex } from '@chakra-ui/react';
-import React from 'react';
+import { forwardRef } from 'react';
 
-export const Flex = React.forwardRef((props, ref) => <ChakraFlex ref={ref} {...props} />);
+export const Flex = forwardRef((props, ref) => <ChakraFlex ref={ref} {...props} />);
 Flex.displayName = 'Flex';

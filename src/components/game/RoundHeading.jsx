@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Center, Heading, Flex, Box } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 

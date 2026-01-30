@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { AppModal, SimpleGrid } from '../ui';
 import { addInputs } from '../../helpers/math/spadesMath';
 import { PlayerInput } from '../forms';

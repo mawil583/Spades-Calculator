@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
