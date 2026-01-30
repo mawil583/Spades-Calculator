@@ -84,8 +84,8 @@ const PlayerInput = ({
             id={inputId}
             name={inputId}
             size="xs"
-            borderColor={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
-            color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
+            borderColor={teamClassName === 'team1' ? 'team1' : 'team2'}
+            color={teamClassName === 'team1' ? 'team1' : 'team2'}
             data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
             data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
           >
@@ -99,11 +99,11 @@ const PlayerInput = ({
               cursor="pointer"
               onClick={onEdit}
             >
-              <Flex borderColor={teamClassName} borderRadius="4px" px="0.5rem">
+              <Flex borderColor={teamClassName === 'team1' ? 'team1' : 'team2'} borderRadius="4px" px="0.5rem">
                 {displayValue}
               </Flex>
               <Pencil
-                color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
+                color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'} // Keeping hex for lucide icon as it doesn't support tokens directly
                 size={20}
                 style={{ marginLeft: '5px' }}
                 data-testid="editIcon"

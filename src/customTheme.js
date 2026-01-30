@@ -1,4 +1,4 @@
-import { createSystem, defaultConfig, defineRecipe } from '@chakra-ui/react';
+import { createSystem, defaultConfig, defineRecipe, defineSlotRecipe } from '@chakra-ui/react';
 
 const buttonRecipe = defineRecipe({
   base: {
@@ -36,10 +36,52 @@ const buttonRecipe = defineRecipe({
   },
 });
 
+const inputRecipe = defineRecipe({
+  base: {
+    bg: 'rgba(255, 255, 255, 0.03)',
+    border: '1px solid',
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: '8px',
+    _placeholder: {
+      color: 'gray.500',
+      opacity: 1,
+    },
+    _focus: {
+      borderColor: 'rgba(255, 255, 255, 0.3)',
+      boxShadow: 'none',
+    },
+    _invalid: {
+      borderColor: 'red.400',
+      boxShadow: '0 0 0 1px {colors.red.400}',
+    },
+  },
+});
+
+const fieldSlotRecipe = defineSlotRecipe({
+  slots: ['root', 'label', 'helperText', 'errorText'],
+  base: {
+    label: {
+      color: 'inherit',
+      fontSize: '15px',
+      fontWeight: '700',
+      marginBottom: '6px',
+      display: 'block',
+      opacity: '0.9',
+    },
+    errorText: {
+      color: 'red.400',
+    },
+  },
+});
+
 export const system = createSystem(defaultConfig, {
   theme: {
     recipes: {
       button: buttonRecipe,
+      input: inputRecipe,
+    },
+    slotRecipes: {
+      field: fieldSlotRecipe,
     },
     tokens: {
       colors: {
@@ -56,34 +98,9 @@ export const system = createSystem(defaultConfig, {
   },
   globalCss: {
     'html, body': {
-      bg: '#252d3d',
+      bg: 'bg',
       color: 'gray.50',
       height: '100%',
     },
-    'input': {
-      bg: 'rgba(255, 255, 255, 0.03) !important',
-      border: '1px solid rgba(255, 255, 255, 0.1) !important',
-      borderRadius: '8px',
-      '::placeholder': {
-        color: 'gray.500',
-        opacity: 1, /* Firefox */
-      },
-      _focus: {
-        borderColor: 'rgba(255, 255, 255, 0.3) !important',
-        boxShadow: 'none !important',
-      },
-      _invalid: {
-        borderColor: '#FC8181 !important', // red.300
-        boxShadow: '0 0 0 1px #FC8181 !important',
-      }
-    },
-    'label': {
-      color: 'inherit !important',
-      fontSize: '15px !important',
-      fontWeight: '700 !important',
-      marginBottom: '6px !important',
-      display: 'block',
-      opacity: '0.9',
-    }
   },
 });

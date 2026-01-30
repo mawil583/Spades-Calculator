@@ -28,15 +28,13 @@ function AppModal({
       {...rest}
     >
       <DialogBackdrop
-        style={{
-          backdropFilter: 'blur(4px)',
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
-        }}
+        backdropFilter="blur(4px)"
+        bg="blackAlpha.600"
       />
       <DialogContent
-        bg="#252d3d"
+        bg="bg"
         boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
-        borderColor="rgba(255, 255, 255, 0.1)"
+        borderColor="whiteAlpha.100"
         borderWidth="1px"
         m={4}
         {...contentStyle}
@@ -46,21 +44,20 @@ function AppModal({
           <DialogHeader
             fontSize="2xl"
             fontWeight="bold"
-            style={headerStyle}
+            css={headerStyle}
           >
             {title}
           </DialogHeader>
         )}
         <DialogCloseTrigger
-          style={{
-            color: closeButtonColor,
-            top: '10px',
-            right: '10px',
-          }}
+          color={closeButtonColor}
+          top="10px"
+          right="10px"
+          css={headerStyle} // Using headerStyle for consistency if needed, but DialogCloseTrigger usually has its own style
         >
           <X size={24} />
         </DialogCloseTrigger>
-        <DialogBody style={{ padding: '5px', ...bodyStyle }}>
+        <DialogBody p="5px" css={bodyStyle}>
           {children}
         </DialogBody>
       </DialogContent>

@@ -17,16 +17,16 @@ vi.mock('../components/ui/dialog', () => {
         {children}
       </div>
     ),
-    DialogBackdrop: ({ style }) => <div data-testid="dialog-backdrop" style={style} />,
+    DialogBackdrop: ({ style, ...props }) => <div data-testid="dialog-backdrop" style={style} {...props} />,
     DialogContent: ({ children, style, ...props }) => (
       <div data-testid="dialog-content" style={style} {...props}>
         {children}
       </div>
     ),
-    DialogHeader: ({ children, style }) => <div data-testid="dialog-header" style={style}>{children}</div>,
-    DialogBody: ({ children, style }) => <div data-testid="dialog-body" style={style}>{children}</div>,
-    DialogCloseTrigger: ({ children, style }) => (
-      <button data-testid="dialog-close-trigger" style={style}>
+    DialogHeader: ({ children, style, css }) => <div data-testid="dialog-header" style={style || css}>{children}</div>,
+    DialogBody: ({ children, style, css, ...props }) => <div data-testid="dialog-body" style={style || css} {...props}>{children}</div>,
+    DialogCloseTrigger: ({ children, style, css, ...props }) => (
+      <button data-testid="dialog-close-trigger" style={style || css} {...props}>
         {children}
       </button>
     ),
@@ -96,6 +96,6 @@ describe('AppModal Component', () => {
     // We check the 'bg' prop which our mock passes through to the div as an attribute or we check if it was processed. 
     // In our mock: DialogContent: ({ children, style, ...props }) => <div ... {...props}>
     // So 'bg' prop should be present on the div as an attribute 'bg'
-    expect(modalContent).toHaveAttribute('bg', '#252d3d');
+    expect(modalContent).toHaveAttribute('bg', 'bg');
   });
 });
