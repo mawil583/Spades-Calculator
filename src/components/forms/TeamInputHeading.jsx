@@ -1,8 +1,8 @@
 import { useState, useContext } from 'react';
 import { Heading } from '../ui';
-import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import { InputModal } from '../modals';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { team1Color, team2Color } from '../../customTheme';
 
 function TeamInputHeading({
   team1Total,
@@ -133,36 +133,40 @@ function TeamInputHeading({
         <Heading
           data-cy="team1Total"
           size="3xl"
+          pos="absolute"
+          mr="50%"
+          pt="15px"
+          cursor={team1CanEdit ? 'pointer' : 'default'}
+          _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
-            position: 'absolute',
-            marginRight: '50%',
-            paddingTop: '15px',
-            cursor: team1CanEdit ? 'pointer' : 'default',
-            border: team1CanEdit ? '0.5px solid rgba(0, 0, 0, 0.3)' : 'none',
+            border: team1CanEdit ? '0.5px solid' : 'none',
+            borderColor: team1Color,
             borderRadius: team1CanEdit ? '4px' : '0',
             padding: team1CanEdit ? '1px 4px' : '0',
-            ...team1Styles,
+            color: team1Color,
           }}
           {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam1Click}
         >
           {team1Total}
         </Heading>
-        <Heading mt={'10px'} mb={'10px'} size={'md'}>
+        <Heading mt="10px" mb="10px" size="md">
           {title}
         </Heading>
         <Heading
           data-cy="team2Total"
           size="3xl"
+          pos="absolute"
+          ml="50%"
+          pt="15px"
+          cursor={team2CanEdit ? 'pointer' : 'default'}
+          _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
-            position: 'absolute',
-            marginLeft: '50%',
-            paddingTop: '15px',
-            cursor: team2CanEdit ? 'pointer' : 'default',
-            border: team2CanEdit ? '0.5px solid rgba(0, 0, 0, 0.3)' : 'none',
+            border: team2CanEdit ? '0.5px solid' : 'none',
+            borderColor: team2Color,
             borderRadius: team2CanEdit ? '4px' : '0',
             padding: team2CanEdit ? '1px 4px' : '0',
-            ...team2Styles,
+            color: team2Color,
           }}
           {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam2Click}

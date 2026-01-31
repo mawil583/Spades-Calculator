@@ -21,7 +21,7 @@ function PlayerNameInput({
         invalid={!!(errors && touched)}
         errorText={errors}
         pb={4}
-        color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'}
+        color={teamClassName === 'team1' ? 'team1' : 'team2'}
       >
         <Input
           px={1}

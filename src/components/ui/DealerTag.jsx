@@ -1,18 +1,11 @@
 import { useContext, useMemo, useState } from 'react';
-import { Button, VStack } from '@chakra-ui/react';
-import {
-  DialogRoot,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-} from './dialog';
 import {
   getDealerIdHistory,
   getCurrentDealerId,
 } from '../../helpers/math/spadesMath';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
+import { DealerSelectionModal } from '../modals';
 
 const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
   const { firstDealerOrder, currentRound, setDealerOverride } =
@@ -85,8 +78,8 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
             justifyContent: 'center',
             width: '20px',
             height: '20px',
-            backgroundColor: 'rgba(159, 122, 234, 0.3)',
-            color: '#E2E8F0',
+            backgroundColor: 'dealerBadge',
+            color: 'offWhite',
             borderRadius: '4px',
             fontSize: '12px',
             fontWeight: 'bold',
@@ -95,44 +88,12 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
         >
           D
         </div>
-        <DialogRoot
-          open={isOpen}
-          onOpenChange={(e) => setIsOpen(e.open)}
-          centered
-        >
-          <DialogContent
-            data-cy="dealerSelectionModal"
-            data-testid="dealerSelectionModal"
-          >
-            <DialogHeader>Select the dealer</DialogHeader>
-            <DialogBody>
-              <VStack align="stretch" gap={3}>
-                {dealerOptions.map((opt) => (
-                  <Button
-                    key={opt.id}
-                    data-cy="dealerOptionButton"
-                    data-testid="dealerOptionButton"
-                    data-player-id={opt.id}
-                    onClick={() => onSelectDealer(opt.id)}
-                  >
-                    {opt.label}
-                  </Button>
-                ))}
-              </VStack>
-            </DialogBody>
-            <DialogFooter>
-              <Button
-                data-cy="dealerCancelButton"
-                data-testid="dealerCancelButton"
-                variant="ghost"
-                style={{ marginRight: '12px' }}
-                onClick={() => setIsOpen(false)}
-              >
-                Cancel
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </DialogRoot>
+        <DealerSelectionModal
+          isOpen={isOpen}
+          onClose={setIsOpen}
+          dealerOptions={dealerOptions}
+          onSelectDealer={onSelectDealer}
+        />
       </>
     )
   );

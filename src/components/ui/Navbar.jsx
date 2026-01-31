@@ -30,18 +30,12 @@ const Navbar = () => {
           onClick={handleNavigateHome}
           fontSize="25px"
           style={{ width: '60px' }}
-          borderColor="#4A5568"
-          borderWidth="1px"
-          color="white"
         >
           <ArrowLeft />
         </IconButton>
         <Button 
           onClick={resetGameWithSamePlayers}
           variant="outline"
-          borderColor="#4A5568"
-          borderWidth="1px"
-          color="white"
         >
           New Game
         </Button>

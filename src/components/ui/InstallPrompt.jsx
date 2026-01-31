@@ -175,9 +175,7 @@ const InstallPrompt = () => {
             data-testid="dismiss-install-prompt"
             size="sm"
             variant="ghost"
-            color="gray.300"
             onClick={handleDismiss}
-            _hover={{ bg: 'gray.600' }}
           >
             ✕
           </Button>
@@ -190,10 +188,10 @@ const InstallPrompt = () => {
         <HStack gap={2}>
           <Button
             data-testid="install-app-button"
-            colorPalette="blue"
             size="sm"
             onClick={handleInstallClick}
             flex={1}
+            variant="outline"
           >
             <Download />
             Install App

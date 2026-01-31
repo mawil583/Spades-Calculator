@@ -57,7 +57,7 @@ const GameScore = function () {
   return (
     <>
       <Navbar />
-      <Container pb={5} borderBottom={'1px solid #ebf5ee'}>
+      <Container pb={5} borderBottom="1px solid" borderBottomColor="offWhite">
         <Center>
           <Heading as="h2" size="lg" style={{ textDecoration: 'underline' }}>
             Score

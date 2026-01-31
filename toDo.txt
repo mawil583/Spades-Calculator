@@ -1,6 +1,6 @@
 --High Priority--
-Fix Dealer Modal UI
-Ensure consistent color/size/font theming throughout the app
+Ensure consistent color/size/font theming throughout the app. Also ensure that all colors are defined in the customTheme object and not in the component.
+When I select a team's total actuals button, the button has a blue hue around it indicating that it's still selected or hovered. This is not desired. Remove the blue hue.
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 make sure that the dealer tag also rotates once between games. Do this in TDD
 In a deployed environment, the app is highly performant, but locally it's laggy. Why? When I click a button, there's a significant delay before the state updates.

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AppModal, SimpleGrid } from '../ui';
+import { AppModal, SimpleGrid, Flex } from '../ui';
 import { addInputs } from '../../helpers/math/spadesMath';
 import { PlayerInput } from '../forms';
 import { TeamInputHeading } from '../forms';
@@ -54,33 +54,30 @@ function ErrorModal({
       isOpen={isOpen}
       onClose={setIsModalOpen}
     >
-      <div
-        data-cy="errorModalActualSection"
-        data-testid="actualSection"
-        style={{ paddingTop: '20px' }}
-      >
-        <TeamInputHeading
-          team1Total={team1ActualTotal}
-          team2Total={team2ActualTotal}
-          title="Actuals"
-          team1Bids={[team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid]}
-          team2Bids={[team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid]}
-          isEditable={true}
-          index={index}
-          isCurrent={isCurrent}
-          currentRound={currentRound}
-          roundHistory={roundHistory}
-        />
         <div
-          style={{
-            color: '#f95050',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            padding: '20px',
-          }}
-          dangerouslySetInnerHTML={{ __html: errorMessage }}
-        />
+          data-cy="errorModalActualSection"
+          data-testid="actualSection"
+          style={{ paddingTop: '20px' }}
+        >
+          <TeamInputHeading
+            team1Total={team1ActualTotal}
+            team2Total={team2ActualTotal}
+            title="Actuals"
+            team1Bids={[team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid]}
+            team2Bids={[team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid]}
+            isEditable={true}
+            index={index}
+            isCurrent={isCurrent}
+            currentRound={currentRound}
+            roundHistory={roundHistory}
+          />
+          <Flex
+            color="errorRed"
+            direction="row"
+            justify="center"
+            p="20px"
+            dangerouslySetInnerHTML={{ __html: errorMessage }}
+          />
         <SimpleGrid
           columns={2}
           className="namesContainer"

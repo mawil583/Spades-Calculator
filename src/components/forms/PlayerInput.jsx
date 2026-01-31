@@ -84,8 +84,7 @@ const PlayerInput = ({
             id={inputId}
             name={inputId}
             size="xs"
-            borderColor={teamClassName === 'team1' ? 'team1' : 'team2'}
-            color={teamClassName === 'team1' ? 'team1' : 'team2'}
+            variant={teamClassName === 'team1' ? 'team1Outline' : 'team2Outline'}
             data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
             data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
           >
@@ -103,7 +102,7 @@ const PlayerInput = ({
                 {displayValue}
               </Flex>
               <Pencil
-                color={teamClassName === 'team1' ? '#ffc100' : '#f06c9b'} // Keeping hex for lucide icon as it doesn't support tokens directly
+                color={teamClassName === 'team1' ? 'var(--chakra-colors-team1)' : 'var(--chakra-colors-team2)'}
                 size={20}
                 style={{ marginLeft: '5px' }}
                 data-testid="editIcon"

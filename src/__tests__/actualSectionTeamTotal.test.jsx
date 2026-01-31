@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import ActualSection from '../components/game/ActualSection';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import { team1Color, team2Color } from '../customTheme';
 
 // Mock the context
 const mockSetCurrentRound = jest.fn();
@@ -247,12 +248,12 @@ describe('ActualSection Team Total Button Behavior', () => {
 
       expect(team1Total).toHaveStyle('border-width: 0.5px');
       expect(team1Total).toHaveStyle('border-style: solid');
-      expect(team1Total).toHaveStyle('border-color: #ffc100');
+      expect(team1Total).toHaveStyle(`border-color: ${team1Color}`);
       expect(team1Total).toHaveStyle('border-radius: 4px');
 
       expect(team2Total).toHaveStyle('border-width: 0.5px');
       expect(team2Total).toHaveStyle('border-style: solid');
-      expect(team2Total).toHaveStyle('border-color: #f06c9b');
+      expect(team2Total).toHaveStyle(`border-color: ${team2Color}`);
       expect(team2Total).toHaveStyle('border-radius: 4px');
     });
 

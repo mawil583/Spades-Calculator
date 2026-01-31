@@ -72,6 +72,7 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
+      title={showDataWarning ? 'Are you sure?' : 'Would you like to keep the same teams?'}
       contentProps={{ 'data-testid': 'warning-modal' }}
     >
       {showDataWarning && (
