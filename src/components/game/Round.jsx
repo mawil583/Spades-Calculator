@@ -5,7 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   calculateRoundScore,
   isNotDefaultValue,
+  calculateTeamScoreFromRoundHistory,
+  convertStringInputToNum,
 } from '../../helpers/math/spadesMath';
+import { NIL, BLIND_NIL } from '../../helpers/utils/constants';
 import { useIndependentTeamScoring } from '../../helpers/utils/hooks';
 import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
@@ -99,8 +102,125 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
         nilSetting
       );
 
-      return { team1RoundScoreFromHistory, team2RoundScoreFromHistory };
+      // Calculate Game State (Start/End of this round)
+      const historyUpToStart = roundHistory.slice(0, roundIndex);
+      const historyUpToEnd = roundHistory.slice(0, roundIndex + 1);
+
+      const t1Start = calculateTeamScoreFromRoundHistory(
+        historyUpToStart,
+        'team1BidsAndActuals',
+        nilSetting
+      );
+      const t1End = calculateTeamScoreFromRoundHistory(
+        historyUpToEnd,
+        'team1BidsAndActuals',
+        nilSetting
+      );
+
+      const t2Start = calculateTeamScoreFromRoundHistory(
+        historyUpToStart,
+        'team2BidsAndActuals',
+        nilSetting
+      );
+      const t2End = calculateTeamScoreFromRoundHistory(
+        historyUpToEnd,
+        'team2BidsAndActuals',
+        nilSetting
+      );
+
+      // Calculation Helper
+      const calculateStats = (rawScore, netChange, startScore, endScore, bidsAndActuals) => {
+        let nilPenalty = 0;
+        let blindNilPenalty = 0;
+        let setPenalty = 0;
+        let bagPenalty = 0;
+
+        const { p1Bid, p2Bid, p1Actual, p2Actual } = bidsAndActuals;
+        const p1BidVal = convertStringInputToNum(p1Bid);
+        const p2BidVal = convertStringInputToNum(p2Bid);
+        const p1ActVal = convertStringInputToNum(p1Actual);
+        const p2ActVal = convertStringInputToNum(p2Actual);
+
+        // Check Nil Penalties
+        if (p1Bid === NIL && p1ActVal > 0) nilPenalty += 100;
+        if (p2Bid === NIL && p2ActVal > 0) nilPenalty += 100;
+
+        // Check Blind Nil Penalties
+        if (p1Bid === BLIND_NIL && p1ActVal > 0) blindNilPenalty += 200;
+        if (p2Bid === BLIND_NIL && p2ActVal > 0) blindNilPenalty += 200;
+
+        // Check Set Penalty (Board)
+        // Set penalty only applies to the non-nil portion of the bid.
+        // If both are Nil, there is no board bid to set.
+        const p1IsNil = p1Bid === NIL || p1Bid === BLIND_NIL;
+        const p2IsNil = p2Bid === NIL || p2Bid === BLIND_NIL;
+        
+        let boardBid = 0;
+        if (!p1IsNil) boardBid += p1BidVal;
+        if (!p2IsNil) boardBid += p2BidVal;
+
+        if (boardBid > 0) {
+            let teamActualForBoard = 0;
+            if (!p1IsNil) teamActualForBoard += p1ActVal;
+            if (!p2IsNil) teamActualForBoard += p2ActVal;
+            if (teamActualForBoard < boardBid) {
+                setPenalty += boardBid * 10;
+            }
+        }
+        bagPenalty = rawScore - netChange === 100 ? 100 : 0;
+        
+        const totalPenalties = nilPenalty + blindNilPenalty + setPenalty + bagPenalty;
+        const pointsGained = netChange + totalPenalties;
+
+        return {
+           pointsGained,
+           bagPenalty,
+           setPenalty,
+           nilPenalty,
+           blindNilPenalty,
+        };
+      };
+
+      // Team 1 Stats
+      const t1RawScore = team1RoundScoreFromHistory.score;
+      const t1NetChange = t1End.teamScore - t1Start.teamScore;
+      const t1Derived = calculateStats(t1RawScore, t1NetChange, t1Start.teamScore, t1End.teamScore, team1BidsAndActuals);
+      
+      // Team 2 Stats
+      const t2RawScore = team2RoundScoreFromHistory.score;
+      const t2NetChange = t2End.teamScore - t2Start.teamScore;
+      const t2Derived = calculateStats(t2RawScore, t2NetChange, t2Start.teamScore, t2End.teamScore, team2BidsAndActuals);
+
+      return {
+        team1RoundScoreFromHistory,
+        team2RoundScoreFromHistory,
+        t1Stats: {
+          startScore: t1Start.teamScore,
+          endScore: t1End.teamScore,
+          startBags: t1Start.teamBags,
+          endBags: t1End.teamBags,
+          pointsGained: t1Derived.pointsGained,
+          bagPenalty: t1Derived.bagPenalty,
+          setPenalty: t1Derived.setPenalty,
+          nilPenalty: t1Derived.nilPenalty,
+          blindNilPenalty: t1Derived.blindNilPenalty,
+          netChange: t1NetChange,
+        },
+        t2Stats: {
+          startScore: t2Start.teamScore,
+          endScore: t2End.teamScore,
+          startBags: t2Start.teamBags,
+          endBags: t2End.teamBags,
+          pointsGained: t2Derived.pointsGained,
+          bagPenalty: t2Derived.bagPenalty,
+          setPenalty: t2Derived.setPenalty,
+          nilPenalty: t2Derived.nilPenalty,
+          blindNilPenalty: t2Derived.blindNilPenalty,
+          netChange: t2NetChange,
+        },
+      };
     }
+    return null;
   }
   const teamScores = getTeamsScoresFromHistory();
 
@@ -109,17 +229,20 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       <RoundHeading roundNumber={roundIndex + 1} names={names} />
       <Container>
         {!isCurrent && (
-          <RoundSummary
-            team2Name={team2Name}
-            team1Name={team1Name}
-            team1RoundScore={teamScores?.team1RoundScoreFromHistory?.score}
-            team2RoundScore={teamScores?.team2RoundScoreFromHistory?.score}
-            // add this back, but only as accordion
-            // team1GameScore={team1GameScoreAtEndOfThisRound.teamScore}
-            // team2GameScore={team2GameScoreAtEndOfThisRound.teamScore}
-            team1RoundBags={teamScores?.team1RoundScoreFromHistory?.bags}
-            team2RoundBags={teamScores?.team2RoundScoreFromHistory?.bags}
-          />
+          <>
+            <RoundSummary
+              team2Name={team2Name}
+              team1Name={team1Name}
+              roundNumber={roundIndex + 1}
+              team1RoundScore={teamScores?.t1Stats?.netChange}
+              team2RoundScore={teamScores?.t2Stats?.netChange}
+              team1RoundBags={teamScores?.team1RoundScoreFromHistory?.bags}
+              team2RoundBags={teamScores?.team2RoundScoreFromHistory?.bags}
+              team1Stats={teamScores?.t1Stats}
+              team2Stats={teamScores?.t2Stats}
+            />
+            {showActuals && <Separator className="divider-between-sections" />}
+          </>
         )}
 
         <AnimatePresence>
