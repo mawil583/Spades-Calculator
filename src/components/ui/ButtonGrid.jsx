@@ -76,7 +76,6 @@ function ButtonGrid({
               }}
               data-cy={`${type.toLowerCase()}SelectionButton`}
               variant="outline"
-              borderColor="whiteAlpha.400"
             >
               {buttonVal}
             </Button>

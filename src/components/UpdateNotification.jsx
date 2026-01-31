@@ -69,8 +69,6 @@ const UpdateNotification = () => {
                 <Button
                   size="xs"
                   variant="ghost"
-                  color="white"
-                  _hover={{ bg: 'blue.500' }}
                   onClick={handleDismiss}
                   p="1"
                   minW="auto"
@@ -90,10 +88,7 @@ const UpdateNotification = () => {
                 {needRefresh && (
                   <Button
                     size="sm"
-                    bg="white"
-                    color="blue.500"
-                    _hover={{ bg: 'gray.100' }}
-                    _active={{ bg: 'gray.200' }}
+                    variant="outline"
                     onClick={handleUpdate}
                     flex="1"
                   >
@@ -105,7 +100,6 @@ const UpdateNotification = () => {
                   size="sm"
                   variant="ghost"
                   onClick={handleDismiss}
-                  _hover={{ bg: 'blue.600' }}
                 >
                   {needRefresh ? 'Later' : 'Dismiss'}
                 </Button>

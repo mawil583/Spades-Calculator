@@ -17,7 +17,7 @@ function AppModal({
   contentStyle = {},
   headerStyle = {},
   bodyStyle = {},
-  closeButtonColor = '#ebf5ee',
+  closeButtonColor = 'offWhite',
   contentProps = {},
   ...rest
 }) {
@@ -44,6 +44,7 @@ function AppModal({
           <DialogHeader
             fontSize="2xl"
             fontWeight="bold"
+            pe="40px"
             css={headerStyle}
           >
             {title}

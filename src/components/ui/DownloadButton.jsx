@@ -331,7 +331,7 @@ const DownloadButton = () => {
   return (
     <Box
       data-testid="download-button"
-      bg="#2d3748"
+      bg="premiumBlue"
       color="white"
       p={6}
       borderRadius="xl"
@@ -357,8 +357,6 @@ const DownloadButton = () => {
           height="54px"
           fontSize="md"
           fontWeight="bold"
-          border="2px solid"
-          borderColor="whiteAlpha.400"
         >
           <Download size={22} />
           Download App

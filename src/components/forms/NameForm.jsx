@@ -157,8 +157,6 @@ function NameForm() {
               minW="120px"
               px={4}
               justifySelf="center"
-              border="1px solid"
-              borderColor="#4A5568"
               onClick={handleNewGame}
               data-cy="newGameButton"
               type="button"
@@ -174,8 +172,6 @@ function NameForm() {
               minW="120px"
               px={4}
               justifySelf="center"
-              border="1px solid"
-              borderColor="#4A5568"
               onClick={handleContinue}
               data-cy="continueButton"
               type="button"
@@ -191,8 +187,6 @@ function NameForm() {
               size="lg"
               height="40px"
               width="200px"
-              border="1px solid"
-              borderColor="#4A5568"
               type="submit"
               my={8}
               data-cy="startButton"

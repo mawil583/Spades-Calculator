@@ -1,20 +1,29 @@
 import { createSystem, defaultConfig, defineRecipe, defineSlotRecipe } from '@chakra-ui/react';
 
+export const team1Color = '#ffc100';
+export const team2Color = '#f06c9b';
+export const offWhiteColor = '#ebf5ee';
+export const errorRedColor = '#f95050';
+export const premiumBlueColor = '#2d3748';
+
 const buttonRecipe = defineRecipe({
   base: {
-    border: '1px solid',
-    borderColor: '#4A5568',
     transition: 'all 0.2s',
     borderRadius: '10px',
     fontWeight: 'bold',
     letterSpacing: 'wide',
+    color: 'white',
+    _active: {
+      transform: 'scale(0.98)',
+    },
   },
   variants: {
     variant: {
       outline: {
-        bg: '#2d3748', // Match the dark button background in the image
-        color: 'white',
-        borderColor: '#4A5568',
+        bg: 'premiumBlue',
+        border: '1px solid',
+        borderColor: 'gray.300', // lighter border for contrast
+        color: 'white', // ensure text is white
         _hover: {
           bg: '#1a202c',
           borderColor: 'white',
@@ -22,11 +31,49 @@ const buttonRecipe = defineRecipe({
         _active: {
           bg: 'blackAlpha.700',
         },
-        '@media (hover: none)': {
-          _hover: {
-            bg: 'transparent',
-            transform: 'none',
-          },
+      },
+      ghost: {
+        bg: 'transparent',
+        border: 'none',
+        color: 'gray.200',
+        _hover: {
+          bg: 'rgba(255, 255, 255, 0.08)',
+          color: 'white',
+        },
+        _active: {
+          bg: 'rgba(255, 255, 255, 0.12)',
+        },
+      },
+      solid: {
+        bg: 'blue.600',
+        _hover: {
+          bg: 'blue.700',
+        },
+      },
+      team1Outline: {
+        bg: 'premiumBlue',
+        border: '1px solid',
+        borderColor: 'team1',
+        color: 'team1',
+        _hover: {
+          bg: '#1a202c',
+          borderColor: 'team1',
+        },
+        _active: {
+          bg: 'blackAlpha.700',
+        },
+      },
+      team2Outline: {
+        bg: 'premiumBlue',
+        border: '1px solid',
+        borderColor: 'team2',
+        color: 'team2',
+        _hover: {
+          bg: '#1a202c',
+          borderColor: 'team2',
+        },
+        _active: {
+          bg: 'blackAlpha.700',
         },
       },
     },
@@ -85,8 +132,12 @@ export const system = createSystem(defaultConfig, {
     },
     tokens: {
       colors: {
-        team1: { value: '#ffc100' },
-        team2: { value: '#f06c9b' },
+        team1: { value: team1Color },
+        team2: { value: team2Color },
+        offWhite: { value: offWhiteColor },
+        errorRed: { value: errorRedColor },
+        dealerBadge: { value: 'rgba(159, 122, 234, 0.3)' },
+        premiumBlue: { value: premiumBlueColor },
       },
     },
     semanticTokens: {

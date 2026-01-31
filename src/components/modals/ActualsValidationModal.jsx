@@ -1,11 +1,5 @@
 
-import {
-  DialogRoot,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-  DialogCloseTrigger,
-} from '../ui/dialog';
+import { AppModal } from '../ui';
 import { ActualSection } from '../game';
 
 function ActualsValidationModal({
@@ -23,33 +17,24 @@ function ActualsValidationModal({
   currentRound,
 }) {
   return (
-    <DialogRoot
-      open={isOpen}
-      onOpenChange={(e) => {
-        if (!e.open) setIsValid(true);
-      }}
+    <AppModal
+      isOpen={isOpen}
+      onClose={() => setIsValid(true)}
+      title={`Total actuals must equal 13. The actuals you've entered add up to ${totalActuals}`}
+      headerStyle={{ fontSize: 'md', fontWeight: 'medium' }}
     >
-      <DialogContent>
-        <DialogHeader>
-          Total actuals must equal 13. The actuals you&apos;ve entered add up to{' '}
-          {totalActuals}
-        </DialogHeader>
-        <DialogCloseTrigger />
-        <DialogBody style={{ padding: '5px' }}>
-          <ActualSection
-            index={index}
-            setRound={setRound}
-            t1p1Name={t1p1Name}
-            t1p2Name={t1p2Name}
-            t2p1Name={t2p1Name}
-            t2p2Name={t2p2Name}
-            isCurrent={isCurrent}
-            roundHistory={roundHistory}
-            currentRound={currentRound}
-          />
-        </DialogBody>
-      </DialogContent>
-    </DialogRoot>
+      <ActualSection
+        index={index}
+        setRound={setRound}
+        t1p1Name={t1p1Name}
+        t1p2Name={t1p2Name}
+        t2p1Name={t2p1Name}
+        t2p2Name={t2p2Name}
+        isCurrent={isCurrent}
+        roundHistory={roundHistory}
+        currentRound={currentRound}
+      />
+    </AppModal>
   );
 }
 
