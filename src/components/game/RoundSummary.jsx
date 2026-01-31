@@ -1,18 +1,33 @@
-
-import { SimpleGrid, Center, Heading } from '../ui';
+import { useState } from 'react';
+import { SimpleGrid, Center, Heading, IconButton, Stack, Text } from '../ui';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import RoundSummaryDrawer from './RoundSummaryDrawer';
 
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 
+const SummaryField = ({ label, value, color }) => (
+  <Stack gap="0" alignItems="center" width="full">
+    <Text color="gray.400" fontSize="2xs" fontWeight="bold" textTransform="uppercase">
+      {label}
+    </Text>
+    <Text fontSize="lg" color={color}>
+      {value}
+    </Text>
+  </Stack>
+);
+
 function RoundSummary({
-  // team2Name, // Unused parameter
-  // team1Name, // Unused parameter
+  roundNumber,
   team1RoundScore,
   team2RoundScore,
-  // team1GameScore,
-  // team2GameScore,
   team1RoundBags,
   team2RoundBags,
+  team1Stats,
+  team2Stats,
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div style={{ marginBottom: '20px' }}>
       <Center>
@@ -20,15 +35,65 @@ function RoundSummary({
           Round Summary
         </Heading>
       </Center>
-      <SimpleGrid columns={2} className="namesContainer">
-        <Center style={team1Styles}>Score: {team1RoundScore}</Center>
-        <Center style={team2Styles}>Score: {team2RoundScore}</Center>
-        {/* consider adding Game Score and Game bags as accordion */}
-        {/* <Center>Game Score: {team1GameScore}</Center>
-        <Center>Game Score: {team2GameScore}</Center> */}
-        <Center style={team1Styles}>Bags: {team1RoundBags}</Center>
-        <Center style={team2Styles}>Bags: {team2RoundBags}</Center>
+      
+      <SimpleGrid columns={2} width="full" mb="4">
+        <Stack style={team1Styles} alignItems="center" gap="4">
+          <SummaryField 
+            label={`Round ${roundNumber} Score`} 
+            value={team1RoundScore} 
+          />
+          <SummaryField 
+            label={`Round ${roundNumber} Bags`} 
+            value={team1RoundBags} 
+          />
+        </Stack>
+        <Stack style={team2Styles} alignItems="center" gap="4">
+          <SummaryField 
+            label={`Round ${roundNumber} Score`} 
+            value={team2RoundScore} 
+          />
+          <SummaryField 
+            label={`Round ${roundNumber} Bags`} 
+            value={team2RoundBags} 
+          />
+        </Stack>
       </SimpleGrid>
+
+      {(team1Stats && team2Stats) && (
+        <>
+          <Center mt="-12px" position="relative" zIndex="1">
+            <IconButton
+              aria-label="Toggle details"
+              onClick={() => setIsOpen(!isOpen)}
+              rounded="full"
+              width="24px"
+              height="24px"
+              minW="0"
+              p="0"
+              variant="outline"
+              bg="bg"
+              borderColor="white"
+              color="white"
+              _hover={{ bg: 'gray.700' }}
+            >
+              {isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+            </IconButton>
+          </Center>
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ overflow: 'hidden' }}
+              >
+                <RoundSummaryDrawer team1Stats={team1Stats} team2Stats={team2Stats} />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </>
+      )}
     </div>
   );
 }

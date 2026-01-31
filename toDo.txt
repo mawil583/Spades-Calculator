@@ -1,11 +1,15 @@
 --High Priority--
-make sure that the dealer tag also rotates once between games. Do this in TDD
-consider adding more info to RoundSummary: ["game score at start of round" (but find a way to make it shorter), "game score at end of round", "bags taken", "total bags at current round"]. If I implement a lot of this, then make a drawer component that sits within RoundSummary
-In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
+Fix Dealer Modal UI
+Ensure consistent color/size/font theming throughout the app
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
+make sure that the dealer tag also rotates once between games. Do this in TDD
+In a deployed environment, the app is highly performant, but locally it's laggy. Why? When I click a button, there's a significant delay before the state updates.
+Some of my components have a ton of logic. Move logic to utils file. 
+Organize app to where every .jsx file has a corresponding .test.jsx file within the same directory. So each component has its own directory with 2 files, a test file and a component file. 
 
 --Backlog--
 There is a popup that says "ready for offline use". It has an X button to dismiss and it has y padding but not x padding, so it looks bad.
+In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput
