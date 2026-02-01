@@ -89,7 +89,7 @@ function NameForm() {
         resetNames={setNames}
       />
       <form onSubmit={formik.handleSubmit}>
-      <SimpleGrid columns={2} mb={6} gap={2}>
+      <SimpleGrid columns={2} mb={6} gap={2} mt={8}>
         <TeamNameInput
           id="team1Name"
           teamClassName="team1"

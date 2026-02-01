@@ -22,7 +22,7 @@ const Header = () => {
   };
 
   return (
-    <Box as="header" width="100%" py={2} position="relative" zIndex={100}>
+    <Box as="header" width="100%" py={0} position="relative" zIndex={100}>
       <Flex justify="space-between" align="center">
         <Text fontSize="var(--app-font-xl)" fontWeight="bold" letterSpacing="tight">
           SpadesCalculator
@@ -41,7 +41,7 @@ const Header = () => {
           position="absolute"
           top="100%"
           right="0"
-          mt={2}
+          mt={0}
           bg="bg"
           border="1px solid"
           borderColor="whiteAlpha.200"
