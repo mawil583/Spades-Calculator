@@ -1,15 +1,15 @@
 /* phase out these classNames by using team1 and team2 colors as defined in my customTheme object  */
-.team1 {
-  color: #ffc100;
+.team2 {
+  color: var(--app-team2);
 }
 
-.team2 {
-  color: #f06c9b;
+.team1 {
+  color: var(--app-team1);
 }
 
 /* Divider spacing for better visual balance */
 .divider-between-sections {
-  margin: 20px 0 15px 0;
+  margin: var(--app-spacing-5) 0 var(--app-spacing-4) 0;
 }
 
 .App-logo {
@@ -38,7 +38,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px #2D3748 inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--app-premium-blue) inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
@@ -46,12 +46,12 @@ input:-webkit-autofill:active {
 .team1 input:-webkit-autofill:hover,
 .team1 input:-webkit-autofill:focus,
 .team1 input:-webkit-autofill:active {
-  -webkit-text-fill-color: #ffc100 !important;
+  -webkit-text-fill-color: var(--app-team1) !important;
 }
 
 .team2 input:-webkit-autofill,
 .team2 input:-webkit-autofill:hover,
 .team2 input:-webkit-autofill:focus,
 .team2 input:-webkit-autofill:active {
-  -webkit-text-fill-color: #f06c9b !important;
+  -webkit-text-fill-color: var(--app-team2) !important;
 }

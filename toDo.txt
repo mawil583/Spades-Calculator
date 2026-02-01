@@ -1,5 +1,6 @@
 --High Priority--
-Ensure consistent color/size/font theming throughout the app. Also ensure that all colors are defined in the customTheme object and not in the component.
+There's a lot of things like "var(--app-spacing-5)" that are very verbose. Could we not just assign those to shorter, better named variables? 
+Go through customTheme and see if I can cut back on the amount of definitions I have. There shouldn't be that many use-cases for such a simple UI. There are probably outliers. Do an inventory of how many times each definition is used. Then remove the ones that aren't used much by swapping them with a more commonly used definition. This will ensure better consistency and simplicity.
 When I select a team's total actuals button, the button has a blue hue around it indicating that it's still selected or hovered. This is not desired. Remove the blue hue.
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
 make sure that the dealer tag also rotates once between games. Do this in TDD
@@ -21,14 +22,12 @@ install react devtools
 make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
 change name form to have team1 section span entire width, and team2 span entire width
 create a redux folder and put all corresponding files in it
-make sure that the next round's BidSection does not show up until valid actuals of current round
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
 do i need try/catch in reducer?
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 improve UI so that senior citizens can easily use my appI want to implement some animations and I'm wondering if I should download an additional UI library for this that is more capable than chakra. The current implementation is that the div for a round will resize according to its content. So when it only contains a bid section, it's a little bit smaller than if all bids have been entered and a new actuals section appears. Then the div for that round is larger to account for both. What I would like to have happen is, when the lat bid gets entered and the div expands to show the actuals section, I want the div to slowly expand to fit the actuals section, and I don't want the actuals section to show until the div has finally expanded (with the animation) to the point where it is fully expanded. While it's expanding I want the blank space to be gradually appearing above the bids section which will appear to the user as the bid section is slowly animating downwards as the div is increasing in height. Can such a specific animation be done using chakra, or should I use another animation utility?
 implement animation where Total Score at the top is sticky, and it shrinks as you scroll down the page
-add animation for when last bidsAndActuals is entered. Would be nice if a finished round would slide downward as the next CurrentRound is initialized
 add animation to the ErrorModal where their wrong total actuals would look more like a button and maybe even breathe or have some moving gradient around it signifying that that's the number the user needs to edit to move on
 custom styles defined using defineStyle cannot be overwritten at the component level. I might be mistaken about this. Verify. If defineStyle does NOT prevent me from overwritting styles at component level, then put my border style (from the baseStyle of defineStyleConfig() of customTheme.js) into the defineStyle for better separation of concerns
 phase out classNames .team1 and .team2 inside App.css. Replace everything that uses those className's with team1 and team2 colors as defined in my customTheme object 
@@ -39,8 +38,6 @@ now that I've moved currentRound state into global state with Context, make sure
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.
 is getTeamClassName a bad solution for conditional styling?
-add proper theming for default chakraUI components
-instead of writing style into html body tag, look into injectGlobal function from styled-components
 simplify spadesMath - make sure calculateTeamScoreFromRoundHistory doesn't require both teams. It should just be calculateTeamScoreFromRoundHistory. add class for spadesMath, and extend that class to add other settings for how game is scored
 Address comments on whoWentNil function
 make it more obvious that team names are editable and that past rounds are editable. when someone bids, the button turns into text of what they bid. Keep it as a button so that users understand that it's editable

@@ -72,10 +72,10 @@ const t2p2ID = 'team2BidsAndActuals.p2Bid';
 export const initialFirstDealerOrder = [t1p1ID, t2p1ID, t1p2ID, t2p2ID];
 
 export const team1Styles = {
-  color: '#ffc100',
-  borderColor: '#ffc100',
+  color: 'var(--app-team1)',
+  borderColor: 'var(--app-team1)',
 };
 export const team2Styles = {
-  color: '#f06c9b',
-  borderColor: '#f06c9b',
+  color: 'var(--app-team2)',
+  borderColor: 'var(--app-team2)',
 };

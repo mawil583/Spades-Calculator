@@ -30,10 +30,10 @@ function SettingExample({ score, bags, p1Bid, p1Actual, p2Bid, p2Actual }) {
       </SimpleGrid>
       <Box mr={'5px'} ml={'5px'} mb={6}>
         <Flex direction={'row'} justifyContent={'center'}>
-          <Text style={{ fontSize: '18px' }}>
+          <Text style={{ fontSize: 'var(--app-font-lg)' }}>
             Score: <strong>{score}</strong>
           </Text>
-          <Text style={{ marginLeft: '10px', fontSize: '18px' }}>
+          <Text style={{ marginLeft: 'var(--app-spacing-3)', fontSize: 'var(--app-font-lg)' }}>
             Bags: <strong>{bags}</strong>
           </Text>
         </Flex>

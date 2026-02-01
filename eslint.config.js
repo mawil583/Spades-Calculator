@@ -71,8 +71,31 @@ export default [
             {
               name: '@chakra-ui/react',
               message: 'Architecture Violation: Direct imports from @chakra-ui/react are banned in feature files. Please import from "src/components/ui" or designated adapter files instead.'
+            },
+            {
+              name: '@emotion/react',
+              message: 'Architecture Violation: Avoid direct use of Emotion in feature files to maintain decoupling.'
+            },
+            {
+              name: '@emotion/styled',
+              message: 'Architecture Violation: Avoid direct use of Emotion in feature files to maintain decoupling.'
             }
           ]
+        }
+      ],
+      'no-restricted-syntax': [
+        'warn',
+        {
+          selector: 'JSXAttribute > Literal[value=/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/]',
+          message: 'Architecture Violation: Hardcoded hex colors are discouraged. Use centralized CSS variables like "var(--app-team1)".'
+        },
+        {
+          selector: "JSXAttribute[name.name=/^(p|m|gap|fontSize|borderRadius|px|py|pt|pb|pl|pr|mx|my|mt|mb|ml|mr)$/] > Literal[value=/^[0-9]+(px)?$/]",
+          message: 'Architecture Violation: Hardcoded numeric styling is discouraged. Use centralized spacing/font variables like "var(--app-spacing-4)".'
+        },
+        {
+          selector: 'VariableDeclarator[id.type="Identifier"][init.type="Identifier"]',
+          message: 'Architecture Violation: Simple variable reassignments (aliases) like "const Field = RoundSummaryField" are discouraged. Use the original variable directly.'
         }
       ]
     }
@@ -84,7 +107,8 @@ export default [
       'src/customTheme.js',
     ],
     rules: {
-      'no-restricted-imports': 'off'
+      'no-restricted-imports': 'off',
+      'no-restricted-syntax': 'off'
     }
   },
   {

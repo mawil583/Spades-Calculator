@@ -98,7 +98,7 @@ const PlayerInput = ({
               cursor="pointer"
               onClick={onEdit}
             >
-              <Flex borderColor={teamClassName === 'team1' ? 'team1' : 'team2'} borderRadius="4px" px="0.5rem">
+              <Flex borderColor={teamClassName === 'team1' ? 'team1' : 'team2'} borderRadius="var(--app-radius-sm)" px="0.5rem">
                 {displayValue}
               </Flex>
               <Pencil
