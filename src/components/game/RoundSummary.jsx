@@ -1,21 +1,10 @@
 import { useState } from 'react';
-import { SimpleGrid, Center, Heading, IconButton, Stack, Text } from '../ui';
+import { SimpleGrid, Center, Heading, IconButton, Stack } from '../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import RoundSummaryDrawer from './RoundSummaryDrawer';
-
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
-
-const SummaryField = ({ label, value, color }) => (
-  <Stack gap="var(--app-spacing-0)" alignItems="center" width="full">
-    <Text color="gray.400" fontSize="2xs" fontWeight="bold" textTransform="uppercase">
-      {label}
-    </Text>
-    <Text fontSize="lg" color={color}>
-      {value}
-    </Text>
-  </Stack>
-);
+import RoundSummaryField from './RoundSummaryField';
 
 function RoundSummary({
   roundNumber,
@@ -31,28 +20,28 @@ function RoundSummary({
   return (
     <div style={{ marginBottom: 'var(--app-spacing-5)' }}>
       <Center>
-        <Heading style={{ marginTop: 'var(--app-spacing-5)', marginBottom: 'var(--app-spacing-3)' }} size={'lg'}>
+        <Heading style={{ marginTop: 'var(--app-spacing-2)', marginBottom: 'var(--app-spacing-3)' }} size={'lg'}>
           Round Summary
         </Heading>
       </Center>
       
       <SimpleGrid columns={2} width="full" mb="var(--app-spacing-4)">
         <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
-          <SummaryField 
+          <RoundSummaryField 
             label={`Round ${roundNumber} Score`} 
             value={team1RoundScore} 
           />
-          <SummaryField 
+          <RoundSummaryField 
             label={`Round ${roundNumber} Bags`} 
             value={team1RoundBags} 
           />
         </Stack>
         <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
-          <SummaryField 
+          <RoundSummaryField 
             label={`Round ${roundNumber} Score`} 
             value={team2RoundScore} 
           />
-          <SummaryField 
+          <RoundSummaryField 
             label={`Round ${roundNumber} Bags`} 
             value={team2RoundBags} 
           />

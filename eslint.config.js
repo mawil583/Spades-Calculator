@@ -92,6 +92,10 @@ export default [
         {
           selector: "JSXAttribute[name.name=/^(p|m|gap|fontSize|borderRadius|px|py|pt|pb|pl|pr|mx|my|mt|mb|ml|mr)$/] > Literal[value=/^[0-9]+(px)?$/]",
           message: 'Architecture Violation: Hardcoded numeric styling is discouraged. Use centralized spacing/font variables like "var(--app-spacing-4)".'
+        },
+        {
+          selector: 'VariableDeclarator[id.type="Identifier"][init.type="Identifier"]',
+          message: 'Architecture Violation: Simple variable reassignments (aliases) like "const Field = RoundSummaryField" are discouraged. Use the original variable directly.'
         }
       ]
     }
