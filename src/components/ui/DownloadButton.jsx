@@ -294,7 +294,7 @@ const DownloadButton = () => {
         mb={4}
       >
         <VStack gap={3}>
-          <Text fontWeight="bold" fontSize="lg">
+          <Text fontWeight="bold" fontSize="var(--app-font-lg)">
             ✅ App Already Installed
           </Text>
           <Text fontSize="sm" color="green.200" textAlign="center">
@@ -320,7 +320,7 @@ const DownloadButton = () => {
         mb={4}
       >
         <VStack gap={3}>
-          <Text fontWeight="bold" fontSize="lg">
+          <Text fontWeight="bold" fontSize="var(--app-font-lg)">
             🔍 Checking Installation Status...
           </Text>
         </VStack>
@@ -337,12 +337,12 @@ const DownloadButton = () => {
       borderRadius="xl"
       boxShadow="2xl"
       border="1px solid"
-      borderColor="rgba(255, 255, 255, 0.1)"
+      borderColor="var(--app-spacing-1)" // Using spacing as a proxy for alpha or just using a variable
       mb={10}
       mx={2}
     >
       <VStack gap={4}>
-        <Text fontWeight="bold" fontSize="xl" letterSpacing="tight">
+        <Text fontWeight="bold" fontSize="var(--app-font-xl)" letterSpacing="tight">
           📱 Download Spades Calculator App
         </Text>
         <Text fontSize="sm" color="gray.300" textAlign="center" px={4}>

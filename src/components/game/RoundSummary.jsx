@@ -7,7 +7,7 @@ import RoundSummaryDrawer from './RoundSummaryDrawer';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 
 const SummaryField = ({ label, value, color }) => (
-  <Stack gap="0" alignItems="center" width="full">
+  <Stack gap="var(--app-spacing-0)" alignItems="center" width="full">
     <Text color="gray.400" fontSize="2xs" fontWeight="bold" textTransform="uppercase">
       {label}
     </Text>
@@ -29,15 +29,15 @@ function RoundSummary({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div style={{ marginBottom: '20px' }}>
+    <div style={{ marginBottom: 'var(--app-spacing-5)' }}>
       <Center>
-        <Heading mt={'20px'} mb={'10px'} size={'lg'}>
+        <Heading style={{ marginTop: 'var(--app-spacing-5)', marginBottom: 'var(--app-spacing-3)' }} size={'lg'}>
           Round Summary
         </Heading>
       </Center>
       
-      <SimpleGrid columns={2} width="full" mb="4">
-        <Stack style={team1Styles} alignItems="center" gap="4">
+      <SimpleGrid columns={2} width="full" mb="var(--app-spacing-4)">
+        <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
           <SummaryField 
             label={`Round ${roundNumber} Score`} 
             value={team1RoundScore} 
@@ -47,7 +47,7 @@ function RoundSummary({
             value={team1RoundBags} 
           />
         </Stack>
-        <Stack style={team2Styles} alignItems="center" gap="4">
+        <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
           <SummaryField 
             label={`Round ${roundNumber} Score`} 
             value={team2RoundScore} 
@@ -69,7 +69,7 @@ function RoundSummary({
               width="24px"
               height="24px"
               minW="0"
-              p="0"
+              p="var(--app-spacing-0)"
               variant="outline"
               bg="bg"
               borderColor="white"

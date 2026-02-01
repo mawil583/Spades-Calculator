@@ -3,18 +3,18 @@ import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import { MoveRight } from 'lucide-react';
 
 const SharedSection = ({ title, children }) => (
-  <Stack gap="2" mb="8" alignItems="center" width="full">
+  <Stack gap="var(--app-spacing-2)" mb="var(--app-spacing-8)" alignItems="center" width="full">
     <Text color="gray.300" fontSize="xs" fontWeight="bold" textTransform="uppercase" letterSpacing="wider">
       {title}
     </Text>
-    <SimpleGrid columns={2} gap={4} width="full">
+    <SimpleGrid columns={2} gap="var(--app-spacing-4)" width="full">
       {children}
     </SimpleGrid>
   </Stack>
 );
 
 const Field = ({ label, value, color, children }) => (
-  <Stack gap="0" alignItems="center">
+  <Stack gap="var(--app-spacing-0)" alignItems="center">
     <Text color="gray.400" fontSize="2xs" fontWeight="bold" textTransform="uppercase">
       {label}
     </Text>
@@ -25,7 +25,7 @@ const Field = ({ label, value, color, children }) => (
 );
 
 const Progression = ({ start, end }) => (
-  <Stack direction="row" gap="4" alignItems="center">
+  <Stack direction="row" gap="var(--app-spacing-4)" alignItems="center">
     <Text>{start}</Text>
     <MoveRight size={14} strokeWidth={3} />
     <Text>{end}</Text>
@@ -47,9 +47,9 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
   const hasAnyPenalties = t1Derived.hasPenalties || t2Derived.hasPenalties;
 
   return (
-    <Stack mt="4" p="4" bg="bg">
+    <Stack mt="var(--app-spacing-4)" p="var(--app-spacing-4)" bg="bg">
       <SharedSection title="Initial to Final">
-        <Stack style={team1Styles} alignItems="center" gap="4">
+        <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Game Score">
             <Progression start={team1Stats.startScore} end={team1Stats.endScore} />
           </Field>
@@ -57,7 +57,7 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
             <Progression start={team1Stats.startBags} end={team1Stats.endBags} />
           </Field>
         </Stack>
-        <Stack style={team2Styles} alignItems="center" gap="4">
+        <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Game Score">
             <Progression start={team2Stats.startScore} end={team2Stats.endScore} />
           </Field>
@@ -68,21 +68,21 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
       </SharedSection>
 
       <SharedSection title="Net">
-        <Stack style={team1Styles} alignItems="center" gap="4">
+        <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Points Gained" value={team1Stats.pointsGained} />
           <Field 
             label="Points Lost" 
             value={t1Derived.totalPointsLost} 
-            color={t1Derived.totalPointsLost > 0 ? 'var(--chakra-colors-red-500)' : 'inherit'} 
+            color={t1Derived.totalPointsLost > 0 ? 'var(--app-error-red)' : 'inherit'} 
           />
           <Field label="Net" value={team1Stats.netChange} />
         </Stack>
-        <Stack style={team2Styles} alignItems="center" gap="4">
+        <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Points Gained" value={team2Stats.pointsGained} />
           <Field 
             label="Points Lost" 
             value={t2Derived.totalPointsLost} 
-            color={t2Derived.totalPointsLost > 0 ? 'var(--chakra-colors-red-500)' : 'inherit'} 
+            color={t2Derived.totalPointsLost > 0 ? 'var(--app-error-red)' : 'inherit'} 
           />
           <Field label="Net" value={team2Stats.netChange} />
         </Stack>
@@ -90,7 +90,7 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
 
       {hasAnyPenalties && (
         <SharedSection title="Penalties">
-          <Stack style={team1Styles} alignItems="center" gap="4">
+          <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
             {t1Derived.hasPenalties ? (
               <>
                 {team1Stats.bagPenalty > 0 && <Field label="Bag Penalty" value={`-${team1Stats.bagPenalty}`} color="red.500" />}
@@ -102,7 +102,7 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
               <Text color={team1Styles.color} fontSize="sm">None</Text>
             )}
           </Stack>
-          <Stack style={team2Styles} alignItems="center" gap="4">
+          <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
             {t2Derived.hasPenalties ? (
               <>
                 {team2Stats.bagPenalty > 0 && <Field label="Bag Penalty" value={`-${team2Stats.bagPenalty}`} color="red.500" />}
@@ -118,7 +118,7 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
       )}
 
       <SharedSection title="Bags">
-        <Stack style={team1Styles} alignItems="center" gap="4">
+        <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Initial Bags" value={team1Stats.startBags} />
           <Field label="Bags Taken" value={t1Derived.bagsTaken} />
           <Field 
@@ -126,7 +126,7 @@ function RoundSummaryDrawer({ team1Stats, team2Stats }) {
             value={team1Stats.bagPenalty > 0 && team1Stats.endBags === 0 ? 'Reset to 0' : (team1Stats.bagPenalty > 0 ? `Carryover: ${team1Stats.endBags}` : team1Stats.endBags)} 
           />
         </Stack>
-        <Stack style={team2Styles} alignItems="center" gap="4">
+        <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
           <Field label="Initial Bags" value={team2Stats.startBags} />
           <Field label="Bags Taken" value={t2Derived.bagsTaken} />
           <Field 

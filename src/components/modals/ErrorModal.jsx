@@ -75,7 +75,7 @@ function ErrorModal({
             color="errorRed"
             direction="row"
             justify="center"
-            p="20px"
+            p="var(--app-spacing-5)"
             dangerouslySetInnerHTML={{ __html: errorMessage }}
           />
         <SimpleGrid

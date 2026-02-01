@@ -135,14 +135,14 @@ function TeamInputHeading({
           size="3xl"
           pos="absolute"
           mr="50%"
-          pt="15px"
+          pt="var(--app-spacing-4)"
           cursor={team1CanEdit ? 'pointer' : 'default'}
           _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
             border: team1CanEdit ? '0.5px solid' : 'none',
             borderColor: team1Color,
-            borderRadius: team1CanEdit ? '4px' : '0',
-            padding: team1CanEdit ? '1px 4px' : '0',
+            borderRadius: team1CanEdit ? 'var(--app-radius-sm)' : '0',
+            padding: team1CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team1Color,
           }}
           {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
@@ -150,7 +150,7 @@ function TeamInputHeading({
         >
           {team1Total}
         </Heading>
-        <Heading mt="10px" mb="10px" size="md">
+        <Heading mt="var(--app-spacing-2)" mb="var(--app-spacing-2)" size="md">
           {title}
         </Heading>
         <Heading
@@ -158,14 +158,14 @@ function TeamInputHeading({
           size="3xl"
           pos="absolute"
           ml="50%"
-          pt="15px"
+          pt="var(--app-spacing-4)"
           cursor={team2CanEdit ? 'pointer' : 'default'}
           _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
             border: team2CanEdit ? '0.5px solid' : 'none',
             borderColor: team2Color,
-            borderRadius: team2CanEdit ? '4px' : '0',
-            padding: team2CanEdit ? '1px 4px' : '0',
+            borderRadius: team2CanEdit ? 'var(--app-radius-sm)' : '0',
+            padding: team2CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team2Color,
           }}
           {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}

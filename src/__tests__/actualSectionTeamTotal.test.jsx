@@ -249,12 +249,12 @@ describe('ActualSection Team Total Button Behavior', () => {
       expect(team1Total).toHaveStyle('border-width: 0.5px');
       expect(team1Total).toHaveStyle('border-style: solid');
       expect(team1Total).toHaveStyle(`border-color: ${team1Color}`);
-      expect(team1Total).toHaveStyle('border-radius: 4px');
+      expect(team1Total).toHaveStyle('border-radius: var(--app-radius-sm)');
 
       expect(team2Total).toHaveStyle('border-width: 0.5px');
       expect(team2Total).toHaveStyle('border-style: solid');
       expect(team2Total).toHaveStyle(`border-color: ${team2Color}`);
-      expect(team2Total).toHaveStyle('border-radius: 4px');
+      expect(team2Total).toHaveStyle('border-radius: var(--app-radius-sm)');
     });
 
     test('non-clickable team actual buttons do not have borders', () => {

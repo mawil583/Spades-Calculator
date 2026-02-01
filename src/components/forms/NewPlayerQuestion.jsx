@@ -3,7 +3,7 @@ import { Separator, Button, Flex } from '../ui';
 
 const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
   return (
-    <div style={{ padding: '10px' }}>
+    <div style={{ padding: 'var(--app-spacing-2)' }}>
       <Separator mb={4} />
       <Flex direction={'row'} justifyContent={'space-evenly'} gap={4}>
         <Button

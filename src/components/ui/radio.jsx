@@ -42,7 +42,7 @@ export const Radio = forwardRef(function Radio(props, ref) {
         }}
       />
       {children && (
-        <ChakraRadioGroup.ItemText className="radio-label" sx={{ marginLeft: '8px', fontSize: '16px', display: 'inline-block !important' }}>{children}</ChakraRadioGroup.ItemText>
+        <ChakraRadioGroup.ItemText className="radio-label" sx={{ marginLeft: 'var(--app-spacing-2)', fontSize: 'var(--app-font-md)', display: 'inline-block !important' }}>{children}</ChakraRadioGroup.ItemText>
       )}
     </ChakraRadioGroup.Item>
   )

@@ -5,7 +5,7 @@ import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 function RoundHeading({ roundNumber, names }) {
   return (
     <div>
-      <Heading style={{ fontSize: '25px' }} as={'h3'}>
+      <Heading style={{ fontSize: 'var(--app-font-2xl)' }} as={'h3'}>
         Round {roundNumber}
       </Heading>
       <Box mb={'8px'}>

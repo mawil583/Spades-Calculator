@@ -43,7 +43,7 @@ function AppModal({
         {title && (
           <DialogHeader
             fontSize="2xl"
-            fontWeight="bold"
+            fontWeight="bold" // Bold is fine for a heading, but could be var(--app-font-weight-bold) if we defined it. Let's keep it bold for now as it's standard.
             pe="40px"
             css={headerStyle}
           >

@@ -43,23 +43,23 @@ const UpdateNotification = () => {
           transition={{ duration: 0.2 }}
           style={{
             position: 'fixed',
-            top: '16px',
-            right: '16px',
+            top: 'var(--app-spacing-4)',
+            right: 'var(--app-spacing-4)',
             zIndex: 9999,
           }}
         >
           <Box
             bg="blue.600"
             color="white"
-            px="5"
-            py="4"
+            px="var(--app-spacing-5)"
+            py="var(--app-spacing-4)"
             borderRadius="xl"
             boxShadow="2xl"
             maxW="sm"
             border="1px solid"
             borderColor="blue.400"
           >
-            <VStack gap="4" align="stretch">
+            <VStack gap="var(--app-spacing-4)" align="stretch">
               <HStack justify="space-between" align="center">
                 <Text fontWeight="extrabold" fontSize="md" letterSpacing="tight">
                   {needRefresh
@@ -70,7 +70,7 @@ const UpdateNotification = () => {
                   size="xs"
                   variant="ghost"
                   onClick={handleDismiss}
-                  p="1"
+                  p="var(--app-spacing-1)"
                   minW="auto"
                   borderRadius="full"
                 >
@@ -84,7 +84,7 @@ const UpdateNotification = () => {
                   : 'The app has been cached and is ready to work offline.'}
               </Text>
 
-              <HStack gap="2">
+              <HStack gap="var(--app-spacing-2)">
                 {needRefresh && (
                   <Button
                     size="sm"

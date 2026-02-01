@@ -152,7 +152,7 @@ const InstallPrompt = () => {
     <Box
       data-testid="install-prompt"
       position="fixed"
-      bottom="20px"
+      bottom="var(--app-spacing-5)"
       left="50%"
       transform="translateX(-50%)"
       bg="gray.700"
@@ -168,7 +168,7 @@ const InstallPrompt = () => {
     >
       <VStack gap={3} align="stretch">
         <HStack justify="space-between" align="center">
-          <Text fontWeight="bold" fontSize="sm">
+          <Text fontWeight="bold" fontSize="var(--app-font-sm)">
             📱 Install Spades Calculator
           </Text>
           <Button
@@ -181,7 +181,7 @@ const InstallPrompt = () => {
           </Button>
         </HStack>
 
-        <Text fontSize="xs" color="gray.300">
+        <Text fontSize="var(--app-font-xs)" color="gray.300">
           Add to your home screen for quick access and offline use
         </Text>
 

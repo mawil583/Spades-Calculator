@@ -28,7 +28,7 @@ const Navbar = () => {
         <IconButton
           variant="outline"
           onClick={handleNavigateHome}
-          fontSize="25px"
+          fontSize="var(--app-font-2xl)"
           style={{ width: '60px' }}
         >
           <ArrowLeft />

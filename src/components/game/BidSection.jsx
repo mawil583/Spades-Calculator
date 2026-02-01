@@ -31,7 +31,7 @@ function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
         title="Bids"
       />
       <Unclaimed numUnclaimed={numUnclaimed} />
-      <SimpleGrid columns={2} mb="15px">
+      <SimpleGrid columns={2} mb="var(--app-spacing-4)">
         <PlayerInput
           type={'Bid'}
           index={index}
