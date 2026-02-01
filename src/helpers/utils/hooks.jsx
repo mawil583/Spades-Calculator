@@ -56,7 +56,7 @@ export function useRedirectWhenFalsey(names, navigate) {
         navigate('/');
       }
     }
-  });
+  }, [names, navigate]);
 }
 
 export function useSetUnclaimed(team1Bids, team2Bids, setNumUnclaimed) {

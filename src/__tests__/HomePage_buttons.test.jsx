@@ -173,6 +173,17 @@ const renderWithProviders = (component, contextValue) => {
   });
   
   it('should navigate when "Continue" is clicked', async () => {
+    // Provide valid player names so form validation passes
+    const validNames = {
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Alice',
+      t1p2Name: 'Bob',
+      t2p1Name: 'Charlie',
+      t2p2Name: 'Diana',
+    };
+    mockUseLocalStorage.mockReturnValue([validNames, vi.fn()]);
+
     const contextWithHistory = {
       ...defaultContext,
       roundHistory: [{ someData: 'test' }],

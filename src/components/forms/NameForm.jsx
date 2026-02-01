@@ -28,9 +28,7 @@ function NameForm() {
         ))) ||
     JSON.stringify(names) !== JSON.stringify(initialNames);
 
-  const handleContinue = () => {
-    navigate('/spades-calculator', { state: names });
-  };
+
 
   const handleNewGame = () => {
     setIsWarningModalOpen(true);
@@ -172,9 +170,8 @@ function NameForm() {
               minW="120px"
               px={4}
               justifySelf="center"
-              onClick={handleContinue}
               data-cy="continueButton"
-              type="button"
+              type="submit"
               fontSize="lg"
             >
               Continue
