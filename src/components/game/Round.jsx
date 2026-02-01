@@ -227,7 +227,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   return (
     <div className="round" data-cy="round">
       <RoundHeading roundNumber={roundIndex + 1} names={names} />
-      <Container>
+      <Container px={0}>
         {!isCurrent && (
           <>
             <RoundSummary

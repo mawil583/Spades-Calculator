@@ -51,8 +51,9 @@ describe('Download Button Functionality', () => {
         },
       });
 
-      // Click the download button
-      cy.get('button').contains('Download App').click();
+      // Click the download button (now in menu)
+      cy.get('button[aria-label="Open Menu"]').click();
+      cy.contains('Offline Download').click();
 
       // Should show some kind of installation-related message
       cy.contains(/Install Instructions|Installation Started|Installation Prompt Shown|Installation Cancelled|Install on iOS|Install on Android|Install in Brave|Install in Chrome|Install in Firefox/i).should('be.visible');
@@ -72,8 +73,9 @@ describe('Download Button Functionality', () => {
         },
       });
 
-      // Click the download button
-      cy.get('button').contains('Download App').click();
+      // Click the download button (now in menu)
+      cy.get('button[aria-label="Open Menu"]').click();
+      cy.contains('Offline Download').click();
 
       // Should show iOS-specific instructions
       cy.contains('Share button').should('be.visible');
@@ -90,8 +92,9 @@ describe('Download Button Functionality', () => {
         },
       });
 
-      // Click the download button
-      cy.get('button').contains('Download App').click();
+      // Click the download button (now in menu)
+      cy.get('button[aria-label="Open Menu"]').click();
+      cy.contains('Offline Download').click();
 
       // Should show Android-specific instructions
       cy.contains('menu').should('be.visible');

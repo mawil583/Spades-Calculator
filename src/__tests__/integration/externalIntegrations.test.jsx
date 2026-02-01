@@ -166,11 +166,15 @@ describe('External Integrations', () => {
   });
 
   describe('PWA Integration', () => {
-    it('should show download button when PWA is installable', async () => {
+    it('should show offline download in menu when PWA is installable', async () => {
       renderWithProviders(<App />);
 
-      // Verify download button is present
-      expect(screen.getByText(/Download App/i)).toBeInTheDocument();
+      // Open menu
+      const menuButton = screen.getByLabelText(/Open Menu/i);
+      fireEvent.click(menuButton);
+
+      // Verify offline download item is present
+      expect(screen.getByText(/Offline Download/i)).toBeInTheDocument();
     });
 
     it('should handle beforeinstallprompt event', async () => {
@@ -180,8 +184,12 @@ describe('External Integrations', () => {
       const beforeInstallPromptEvent = new Event('beforeinstallprompt');
       window.dispatchEvent(beforeInstallPromptEvent);
 
+      // Open menu
+      const menuButton = screen.getByLabelText(/Open Menu/i);
+      fireEvent.click(menuButton);
+
       // App should handle the event gracefully
-      expect(screen.getByText(/Download App/i)).toBeInTheDocument();
+      expect(screen.getByText(/Offline Download/i)).toBeInTheDocument();
     });
   });
 
@@ -232,7 +240,7 @@ describe('External Integrations', () => {
 
       // App should continue to work even if localStorage fails
       expect(
-        screen.getByText(/Download Spades Calculator App/i)
+        screen.getByText(/SpadesCalculator/i)
       ).toBeInTheDocument();
     });
 
@@ -244,7 +252,7 @@ describe('External Integrations', () => {
 
       // App should work offline
       expect(
-        screen.getByText(/Download Spades Calculator App/i)
+        screen.getByText(/SpadesCalculator/i)
       ).toBeInTheDocument();
     });
   });

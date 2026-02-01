@@ -59,13 +59,20 @@ const PlayerInput = ({
         roundHistory={roundHistory}
         index={index}
       />
-      <Flex my={'5px'} direction={'row'} justify={'space-around'}>
+      <Flex my={'5px'} direction={'row'} justify={'flex-start'} align="center">
         <Flex
           direction={'row'}
           align={'center'}
-          style={{ marginRight: '15px' }}
+          flex={1}
+          minW={0}
+          mr={1}
         >
-          <span>{playerName}</span>{' '}
+          <span style={{ 
+            whiteSpace: 'nowrap', 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis',
+            display: 'block'
+          }}>{playerName}</span>
           {type === 'Bid' && (
             <DealerTag
               id={dealerId}
@@ -87,6 +94,7 @@ const PlayerInput = ({
             variant={teamClassName === 'team1' ? 'team1Outline' : 'team2Outline'}
             data-cy={type === 'Bid' ? 'bidButton' : 'actualButton'}
             data-testid={type === 'Bid' ? 'bidButton' : 'actualButton'}
+            mr={teamClassName === 'team1' ? 1 : 0}
           >
             {displayValue || type}
           </Button>
@@ -97,6 +105,7 @@ const PlayerInput = ({
               justify="center"
               cursor="pointer"
               onClick={onEdit}
+              mr={teamClassName === 'team1' ? 1 : 0}
             >
               <Flex borderColor={teamClassName === 'team1' ? 'team1' : 'team2'} borderRadius="var(--app-radius-sm)" px="0.5rem">
                 {displayValue}

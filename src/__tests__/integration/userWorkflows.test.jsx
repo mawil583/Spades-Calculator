@@ -110,7 +110,7 @@ describe('Complete User Workflows', () => {
       // Should stay on the same page and show validation errors
       await waitFor(() => {
         expect(
-          screen.getByText(/Download Spades Calculator App/i)
+          screen.getByText(/SpadesCalculator/i)
         ).toBeInTheDocument();
       });
     });
@@ -152,43 +152,51 @@ describe('Complete User Workflows', () => {
   });
 
   describe('PWA Integration Workflow', () => {
-    it('should show download button on home page', async () => {
+    it('should show and handle offline download in menu', async () => {
       renderWithProviders(<HomePage />);
+      
+      // Open menu
+      const menuButton = screen.getByLabelText(/Open Menu/i);
+      fireEvent.click(menuButton);
 
-      // Verify download button is present
-      expect(screen.getByText(/Download App/i)).toBeInTheDocument();
-    });
-
-    it('should handle PWA installation flow', async () => {
-      renderWithProviders(<HomePage />);
-
-      // Click download button
-      const downloadButton = screen.getByText(/Download App/i);
-      fireEvent.click(downloadButton);
-
-      // Should handle the click gracefully
-      expect(screen.getByText(/Download App/i)).toBeInTheDocument();
+      // Verify offline download item is present
+      expect(screen.getByText(/Offline Download/i)).toBeInTheDocument();
+      
+      // Click it
+      fireEvent.click(screen.getByText(/Offline Download/i));
     });
   });
 
   describe('Settings Integration Workflow', () => {
-    it('should show scoring rules settings', async () => {
+    it('should show scoring rules in settings modal', async () => {
       renderWithProviders(<HomePage />);
 
-      // Verify scoring rules are present
-      expect(
-        screen.getByText(/Select your preferred scoring rules/i)
-      ).toBeInTheDocument();
+      // Open settings
+      const menuButton = screen.getByLabelText(/Open Menu/i);
+      fireEvent.click(menuButton);
+      fireEvent.click(screen.getByText(/Settings/i));
+
+      // Verify scoring rules are present in modal
+      await waitFor(() => {
+        expect(
+          screen.getByText(/Select your preferred scoring rules/i)
+        ).toBeInTheDocument();
+      });
       expect(screen.getByText(/Takes Bags/i)).toBeInTheDocument();
       expect(screen.getByText(/Helps Team Bid/i)).toBeInTheDocument();
       expect(screen.getByText(/No Bags\/No Help/i)).toBeInTheDocument();
     });
 
-    it('should allow changing scoring rules', async () => {
+    it('should allow changing scoring rules in modal', async () => {
       renderWithProviders(<HomePage />);
 
+      // Open settings
+      const menuButton = screen.getByLabelText(/Open Menu/i);
+      fireEvent.click(menuButton);
+      fireEvent.click(screen.getByText(/Settings/i));
+
       // Click on different scoring rule
-      const helpsTeamBidRadio = screen.getByLabelText(/Helps Team Bid/i);
+      const helpsTeamBidRadio = await waitFor(() => screen.getByLabelText(/Helps Team Bid/i));
       fireEvent.click(helpsTeamBidRadio);
 
       // Verify the selection was made

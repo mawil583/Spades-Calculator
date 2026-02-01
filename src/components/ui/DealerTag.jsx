@@ -72,7 +72,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
           onClick={handleBadgeClick}
           cursor={isCurrent ? 'pointer' : 'default'}
           variant="dealer"
-          mx="8px"
+          mx="2px"
         >
           D
         </Badge>
