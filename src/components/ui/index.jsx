@@ -20,3 +20,4 @@ export * from './radio';
 export * from './dialog';
 export * from './editable';
 export * from './field';
+export * from './badge';

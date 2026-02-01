@@ -4,6 +4,7 @@ import {
   getCurrentDealerId,
 } from '../../helpers/math/spadesMath';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { Badge } from '../ui';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 import { DealerSelectionModal } from '../modals';
 
@@ -65,29 +66,16 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
   return (
     isDealer && (
       <>
-        <div
+        <Badge
           data-cy="dealerBadge"
           data-testid="dealerBadge"
           onClick={handleBadgeClick}
-          style={{
-            cursor: isCurrent ? 'pointer' : 'default',
-            marginLeft: '8px',
-            marginRight: '8px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '20px',
-            height: '20px',
-            backgroundColor: 'dealerBadge',
-            color: 'offWhite',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: 'bold',
-            verticalAlign: 'middle',
-          }}
+          cursor={isCurrent ? 'pointer' : 'default'}
+          variant="dealer"
+          mx="8px"
         >
           D
-        </div>
+        </Badge>
         <DealerSelectionModal
           isOpen={isOpen}
           onClose={setIsOpen}

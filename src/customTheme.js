@@ -121,11 +121,37 @@ const fieldSlotRecipe = defineSlotRecipe({
   },
 });
 
+const badgeRecipe = defineRecipe({
+  base: {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '8px',
+    fontWeight: 'bold',
+    fontSize: '13px',
+    width: '24px',
+    height: '24px',
+    verticalAlign: 'middle',
+  },
+  variants: {
+    variant: {
+      dealer: {
+        backgroundColor: 'dealerBadge',
+        color: 'offWhite',
+      },
+    },
+  },
+  defaultVariants: {
+    variant: 'dealer',
+  },
+});
+
 export const system = createSystem(defaultConfig, {
   theme: {
     recipes: {
       button: buttonRecipe,
       input: inputRecipe,
+      badge: badgeRecipe,
     },
     slotRecipes: {
       field: fieldSlotRecipe,
@@ -134,9 +160,9 @@ export const system = createSystem(defaultConfig, {
       colors: {
         team1: { value: team1Color },
         team2: { value: team2Color },
-        offWhite: { value: offWhiteColor },
+        offWhite: { value: '#F8F9FA' }, // Cleaner off-white
         errorRed: { value: errorRedColor },
-        dealerBadge: { value: 'rgba(159, 122, 234, 0.3)' },
+        dealerBadge: { value: '#4d3596ff' }, // Richer Purple
         premiumBlue: { value: premiumBlueColor },
       },
     },
