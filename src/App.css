@@ -1,4 +1,8 @@
 /* phase out these classNames by using team1 and team2 colors as defined in my customTheme object  */
+.App {
+  padding: var(--app-spacing-2);
+}
+
 .team2 {
   color: var(--app-team2);
 }

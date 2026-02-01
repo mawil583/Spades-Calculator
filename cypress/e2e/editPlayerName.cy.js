@@ -32,13 +32,8 @@ describe('Player Name Editing Flow', () => {
     cy.contains(initialPlayerNames.t1p1Name).should('be.visible');
 
     // 5. Navigate back to home page
-    // Using the back button in the UI if it exists, otherwise browser back
-    // Based on Navbar.jsx inspection, there is an IconButton with ArrowLeft that calls handleNavigateHome
-    // We need to identify it. It doesn't have a data-cy, but it's an IconButton with ArrowLeft.
-    // Or we can just use cy.go('back') or click the button if we can select it.
-    // Let's assume there is a back button. If not, we'll use cy.go('back').
-    // Looking at Navbar.jsx, it has an IconButton.
-    cy.get('button').find('svg.lucide-arrow-left').parent().click();
+    // Using the title link in the header as the back button was removed
+    cy.contains('SpadesCalculator').click();
 
     // 6. Edit one of the names
     const newName = 'AliceEdited';

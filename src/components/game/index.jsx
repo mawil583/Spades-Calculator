@@ -10,3 +10,5 @@ export { default as ScoreSetting } from './ScoreSetting';
 export { default as Round } from './Round';
 export { default as GameScore } from './GameScore';
 export { default as BidSection } from './BidSection';
+export { default as TableRound } from './TableRound';
+export { default as UIModeSetting } from './UIModeSetting';

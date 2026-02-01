@@ -2,7 +2,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../../components/ui/provider';
-import Navbar from '../../components/ui/Navbar';
+import Header from '../../components/ui/Header';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
 // Mock the context values
@@ -58,9 +58,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Should show the team question directly (no data warning)
@@ -94,9 +95,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Wait for modal and click Same Teams
@@ -124,9 +126,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Wait for modal and click Different Teams
@@ -156,9 +159,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Wait for modal and click Different Teams
@@ -198,9 +202,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Wait for the data warning
@@ -250,9 +255,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Wait for the data warning and click Cancel
@@ -285,9 +291,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
@@ -320,9 +327,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
@@ -356,9 +364,10 @@ describe('New Game Flow Integration', () => {
       };
       window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Click Continue
@@ -391,9 +400,10 @@ describe('New Game Flow Integration', () => {
         roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
       };
 
-      renderWithProviders(<Navbar />, contextValue);
+      renderWithProviders(<Header />, contextValue);
 
       // Click the New Game button
+      fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
       // Find and click the close button

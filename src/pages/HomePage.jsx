@@ -2,17 +2,15 @@
 
 import '../App.css';
 import { NameForm } from '../components/forms';
-import { ScoreSetting } from '../components/game';
-import { DownloadButton } from '../components/ui';
+import { Header } from '../components/ui';
 import { UpdateNotification } from '../components';
 
 function HomePage() {
   return (
     <div className="App">
       <UpdateNotification />
+      <Header />
       <NameForm />
-      <ScoreSetting />
-      <DownloadButton />
     </div>
   );
 }

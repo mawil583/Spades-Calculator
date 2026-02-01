@@ -121,7 +121,7 @@ describe('Complex State Interactions Between Unrelated Components', () => {
 
       // Verify HomePage renders
       expect(
-        screen.getByText(/Download Spades Calculator App/i)
+        screen.getByText(/SpadesCalculator/i)
       ).toBeInTheDocument();
     });
   });

@@ -19,15 +19,20 @@ describe('Dealer Rotation Flow with Override', () => {
     cy.visit('/spades-calculator');
 
     // Wait for the page to load and check if we're on the right page
-    cy.contains('Score').should('be.visible');
+    cy.get('[data-testid="game-score-container"]').should('be.visible');
   });
 
   it('should handle dealer rotation with override correctly', () => {
     // Check if we need to click "New Game" first
     cy.get('body').then(($body) => {
-      if ($body.find('button:contains("New Game")').length > 0) {
-        cy.get('button').contains('New Game').click();
+      // Open menu first to check for "New Game"
+      cy.get('[aria-label="Open Menu"]').click();
+      if ($body.find(':contains("New Game")').length > 0) {
+        cy.contains('New Game').click();
         cy.contains('Same Teams').click();
+      } else {
+        // Close menu if New Game not found/needed
+        cy.get('[aria-label="Open Menu"]').click();
       }
     });
 
