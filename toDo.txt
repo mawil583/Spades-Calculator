@@ -1,5 +1,5 @@
 --High Priority--
-Ensure consistent color/size/font theming throughout the app. Also ensure that all colors are defined in the customTheme object and not in the component.
+There's a lot of things like "var(--app-spacing-5)" that are very verbose. Could we not just assign those to shorter, better named variables? 
 Go through customTheme and see if I can cut back on the amount of definitions I have. There shouldn't be that many use-cases for such a simple UI. There are probably outliers. Do an inventory of how many times each definition is used. Then remove the ones that aren't used much by swapping them with a more commonly used definition. This will ensure better consistency and simplicity.
 When I select a team's total actuals button, the button has a blue hue around it indicating that it's still selected or hovered. This is not desired. Remove the blue hue.
 redo UI for currentRound to make it resemble a cards-playing-table (consider even getting a photo of a poker table that I set as the background for mobile). But first, create a figma mockup to make sure it looks good
