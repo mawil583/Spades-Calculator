@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { GameScore, Rounds } from '../components/game';
-import { Header, Navbar } from '../components/ui';
+import { Header } from '../components/ui';
 import { UpdateNotification } from '../components';
 import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
 import { useFeatureFlag } from '../helpers/utils/useFeatureFlag';
@@ -20,7 +20,7 @@ function SpadesCalculator() {
       <Header />
       {names && (
         <>
-          {useTableRoundUI ? <Navbar /> : <GameScore />}
+          {useTableRoundUI ? null : <GameScore />}
           <Rounds />
         </>
       )}

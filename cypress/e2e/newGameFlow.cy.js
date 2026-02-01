@@ -19,16 +19,17 @@ describe('New Game Flow', () => {
     cy.visit('/spades-calculator');
 
     // Wait for the page to load and check if we're on the right page
-    cy.contains('Score').should('be.visible');
+    cy.get('[data-testid="game-score-container"]').should('be.visible');
   });
 
   describe('when there is no round history', () => {
     it('should show only the team selection modal when clicking New Game', () => {
-      // Wait for the New Game button to be available
-      cy.get('button').contains('New Game').should('be.visible');
+      // Open menu and wait for New Game button to be available
+      cy.get('[aria-label="Open Menu"]').click();
+      cy.contains('New Game').should('be.visible');
 
       // Click the New Game button
-      cy.get('button').contains('New Game').click();
+      cy.contains('New Game').click();
 
       // Should show the team question directly (no data warning)
       cy.contains('Would you like to keep the same teams?').should(
@@ -45,11 +46,12 @@ describe('New Game Flow', () => {
     });
 
     it('should navigate to home page with empty input fields after selecting "Different Teams"', () => {
-      // Wait for the New Game button to be available
-      cy.get('button').contains('New Game').should('be.visible');
+      // Open menu and wait for New Game button to be available
+      cy.get('[aria-label="Open Menu"]').click();
+      cy.contains('New Game').should('be.visible');
 
       // Click the New Game button
-      cy.get('button').contains('New Game').click();
+      cy.contains('New Game').click();
 
       // Click Different Teams
       cy.contains('Different Teams').click();
@@ -72,11 +74,12 @@ describe('New Game Flow', () => {
     });
 
     it('should handle "Same Teams" selection', () => {
-      // Wait for the New Game button to be available
-      cy.get('button').contains('New Game').should('be.visible');
+      // Open menu and wait for New Game button to be available
+      cy.get('[aria-label="Open Menu"]').click();
+      cy.contains('New Game').should('be.visible');
 
       // Click the New Game button
-      cy.get('button').contains('New Game').click();
+      cy.contains('New Game').click();
 
       // Click Same Teams
       cy.contains('Same Teams').click();
@@ -88,11 +91,12 @@ describe('New Game Flow', () => {
 
   describe('modal accessibility', () => {
     it('should close modal when pressing ESC key', () => {
-      // Wait for the New Game button to be available
-      cy.get('button').contains('New Game').should('be.visible');
+      // Open menu and wait for New Game button to be available
+      cy.get('[aria-label="Open Menu"]').click();
+      cy.contains('New Game').should('be.visible');
 
       // Click the New Game button
-      cy.get('button').contains('New Game').click();
+      cy.contains('New Game').click();
 
       // Should show the team question modal
       cy.contains('Would you like to keep the same teams?').should(
@@ -138,8 +142,9 @@ describe('New Game Flow', () => {
       // Verify actual section is visible
       cy.get('[data-cy="actualSection"]').should('be.visible');
 
-      // Click New Game button
-      cy.get('button').contains('New Game').click();
+      // Click New Game button via menu
+      cy.get('[aria-label="Open Menu"]').click();
+      cy.contains('New Game').click();
 
       // Click Same Teams
       cy.contains('Same Teams').click();

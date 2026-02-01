@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Flex, Box, Text, IconButton, Stack } from './';
-import { Menu as MenuIcon, Settings, Download } from 'lucide-react';
-import { SettingsModal } from '../modals';
+import { Menu as MenuIcon, Settings, Download, RotateCcw } from 'lucide-react';
+import { SettingsModal, WarningModal } from '../modals';
 import { usePWAInstall } from '../../helpers/utils/usePWAInstall';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const { handleInstallClick, isInstalled } = usePWAInstall();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -21,10 +24,25 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const handleNewGameClick = () => {
+    setIsWarningModalOpen(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleNavigateHome = () => {
+    navigate('/');
+  };
+
   return (
     <Box as="header" width="100%" py={0} position="relative" zIndex={100}>
       <Flex justify="space-between" align="center">
-        <Text fontSize="var(--app-font-xl)" fontWeight="bold" letterSpacing="tight">
+        <Text 
+          fontSize="var(--app-font-xl)" 
+          fontWeight="bold" 
+          letterSpacing="tight"
+          cursor="pointer"
+          onClick={handleNavigateHome}
+        >
           SpadesCalculator
         </Text>
         <IconButton 
@@ -51,6 +69,18 @@ const Header = () => {
           minW="200px"
         >
           <Stack gap={0}>
+             <Flex
+              px={4}
+              py={3}
+              align="center"
+              cursor="pointer"
+              _hover={{ bg: 'whiteAlpha.100' }}
+              onClick={handleNewGameClick}
+              gap={3}
+            >
+              <RotateCcw size={18} />
+              <Text fontSize="md">New Game</Text>
+            </Flex>
             <Flex
               px={4}
               py={3}
@@ -82,6 +112,7 @@ const Header = () => {
       )}
 
       <SettingsModal isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
+      <WarningModal isOpen={isWarningModalOpen} setIsModalOpen={setIsWarningModalOpen} />
     </Box>
   );
 };

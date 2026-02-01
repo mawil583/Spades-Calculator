@@ -1,9 +1,8 @@
 import { useContext } from 'react';
-import { Container, SimpleGrid, Center, Heading } from '../ui';
+import { Container, SimpleGrid } from '../ui';
 
 import TeamScore from './TeamScore';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { Navbar } from '../../components/ui';
 import {
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
@@ -12,8 +11,9 @@ import { TEAM1, TEAM2 } from '../../helpers/utils/constants';
 import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
 const GameScore = function () {
-  const names = JSON.parse(localStorage.getItem('names'));
   const { roundHistory, currentRound } = useContext(GlobalContext);
+  const names = JSON.parse(localStorage.getItem('names'));
+  if (!names) return null;
   const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
 
   // Calculate scores from completed rounds
@@ -56,13 +56,12 @@ const GameScore = function () {
 
   return (
     <>
-      <Navbar />
-      <Container pb={5} borderBottom="1px solid" borderBottomColor="offWhite">
-        <Center>
-          <Heading as="h2" size="lg" style={{ textDecoration: 'underline' }}>
-            Score
-          </Heading>
-        </Center>
+      <Container 
+        pb={5} 
+        borderBottom="1px solid" 
+        borderBottomColor="offWhite"
+        data-testid="game-score-container"
+      >
         <SimpleGrid columns={2}>
           <TeamScore
             teamClassName="team1"

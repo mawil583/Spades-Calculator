@@ -15,4 +15,5 @@ export const getFeatureFlag = (flagKey) => {
 
 export const setFeatureFlag = (flagKey, value) => {
   localStorage.setItem(flagKey, JSON.stringify(value));
+  window.dispatchEvent(new CustomEvent('feature-flag-changed', { detail: { key: flagKey, value } }));
 };

@@ -17,11 +17,13 @@ import RoundHeading from './RoundHeading';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
 function Round({ roundHistory, isCurrent = false, roundIndex }) {
-  const names = JSON.parse(localStorage.getItem('names'));
-  const { team1Name, team2Name } = names;
-  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
+
+  const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
+
+  const names = JSON.parse(localStorage.getItem('names'));
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
 
   const roundAtIndex = isCurrent ? null : roundHistory?.[roundIndex] ?? null;
   const roundInputs = isCurrent ? currentRound : roundAtIndex;
@@ -45,9 +47,6 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       ]
     : ['', '', '', '']; // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
-
-  // State to control the animation for the current round
-  const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
 
   // Derive visibility:
   // 1. For past rounds, show if all bids are entered.
@@ -73,6 +72,9 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
     }
   }, [allBidsEntered, isCurrent, isActualsSectionVisible]);
 
+  // Early returns must happen AFTER hooks
+  if (!names) return null;
+
   // If this is a past round and the round data is missing or malformed, skip rendering this round
   if (!isCurrent) {
     const hasValidStructure =
@@ -83,6 +85,8 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       return null;
     }
   }
+
+  const { team1Name, team2Name } = names;
 
   function getTeamsScoresFromHistory() {
     if (roundAtIndex) {
