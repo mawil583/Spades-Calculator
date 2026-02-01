@@ -1,7 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Round } from './';
+import { Round, TableRound } from './';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
+import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 
 function Rounds() {
   const { roundHistory } = useContext(GlobalContext);
@@ -10,6 +12,8 @@ function Rounds() {
   const [previousRoundHistoryLength, setPreviousRoundHistoryLength] = useState(
     roundHistory.length
   );
+  const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
+  const CurrentRoundComponent = useTableRoundUI ? TableRound : Round;
 
   // Adjust state during render when roundHistory length changes
   if (roundHistory.length !== previousRoundHistoryLength) {
@@ -45,7 +49,7 @@ function Rounds() {
               ease: 'easeOut',
             }}
           >
-            <Round
+            <CurrentRoundComponent
               isCurrent
               roundHistory={roundHistory}
               roundIndex={roundHistory.length}
@@ -53,6 +57,7 @@ function Rounds() {
           </motion.div>
         )}
       </AnimatePresence>
+
 
       {roundHistory.length > 0 &&
         roundHistory

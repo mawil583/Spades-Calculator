@@ -95,7 +95,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for the page to load
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Team 1 should have their score updated (70 points)
@@ -144,7 +144,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for the page to load
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Round should not be completed since Team 2 hasn't finished
@@ -194,7 +194,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for the page to load
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Both teams should have their scores updated
@@ -267,7 +267,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for initial render
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Team 1 should have score, Team 2 should not
@@ -352,7 +352,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for the page to load
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Round should be completed since total actuals = 13
@@ -395,7 +395,7 @@ describe('Independent Team Scoring', () => {
 
       // Wait for the page to load
       await waitFor(() => {
-        expect(screen.getByText('Score')).toBeInTheDocument();
+        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
       });
 
       // Round should not be completed since total actuals ≠ 13

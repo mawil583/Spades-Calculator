@@ -2,7 +2,7 @@
 
 import '../App.css';
 import { NameForm } from '../components/forms';
-import { ScoreSetting } from '../components/game';
+import { ScoreSetting, UIModeSetting } from '../components/game';
 import { DownloadButton } from '../components/ui';
 import { UpdateNotification } from '../components';
 
@@ -12,6 +12,7 @@ function HomePage() {
       <UpdateNotification />
       <NameForm />
       <ScoreSetting />
+      <UIModeSetting />
       <DownloadButton />
     </div>
   );

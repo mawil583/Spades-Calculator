@@ -1,6 +1,12 @@
-import { useState, useEffect } from 'react';
-
-import { isNotDefaultValue, addInputs } from '../math/spadesMath';
+import { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
+import { 
+  isNotDefaultValue, 
+  addInputs, 
+  calculateTeamScoreFromRoundHistory,
+  calculateRoundScore
+} from '../math/spadesMath';
+import { TEAM1, TEAM2 } from './constants';
 
 export function useLocalStorage(key, initialValue) {
   // State to store our value
@@ -134,4 +140,96 @@ export function useIndependentTeamScoring(
     setRoundHistory,
     roundHistory,
   ]);
+}
+
+// Helper function to calculate score for a team in the current round
+function calculateCurrentRoundTeamScore(
+  currentRound,
+  teamKey,
+  nilSetting,
+  isNotDefaultValue
+) {
+  if (!currentRound) {
+    return { teamScore: 0, teamBags: 0 };
+  }
+
+  const teamData = currentRound[teamKey];
+  if (!teamData) {
+    return { teamScore: 0, teamBags: 0 };
+  }
+
+  // Check if this team has completed their actuals
+  const teamInputVals = Object.values(teamData);
+  const teamInputsAreEntered = teamInputVals.every(isNotDefaultValue);
+
+  if (!teamInputsAreEntered) {
+    return { teamScore: 0, teamBags: 0 };
+  }
+
+  // Calculate the round score for this team
+  const roundScore = calculateRoundScore(
+    teamData.p1Bid,
+    teamData.p2Bid,
+    teamData.p1Actual,
+    teamData.p2Actual,
+    nilSetting
+  );
+
+  return {
+    teamScore: roundScore.score,
+    teamBags: roundScore.bags,
+  };
+}
+
+export function useGameScores() {
+  const { roundHistory, currentRound } = useContext(GlobalContext);
+  // We can't use localStorage inside the hook directly during render if it's not state/effect managed?
+  // Actually, hooks called at top level is fine. 
+  // However, localStorage might be slow or not updated? 
+  // GameScore.jsx did: const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
+  // We should probably just read it once or use a hook for it.
+  // For now, let's just do what GameScore did.
+  
+  // Safe generic read?
+  const nilSetting = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('nilScoringRule')) : null;
+
+  // Calculate scores from completed rounds
+  const team1ScoreFromHistory = calculateTeamScoreFromRoundHistory(
+    roundHistory,
+    TEAM1,
+    nilSetting
+  );
+  const team2ScoreFromHistory = calculateTeamScoreFromRoundHistory(
+    roundHistory,
+    TEAM2,
+    nilSetting
+  );
+
+  // Calculate scores from current round if teams have completed their actuals
+  const team1CurrentRoundScore = calculateCurrentRoundTeamScore(
+    currentRound,
+    TEAM1,
+    nilSetting,
+    isNotDefaultValue
+  );
+  const team2CurrentRoundScore = calculateCurrentRoundTeamScore(
+    currentRound,
+    TEAM2,
+    nilSetting,
+    isNotDefaultValue
+  );
+
+  // Combine scores from history and current round
+  const team1Score = {
+    teamScore:
+      team1ScoreFromHistory.teamScore + team1CurrentRoundScore.teamScore,
+    teamBags: team1ScoreFromHistory.teamBags + team1CurrentRoundScore.teamBags,
+  };
+  const team2Score = {
+    teamScore:
+      team2ScoreFromHistory.teamScore + team2CurrentRoundScore.teamScore,
+    teamBags: team2ScoreFromHistory.teamBags + team2CurrentRoundScore.teamBags,
+  };
+
+  return { team1Score, team2Score };
 }
