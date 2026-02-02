@@ -1,5 +1,5 @@
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, createEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
 import { GlobalContext } from '../helpers/context/GlobalContext';
@@ -120,6 +120,25 @@ describe('DealerTag', () => {
       expect(mockContextValue.setDealerOverride).toHaveBeenCalledWith(
         'team1BidsAndActuals.p1Bid'
       );
+    });
+
+    it('should stop propagation when clicked', () => {
+        renderWithProviders(
+            <DealerTag
+            id="team1BidsAndActuals.p1Bid"
+            index={0}
+            isCurrent={true}
+            roundHistory={[]}
+            />
+        );
+
+        const dealerBadge = screen.getByTestId('dealerBadge');
+        const evt = createEvent.click(dealerBadge);
+        
+        evt.stopPropagation = jest.fn();
+        fireEvent(dealerBadge, evt);
+
+        expect(evt.stopPropagation).toHaveBeenCalled();
     });
   });
 });

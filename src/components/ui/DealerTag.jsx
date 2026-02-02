@@ -8,7 +8,7 @@ import { Badge } from '../ui';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 import { DealerSelectionModal } from '../modals';
 
-const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
+const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
   const { firstDealerOrder, currentRound, setDealerOverride } =
     useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +57,8 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
     setIsOpen(false);
   };
 
-  const handleBadgeClick = () => {
+  const handleBadgeClick = (e) => {
+    e.stopPropagation();
     if (isCurrent) {
       setIsOpen(true);
     }
@@ -73,6 +74,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory }) => {
           cursor={isCurrent ? 'pointer' : 'default'}
           variant="dealer"
           mx="2px"
+          {...props}
         >
           D
         </Badge>

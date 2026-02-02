@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Button, VStack } from '../ui';
 import { AppModal } from '../ui';
 
@@ -7,17 +8,20 @@ const DealerSelectionModal = ({
   dealerOptions, 
   onSelectDealer 
 }) => {
+  const containerRef = useRef(null);
+
   return (
     <AppModal
       isOpen={isOpen}
       onClose={() => onClose(false)}
       title="Select the dealer"
+      initialFocusEl={() => containerRef.current}
       contentProps={{
         'data-cy': 'dealerSelectionModal',
         'data-testid': 'dealerSelectionModal',
       }}
     >
-      <VStack align="stretch" gap={3} p={2}>
+      <VStack align="stretch" gap={3} p={2} ref={containerRef} tabIndex={-1} css={{ outline: 'none' }}>
         {dealerOptions.map((opt) => (
           <Button
             key={opt.id}
