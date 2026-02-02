@@ -37,6 +37,7 @@ function AppModal({
         borderColor="whiteAlpha.100"
         borderWidth="1px"
         m={4}
+        onClick={(e) => e.stopPropagation()}
         {...contentStyle}
         {...contentProps}
       >

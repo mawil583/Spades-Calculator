@@ -5,7 +5,16 @@ export const DialogRoot = ChakraDialog.Root
 export const DialogFooter = ChakraDialog.Footer
 export const DialogHeader = ChakraDialog.Header
 export const DialogBody = ChakraDialog.Body
-export const DialogBackdrop = ChakraDialog.Backdrop
+export const DialogBackdrop = forwardRef(
+  function DialogBackdrop(props, ref) {
+    const { portalled = typeof process !== 'undefined' && process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
+    return (
+      <Portal disabled={!portalled} container={portalRef}>
+        <ChakraDialog.Backdrop ref={ref} {...rest} />
+      </Portal>
+    )
+  },
+)
 export const DialogTitle = ChakraDialog.Title
 export const DialogDescription = ChakraDialog.Description
 export const DialogTrigger = ChakraDialog.Trigger

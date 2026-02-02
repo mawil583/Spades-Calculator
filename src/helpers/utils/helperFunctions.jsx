@@ -21,10 +21,13 @@ export function sIfPlural(num) {
   return '';
 }
 
-export function getUnclaimedText(numUnclaimed) {
+export function getUnclaimedText(numUnclaimed, useTableUI = false) {
   const isSomeoneGettingSet = numUnclaimed < 0;
   if (isSomeoneGettingSet) {
     const numOverbid = Math.abs(numUnclaimed);
+    if (useTableUI) {
+      return `Overbids: ${numOverbid}`;
+    }
     return `${numOverbid} overbid${sIfPlural(
       numOverbid
     )}! Someone's getting set!`;
