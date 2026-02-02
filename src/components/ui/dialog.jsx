@@ -25,7 +25,16 @@ export const DialogContent = forwardRef(
 const { children, portalled = typeof process !== 'undefined' && process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
     return (
       <Portal disabled={!portalled} container={portalRef}>
-        <ChakraDialog.Positioner>
+        <ChakraDialog.Positioner
+          position="fixed"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
           <ChakraDialog.Content ref={ref} {...rest}>
             {children}
           </ChakraDialog.Content>
