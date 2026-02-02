@@ -34,6 +34,9 @@ const { children, portalled = typeof process !== 'undefined' && process.env.NODE
           display="flex"
           alignItems="center"
           justifyContent="center"
+          zIndex="modal"
+          w="100vw"
+          h="100dvh"
         >
           <ChakraDialog.Content ref={ref} {...rest}>
             {children}

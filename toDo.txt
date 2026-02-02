@@ -1,6 +1,28 @@
 --High Priority--
 Improve performance across the app to prevent rerendering and excessive heat of my CPU.
 Verify - When toggling UI mode, the UI actually doesn’t update until closing the modal. Make sure it updates as soon as it is toggled, even before going out of the modal
+Consider adding these tests back, but just make sure they're not expecting the download button to be visible on the homepage. But the functionality should still be there:
+test('should show download button on home page', async ({ page }) => {
+    await page.goto('/', { timeout: 8000 });
+
+    // Check that download button exists
+    const downloadButton = page.locator('button:has-text("Download App")');
+    await expect(downloadButton).toBeVisible({ timeout: 5000 });
+  });
+
+  test('should work with different user agents', async ({ page }) => {
+    // Set a mobile user agent
+    await page.setExtraHTTPHeaders({
+      'User-Agent':
+        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+    });
+
+    await page.goto('/', { timeout: 8000 });
+
+    // Check that download button exists
+    const downloadButton = page.locator('button:has-text("Download App")');
+    await expect(downloadButton).toBeVisible({ timeout: 5000 });
+  });
 Consider that the entering of team actuals via the Team’s Total Bid card in UI mode is a bit of an easter egg. Is there a way I could make this clear to the user without adding too much clutter?
 There's a lot of things like "var(--app-spacing-5)" that are very verbose. Could we not just assign those to shorter, better named variables? 
 Go through customTheme and see if I can cut back on the amount of definitions I have. There shouldn't be that many use-cases for such a simple UI. There are probably outliers. Do an inventory of how many times each definition is used. Then remove the ones that aren't used much by swapping them with a more commonly used definition. This will ensure better consistency and simplicity.

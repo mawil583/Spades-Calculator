@@ -17,25 +17,5 @@ test.describe('Minimal PWA Tests', () => {
     expect(manifest.display).toBe('standalone');
   });
 
-  test('should show download button on home page', async ({ page }) => {
-    await page.goto('/', { timeout: 8000 });
-
-    // Check that download button exists
-    const downloadButton = page.locator('button:has-text("Download App")');
-    await expect(downloadButton).toBeVisible({ timeout: 5000 });
-  });
-
-  test('should work with different user agents', async ({ page }) => {
-    // Set a mobile user agent
-    await page.setExtraHTTPHeaders({
-      'User-Agent':
-        'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
-    });
-
-    await page.goto('/', { timeout: 8000 });
-
-    // Check that download button exists
-    const downloadButton = page.locator('button:has-text("Download App")');
-    await expect(downloadButton).toBeVisible({ timeout: 5000 });
-  });
+  // Download button tests removed as per user request (moved to hamburger menu)
 });
