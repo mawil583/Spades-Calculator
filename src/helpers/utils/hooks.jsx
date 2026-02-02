@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import { 
   isNotDefaultValue, 
@@ -183,53 +183,54 @@ function calculateCurrentRoundTeamScore(
 
 export function useGameScores() {
   const { roundHistory, currentRound } = useContext(GlobalContext);
-  // We can't use localStorage inside the hook directly during render if it's not state/effect managed?
-  // Actually, hooks called at top level is fine. 
-  // However, localStorage might be slow or not updated? 
-  // GameScore.jsx did: const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
-  // We should probably just read it once or use a hook for it.
-  // For now, let's just do what GameScore did.
-  
+
   // Safe generic read?
-  const nilSetting = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('nilScoringRule')) : null;
+   const nilSetting = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('nilScoringRule')) : null;
 
-  // Calculate scores from completed rounds
-  const team1ScoreFromHistory = calculateTeamScoreFromRoundHistory(
-    roundHistory,
-    TEAM1,
-    nilSetting
-  );
-  const team2ScoreFromHistory = calculateTeamScoreFromRoundHistory(
-    roundHistory,
-    TEAM2,
-    nilSetting
-  );
+  // Memoize history score calculation
+  const historyScores = useMemo(() => {
+    const team1 = calculateTeamScoreFromRoundHistory(
+        roundHistory,
+        TEAM1,
+        nilSetting
+    );
+    const team2 = calculateTeamScoreFromRoundHistory(
+        roundHistory,
+        TEAM2,
+        nilSetting
+    );
+    return { team1, team2 };
+  }, [roundHistory, nilSetting]);
 
-  // Calculate scores from current round if teams have completed their actuals
-  const team1CurrentRoundScore = calculateCurrentRoundTeamScore(
-    currentRound,
-    TEAM1,
-    nilSetting,
-    isNotDefaultValue
-  );
-  const team2CurrentRoundScore = calculateCurrentRoundTeamScore(
-    currentRound,
-    TEAM2,
-    nilSetting,
-    isNotDefaultValue
-  );
+  // Memoize current round score calculation
+  const currentScores = useMemo(() => {
+    const team1 = calculateCurrentRoundTeamScore(
+        currentRound,
+        TEAM1,
+        nilSetting,
+        isNotDefaultValue
+    );
+    const team2 = calculateCurrentRoundTeamScore(
+        currentRound,
+        TEAM2,
+        nilSetting,
+        isNotDefaultValue
+    );
+    return { team1, team2 };
+  }, [currentRound, nilSetting]);
 
-  // Combine scores from history and current round
-  const team1Score = {
-    teamScore:
-      team1ScoreFromHistory.teamScore + team1CurrentRoundScore.teamScore,
-    teamBags: team1ScoreFromHistory.teamBags + team1CurrentRoundScore.teamBags,
-  };
-  const team2Score = {
-    teamScore:
-      team2ScoreFromHistory.teamScore + team2CurrentRoundScore.teamScore,
-    teamBags: team2ScoreFromHistory.teamBags + team2CurrentRoundScore.teamBags,
-  };
+  // Memoize final result
+  return useMemo(() => {
+      const team1Score = {
+        teamScore: historyScores.team1.teamScore + currentScores.team1.teamScore,
+        teamBags: historyScores.team1.teamBags + currentScores.team1.teamBags,
+      };
+      
+      const team2Score = {
+        teamScore: historyScores.team2.teamScore + currentScores.team2.teamScore,
+        teamBags: historyScores.team2.teamBags + currentScores.team2.teamBags,
+      };
 
-  return { team1Score, team2Score };
+      return { team1Score, team2Score };
+  }, [historyScores, currentScores]);
 }

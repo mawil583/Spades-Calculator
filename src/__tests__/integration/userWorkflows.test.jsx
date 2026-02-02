@@ -80,13 +80,11 @@ describe('Complete User Workflows', () => {
       fireEvent.blur(team2Input);
 
       // Fill in player names
-      const playerInputs = screen.getAllByPlaceholderText(/who's/i);
+      const playerInputs = screen.getAllByRole('textbox');
       fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });
       fireEvent.change(playerInputs[1], { target: { value: 'Player 2' } });
-
-      const player2Inputs = screen.getAllByDisplayValue('');
-      fireEvent.change(player2Inputs[0], { target: { value: 'Player 3' } });
-      fireEvent.change(player2Inputs[1], { target: { value: 'Player 4' } });
+      fireEvent.change(playerInputs[2], { target: { value: 'Player 3' } });
+      fireEvent.change(playerInputs[3], { target: { value: 'Player 4' } });
 
       // Submit the form
       const startButton = screen.getByText('Start');
@@ -132,13 +130,11 @@ describe('Complete User Workflows', () => {
       fireEvent.change(team2Input, { target: { value: 'Team B' } });
       fireEvent.blur(team2Input);
 
-      const playerInputs = screen.getAllByPlaceholderText(/who's/i);
+      const playerInputs = screen.getAllByRole('textbox');
       fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });
       fireEvent.change(playerInputs[1], { target: { value: 'Player 2' } });
-
-      const player2Inputs = screen.getAllByDisplayValue('');
-      fireEvent.change(player2Inputs[0], { target: { value: 'Player 3' } });
-      fireEvent.change(player2Inputs[1], { target: { value: 'Player 4' } });
+      fireEvent.change(playerInputs[2], { target: { value: 'Player 3' } });
+      fireEvent.change(playerInputs[3], { target: { value: 'Player 4' } });
 
       // Submit the form
       const startButton = screen.getByText('Start');

@@ -10,8 +10,6 @@ import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 import { TeamNameInput, PlayerNameInput } from './';
 import { Button, SimpleGrid, Center } from '../ui';
 import { initialNames } from '../../helpers/utils/constants';
-import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
-import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 
 function NameForm() {
   const navigate = useNavigate();
@@ -83,7 +81,6 @@ function NameForm() {
     setDefaultTeamNames(formik);
   }, [formik.values, formik, setNames, names]);
 
-  const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 
   return (
     <>
