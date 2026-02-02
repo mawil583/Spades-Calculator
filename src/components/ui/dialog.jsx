@@ -7,7 +7,7 @@ export const DialogHeader = ChakraDialog.Header
 export const DialogBody = ChakraDialog.Body
 export const DialogBackdrop = forwardRef(
   function DialogBackdrop(props, ref) {
-    const { portalled = typeof process !== 'undefined' && process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
+    const { portalled = typeof process === 'undefined' || process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
     return (
       <Portal disabled={!portalled} container={portalRef}>
         <ChakraDialog.Backdrop ref={ref} {...rest} />
@@ -22,7 +22,7 @@ export const DialogActionTrigger = ChakraDialog.ActionTrigger
 
 export const DialogContent = forwardRef(
   function DialogContent(props, ref) {
-const { children, portalled = typeof process !== 'undefined' && process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
+const { children, portalled = typeof process === 'undefined' || process.env.NODE_ENV !== 'test', portalRef, ...rest } = props
     return (
       <Portal disabled={!portalled} container={portalRef}>
         <ChakraDialog.Positioner
