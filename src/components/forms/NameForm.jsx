@@ -108,107 +108,52 @@ function NameForm() {
         />
       </SimpleGrid>
 
-      {useTableRoundUI ? (
-        // Table Mode Layout
-        <SimpleGrid columns={3} gap={2} templateColumns="1fr 1fr 1fr">
-            {/* Top Row - Partner (Centered) */}
-            <div />
-            <PlayerNameInput
-              teamClassName="team1"
-              id="t1p2Name"
-              label="Partner (Top)"
-              teamName={formik.values.team1Name}
-              playerName={formik.values.t1p2Name}
-              errors={formik.errors.t1p2Name}
-              touched={formik.touched.t1p2Name}
-              handleChange={formik.handleChange}
-            />
-            <div />
-
-            {/* Middle Row - Opponents */}
-            <PlayerNameInput
-              teamName={formik.values.team2Name}
-              id="t2p1Name"
-              teamClassName="team2"
-              label="Opponent (Left)"
-              playerName={formik.values.t2p1Name}
-              errors={formik.errors.t2p1Name}
-              touched={formik.touched.t2p1Name}
-              handleChange={formik.handleChange}
-            />
-            <div />
-            <PlayerNameInput
-              teamName={formik.values.team2Name}
-              teamClassName="team2"
-              id="t2p2Name"
-              label="Opponent (Right)"
-              playerName={formik.values.t2p2Name}
-              errors={formik.errors.t2p2Name}
-              touched={formik.touched.t2p2Name}
-              handleChange={formik.handleChange}
-            />
-
-            {/* Bottom Row - You (Centered) */}
-            <div />
-            <PlayerNameInput
-              teamClassName="team1"
-              teamName={formik.values.team1Name}
-              id="t1p1Name"
-              label="You (Bottom)"
-              playerName={formik.values.t1p1Name}
-              errors={formik.errors.t1p1Name}
-              touched={formik.touched.t1p1Name}
-              handleChange={formik.handleChange}
-            />
-            <div />
-        </SimpleGrid>
-      ) : (
-        // Classic Layout
-        <SimpleGrid columns={2} gap={2}>
-            <PlayerNameInput
-            teamClassName="team1"
-            teamName={formik.values.team1Name}
-            id="t1p1Name"
-            label="Player 1 Name"
-            placeholder={`Who's dealing first?`}
-            playerName={formik.values.t1p1Name}
-            errors={formik.errors.t1p1Name}
-            touched={formik.touched.t1p1Name}
-            handleChange={formik.handleChange}
-            />
-            <PlayerNameInput
-            teamName={formik.values.team2Name}
-            id="t2p1Name"
-            teamClassName="team2"
-            label="Player 1 Name"
-            placeholder={`Who's left of dealer?`}
-            playerName={formik.values.t2p1Name}
-            errors={formik.errors.t2p1Name}
-            touched={formik.touched.t2p1Name}
-            handleChange={formik.handleChange}
-            />
-            <PlayerNameInput
-            teamClassName="team1"
-            id="t1p2Name"
-            label="Player 2 Name"
-            teamName={formik.values.team1Name}
-            playerName={formik.values.t1p2Name}
-            errors={formik.errors.t1p2Name}
-            touched={formik.touched.t1p2Name}
-            handleChange={formik.handleChange}
-            />
-            <PlayerNameInput
-            teamName={formik.values.team2Name}
-            teamClassName="team2"
-            id="t2p2Name"
-            label="Player 2 Name"
-            playerName={formik.values.t2p2Name}
-            errors={formik.errors.t2p2Name}
-            touched={formik.touched.t2p2Name}
-            handleChange={formik.handleChange}
-            />
-        </SimpleGrid>
-      )}
+      <SimpleGrid columns={2} gap={2}>
+        <PlayerNameInput
+          teamClassName="team1"
+          teamName={formik.values.team1Name}
+          id="t1p1Name"
+          label={useTableRoundUI ? 'You' : 'Player 1 Name'}
+          placeholder={useTableRoundUI ? 'Enter your name' : "Who's dealing first?"}
+          playerName={formik.values.t1p1Name}
+          errors={formik.errors.t1p1Name}
+          touched={formik.touched.t1p1Name}
+          handleChange={formik.handleChange}
+        />
+        <PlayerNameInput
+          teamName={formik.values.team2Name}
+          id="t2p1Name"
+          teamClassName="team2"
+          label={useTableRoundUI ? 'Left Opponent' : 'Player 1 Name'}
+          placeholder={useTableRoundUI ? '' : "Who's left of dealer?"}
+          playerName={formik.values.t2p1Name}
+          errors={formik.errors.t2p1Name}
+          touched={formik.touched.t2p1Name}
+          handleChange={formik.handleChange}
+        />
+        <PlayerNameInput
+          teamClassName="team1"
+          id="t1p2Name"
+          label={useTableRoundUI ? 'Partner' : 'Player 2 Name'}
+          placeholder={useTableRoundUI ? '' : ''}
+          teamName={formik.values.team1Name}
+          playerName={formik.values.t1p2Name}
+          errors={formik.errors.t1p2Name}
+          touched={formik.touched.t1p2Name}
+          handleChange={formik.handleChange}
+        />
+        <PlayerNameInput
+          teamName={formik.values.team2Name}
+          teamClassName="team2"
+          id="t2p2Name"
+          label={useTableRoundUI ? 'Right Opponent' : 'Player 2 Name'}
+          placeholder={useTableRoundUI ? '' : ''}
+          playerName={formik.values.t2p2Name}
+          errors={formik.errors.t2p2Name}
+          touched={formik.touched.t2p2Name}
+          handleChange={formik.handleChange}
+        />
+      </SimpleGrid>
         {hasGameData ? (
           <SimpleGrid columns={2} gap={6} my={8}>
             <Button
