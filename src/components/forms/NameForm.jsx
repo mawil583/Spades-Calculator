@@ -113,8 +113,8 @@ function NameForm() {
           teamClassName="team1"
           teamName={formik.values.team1Name}
           id="t1p1Name"
-          label={useTableRoundUI ? 'You' : 'Player 1 Name'}
-          placeholder={useTableRoundUI ? 'Enter your name' : "Who's dealing first?"}
+          label="You"
+          placeholder="Enter Your Name"
           playerName={formik.values.t1p1Name}
           errors={formik.errors.t1p1Name}
           touched={formik.touched.t1p1Name}
@@ -124,8 +124,8 @@ function NameForm() {
           teamName={formik.values.team2Name}
           id="t2p1Name"
           teamClassName="team2"
-          label={useTableRoundUI ? 'Left Opponent' : 'Player 1 Name'}
-          placeholder={useTableRoundUI ? '' : "Who's left of dealer?"}
+          label="Left Opponent"
+          placeholder="Left Opponent"
           playerName={formik.values.t2p1Name}
           errors={formik.errors.t2p1Name}
           touched={formik.touched.t2p1Name}
@@ -134,8 +134,8 @@ function NameForm() {
         <PlayerNameInput
           teamClassName="team1"
           id="t1p2Name"
-          label={useTableRoundUI ? 'Partner' : 'Player 2 Name'}
-          placeholder={useTableRoundUI ? '' : ''}
+          label="Partner"
+          placeholder=""
           teamName={formik.values.team1Name}
           playerName={formik.values.t1p2Name}
           errors={formik.errors.t1p2Name}
@@ -146,8 +146,8 @@ function NameForm() {
           teamName={formik.values.team2Name}
           teamClassName="team2"
           id="t2p2Name"
-          label={useTableRoundUI ? 'Right Opponent' : 'Player 2 Name'}
-          placeholder={useTableRoundUI ? '' : ''}
+          label="Right Opponent"
+          placeholder=""
           playerName={formik.values.t2p2Name}
           errors={formik.errors.t2p2Name}
           touched={formik.touched.t2p2Name}
