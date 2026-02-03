@@ -17,6 +17,7 @@ function TeamInputHeading({
   roundHistory,
   // team1Name, // Unused parameter
   // team2Name, // Unused parameter
+  onOpenModal,
 }) {
   const [isTeam1ModalOpen, setIsTeam1ModalOpen] = useState(false);
   const [isTeam2ModalOpen, setIsTeam2ModalOpen] = useState(false);
@@ -32,13 +33,31 @@ function TeamInputHeading({
 
   const handleTeam1Click = () => {
     if (team1CanEdit) {
-      setIsTeam1ModalOpen(true);
+      if (onOpenModal) {
+        onOpenModal({
+          fieldToUpdate: 'team1Total',
+          type: 'Actual',
+          playerName: 'Team 1',
+          onCustomUpdate: (val) => handleTeamTotalUpdate(1, val),
+        });
+      } else {
+        setIsTeam1ModalOpen(true);
+      }
     }
   };
 
   const handleTeam2Click = () => {
     if (team2CanEdit) {
-      setIsTeam2ModalOpen(true);
+      if (onOpenModal) {
+        onOpenModal({
+          fieldToUpdate: 'team2Total',
+          type: 'Actual',
+          playerName: 'Team 2',
+          onCustomUpdate: (val) => handleTeamTotalUpdate(2, val),
+        });
+      } else {
+        setIsTeam2ModalOpen(true);
+      }
     }
   };
 
@@ -92,34 +111,38 @@ function TeamInputHeading({
   return (
     <>
       {/* Team 1 Modal */}
-      <InputModal
-        isCurrent={isCurrent}
-        playerName="Team 1"
-        isOpen={isTeam1ModalOpen}
-        setIsModalOpen={setIsTeam1ModalOpen}
-        type="Actual"
-        typeLabel="Actuals"
-        fieldToUpdate="team1Total"
-        currentRound={currentRound}
-        roundHistory={roundHistory}
-        index={index}
-        onCustomUpdate={(value) => handleTeamTotalUpdate(1, value)}
-      />
+      {!onOpenModal && (
+        <InputModal
+          isCurrent={isCurrent}
+          playerName="Team 1"
+          isOpen={isTeam1ModalOpen}
+          setIsModalOpen={setIsTeam1ModalOpen}
+          type="Actual"
+          typeLabel="Actuals"
+          fieldToUpdate="team1Total"
+          currentRound={currentRound}
+          roundHistory={roundHistory}
+          index={index}
+          onCustomUpdate={(value) => handleTeamTotalUpdate(1, value)}
+        />
+      )}
 
       {/* Team 2 Modal */}
-      <InputModal
-        isCurrent={isCurrent}
-        playerName="Team 2"
-        isOpen={isTeam2ModalOpen}
-        setIsModalOpen={setIsTeam2ModalOpen}
-        type="Actual"
-        typeLabel="Actuals"
-        fieldToUpdate="team2Total"
-        currentRound={currentRound}
-        roundHistory={roundHistory}
-        index={index}
-        onCustomUpdate={(value) => handleTeamTotalUpdate(2, value)}
-      />
+      {!onOpenModal && (
+        <InputModal
+          isCurrent={isCurrent}
+          playerName="Team 2"
+          isOpen={isTeam2ModalOpen}
+          setIsModalOpen={setIsTeam2ModalOpen}
+          type="Actual"
+          typeLabel="Actuals"
+          fieldToUpdate="team2Total"
+          currentRound={currentRound}
+          roundHistory={roundHistory}
+          index={index}
+          onCustomUpdate={(value) => handleTeamTotalUpdate(2, value)}
+        />
+      )}
 
       <div
         style={{
@@ -144,7 +167,6 @@ function TeamInputHeading({
             padding: team1CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team1Color,
           }}
-          {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam1Click}
         >
           {team1Total}
@@ -167,7 +189,6 @@ function TeamInputHeading({
             padding: team2CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team2Color,
           }}
-          {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam2Click}
         >
           {team2Total}

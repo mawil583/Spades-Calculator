@@ -131,7 +131,7 @@ const TablePlayerInput = memo(({
           <Text
             fontSize="lg"
             fontWeight="bold"
-            color={displayValue ? 'white' : (teamClassName === 'team1' ? 'team1' : 'team2')}
+            color={displayValue ? 'blue.900' : (teamClassName === 'team1' ? 'team1' : 'team2')}
             textAlign="center"
           >
             {displayValue || type}
@@ -177,38 +177,26 @@ TablePlayerInput.displayName = 'TablePlayerInput';
 
 
 const TeamTotalDisplay = memo(({
-  teamName,
   bidTotal,
   actualTotal,
-  isActualsPhase,
   teamClassName,
-  onOpenModal, // Expecting stable callback or we use raw props
-  isAuto,
+  areActualsEntered,
 }) => {
   return (
-    <Flex direction="column" align="center" p={2} bg="blackAlpha.400" borderRadius="md">
+    <Flex 
+      direction="column" 
+      align="center" 
+      p={2} 
+      bg="blackAlpha.400" 
+      borderRadius="md"
+      minW="84px"
+    >
         <Text fontWeight="bold" fontSize="sm" color={teamClassName === 'team1' ? 'team1' : 'team2'} mb={1}>
-            {teamName}
+            {areActualsEntered ? 'Bid:Made' : 'Bid'}
         </Text>
-        <Text fontSize="xs" color="gray.300">Bid: {bidTotal}</Text>
-        
-        {isActualsPhase ? (
-             <Flex 
-                align="center" 
-                mt={1} 
-                cursor="pointer" 
-                onClick={onOpenModal}
-                _hover={{ opacity: 0.8 }}
-                direction="column"
-             >
-                <Text fontSize="xs" fontWeight="bold">Actual: {actualTotal}</Text>
-                {isAuto && (
-                    <Text fontSize="xs" color="gray.500" mt="-2px" lineHeight="1">*</Text>
-                )}
-             </Flex>
-        ) : (
-            <Text fontSize="xs" color="gray.500">Actual: -</Text>
-        )}
+        <Text fontSize="2xl" fontWeight="bold" color="white">
+            {areActualsEntered ? `${bidTotal} : ${actualTotal}` : bidTotal}
+        </Text>
     </Flex>
   );
 });
@@ -219,7 +207,7 @@ const GameScoreDisplay = memo(({ teamName, score, bags, teamClassName }) => (
         <Text fontWeight="bold" fontSize="md" color={teamClassName === 'team1' ? 'team1' : 'team2'} mb={1}>
             {teamName}
         </Text>
-        <Text fontSize="2xl" fontWeight="bold" lineHeight="1">{score}</Text>
+        <Text fontSize="4xl" fontWeight="bold" lineHeight="1">{score}</Text>
         <Text fontSize="xs" color="gray.400">{bags} bags</Text>
     </Flex>
 ));
@@ -267,6 +255,10 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
   const totalBids = team1TotalBid + team2TotalBid;
   const unclaimed = 13 - totalBids;
 
+  // Nil checks for team card clickability
+  const isTeam1Nil = [team1BidsAndActuals.p1Bid, team1BidsAndActuals.p2Bid].some(b => b === 'Nil' || b === 'Blind Nil');
+  const isTeam2Nil = [team2BidsAndActuals.p1Bid, team2BidsAndActuals.p2Bid].some(b => b === 'Nil' || b === 'Blind Nil');
+
   // Validation Check for Actuals
   const [isValid, setIsValid] = useState(true);
   
@@ -286,14 +278,16 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
     fieldToUpdate: '',
     playerName: '',
     type: 'Bid',
+    onCustomUpdate: null,
   });
 
-  const handleOpenModal = useCallback(({ fieldToUpdate, type, playerName }) => {
+  const handleOpenModal = useCallback(({ fieldToUpdate, type, playerName, onCustomUpdate }) => {
     setModalState({
       isOpen: true,
       fieldToUpdate,
       playerName,
       type,
+      onCustomUpdate,
     });
   }, []);
 
@@ -391,7 +385,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
   return (
     <Box position="relative" w="100%" h="400px" my={4} data-cy="table-round">
       <ErrorModal
-        isOpen={!isValid}
+        isOpen={!isValid && !modalState.isOpen}
         setIsModalOpen={setIsValid}
         index={roundIndex}
         names={names}
@@ -399,6 +393,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         roundHistory={roundHistory}
         currentRound={currentRound}
         errorMessage={getActualsErrorText(totalActuals)}
+        onOpenModal={handleOpenModal}
       />
 
       {/* Hoisted Input Modal */}
@@ -412,6 +407,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         currentRound={currentRound}
         roundHistory={roundHistory}
         index={roundIndex}
+        onCustomUpdate={modalState.onCustomUpdate}
       />
       
       {/* Table Image / Background */}
@@ -450,28 +446,66 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
 
       {/* Team 1 Round Totals - Bottom Left */}
       <Box position="absolute" bottom="0" left="0" zIndex={10}>
-        <TeamTotalDisplay
-            teamName={team1Name || 'Team 1'}
-            bidTotal={team1TotalBid}
-            actualTotal={addInputs(team1BidsAndActuals.p1Actual, team1BidsAndActuals.p2Actual)}
-            isActualsPhase={allBidsEntered}
-            teamClassName="team1"
-            isAuto={currentRound?.autoGeneratedActuals?.team1P1 || currentRound?.autoGeneratedActuals?.team1P2}
-            onOpenModal={handleTeam1Modal}
-        />
+        <Flex direction="column" gap={1} align="stretch" minW="84px">
+            {allBidsEntered && !isTeam1Nil && (
+                <Box as="button"
+                    data-cy="team1TotalMade"
+                    onClick={handleTeam1Modal}
+                    bg="gray.900"
+                    _hover={{ bg: "gray.800" }}
+                    borderRadius="md"
+                    py={1}
+                    px={2}
+                    fontSize="xs"
+                    fontWeight="bold"
+                    textAlign="center"
+                    border="1px solid"
+                    borderColor="team1"
+                    color="team1"
+                >
+                    Total Made
+                </Box>
+            )}
+            <TeamTotalDisplay
+                bidTotal={team1TotalBid}
+                actualTotal={addInputs(team1BidsAndActuals.p1Actual, team1BidsAndActuals.p2Actual)}
+                isActualsPhase={allBidsEntered}
+                teamClassName="team1"
+                areActualsEntered={isNotDefaultValue(team1BidsAndActuals.p1Actual) && isNotDefaultValue(team1BidsAndActuals.p2Actual)}
+            />
+        </Flex>
       </Box>
 
       {/* Team 2 Round Totals - Bottom Right */}
       <Box position="absolute" bottom="0" right="0" zIndex={10}>
-        <TeamTotalDisplay
-            teamName={team2Name || 'Team 2'}
-            bidTotal={team2TotalBid}
-            actualTotal={addInputs(team2BidsAndActuals.p1Actual, team2BidsAndActuals.p2Actual)}
-            isActualsPhase={allBidsEntered}
-            teamClassName="team2"
-            isAuto={currentRound?.autoGeneratedActuals?.team2P1 || currentRound?.autoGeneratedActuals?.team2P2}
-            onOpenModal={handleTeam2Modal}
-        />
+        <Flex direction="column" gap={1} align="stretch" minW="84px">
+            {allBidsEntered && !isTeam2Nil && (
+                <Box as="button"
+                    data-cy="team2TotalMade"
+                    onClick={handleTeam2Modal}
+                    bg="gray.900"
+                    _hover={{ bg: "gray.800" }}
+                    borderRadius="md"
+                    py={1}
+                    px={2}
+                    fontSize="xs"
+                    fontWeight="bold"
+                    textAlign="center"
+                    border="1px solid"
+                    borderColor="team2"
+                    color="team2"
+                >
+                    Total Made
+                </Box>
+            )}
+            <TeamTotalDisplay
+                bidTotal={team2TotalBid}
+                actualTotal={addInputs(team2BidsAndActuals.p1Actual, team2BidsAndActuals.p2Actual)}
+                isActualsPhase={allBidsEntered}
+                teamClassName="team2"
+                areActualsEntered={isNotDefaultValue(team2BidsAndActuals.p1Actual) && isNotDefaultValue(team2BidsAndActuals.p2Actual)}
+            />
+        </Flex>
       </Box>
 
       {/* Bottom Player (Me) - Order 1 */}
@@ -507,6 +541,9 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
       >
         <Text fontSize="xl" fontWeight="bold">Round {roundIndex + 1}</Text>
         <Unclaimed numUnclaimed={unclaimed} />
+        {currentRound?.autoGeneratedActuals && Object.values(currentRound.autoGeneratedActuals).some(val => val === true) && (
+            <Text fontSize="xs" color="gray.500" mt={1}>* Auto-generated</Text>
+        )}
         {allBidsEntered && (
            <Text fontSize="xs" color="gray.400" mt={1}>Enter Actuals</Text>
         )}

@@ -12,7 +12,7 @@ export const DialogBackdrop = forwardRef(
     const { portalled = defaultPortalled, portalRef, ...rest } = props
     return (
       <Portal disabled={!portalled} container={portalRef}>
-        <ChakraDialog.Backdrop ref={ref} {...rest} />
+        <ChakraDialog.Backdrop ref={ref} {...rest} data-testid="modal-backdrop" />
       </Portal>
     )
   },
