@@ -76,6 +76,10 @@ function ButtonGrid({
               }}
               data-cy={`${type.toLowerCase()}SelectionButton`}
               variant="outline"
+              whiteSpace="normal"
+              h="auto"
+              minH="40px"
+              py={2}
             >
               {buttonVal}
             </Button>

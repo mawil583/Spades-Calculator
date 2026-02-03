@@ -67,7 +67,8 @@ describe('TableRound Component', () => {
   it('renders game scores for both teams', () => {
     renderWithProviders(getBaseContext());
     // Expect multiple because it appears in both GameScore and TeamTotal
-    expect(screen.getAllByText(/Team 1/i).length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText(/Team 1/i).length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/^Bid$/i).length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText(/100/)).toBeInTheDocument();
     expect(screen.getByText(/2 bags/)).toBeInTheDocument();
   });
@@ -145,5 +146,21 @@ describe('TableRound Component', () => {
 
     renderWithProviders(context);
     expect(screen.getByText(/3\*/)).toBeInTheDocument();
+  });
+
+  it('displays "Bid:Made" when team has both actuals entered', () => {
+    const context = getBaseContext();
+    context.currentRound.team1BidsAndActuals.p1Bid = '3';
+    context.currentRound.team1BidsAndActuals.p2Bid = '4';
+    context.currentRound.team2BidsAndActuals.p1Bid = '2';
+    context.currentRound.team2BidsAndActuals.p2Bid = '3';
+    
+    // Team 1 has actuals entered
+    context.currentRound.team1BidsAndActuals.p1Actual = '3';
+    context.currentRound.team1BidsAndActuals.p2Actual = '4';
+
+    renderWithProviders(context);
+    expect(screen.getAllByText(/Bid:Made/i).length).toBe(1); // Only Team 1
+    expect(screen.getAllByText(/^Bid$/i).length).toBe(1); // Team 2 still shows "Bid"
   });
 });

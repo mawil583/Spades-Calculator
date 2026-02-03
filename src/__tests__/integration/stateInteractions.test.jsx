@@ -112,8 +112,8 @@ describe('Complex State Interactions Between Unrelated Components', () => {
       renderWithProviders(<SpadesCalculator />, mockContextValue);
 
       // Verify component renders with team names (there are multiple instances)
-      expect(screen.getAllByText(/Team 1/i)).toHaveLength(2);
-      expect(screen.getAllByText(/Team 2/i)).toHaveLength(2);
+      expect(screen.getAllByText(/Team 1/i)).toHaveLength(1);
+      expect(screen.getAllByText(/Team 2/i)).toHaveLength(1);
     });
 
     it('should render HomePage component', () => {
