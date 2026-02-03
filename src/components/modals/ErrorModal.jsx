@@ -54,6 +54,9 @@ function ErrorModal({
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
+      showCloseButton={false}
+      closeOnInteractOutside={false}
+      closeOnEscape={false}
     >
         <div
           data-cy="errorModalActualSection"
