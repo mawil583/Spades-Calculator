@@ -1,7 +1,6 @@
 --High Priority--
 Improve performance across the app to prevent rerendering and excessive heat of my CPU.
 Seems like the top border of the teams actuals button gets cut off in the first round after several rounds have passed. It might only be when you enter double digit like 13. But this only happens on deployed mobile. 
-There should never be an X button on the error modal. You shouldn't be able to dismiss it without correcting the score.
 Make responsive Design so it looks good on desktop and tablet too. 
 Verify - When toggling UI mode, the UI actually doesn’t update until closing the modal. Make sure it updates as soon as it is toggled, even before going out of the modal
 Consider adding these tests back, but just make sure they're not expecting the download button to be visible on the homepage. But the functionality should still be there:
