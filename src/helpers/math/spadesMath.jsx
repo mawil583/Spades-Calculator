@@ -621,3 +621,31 @@ export function addInputs(...inputs) {
 export const isNotDefaultValue = (value) => {
   return value !== '';
 };
+
+export const hasPlayerNamesEntered = (names) => {
+  if (!names) return false;
+  const playerFields = ['t1p1Name', 't1p2Name', 't2p1Name', 't2p2Name'];
+  const hasPlayerNames = playerFields.some(
+    (field) => names[field] && names[field] !== ''
+  );
+  const hasCustomTeamNames =
+    (names.team1Name && names.team1Name !== 'Team 1') ||
+    (names.team2Name && names.team2Name !== 'Team 2');
+  return hasPlayerNames || hasCustomTeamNames;
+};
+
+export const hasRoundProgress = (roundHistory, currentRound) => {
+  const hasHistory = Array.isArray(roundHistory) && roundHistory.length > 0;
+  if (hasHistory) return true;
+
+  if (!currentRound) return false;
+
+  const hasTeam1Progress = Object.values(
+    currentRound.team1BidsAndActuals || {}
+  ).some(isNotDefaultValue);
+  const hasTeam2Progress = Object.values(
+    currentRound.team2BidsAndActuals || {}
+  ).some(isNotDefaultValue);
+
+  return hasTeam1Progress || hasTeam2Progress;
+};

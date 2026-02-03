@@ -19,7 +19,7 @@ function ScoreSetting() {
   return (
     <div style={{ padding: 'var(--app-spacing-1)' }}>
       <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
-      <Text fontSize="lg" mt={3}>
+      <Text fontSize="lg" mt={3} mb={4}>
         Select your preferred scoring rules for failed nil.{' '}
         {
         <HelpCircle

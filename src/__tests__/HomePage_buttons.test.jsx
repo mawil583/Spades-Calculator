@@ -56,9 +56,13 @@ vi.mock('../components/modals', () => ({
 }));
 
 // Mock math helpers
-vi.mock('../helpers/math/spadesMath', () => ({
-  isNotDefaultValue: vi.fn((val) => val !== '' && val !== undefined && val !== null),
-}));
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    isNotDefaultValue: vi.fn((val) => val !== '' && val !== undefined && val !== null),
+  };
+});
 
 
 const renderWithProviders = (component, contextValue) => {
