@@ -54,7 +54,7 @@ describe('TeamInputHeading', () => {
   };
 
   describe('when neither player on a team went nil', () => {
-    it('should be editable for team total input', () => {
+    it('should be interactive (clickable) but NOT editable for team total input', () => {
       const props = {
         ...defaultProps,
         team1Bids: ['1', '2'], // Neither is nil
@@ -68,8 +68,12 @@ describe('TeamInputHeading', () => {
       const team1Heading = headings[0]; // First h2 with 0
       const team2Heading = headings[1]; // Second h2 with 0
 
-      expect(team1Heading).toHaveAttribute('contenteditable', 'true');
-      expect(team2Heading).toHaveAttribute('contenteditable', 'true');
+      // Should NOT have contentEditable (prevent blinking caret)
+      expect(team1Heading).not.toHaveAttribute('contenteditable');
+      expect(team2Heading).not.toHaveAttribute('contenteditable');
+      
+      // Should still indicate interactivity via cursor style or clickability (implicit in other tests)
+      expect(team1Heading).toHaveStyle({ cursor: 'pointer' });
     });
   });
 

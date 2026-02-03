@@ -167,7 +167,6 @@ function TeamInputHeading({
             padding: team1CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team1Color,
           }}
-          {...(team1CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam1Click}
         >
           {team1Total}
@@ -190,7 +189,6 @@ function TeamInputHeading({
             padding: team2CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team2Color,
           }}
-          {...(team2CanEdit && { contentEditable: true, tabIndex: -1 })}
           onClick={handleTeam2Click}
         >
           {team2Total}
