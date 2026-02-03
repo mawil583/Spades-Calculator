@@ -385,7 +385,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
   return (
     <Box position="relative" w="100%" h="400px" my={4} data-cy="table-round">
       <ErrorModal
-        isOpen={!isValid}
+        isOpen={!isValid && !modalState.isOpen}
         setIsModalOpen={setIsValid}
         index={roundIndex}
         names={names}
@@ -449,6 +449,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         <Flex direction="column" gap={1} align="stretch" minW="84px">
             {allBidsEntered && !isTeam1Nil && (
                 <Box as="button"
+                    data-cy="team1TotalMade"
                     onClick={handleTeam1Modal}
                     bg="gray.900"
                     _hover={{ bg: "gray.800" }}
@@ -480,6 +481,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         <Flex direction="column" gap={1} align="stretch" minW="84px">
             {allBidsEntered && !isTeam2Nil && (
                 <Box as="button"
+                    data-cy="team2TotalMade"
                     onClick={handleTeam2Modal}
                     bg="gray.900"
                     _hover={{ bg: "gray.800" }}
