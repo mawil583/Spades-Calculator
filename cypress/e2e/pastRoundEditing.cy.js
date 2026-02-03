@@ -141,4 +141,93 @@ describe('Bug Reproduction E2E', () => {
         cy.contains('Kim').parent().parent().find('[data-cy="playerInput"]').should('contain', '4');
     });
   });
+  it('should allow editing a past round error without overlay blocking', () => {
+    const checkOverlay = (modalSelector) => {
+      // Assert only one overlay exists
+      cy.get('[data-testid="modal-backdrop"]').should('have.length', 1);
+
+      // Assert overlay is behind the modal
+      cy.get('[data-testid="modal-backdrop"]').then($overlay => {
+        cy.get(modalSelector).then($modal => {
+           // Basic z-index check if available
+           const overlayZ = parseInt($overlay.css('z-index'));
+           // Comparison of z-index is the best programmatic check.
+           const modalZ = parseInt($modal.css('z-index'));
+           
+           if (!isNaN(overlayZ) && !isNaN(modalZ)) {
+             expect(modalZ).to.be.gte(overlayZ);
+           }
+        });
+      });
+    };
+
+    // 1. Play through Round 1 to create history
+    // Bids
+    cy.get('[data-cy="bidButton"]').eq(0).click();
+    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="bidButton"]').eq(1).click();
+    cy.get('[data-cy="bidSelectionButton"]').contains('4').click();
+    cy.get('[data-cy="bidButton"]').eq(0).click(); // p2 team 1
+    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+    cy.get('[data-cy="bidButton"]').eq(0).click(); // p2 team 2
+    cy.get('[data-cy="bidSelectionButton"]').contains('3').click();
+
+    // Actuals (Total 13)
+    cy.get('[data-cy="actualSection"]').first().within(() => {
+      cy.get('[data-cy="team1Total"]').click();
+    });
+    cy.get('[data-cy="actualSelectionButton"]').contains('7').click(); 
+    cy.get('[data-cy="actualSection"]').first().within(() => {
+      cy.get('[data-cy="team2Total"]').click();
+    });
+    cy.get('[data-cy="actualSelectionButton"]').contains('6').click();
+
+    // Confirm we are on Round 2
+    cy.contains('Round 2').should('be.visible');
+
+    // 2. Go back to Round 1 (History) and create an error
+    // Use .last() to target the history round
+    cy.get('[data-cy="round"]').last().scrollIntoView().within(() => {
+      // Click Team 1 Actuals
+      // Filter by :visible and take first to absolutely avoid duplicates
+      cy.get('[data-cy="team1Total"]').filter(':visible').first().click({ force: true });
+    });
+
+    // Enter '5' -> Total 5+6=11 (Error: != 13)
+    // Wait for modal to be visible
+    cy.get('[data-cy="bidSelectionModal"]', { timeout: 10000 }).should('be.visible');
+
+    // ASSERTION 1: Input Modal Overlay Check
+    checkOverlay('[data-cy="bidSelectionModal"]');
+
+    cy.get('[data-cy="actualSelectionButton"]').contains('5').click();
+
+    // 3. Verify Error Modal appears
+    cy.get('[data-cy="errorModalActualSection"]', { timeout: 10000 }).should('be.visible');
+
+    // ASSERTION 2: Error Modal Overlay Check
+    checkOverlay('[data-cy="errorModalActualSection"]');
+    
+    // 4. Click to fix it INSIDE the Error Modal
+    cy.get('[data-cy="errorModalActualSection"]').within(() => {
+      cy.get('[data-cy="team1Total"]').filter(':visible').first().click({ force: true });
+    });
+
+    // 5. Verify the InputModal appears and is usable
+    cy.get('[data-cy="bidSelectionModal"]').should('be.visible');
+
+    // ASSERTION 3: Input Modal (Fix) Overlay Check
+    checkOverlay('[data-cy="bidSelectionModal"]');
+    
+    // 6. Select the correct value '7' to fix the error
+    cy.get('[data-cy="actualSelectionButton"]').filter(':visible').contains('7').click();
+
+    // 7. Verify Error Modal is GONE (because data is valid now: 7+6=13)
+    cy.get('[data-cy="errorModalActualSection"]').should('not.exist');
+    
+    // 8. Verify the value is updated in the round history view
+    cy.get('[data-cy="round"]').last().within(() => {
+        cy.contains('7').should('exist');
+    });
+  });
 });

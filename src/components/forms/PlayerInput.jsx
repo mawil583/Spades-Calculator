@@ -16,6 +16,7 @@ const PlayerInput = ({
   currentRound,
   teamClassName,
   fieldToUpdate,
+  onOpenModal,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +39,17 @@ const PlayerInput = ({
   };
 
   const onEdit = () => {
-    setIsModalOpen(true);
+    if (onOpenModal) {
+      onOpenModal({
+        fieldToUpdate,
+        type,
+        playerName,
+        inputId,
+        dealerId
+      });
+    } else {
+      setIsModalOpen(true);
+    }
   };
 
   // Always show the actual value, with asterisk if auto-generated
@@ -48,17 +59,19 @@ const PlayerInput = ({
 
   return (
     <>
-      <InputModal
-        isCurrent={isCurrent}
-        playerName={playerName}
-        isOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        type={type}
-        fieldToUpdate={fieldToUpdate}
-        currentRound={currentRound}
-        roundHistory={roundHistory}
-        index={index}
-      />
+      {!onOpenModal && (
+        <InputModal
+          isCurrent={isCurrent}
+          playerName={playerName}
+          isOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          type={type}
+          fieldToUpdate={fieldToUpdate}
+          currentRound={currentRound}
+          roundHistory={roundHistory}
+          index={index}
+        />
+      )}
       <Flex my={'5px'} direction={'row'} justify={'flex-start'} align="center">
         <Flex
           direction={'row'}
@@ -84,9 +97,7 @@ const PlayerInput = ({
         </Flex>
         {showButton ? (
           <Button
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
+            onClick={onEdit}
             value={displayValue}
             id={inputId}
             name={inputId}

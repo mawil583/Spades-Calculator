@@ -286,14 +286,16 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
     fieldToUpdate: '',
     playerName: '',
     type: 'Bid',
+    onCustomUpdate: null,
   });
 
-  const handleOpenModal = useCallback(({ fieldToUpdate, type, playerName }) => {
+  const handleOpenModal = useCallback(({ fieldToUpdate, type, playerName, onCustomUpdate }) => {
     setModalState({
       isOpen: true,
       fieldToUpdate,
       playerName,
       type,
+      onCustomUpdate,
     });
   }, []);
 
@@ -399,6 +401,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         roundHistory={roundHistory}
         currentRound={currentRound}
         errorMessage={getActualsErrorText(totalActuals)}
+        onOpenModal={handleOpenModal}
       />
 
       {/* Hoisted Input Modal */}
@@ -412,6 +415,7 @@ function TableRound({ roundHistory, isCurrent = false, roundIndex }) {
         currentRound={currentRound}
         roundHistory={roundHistory}
         index={roundIndex}
+        onCustomUpdate={modalState.onCustomUpdate}
       />
       
       {/* Table Image / Background */}
