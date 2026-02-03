@@ -45,7 +45,7 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
           id={id}
           data-cy={id + 'Input'}
           style={{
-            fontSize: 'var(--chakra-fontSizes-xl)',
+            fontSize: 'var(--app-font-2xl)',
             fontWeight: 'bold',
             textAlign: 'center',
             width: '100%',
@@ -62,7 +62,7 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
           id={id}
           data-cy={id + 'Input'}
           style={{
-            fontSize: 'var(--chakra-fontSizes-xl)',
+            fontSize: 'var(--app-font-2xl)',
             fontWeight: 'bold',
             textAlign: 'center',
             width: '100%',

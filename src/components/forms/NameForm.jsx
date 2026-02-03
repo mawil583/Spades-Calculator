@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useLocalStorage } from '../../helpers/utils/hooks';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import WarningModal from '../modals/WarningModal';
-import { isNotDefaultValue } from '../../helpers/math/spadesMath';
+import { hasPlayerNamesEntered, hasRoundProgress } from '../../helpers/math/spadesMath';
 
 import { TeamNameInput, PlayerNameInput } from './';
 import { Button, SimpleGrid, Center } from '../ui';
@@ -17,16 +17,7 @@ function NameForm() {
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [names, setNames] = useLocalStorage('names', initialNames);
 
-  const hasGameData =
-    roundHistory.length > 0 ||
-    (currentRound &&
-      (Object.values(currentRound.team1BidsAndActuals).some(
-        isNotDefaultValue
-      ) ||
-        Object.values(currentRound.team2BidsAndActuals).some(
-          isNotDefaultValue
-        ))) ||
-    JSON.stringify(names) !== JSON.stringify(initialNames);
+  const hasGameData = hasPlayerNamesEntered(names) || hasRoundProgress(roundHistory, currentRound);
 
 
 

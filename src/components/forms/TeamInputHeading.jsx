@@ -161,11 +161,12 @@ function TeamInputHeading({
           cursor={team1CanEdit ? 'pointer' : 'default'}
           _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
-            border: team1CanEdit ? '0.5px solid' : 'none',
+            border: team1CanEdit ? '1px solid' : 'none',
             borderColor: team1Color,
             borderRadius: team1CanEdit ? 'var(--app-radius-sm)' : '0',
             padding: team1CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team1Color,
+            top: team1CanEdit ? '1px' : '0',
           }}
           onClick={handleTeam1Click}
         >
@@ -183,11 +184,12 @@ function TeamInputHeading({
           cursor={team2CanEdit ? 'pointer' : 'default'}
           _focus={{ outline: 'none', boxShadow: 'none' }}
           style={{
-            border: team2CanEdit ? '0.5px solid' : 'none',
+            border: team2CanEdit ? '1px solid' : 'none',
             borderColor: team2Color,
             borderRadius: team2CanEdit ? 'var(--app-radius-sm)' : '0',
             padding: team2CanEdit ? '1px var(--app-spacing-1)' : '0',
             color: team2Color,
+            top: team2CanEdit ? '1px' : '0',
           }}
           onClick={handleTeam2Click}
         >

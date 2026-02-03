@@ -111,6 +111,25 @@ describe('ErrorModal Component', () => {
       // Modal should open for selection
       expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
     });
+
+    it('should NOT have a close button', async () => {
+      renderWithProviders(
+        <ErrorModal
+          isOpen={true}
+          setIsModalOpen={jest.fn()}
+          index={0}
+          names={mockNames}
+          isCurrent={true}
+          roundHistory={[]}
+          currentRound={mockCurrentRound}
+          errorMessage="Error"
+        />,
+        mockContextValue
+      );
+
+      await screen.findByRole('dialog');
+      expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument();
+    });
   });
 
   describe('Error Modal Content', () => {

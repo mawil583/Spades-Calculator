@@ -4,13 +4,21 @@ import { Menu as MenuIcon, Settings, Download, RotateCcw } from 'lucide-react';
 import { SettingsModal, WarningModal } from '../modals';
 import { usePWAInstall } from '../../helpers/utils/usePWAInstall';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { hasPlayerNamesEntered, hasRoundProgress } from '../../helpers/math/spadesMath';
 
 const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const { roundHistory, currentRound, setRoundHistory, resetCurrentRound } =
+    useContext(GlobalContext);
   const { handleInstallClick, isInstalled } = usePWAInstall();
+
+  const names = JSON.parse(localStorage.getItem('names') || '{}');
+  const hasAnyData = hasPlayerNamesEntered(names) || hasRoundProgress(roundHistory, currentRound);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -25,7 +33,14 @@ const Header = () => {
   };
 
   const handleNewGameClick = () => {
-    setIsWarningModalOpen(true);
+    if (hasAnyData) {
+      setIsWarningModalOpen(true);
+    } else {
+      // If no data to clear, just ensure everything is reset and stay on/go to home
+      setRoundHistory([]);
+      resetCurrentRound();
+      navigate('/');
+    }
     setIsMenuOpen(false);
   };
 

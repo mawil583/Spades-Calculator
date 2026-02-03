@@ -19,6 +19,7 @@ function AppModal({
   bodyStyle = {},
   closeButtonColor = 'offWhite',
   contentProps = {},
+  showCloseButton = true,
   ...rest
 }) {
   return (
@@ -52,14 +53,16 @@ function AppModal({
             {title}
           </DialogHeader>
         )}
-        <DialogCloseTrigger
-          color={closeButtonColor}
-          top="10px"
-          right="10px"
-          css={headerStyle} // Using headerStyle for consistency if needed, but DialogCloseTrigger usually has its own style
-        >
-          <X size={24} />
-        </DialogCloseTrigger>
+        {showCloseButton && (
+          <DialogCloseTrigger
+            color={closeButtonColor}
+            top="10px"
+            right="10px"
+            css={headerStyle} // Using headerStyle for consistency if needed, but DialogCloseTrigger usually has its own style
+          >
+            <X size={24} />
+          </DialogCloseTrigger>
+        )}
         <DialogBody p="5px" css={bodyStyle}>
           {children}
         </DialogBody>
