@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Text, Stack } from '../ui';
 import { Radio, RadioGroup } from '../ui/radio';
 import { HelpCircle } from 'lucide-react';
@@ -8,23 +7,25 @@ import {
   TAKES_BAGS,
 } from '../../helpers/utils/constants';
 import { useLocalStorage } from '../../helpers/utils/hooks';
-import { ScoreSettingsModal } from '../modals';
 
-function ScoreSetting() {
+
+function ScoreSetting({ onOpenScoreHelp }) {
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
-  const [isOpen, setIsModalOpen] = useState(false);
+  
   const handleClick = () => {
-    setIsModalOpen(true);
+    if (onOpenScoreHelp) {
+      onOpenScoreHelp();
+    }
   };
   return (
     <div style={{ padding: 'var(--app-spacing-1)' }}>
-      <ScoreSettingsModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
       <Text fontSize="lg" mt={3} mb={4}>
         Select your preferred scoring rules for failed nil.{' '}
         {
         <HelpCircle
           size={18}
           onClick={handleClick}
+          data-testid="score-help-button"
           style={{
             cursor: 'pointer',
             verticalAlign: 'middle',

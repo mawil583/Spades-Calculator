@@ -1,6 +1,18 @@
 /* phase out these classNames by using team1 and team2 colors as defined in my customTheme object  */
 .App {
   padding: var(--app-spacing-2);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .App {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: var(--app-spacing-4);
+    min-height: 100vh;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
 
 .team2 {

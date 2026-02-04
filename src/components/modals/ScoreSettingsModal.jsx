@@ -10,7 +10,7 @@ import {
   BLIND_NIL,
 } from '../../helpers/utils/constants';
 
-function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
+export const ScoreSettingsContent = () => {
   const sections = [
     {
       title: 'Takes Bags',
@@ -47,11 +47,6 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
 
   return (
     <>
-    <AppModal
-      isOpen={isOpen}
-      onClose={setIsModalOpen}
-      title="Score Settings"
-    >
       {sections.map((section, idx) => (
         <div key={idx} style={{ marginBottom: '12px' }}>
           <SettingDescription title={section.title} desc={section.desc} />
@@ -77,8 +72,19 @@ function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
           })}
         </div>
       ))}
-    </AppModal>
     </>
+  );
+};
+
+function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
+  return (
+    <AppModal
+      isOpen={isOpen}
+      onClose={setIsModalOpen}
+      title="Score Settings"
+    >
+      <ScoreSettingsContent />
+    </AppModal>
   );
 }
 

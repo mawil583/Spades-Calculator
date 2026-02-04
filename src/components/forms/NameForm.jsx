@@ -81,21 +81,15 @@ function NameForm() {
         resetNames={setNames}
       />
       <form onSubmit={formik.handleSubmit}>
-      <SimpleGrid columns={2} mb={6} gap={2} mt={8}>
+      {/* Team 1 Section */}
+      <Center mt={8} mb={2}>
         <TeamNameInput
           id="team1Name"
           teamClassName="team1"
           teamName={formik.values.team1Name}
           handleChange={formik.handleChange}
         />
-        <TeamNameInput
-          id="team2Name"
-          teamClassName="team2"
-          teamName={formik.values.team2Name}
-          handleChange={formik.handleChange}
-        />
-      </SimpleGrid>
-
+      </Center>
       <SimpleGrid columns={2} gap={2}>
         <PlayerNameInput
           teamClassName="team1"
@@ -109,17 +103,6 @@ function NameForm() {
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
-          teamName={formik.values.team2Name}
-          id="t2p1Name"
-          teamClassName="team2"
-          label="Left Opponent"
-          placeholder="Left Opponent"
-          playerName={formik.values.t2p1Name}
-          errors={formik.errors.t2p1Name}
-          touched={formik.touched.t2p1Name}
-          handleChange={formik.handleChange}
-        />
-        <PlayerNameInput
           teamClassName="team1"
           id="t1p2Name"
           label="Partner"
@@ -128,6 +111,29 @@ function NameForm() {
           playerName={formik.values.t1p2Name}
           errors={formik.errors.t1p2Name}
           touched={formik.touched.t1p2Name}
+          handleChange={formik.handleChange}
+        />
+      </SimpleGrid>
+
+      {/* Team 2 Section */}
+      <Center mt={6} mb={2}>
+        <TeamNameInput
+          id="team2Name"
+          teamClassName="team2"
+          teamName={formik.values.team2Name}
+          handleChange={formik.handleChange}
+        />
+      </Center>
+      <SimpleGrid columns={2} gap={2}>
+        <PlayerNameInput
+          teamName={formik.values.team2Name}
+          id="t2p1Name"
+          teamClassName="team2"
+          label="Left Opponent"
+          placeholder="Left Opponent"
+          playerName={formik.values.t2p1Name}
+          errors={formik.errors.t2p1Name}
+          touched={formik.touched.t2p1Name}
           handleChange={formik.handleChange}
         />
         <PlayerNameInput
