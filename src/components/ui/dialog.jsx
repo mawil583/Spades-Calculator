@@ -12,7 +12,7 @@ export const DialogBackdrop = forwardRef(
     const { portalled = defaultPortalled, portalRef, ...rest } = props
     return (
       <Portal disabled={!portalled} container={portalRef}>
-        <ChakraDialog.Backdrop ref={ref} {...rest} data-testid="modal-backdrop" />
+        <ChakraDialog.Backdrop ref={ref} zIndex={1409} {...rest} data-testid="modal-backdrop" />
       </Portal>
     )
   },
@@ -36,11 +36,11 @@ export const DialogContent = forwardRef(
           display="flex"
           alignItems="center"
           justifyContent="center"
-          zIndex="modal"
+          zIndex={1410}
           w="100vw"
           h="100dvh"
         >
-          <ChakraDialog.Content ref={ref} {...rest}>
+          <ChakraDialog.Content ref={ref} zIndex={1411} style={{ zIndex: 1411 }} {...rest}>
             {children}
           </ChakraDialog.Content>
         </ChakraDialog.Positioner>
