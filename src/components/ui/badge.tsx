@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Badge as ChakraBadge } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

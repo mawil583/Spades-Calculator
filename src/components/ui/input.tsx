@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Input as ChakraInput } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

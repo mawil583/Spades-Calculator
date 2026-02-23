@@ -1,6 +1,5 @@
 --High Priority--
 Improve performance across the app to prevent rerendering and excessive heat of my CPU.
-Make responsive Design so it looks good on desktop and tablet too. 
 Verify - When toggling UI mode, the UI actually doesn’t update until closing the modal. Make sure it updates as soon as it is toggled, even before going out of the modal
 
 - See if I could put a div around both players names inside the bidding/actuals sections. The make it only wide enough to fit the content. Then do a space-between ORRR make it match the style of the round summary section where there's a centered heading and the value is directly underneath it. 

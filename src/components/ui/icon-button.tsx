@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IconButton as ChakraIconButton } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

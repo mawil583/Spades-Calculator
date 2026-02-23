@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { RadioGroup as ChakraRadioGroup } from "@chakra-ui/react"
 import { forwardRef } from "react"
 

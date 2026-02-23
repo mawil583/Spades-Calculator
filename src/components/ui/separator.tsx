@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Separator as ChakraSeparator } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

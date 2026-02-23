@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Flex as ChakraFlex } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

@@ -1,13 +1,14 @@
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, ReactNode } from 'react';
 import rootReducer, { initialState } from '../utils/rootReducer';
 import { updateInput } from '../utils/helperFunctions';
+import type { GlobalContextValue, UpdateInputArgs, Round } from '../../types';
 
-export const GlobalContext = createContext();
+export const GlobalContext = createContext<GlobalContextValue | null>(null);
 
-export const StateProvider = ({ children }) => {
+export const StateProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(rootReducer, initialState);
 
-  const setCurrentRound = ({ input, fieldToUpdate, currentRound }) => {
+  const setCurrentRound = ({ input, fieldToUpdate, currentRound }: UpdateInputArgs) => {
     // Check if this is a team total update (fieldToUpdate contains "team")
     if (
       fieldToUpdate &&
@@ -20,8 +21,10 @@ export const StateProvider = ({ children }) => {
         teamNumber === 1 ? 'team1BidsAndActuals' : 'team2BidsAndActuals';
 
       // Calculate individual values (divide by 2)
-      const individualValue = Math.floor(input / 2);
-      const remainder = input % 2;
+      // input is guaranteed to be a number in the team-total branch
+      const numInput = input as number;
+      const individualValue = Math.floor(numInput / 2);
+      const remainder = numInput % 2;
 
       // Distribute the total between players
       const p1Value = individualValue + remainder; // First player gets the remainder
@@ -93,7 +96,7 @@ export const StateProvider = ({ children }) => {
     });
   };
 
-  const setRoundHistory = (newRoundHistory) => {
+  const setRoundHistory = (newRoundHistory: Round[]) => {
     const clonedNewRoundHistory = [...newRoundHistory];
     dispatch({
       type: 'SET_ROUND_HISTORY',
@@ -103,7 +106,7 @@ export const StateProvider = ({ children }) => {
     });
   };
 
-  const setFirstDealerOrder = (newFirstDealerOrder) => {
+  const setFirstDealerOrder = (newFirstDealerOrder: string[]) => {
     const clonedNewFirstDealerOrder = [...newFirstDealerOrder];
     dispatch({
       type: 'SET_FIRST_DEALER_ORDER',
@@ -113,7 +116,7 @@ export const StateProvider = ({ children }) => {
     });
   };
 
-  const setDealerOverride = (dealerOverride) => {
+  const setDealerOverride = (dealerOverride: string | null) => {
     dispatch({
       type: 'SET_DEALER_OVERRIDE',
       payload: {

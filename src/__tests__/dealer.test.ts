@@ -2,6 +2,7 @@ import {
   rotateDealerOrder,
   getCurrentDealerId,
 } from '../helpers/math/spadesMath';
+import { initialFirstDealerOrder as appInitialFirstDealerOrder } from '../helpers/utils/constants';
 import { expect } from 'chai';
 
 describe('Dealer Functionality', () => {
@@ -156,7 +157,7 @@ describe('Dealer Functionality', () => {
     test('editing a past round should not affect dealer override of other rounds', async () => {
       // Import the updateInput function to test it directly
       const { updateInput } = await import(
-        '../helpers/utils/helperFunctions.jsx'
+        '../helpers/utils/helperFunctions'
       );
 
       // Create a round history with different dealer overrides
@@ -230,7 +231,7 @@ describe('Dealer Functionality', () => {
 
     test('updateInput should preserve dealerOverride when it is null', async () => {
       const { updateInput } = await import(
-        '../helpers/utils/helperFunctions.jsx'
+        '../helpers/utils/helperFunctions'
       );
 
       const roundWithNullOverride = {
@@ -261,7 +262,7 @@ describe('Dealer Functionality', () => {
 
     test('updateInput should handle rounds without dealerOverride property', async () => {
       const { updateInput } = await import(
-        '../helpers/utils/helperFunctions.jsx'
+        '../helpers/utils/helperFunctions'
       );
 
       const roundWithoutOverride = {
@@ -331,7 +332,7 @@ describe('Dealer Functionality', () => {
 
     test('getDealerIdHistory should calculate dealer history correctly', async () => {
       const { getDealerIdHistory } = await import(
-        '../helpers/math/spadesMath.jsx'
+        '../helpers/math/spadesMath'
       );
 
       // Simulate 2 rounds in history
@@ -469,11 +470,6 @@ describe('Dealer Functionality', () => {
     });
 
     test('application context: dealer should be correct in fresh game', () => {
-      // Import the actual constants used in the app
-      const {
-        initialFirstDealerOrder,
-      } = require('../helpers/utils/constants.jsx');
-
       // Simulate a fresh game with no round history
       const dealerIdHistory = [];
 
@@ -482,12 +478,12 @@ describe('Dealer Functionality', () => {
         dealerIdHistory,
         index: 0,
         isCurrent: true,
-        firstDealerOrder: initialFirstDealerOrder,
+        firstDealerOrder: appInitialFirstDealerOrder,
       });
 
       // The dealer should be t1p1 (team1BidsAndActuals.p1Bid)
       expect(currentDealer).to.equal('team1BidsAndActuals.p1Bid');
-      expect(currentDealer).to.equal(initialFirstDealerOrder[0]);
+      expect(currentDealer).to.equal(appInitialFirstDealerOrder[0]);
     });
   });
 });

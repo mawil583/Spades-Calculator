@@ -156,7 +156,7 @@ function isTypeNil(bid) {
   return bid === NIL || bid === BLIND_NIL;
 }
 
-export function getPlayerBags(bid, actual, nilSetting) {
+export function getPlayerBags(bid: string | number, actual: string | number, nilSetting: string): number {
   let bags = 0;
   if (convertStringInputToNum(bid) >= convertStringInputToNum(actual)) {
     return bags;
@@ -173,7 +173,7 @@ export function getPlayerBags(bid, actual, nilSetting) {
       bags = convertStringInputToNum(actual) - convertStringInputToNum(bid);
       return bags;
     default:
-      return new Error(
+      throw new Error(
         'This function should not be called unless setting is BLIND_NIL or TAKES_BAGS'
       );
   }
@@ -233,7 +233,7 @@ export function calculateNilTeamRoundBags(
 }
 
 // only gets called if HELPS_TEAM_BID setting
-export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2) {
+export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2, _nilSetting?: string) {
   const player1AchievedNil = convertStringInputToNum(actual1) === 0;
   const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -266,7 +266,8 @@ export function calculateScoreForDualNilWithOneBlind(
   bid1,
   bid2,
   actual1,
-  actual2
+  actual2,
+  _nilSetting?: string
 ) {
   const { nilPlayerActual, blindNilPlayerActual } = whoWasBlind(
     bid1,
@@ -305,7 +306,7 @@ export function calculateScoreForDualNilWithOneBlind(
 }
 
 // only gets called if HELPS_TEAM_BID setting
-export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2) {
+export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2, _nilSetting?: string) {
   const player1AchievedNil = convertStringInputToNum(actual1) === 0;
   const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -338,7 +339,8 @@ export function calculateTeamRoundScoreWithOneNilBidder(
   bid1,
   bid2,
   actual1,
-  actual2
+  actual2,
+  _nilSetting?: string
 ) {
   const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual } = whoWentNil(
     bid1,

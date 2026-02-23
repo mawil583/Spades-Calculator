@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Toaster as ChakraToaster,
   Portal,

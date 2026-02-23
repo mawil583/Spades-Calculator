@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button as ChakraButton } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

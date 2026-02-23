@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Container as ChakraContainer } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SimpleGrid as ChakraSimpleGrid, Grid as ChakraGrid, GridItem as ChakraGridItem } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

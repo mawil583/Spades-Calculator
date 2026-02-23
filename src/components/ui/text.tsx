@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Text as ChakraText, Heading as ChakraHeading } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 

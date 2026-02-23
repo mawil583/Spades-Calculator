@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Dialog as ChakraDialog, Portal } from "@chakra-ui/react"
 import { forwardRef } from "react"
 

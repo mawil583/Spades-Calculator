@@ -2,11 +2,13 @@ import js from '@eslint/js';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import importPlugin from 'eslint-plugin-import';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   js.configs.recommended,
   {
-    files: ['src/**/*.{js,jsx}'],
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -56,10 +58,10 @@ export default [
       ...reactPlugin.configs.recommended.rules,
       ...reactHooksPlugin.configs.recommended.rules,
       'no-unused-expressions': 'off',
-      'react/prop-types': 'off', // Disable prop-types for now
+      'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-uses-react': 'off',
-      'no-unused-vars': 'error',
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
       'no-case-declarations': 'warn',
       'no-prototype-builtins': 'warn',
       'react/no-unescaped-entities': 'warn',
@@ -101,9 +103,29 @@ export default [
     }
   },
   {
+    // TypeScript-specific config
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      // Disable JS rules that conflict with TS equivalents
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+    },
+  },
+  {
     // Whitelist the adapter layer and theme config from strict import rules
     files: [
-      'src/components/ui/**/*.{js,jsx}',
+      'src/components/ui/**/*.{js,jsx,ts,tsx}',
+      'src/customTheme.ts',
       'src/customTheme.js',
     ],
     rules: {
@@ -112,7 +134,7 @@ export default [
     }
   },
   {
-    files: ['src/**/*.test.{js,jsx}', 'src/**/*.spec.{js,jsx}', 'src/__tests__/**/*.{js,jsx}'],
+    files: ['src/**/*.test.{js,jsx,ts,tsx}', 'src/**/*.spec.{js,jsx,ts,tsx}', 'src/__tests__/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -142,7 +164,7 @@ export default [
     }
   },
   {
-    files: ['cypress/**/*.{js,jsx}'],
+    files: ['cypress/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -159,7 +181,7 @@ export default [
     }
   },
   {
-    files: ['tests/**/*.{js,jsx}'],
+    files: ['tests/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -184,7 +206,7 @@ export default [
     }
   },
   {
-    files: ['src/services/service-worker.js'],
+    files: ['src/services/service-worker.js', 'src/services/service-worker.ts'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
