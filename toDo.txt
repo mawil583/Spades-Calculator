@@ -18,7 +18,6 @@ In places where I'm doing a ton of prop drilling, spred props so that it's easie
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
 hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput
-implement typescript
 Translate my app into Ark UI and apply vanilla CSS with BEM and scoped CSS
 The ActualsValidationModal isn't being used anywhere. See if it can be used in place of ErrorModal. If not, delete it.
 The ErrorModal is copy-pasting most of ActualSection which is not DRY but if I import ActualSection into this, then I'll be in an infinite loop because I'll have an ActualSection that renders an error modal but this error modal renders an ActualSection. Refactor
