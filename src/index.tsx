@@ -1,31 +1,28 @@
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Provider } from "./components/ui/provider";
+import { StateProvider } from "./helpers";
 
-import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Provider } from './components/ui/provider';
-import { StateProvider } from './helpers';
+import "./index.css";
+import HomePage from "./pages/HomePage";
+import SpadesCalculator from "./pages/SpadesCalculator";
 
-
-import './index.css';
-import HomePage from './pages/HomePage';
-import SpadesCalculator from './pages/SpadesCalculator';
-
-
-
-import { Toaster } from './components/ui/toaster';
-
+import { Toaster } from "./components/ui/toaster";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <HomePage />,
   },
   {
-    path: 'spades-calculator',
+    path: "spades-calculator",
     element: <SpadesCalculator />,
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement,
+);
 
 root.render(
   <Provider>
@@ -33,7 +30,5 @@ root.render(
       <RouterProvider router={router} />
       <Toaster />
     </StateProvider>
-  </Provider>
+  </Provider>,
 );
-
-

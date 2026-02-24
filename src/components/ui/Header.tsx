@@ -1,12 +1,17 @@
-import { useState } from 'react';
-import { Flex, Box, Text, IconButton, Stack } from './';
-import { Menu as MenuIcon, Settings, Download, RotateCcw } from 'lucide-react';
-import { SettingsModal, WarningModal } from '../modals';
-import { usePWAInstall } from '../../helpers/utils/usePWAInstall';
-import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { hasPlayerNamesEntered, hasRoundProgress } from '../../helpers/math/spadesMath';
+import { useState } from "react";
+import { Flex, Box, Text, IconButton, Stack } from "./";
+import { Menu as MenuIcon, Settings, Download, RotateCcw } from "lucide-react";
+import { SettingsModal, WarningModal } from "../modals";
+import { usePWAInstall } from "../../helpers/utils/usePWAInstall";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { GlobalContext } from "../../helpers/context/GlobalContext";
+import {
+  hasPlayerNamesEntered,
+  hasRoundProgress,
+} from "../../helpers/math/spadesMath";
+import { getNames } from "../../helpers/utils/storage";
+import type { Names } from "../../types";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,8 +22,10 @@ const Header = () => {
     useContext(GlobalContext);
   const { handleInstallClick, isInstalled } = usePWAInstall();
 
-  const names = JSON.parse(localStorage.getItem('names') || '{}');
-  const hasAnyData = hasPlayerNamesEntered(names) || hasRoundProgress(roundHistory, currentRound);
+  const names = getNames() || {};
+  const hasAnyData =
+    hasPlayerNamesEntered(names as Names) ||
+    hasRoundProgress(roundHistory, currentRound);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -39,18 +46,23 @@ const Header = () => {
       // If no data to clear, just ensure everything is reset and stay on/go to home
       setRoundHistory([]);
       resetCurrentRound();
-      navigate('/');
+      navigate("/");
     }
     setIsMenuOpen(false);
   };
 
   const handleNavigateHome = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <Box as="header" width="100%" py={0} position="relative" zIndex={100}>
-      <Flex justify="space-between" align="center" position="relative" zIndex={110}>
+      <Flex
+        justify="space-between"
+        align="center"
+        position="relative"
+        zIndex={110}
+      >
         <Text
           fontSize="var(--app-font-xl)"
           fontWeight="bold"
@@ -60,11 +72,7 @@ const Header = () => {
         >
           SpadesCalculator
         </Text>
-        <IconButton
-          variant="ghost"
-          onClick={toggleMenu}
-          aria-label="Open Menu"
-        >
+        <IconButton variant="ghost" onClick={toggleMenu} aria-label="Open Menu">
           <MenuIcon size={24} />
         </IconButton>
       </Flex>
@@ -100,7 +108,7 @@ const Header = () => {
                 py={3}
                 align="center"
                 cursor="pointer"
-                _hover={{ bg: 'whiteAlpha.100' }}
+                _hover={{ bg: "whiteAlpha.100" }}
                 onClick={handleNewGameClick}
                 gap={3}
               >
@@ -112,7 +120,7 @@ const Header = () => {
                 py={3}
                 align="center"
                 cursor="pointer"
-                _hover={{ bg: 'whiteAlpha.100' }}
+                _hover={{ bg: "whiteAlpha.100" }}
                 onClick={handleSettingsClick}
                 gap={3}
               >
@@ -125,7 +133,7 @@ const Header = () => {
                   py={3}
                   align="center"
                   cursor="pointer"
-                  _hover={{ bg: 'whiteAlpha.100' }}
+                  _hover={{ bg: "whiteAlpha.100" }}
                   onClick={handleDownloadClick}
                   gap={3}
                 >
@@ -139,7 +147,10 @@ const Header = () => {
       )}
 
       <SettingsModal isOpen={isSettingsOpen} setIsOpen={setIsSettingsOpen} />
-      <WarningModal isOpen={isWarningModalOpen} setIsModalOpen={setIsWarningModalOpen} />
+      <WarningModal
+        isOpen={isWarningModalOpen}
+        setIsModalOpen={setIsWarningModalOpen}
+      />
     </Box>
   );
 };

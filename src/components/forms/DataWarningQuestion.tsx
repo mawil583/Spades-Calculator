@@ -1,24 +1,23 @@
+import { Separator, Button, Text, Flex } from "../ui";
 
-import { Separator, Button, Text, Flex } from '../ui';
-
-const DataWarningQuestion = ({ onContinue, onCancel }: { onContinue: () => void; onCancel: () => void }) => {
+const DataWarningQuestion = ({
+  onContinue,
+  onCancel,
+}: {
+  onContinue: () => void;
+  onCancel: () => void;
+}) => {
   return (
-    <div style={{ padding: 'var(--app-spacing-2)' }}>
+    <div style={{ padding: "var(--app-spacing-2)" }}>
       <Separator mb={4} />
-      <Text style={{ marginBottom: 'var(--app-spacing-5)' }}>
+      <Text style={{ marginBottom: "var(--app-spacing-5)" }}>
         This will permanently delete your game data.
       </Text>
-      <Flex direction={'row'} justifyContent={'space-between'}>
-        <Button
-          variant="outline"
-          onClick={onCancel}
-        >
+      <Flex direction={"row"} justifyContent={"space-between"}>
+        <Button variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button
-          variant="outline"
-          onClick={onContinue}
-        >
+        <Button variant="outline" onClick={onContinue}>
           Continue
         </Button>
       </Flex>

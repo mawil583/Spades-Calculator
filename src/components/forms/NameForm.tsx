@@ -1,34 +1,39 @@
-import { useEffect, useState, useContext } from 'react';
-import { useFormik, type FormikProps } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import { useLocalStorage } from '../../helpers/utils/hooks';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
-import WarningModal from '../modals/WarningModal';
-import { hasPlayerNamesEntered, hasRoundProgress } from '../../helpers/math/spadesMath';
+import { useEffect, useState, useContext } from "react";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+import { useLocalStorage } from "../../helpers/utils/hooks";
+import { GlobalContext } from "../../helpers/context/GlobalContext";
+import WarningModal from "../modals/WarningModal";
+import {
+  hasPlayerNamesEntered,
+  hasRoundProgress,
+} from "../../helpers/math/spadesMath";
 
-import { TeamNameInput, PlayerNameInput } from './';
-import { Button, SimpleGrid, Center } from '../ui';
-import { initialNames } from '../../helpers/utils/constants';
-import type { Names } from '../../types';
+import { TeamNameInput, PlayerNameInput } from "./";
+import { Button, SimpleGrid, Center } from "../ui";
+import { initialNames } from "../../helpers/utils/constants";
+import type { Names } from "../../types";
 
 function NameForm() {
   const navigate = useNavigate();
   const { roundHistory, currentRound } = useContext(GlobalContext);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-  const [names, setNames] = useLocalStorage<Names>('names', initialNames);
+  const [names, setNames] = useLocalStorage<Names>("names", initialNames);
 
-  const hasGameData = hasPlayerNamesEntered(names) || hasRoundProgress(roundHistory, currentRound);
+  const hasGameData =
+    hasPlayerNamesEntered(names) ||
+    hasRoundProgress(roundHistory, currentRound);
 
   const handleNewGame = () => {
     setIsWarningModalOpen(true);
   };
 
   const validationSchema = Yup.object({
-    t1p1Name: Yup.string().required('Required'),
-    t2p1Name: Yup.string().required('Required'),
-    t1p2Name: Yup.string().required('Required'),
-    t2p2Name: Yup.string().required('Required'),
+    t1p1Name: Yup.string().required("Required"),
+    t2p1Name: Yup.string().required("Required"),
+    t1p2Name: Yup.string().required("Required"),
+    t2p2Name: Yup.string().required("Required"),
   });
 
   const formik = useFormik<Names>({
@@ -44,34 +49,21 @@ function NameForm() {
     enableReinitialize: true,
     onSubmit: (values) => {
       setNames(values);
-      navigate('/spades-calculator', { state: values });
+      navigate("/spades-calculator", { state: values });
     },
   });
 
-  const DisableOnEmptyInputsAndTeams = ({ formik }: { formik: FormikProps<Names> }) => {
-    if (formik.values.team1Name === '') {
-      formik.setFieldValue('team1Name', 'Team 1');
-    }
-    if (formik.values.team2Name === '') {
-      formik.setFieldValue('team2Name', 'Team 2');
-    }
-  };
+  const { values, setFieldValue } = formik;
+  const { team1Name, team2Name } = values;
 
-  // put this into hooks.
   useEffect(() => {
-    function checkUniqueNames(formVals: Names) {
-      if (formVals.team1Name === '') {
-        setNames({ ...names, team1Name: 'Team 1' });
-      }
-      if (formVals.team2Name === '') {
-        setNames({ ...names, team2Name: 'Team 2' });
-      }
+    if (team1Name === '') {
+      setFieldValue('team1Name', 'Team 1');
     }
-    checkUniqueNames(formik.values);
-    DisableOnEmptyInputsAndTeams({ formik });
-  }, [formik.values, formik, setNames, names]);
-
-
+    if (team2Name === '') {
+      setFieldValue('team2Name', 'Team 2');
+    }
+  }, [team1Name, team2Name, setFieldValue]);
   return (
     <>
       <WarningModal

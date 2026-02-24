@@ -1,16 +1,16 @@
+import { useNavigate } from "react-router-dom";
 
-import { useNavigate } from 'react-router-dom';
-
-import { GameScore, Rounds } from '../components/game';
-import { Header } from '../components/ui';
-import { UpdateNotification } from '../components';
-import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
-import { useFeatureFlag } from '../helpers/utils/useFeatureFlag';
-import { FEATURE_FLAGS } from '../helpers/utils/featureFlags';
+import { GameScore, Rounds } from "../components/game";
+import { Header } from "../components/ui";
+import { UpdateNotification } from "../components";
+import { useRedirectWhenFalsey } from "../helpers/utils/hooks";
+import { useFeatureFlag } from "../helpers/utils/useFeatureFlag";
+import { FEATURE_FLAGS } from "../helpers/utils/featureFlags";
+import { getNames } from "../helpers/utils/storage";
 
 function SpadesCalculator() {
   const navigate = useNavigate();
-  const names = JSON.parse(localStorage.getItem('names') || 'null');
+  const names = getNames();
   useRedirectWhenFalsey(names, navigate);
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 

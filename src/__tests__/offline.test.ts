@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 // No import needed for jest in this environment
 
 // Mock the offline page HTML content
@@ -79,7 +79,7 @@ const mockOfflinePageContent = `
 </html>
 `;
 
-describe('Offline Page Content', () => {
+describe("Offline Page Content", () => {
   beforeEach(() => {
     // Mock DOMParser
     global.DOMParser = vi.fn().mockImplementation(() => ({
@@ -95,110 +95,110 @@ describe('Offline Page Content', () => {
     vi.clearAllMocks();
   });
 
-  describe('HTML Structure', () => {
-    it('should contain proper HTML structure', () => {
-      expect(mockOfflinePageContent).toContain('<!DOCTYPE html>');
+  describe("HTML Structure", () => {
+    it("should contain proper HTML structure", () => {
+      expect(mockOfflinePageContent).toContain("<!DOCTYPE html>");
       expect(mockOfflinePageContent).toContain('<html lang="en">');
-      expect(mockOfflinePageContent).toContain('<head>');
-      expect(mockOfflinePageContent).toContain('<body>');
+      expect(mockOfflinePageContent).toContain("<head>");
+      expect(mockOfflinePageContent).toContain("<body>");
     });
 
-    it('should have proper meta tags', () => {
+    it("should have proper meta tags", () => {
       expect(mockOfflinePageContent).toContain('<meta charset="UTF-8">');
       expect(mockOfflinePageContent).toContain(
-        '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
       );
       expect(mockOfflinePageContent).toContain(
-        '<title>Spades Calculator - Offline</title>'
+        "<title>Spades Calculator - Offline</title>",
       );
     });
   });
 
-  describe('Content and Messaging', () => {
-    it('should contain appropriate offline messaging', () => {
+  describe("Content and Messaging", () => {
+    it("should contain appropriate offline messaging", () => {
       expect(mockOfflinePageContent).toContain("You're Offline");
       expect(mockOfflinePageContent).toContain(
-        "It looks like you don't have an internet connection right now"
+        "It looks like you don't have an internet connection right now",
       );
       expect(mockOfflinePageContent).toContain(
-        "Don't worry - you can still use Spades Calculator for basic functionality!"
+        "Don't worry - you can still use Spades Calculator for basic functionality!",
       );
     });
 
-    it('should have proper heading structure', () => {
-      expect(mockOfflinePageContent).toContain('<h1>');
+    it("should have proper heading structure", () => {
+      expect(mockOfflinePageContent).toContain("<h1>");
       expect(mockOfflinePageContent).toContain("You're Offline");
     });
 
-    it('should have retry button with correct text', () => {
-      expect(mockOfflinePageContent).toContain('Try Again');
+    it("should have retry button with correct text", () => {
+      expect(mockOfflinePageContent).toContain("Try Again");
       expect(mockOfflinePageContent).toContain('class="retry-button"');
     });
   });
 
-  describe('Styling and Layout', () => {
-    it('should have offline container class', () => {
+  describe("Styling and Layout", () => {
+    it("should have offline container class", () => {
       expect(mockOfflinePageContent).toContain('class="offline-container"');
     });
 
-    it('should have offline icon', () => {
+    it("should have offline icon", () => {
       expect(mockOfflinePageContent).toContain('class="offline-icon"');
-      expect(mockOfflinePageContent).toContain('📱');
+      expect(mockOfflinePageContent).toContain("📱");
     });
 
-    it('should have gradient background styling', () => {
+    it("should have gradient background styling", () => {
       expect(mockOfflinePageContent).toContain(
-        'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       );
     });
 
-    it('should have proper button styling', () => {
-      expect(mockOfflinePageContent).toContain('.retry-button');
+    it("should have proper button styling", () => {
+      expect(mockOfflinePageContent).toContain(".retry-button");
       expect(mockOfflinePageContent).toContain(
-        'background: rgba(255, 255, 255, 0.2)'
+        "background: rgba(255, 255, 255, 0.2)",
       );
-      expect(mockOfflinePageContent).toContain('border-radius: 25px');
+      expect(mockOfflinePageContent).toContain("border-radius: 25px");
     });
   });
 
-  describe('JavaScript Functionality', () => {
-    it('should have online event listener', () => {
+  describe("JavaScript Functionality", () => {
+    it("should have online event listener", () => {
       expect(mockOfflinePageContent).toContain(
-        "window.addEventListener('online'"
+        "window.addEventListener('online'",
       );
-      expect(mockOfflinePageContent).toContain('window.location.reload()');
+      expect(mockOfflinePageContent).toContain("window.location.reload()");
     });
 
-    it('should have retry button click handler', () => {
+    it("should have retry button click handler", () => {
       expect(mockOfflinePageContent).toContain(
-        'onclick="window.location.reload()"'
+        'onclick="window.location.reload()"',
       );
     });
   });
 
-  describe('Accessibility', () => {
-    it('should have proper language attribute', () => {
+  describe("Accessibility", () => {
+    it("should have proper language attribute", () => {
       expect(mockOfflinePageContent).toContain('<html lang="en">');
     });
 
-    it('should have semantic HTML structure', () => {
-      expect(mockOfflinePageContent).toContain('<h1>');
-      expect(mockOfflinePageContent).toContain('<p>');
-      expect(mockOfflinePageContent).toContain('<a');
+    it("should have semantic HTML structure", () => {
+      expect(mockOfflinePageContent).toContain("<h1>");
+      expect(mockOfflinePageContent).toContain("<p>");
+      expect(mockOfflinePageContent).toContain("<a");
     });
   });
 });
 
-describe('Offline Page Validation', () => {
-  it('should be valid HTML', () => {
+describe("Offline Page Validation", () => {
+  it("should be valid HTML", () => {
     // Basic HTML validation checks
-    const hasDoctype = mockOfflinePageContent.includes('<!DOCTYPE html>');
-    const hasOpeningHtml = mockOfflinePageContent.includes('<html');
-    const hasClosingHtml = mockOfflinePageContent.includes('</html>');
-    const hasOpeningHead = mockOfflinePageContent.includes('<head>');
-    const hasClosingHead = mockOfflinePageContent.includes('</head>');
-    const hasOpeningBody = mockOfflinePageContent.includes('<body>');
-    const hasClosingBody = mockOfflinePageContent.includes('</body>');
+    const hasDoctype = mockOfflinePageContent.includes("<!DOCTYPE html>");
+    const hasOpeningHtml = mockOfflinePageContent.includes("<html");
+    const hasClosingHtml = mockOfflinePageContent.includes("</html>");
+    const hasOpeningHead = mockOfflinePageContent.includes("<head>");
+    const hasClosingHead = mockOfflinePageContent.includes("</head>");
+    const hasOpeningBody = mockOfflinePageContent.includes("<body>");
+    const hasClosingBody = mockOfflinePageContent.includes("</body>");
 
     expect(hasDoctype).toBe(true);
     expect(hasOpeningHtml).toBe(true);
@@ -209,11 +209,11 @@ describe('Offline Page Validation', () => {
     expect(hasClosingBody).toBe(true);
   });
 
-  it('should have all required CSS classes', () => {
+  it("should have all required CSS classes", () => {
     const requiredClasses = [
-      'offline-container',
-      'offline-icon',
-      'retry-button',
+      "offline-container",
+      "offline-icon",
+      "retry-button",
     ];
 
     requiredClasses.forEach((className) => {
@@ -221,12 +221,12 @@ describe('Offline Page Validation', () => {
     });
   });
 
-  it('should have all required text content', () => {
+  it("should have all required text content", () => {
     const requiredText = [
       "You're Offline",
       "It looks like you don't have an internet connection right now",
       "Don't worry - you can still use Spades Calculator for basic functionality!",
-      'Try Again',
+      "Try Again",
     ];
 
     requiredText.forEach((text) => {

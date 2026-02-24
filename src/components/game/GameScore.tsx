@@ -1,47 +1,53 @@
-import { useContext } from 'react';
-import { Container, SimpleGrid } from '../ui';
+import { useContext } from "react";
+import { Container, SimpleGrid } from "../ui";
 
-import TeamScore from './TeamScore';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import TeamScore from "./TeamScore";
+import { GlobalContext } from "../../helpers/context/GlobalContext";
 import {
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
-} from '../../helpers/math/spadesMath';
-import { TEAM1, TEAM2 } from '../../helpers/utils/constants';
-import { isNotDefaultValue } from '../../helpers/math/spadesMath';
+} from "../../helpers/math/spadesMath";
+import { TEAM1, TEAM2, HELPS_TEAM_BID } from "../../helpers/utils/constants";
+import { isNotDefaultValue } from "../../helpers/math/spadesMath";
 
-import type { Round, TeamScore as TeamScoreType, NilSetting, InputValue } from '../../types';
+import type {
+  Round,
+  TeamScore as TeamScoreType,
+  NilSetting,
+  InputValue,
+} from "../../types";
+import { getNames, getNilSetting } from "../../helpers/utils/storage";
 
 const GameScore = function () {
   const { roundHistory, currentRound } = useContext(GlobalContext);
-  const names = JSON.parse(localStorage.getItem('names') || '"{}"');
+  const names = getNames();
   if (!names) return null;
-  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule') || '"{}"');
+  const nilSetting = getNilSetting();
 
   // Calculate scores from completed rounds
   const team1ScoreFromHistory = calculateTeamScoreFromRoundHistory(
     roundHistory,
     TEAM1,
-    nilSetting
+    nilSetting,
   );
   const team2ScoreFromHistory = calculateTeamScoreFromRoundHistory(
     roundHistory,
     TEAM2,
-    nilSetting
+    nilSetting,
   );
 
   // Calculate scores from current round if teams have completed their actuals
   const team1CurrentRoundScore = calculateCurrentRoundTeamScore(
     currentRound,
     TEAM1,
-    nilSetting,
-    isNotDefaultValue
+    nilSetting || HELPS_TEAM_BID,
+    isNotDefaultValue,
   );
   const team2CurrentRoundScore = calculateCurrentRoundTeamScore(
     currentRound,
     TEAM2,
-    nilSetting,
-    isNotDefaultValue
+    nilSetting || HELPS_TEAM_BID,
+    isNotDefaultValue,
   );
 
   // Combine scores from history and current round
@@ -84,9 +90,9 @@ const GameScore = function () {
 // Helper function to calculate score for a team in the current round
 function calculateCurrentRoundTeamScore(
   currentRound: Round | null,
-  teamKey: 'team1BidsAndActuals' | 'team2BidsAndActuals',
+  teamKey: "team1BidsAndActuals" | "team2BidsAndActuals",
   nilSetting: NilSetting,
-  isNotDefaultValue: (val: InputValue) => boolean
+  isNotDefaultValue: (val: InputValue) => boolean,
 ): TeamScoreType {
   if (!currentRound) {
     return { teamScore: 0, teamBags: 0 };
@@ -111,7 +117,7 @@ function calculateCurrentRoundTeamScore(
     teamData.p2Bid,
     teamData.p1Actual,
     teamData.p2Actual,
-    nilSetting
+    nilSetting,
   );
 
   return {

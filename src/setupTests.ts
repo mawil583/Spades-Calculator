@@ -2,13 +2,13 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Configure global test environment
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
 // Make vi available globally as jest (for libraries that reference jest globals)
-Object.defineProperty(global, 'jest', { value: vi, writable: true });
+Object.defineProperty(global, "jest", { value: vi, writable: true });
 
 // Mock console methods to avoid noise in tests
 global.console = {
@@ -18,7 +18,7 @@ global.console = {
 };
 
 // Mock window.matchMedia for PWA-related tests
-Object.defineProperty(window, 'matchMedia', {
+Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query) => ({
     matches: false,
@@ -33,25 +33,25 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock window.navigator.standalone for iOS PWA detection
-Object.defineProperty(window.navigator, 'standalone', {
+Object.defineProperty(window.navigator, "standalone", {
   writable: true,
   value: false,
 });
 
 // Mock navigator.share for Web Share API
-Object.defineProperty(navigator, 'share', {
+Object.defineProperty(navigator, "share", {
   writable: true,
   value: undefined,
 });
 
 // Mock navigator.brave for Brave browser detection
-Object.defineProperty(navigator, 'brave', {
+Object.defineProperty(navigator, "brave", {
   writable: true,
   value: undefined,
 });
 
 // Mock service worker for PWA functionality
-Object.defineProperty(navigator, 'serviceWorker', {
+Object.defineProperty(navigator, "serviceWorker", {
   writable: true,
   value: {
     ready: Promise.resolve({
@@ -70,7 +70,7 @@ Object.defineProperty(navigator, 'serviceWorker', {
 });
 
 // Mock virtual PWA module for Vitest
-vi.mock('virtual:pwa-register/react', () => ({
+vi.mock("virtual:pwa-register/react", () => ({
   useRegisterSW: () => ({
     offlineReady: [false, vi.fn()],
     needRefresh: [false, vi.fn()],

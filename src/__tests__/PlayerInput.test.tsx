@@ -1,41 +1,41 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 
-import { render, screen, fireEvent } from '@testing-library/react';
-import { Provider } from '../components/ui/provider';
-import PlayerInput from '../components/forms/PlayerInput';
-import { GlobalContext } from '../helpers/context/GlobalContext';
-import type { GlobalContextValue, Round } from '../types';
-import type { ReactNode } from 'react';
+import { render, screen, fireEvent } from "@testing-library/react";
+import { Provider } from "../components/ui/provider";
+import PlayerInput from "../components/forms/PlayerInput";
+import { GlobalContext } from "../helpers/context/GlobalContext";
+import type { GlobalContextValue, Round } from "../types";
+import type { ReactNode } from "react";
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
 // Mock the DealerTag component
-vi.mock('../components/ui/DealerTag', () => ({
+vi.mock("../components/ui/DealerTag", () => ({
   default: function MockDealerTag() {
     return <div data-testid="dealerTag">Dealer</div>;
   },
 }));
 
-describe('PlayerInput', () => {
+describe("PlayerInput", () => {
   const mockContextValue = {
     firstDealerOrder: [
-      'team1BidsAndActuals.p1Bid',
-      'team2BidsAndActuals.p1Bid',
-      'team1BidsAndActuals.p2Bid',
-      'team2BidsAndActuals.p2Bid',
+      "team1BidsAndActuals.p1Bid",
+      "team2BidsAndActuals.p1Bid",
+      "team1BidsAndActuals.p2Bid",
+      "team2BidsAndActuals.p2Bid",
     ],
     currentRound: {
       team1BidsAndActuals: {
-        p1Bid: '1',
-        p2Bid: '2',
-        p1Actual: '',
-        p2Actual: '',
+        p1Bid: "1",
+        p2Bid: "2",
+        p1Actual: "",
+        p2Actual: "",
       },
       team2BidsAndActuals: {
-        p1Bid: '3',
-        p2Bid: '4',
-        p1Actual: '',
-        p2Actual: '',
+        p1Bid: "3",
+        p2Bid: "4",
+        p1Actual: "",
+        p2Actual: "",
       },
     },
     setCurrentRound: vi.fn(),
@@ -43,122 +43,129 @@ describe('PlayerInput', () => {
     setDealerOverride: vi.fn(),
   };
 
-
-
   const defaultProps = {
-    inputId: 'testInput',
-    dealerId: 'testDealer',
-    type: 'Actual',
+    inputId: "testInput",
+    dealerId: "testDealer",
+    type: "Actual",
     index: 0,
     isCurrent: true,
-    playerName: 'Test Player',
-    playerInput: '',
+    playerName: "Test Player",
+    playerInput: "",
     roundHistory: [],
     currentRound: {
       team1BidsAndActuals: {
-        p1Bid: '1',
-        p2Bid: '2',
-        p1Actual: '',
-        p2Actual: '',
+        p1Bid: "1",
+        p2Bid: "2",
+        p1Actual: "",
+        p2Actual: "",
       },
       team2BidsAndActuals: {
-        p1Bid: '3',
-        p2Bid: '4',
-        p1Actual: '',
-        p2Actual: '',
+        p1Bid: "3",
+        p2Bid: "4",
+        p1Actual: "",
+        p2Actual: "",
       },
     },
-    teamClassName: 'team1',
-    fieldToUpdate: 'team1BidsAndActuals.p1Actual',
+    teamClassName: "team1",
+    fieldToUpdate: "team1BidsAndActuals.p1Actual",
   };
 
   const renderWithContext = (component: ReactNode, contextOverrides = {}) => {
     return render(
       <Provider>
-        <GlobalContext.Provider value={{ ...mockContextValue, ...contextOverrides } as unknown as GlobalContextValue}>
+        <GlobalContext.Provider
+          value={
+            {
+              ...mockContextValue,
+              ...contextOverrides,
+            } as unknown as GlobalContextValue
+          }
+        >
           {component}
         </GlobalContext.Provider>
-      </Provider>
+      </Provider>,
     );
   };
 
-  describe('when team total is being used', () => {
+  describe("when team total is being used", () => {
     it('should show empty string instead of "Actual" button when playerInput is empty', () => {
       const props = {
         ...defaultProps,
-        playerInput: '',
-        type: 'Actual' as const,
+        playerInput: "",
+        type: "Actual" as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('Actual')).toBeInTheDocument();
-      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
+      expect(screen.getByText("Actual")).toBeInTheDocument();
+      expect(screen.queryByText("unentered")).not.toBeInTheDocument();
     });
 
     it('should show empty string instead of "Bid" button when playerInput is empty and type is Bid', () => {
       const props = {
         ...defaultProps,
-        playerInput: '',
-        type: 'Bid' as const,
+        playerInput: "",
+        type: "Bid" as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('Bid')).toBeInTheDocument();
-      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
+      expect(screen.getByText("Bid")).toBeInTheDocument();
+      expect(screen.queryByText("unentered")).not.toBeInTheDocument();
     });
   });
 
-  describe('when team total is not being used', () => {
+  describe("when team total is not being used", () => {
     it('should show "Actual" button when playerInput is empty and type is Actual', () => {
       const props = {
         ...defaultProps,
-        playerInput: '',
-        type: 'Actual' as const,
+        playerInput: "",
+        type: "Actual" as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('Actual')).toBeInTheDocument();
-      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
+      expect(screen.getByText("Actual")).toBeInTheDocument();
+      expect(screen.queryByText("unentered")).not.toBeInTheDocument();
     });
 
     it('should show "Bid" button when playerInput is empty and type is Bid', () => {
       const props = {
         ...defaultProps,
-        playerInput: '',
-        type: 'Bid' as const,
+        playerInput: "",
+        type: "Bid" as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
-      expect(screen.getByText('Bid')).toBeInTheDocument();
-      expect(screen.queryByText('unentered')).not.toBeInTheDocument();
+      expect(screen.getByText("Bid")).toBeInTheDocument();
+      expect(screen.queryByText("unentered")).not.toBeInTheDocument();
     });
   });
 
-  describe('individual input override capability', () => {
-    it('should allow editing individual inputs even when team total is being used', async () => {
+  describe("individual input override capability", () => {
+    it("should allow editing individual inputs even when team total is being used", async () => {
       const props = {
         ...defaultProps,
-        playerInput: '',
-        type: 'Actual' as const,
+        playerInput: "",
+        type: "Actual" as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
 
       // Should show "Actual" button when empty
-      expect(screen.getByText('Actual')).toBeInTheDocument();
+      expect(screen.getByText("Actual")).toBeInTheDocument();
 
       // Should be clickable to open modal
-      fireEvent.click(screen.getByText('Actual'));
+      fireEvent.click(screen.getByText("Actual"));
 
       // Modal should open
-      expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
+      expect(
+        await screen.findByTestId("bidSelectionModal"),
+      ).toBeInTheDocument();
     });
 
-    it('should show individual values with asterisks when both players have numeric values and are auto-generated', async () => {
+    it("should show individual values with asterisks when both players have numeric values and are auto-generated", async () => {
       const mockSetCurrentRound = vi.fn();
       const mockCurrentRound = {
         team1BidsAndActuals: {
@@ -181,22 +188,24 @@ describe('PlayerInput', () => {
           playerInput={3}
           currentRound={mockCurrentRound as unknown as Round}
         />,
-        { setCurrentRound: mockSetCurrentRound }
+        { setCurrentRound: mockSetCurrentRound },
       );
 
       // Should show individual value with asterisk when auto-generated
-      expect(screen.getByText('3*')).toBeInTheDocument();
+      expect(screen.getByText("3*")).toBeInTheDocument();
 
       // Should show edit icon
-      expect(screen.getByTestId('editIcon')).toBeInTheDocument();
+      expect(screen.getByTestId("editIcon")).toBeInTheDocument();
 
       // Should be clickable to open modal
-      const valueElement = screen.getByText('3*');
+      const valueElement = screen.getByText("3*");
       fireEvent.click(valueElement);
-      expect(await screen.findByTestId('bidSelectionModal')).toBeInTheDocument();
+      expect(
+        await screen.findByTestId("bidSelectionModal"),
+      ).toBeInTheDocument();
     });
 
-    it('should show individual values without asterisks when manually entered', () => {
+    it("should show individual values without asterisks when manually entered", () => {
       const mockSetCurrentRound = vi.fn();
       const mockCurrentRound = {
         team1BidsAndActuals: {
@@ -219,17 +228,17 @@ describe('PlayerInput', () => {
           playerInput={3}
           currentRound={mockCurrentRound as unknown as Round}
         />,
-        { setCurrentRound: mockSetCurrentRound }
+        { setCurrentRound: mockSetCurrentRound },
       );
 
       // Should show individual value without asterisk when manually entered
-      expect(screen.getByText('3')).toBeInTheDocument();
+      expect(screen.getByText("3")).toBeInTheDocument();
 
       // Should show edit icon
-      expect(screen.getByTestId('editIcon')).toBeInTheDocument();
+      expect(screen.getByTestId("editIcon")).toBeInTheDocument();
     });
 
-    it('should show asterisk on auto-generated actual when other player is manually entered', () => {
+    it("should show asterisk on auto-generated actual when other player is manually entered", () => {
       const mockSetCurrentRound = vi.fn();
       const mockSetRoundHistory = vi.fn();
 
@@ -241,16 +250,16 @@ describe('PlayerInput', () => {
 
       const mockCurrentRound = {
         team1BidsAndActuals: {
-          p1Bid: '1',
-          p2Bid: '2',
+          p1Bid: "1",
+          p2Bid: "2",
           p1Actual: 4, // Manually entered
           p2Actual: 2, // Auto-generated
         },
         team2BidsAndActuals: {
-          p1Bid: '3',
-          p2Bid: '4',
-          p1Actual: '',
-          p2Actual: '',
+          p1Bid: "3",
+          p2Bid: "4",
+          p1Actual: "",
+          p2Actual: "",
         },
         autoGeneratedActuals: {
           team1P1: false, // Manually entered
@@ -262,7 +271,9 @@ describe('PlayerInput', () => {
 
       render(
         <Provider>
-          <GlobalContext.Provider value={testContextValue as unknown as GlobalContextValue}>
+          <GlobalContext.Provider
+            value={testContextValue as unknown as GlobalContextValue}
+          >
             <PlayerInput
               teamName="Team 1"
               roundHistory={[]}
@@ -272,23 +283,23 @@ describe('PlayerInput', () => {
               playerName="Kim"
               inputId="team1BidsAndActuals.p2Actual"
               dealerId="team1BidsAndActuals.p2Bid"
-              fieldToUpdate={'team1BidsAndActuals.p2Actual'}
+              fieldToUpdate={"team1BidsAndActuals.p2Actual"}
               playerInput={mockCurrentRound.team1BidsAndActuals.p2Actual}
-              type={'Actual'}
+              type={"Actual"}
               teamClassName="team1"
             />
           </GlobalContext.Provider>
-        </Provider>
+        </Provider>,
       );
 
       // Should show "2*" for auto-generated actual
-      expect(screen.getByText('2*')).toBeInTheDocument();
+      expect(screen.getByText("2*")).toBeInTheDocument();
 
       // Should show edit icon
-      expect(screen.getByTestId('editIcon')).toBeInTheDocument();
+      expect(screen.getByTestId("editIcon")).toBeInTheDocument();
     });
 
-    it('should not show asterisk on manually entered actual', () => {
+    it("should not show asterisk on manually entered actual", () => {
       const mockSetCurrentRound = vi.fn();
       const mockSetRoundHistory = vi.fn();
 
@@ -300,16 +311,16 @@ describe('PlayerInput', () => {
 
       const mockCurrentRound = {
         team1BidsAndActuals: {
-          p1Bid: '1',
-          p2Bid: '2',
+          p1Bid: "1",
+          p2Bid: "2",
           p1Actual: 4, // Manually entered
           p2Actual: 2, // Auto-generated
         },
         team2BidsAndActuals: {
-          p1Bid: '3',
-          p2Bid: '4',
-          p1Actual: '',
-          p2Actual: '',
+          p1Bid: "3",
+          p2Bid: "4",
+          p1Actual: "",
+          p2Actual: "",
         },
         autoGeneratedActuals: {
           team1P1: false, // Manually entered
@@ -321,7 +332,9 @@ describe('PlayerInput', () => {
 
       render(
         <Provider>
-          <GlobalContext.Provider value={testContextValue as unknown as GlobalContextValue}>
+          <GlobalContext.Provider
+            value={testContextValue as unknown as GlobalContextValue}
+          >
             <PlayerInput
               teamName="Team 1"
               roundHistory={[]}
@@ -331,21 +344,21 @@ describe('PlayerInput', () => {
               playerName="Mike"
               inputId="team1BidsAndActuals.p1Actual"
               dealerId="team1BidsAndActuals.p1Bid"
-              fieldToUpdate={'team1BidsAndActuals.p1Actual'}
+              fieldToUpdate={"team1BidsAndActuals.p1Actual"}
               playerInput={mockCurrentRound.team1BidsAndActuals.p1Actual}
-              type={'Actual'}
+              type={"Actual"}
               teamClassName="team1"
             />
           </GlobalContext.Provider>
-        </Provider>
+        </Provider>,
       );
 
       // Should show "4" without asterisk for manually entered actual
-      expect(screen.getByText('4')).toBeInTheDocument();
-      expect(screen.queryByText('4*')).not.toBeInTheDocument();
+      expect(screen.getByText("4")).toBeInTheDocument();
+      expect(screen.queryByText("4*")).not.toBeInTheDocument();
 
       // Should show edit icon
-      expect(screen.getByTestId('editIcon')).toBeInTheDocument();
+      expect(screen.getByTestId("editIcon")).toBeInTheDocument();
     });
   });
 });

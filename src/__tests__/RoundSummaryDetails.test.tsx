@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import RoundSummary from '../components/game/RoundSummary';
-import { Provider } from '../components/ui/provider';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import RoundSummary from "../components/game/RoundSummary";
+import { Provider } from "../components/ui/provider";
 
 // Mock props
 const mockStats = {
@@ -48,8 +48,8 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
   <Provider>{children}</Provider>
 );
 
-describe('RoundSummary', () => {
-  it('renders summary and toggle button', () => {
+describe("RoundSummary", () => {
+  it("renders summary and toggle button", () => {
     render(
       <TestWrapper>
         <RoundSummary
@@ -61,18 +61,18 @@ describe('RoundSummary', () => {
           team1Stats={mockStats}
           team2Stats={mockStats2}
         />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     expect(screen.getAllByText(/Round 1 Score/i)).toHaveLength(2);
     // 30 appears twice: Round 1 Score and Round 1 Bags (if they were the same, but here score is 30, bags is 1)
     // Wait, let's just check for existence or use getAll as needed.
     // Team 1: Round 1 Score (30). Total 1.
-    expect(screen.getByText('30')).toBeInTheDocument();
-    expect(screen.getByLabelText('Toggle details')).toBeInTheDocument();
+    expect(screen.getByText("30")).toBeInTheDocument();
+    expect(screen.getByLabelText("Toggle details")).toBeInTheDocument();
   });
 
-  it('toggles drawer and shows details', () => {
+  it("toggles drawer and shows details", () => {
     render(
       <TestWrapper>
         <RoundSummary
@@ -84,31 +84,31 @@ describe('RoundSummary', () => {
           team1Stats={mockStats}
           team2Stats={mockStats2}
         />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
-    const button = screen.getByLabelText('Toggle details');
+    const button = screen.getByLabelText("Toggle details");
     fireEvent.click(button);
 
     // Verify Section Headers (now shared/single)
-    expect(screen.getAllByText('Initial to Final')).toHaveLength(1);
-    expect(screen.getAllByText('Net')).toHaveLength(3); // 1 Title + 2 Labels
-    expect(screen.getAllByText('Bags')).toHaveLength(1);
+    expect(screen.getAllByText("Initial to Final")).toHaveLength(1);
+    expect(screen.getAllByText("Net")).toHaveLength(3); // 1 Title + 2 Labels
+    expect(screen.getAllByText("Bags")).toHaveLength(1);
     // Penalties section should NOT be present in this mock (no penalties)
-    expect(screen.getAllByText('Game Score')).toHaveLength(2);
-    expect(screen.getByText('200')).toBeInTheDocument();
-    expect(screen.getByText('230')).toBeInTheDocument();
+    expect(screen.getAllByText("Game Score")).toHaveLength(2);
+    expect(screen.getByText("200")).toBeInTheDocument();
+    expect(screen.getByText("230")).toBeInTheDocument();
 
-    expect(screen.queryByText('Penalties')).not.toBeInTheDocument();
+    expect(screen.queryByText("Penalties")).not.toBeInTheDocument();
 
-    expect(screen.getAllByText('Points Gained')).toHaveLength(2);
+    expect(screen.getAllByText("Points Gained")).toHaveLength(2);
     // 30 appears thrice: Round 1 Score, Points Gained, and Net for Team 1
-    expect(screen.getAllByText('30')).toHaveLength(3);
+    expect(screen.getAllByText("30")).toHaveLength(3);
 
     // Check for "Points Lost" label
-    expect(screen.getAllByText('Points Lost')).toHaveLength(2);
+    expect(screen.getAllByText("Points Lost")).toHaveLength(2);
 
-    expect(screen.getAllByText('Net')).toHaveLength(3); // 1 Title + 2 Labels
+    expect(screen.getAllByText("Net")).toHaveLength(3); // 1 Title + 2 Labels
 
     // Check for "Carryover" instead of "Bag Reset Carryover"
     expect(screen.queryByText(/Bag Reset Carryover:/)).not.toBeInTheDocument();
@@ -117,12 +117,12 @@ describe('RoundSummary', () => {
     expect(screen.getAllByText(/Total Bags/)).toHaveLength(2);
 
     // Check for "Game Bags" and its value
-    expect(screen.getAllByText('Game Bags')).toHaveLength(2);
-    expect(screen.getAllByText('5')).toHaveLength(2); // Initial Bags and Game Bags start
-    expect(screen.getAllByText('6')).toHaveLength(2); // Game Bags end and Total Bags
+    expect(screen.getAllByText("Game Bags")).toHaveLength(2);
+    expect(screen.getAllByText("5")).toHaveLength(2); // Initial Bags and Game Bags start
+    expect(screen.getAllByText("6")).toHaveLength(2); // Game Bags end and Total Bags
 
     // Check for "Initial Bags"
-    expect(screen.getAllByText('Initial Bags')).toHaveLength(2);
+    expect(screen.getAllByText("Initial Bags")).toHaveLength(2);
     expect(screen.getAllByText(/Total Bags/)).toHaveLength(2);
   });
 
@@ -138,43 +138,43 @@ describe('RoundSummary', () => {
           team1Stats={mockPenaltyStats}
           team2Stats={mockStats2}
         />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
-    const button = screen.getByLabelText('Toggle details');
+    const button = screen.getByLabelText("Toggle details");
     fireEvent.click(button);
 
     // Look for penalty label and value
-    expect(screen.getByText('Bag Penalty')).toBeInTheDocument();
+    expect(screen.getByText("Bag Penalty")).toBeInTheDocument();
     // Look for penalty label and value
-    expect(screen.getByText('Bag Penalty')).toBeInTheDocument();
+    expect(screen.getByText("Bag Penalty")).toBeInTheDocument();
     // -100 should be present thrice (once in Round Score, once in Bag Penalty, once in Net)
-    expect(screen.getAllByText('-100')).toHaveLength(3);
+    expect(screen.getAllByText("-100")).toHaveLength(3);
 
     // Check for "Points Lost" label
-    expect(screen.getAllByText('Points Lost')).toHaveLength(2);
+    expect(screen.getAllByText("Points Lost")).toHaveLength(2);
     // The value 100 should be present (One in Bag Penalty, one in Points Lost)
-    expect(screen.getAllByText('100')).toHaveLength(2);
+    expect(screen.getAllByText("100")).toHaveLength(2);
 
-    expect(screen.getAllByText('Net')).toHaveLength(3); // 1 Title + 2 Labels
+    expect(screen.getAllByText("Net")).toHaveLength(3); // 1 Title + 2 Labels
 
     // Since mockPenaltyStats has bagPenalty: 100, we expect "Carryover"
     expect(screen.getByText(/Carryover/)).toBeInTheDocument();
 
     // Check for "Game Bags"
-    expect(screen.getAllByText('Game Bags')).toHaveLength(2);
+    expect(screen.getAllByText("Game Bags")).toHaveLength(2);
     // 9 appears once in Initial Bags, once in Game Bags start for Team 1
-    expect(screen.getAllByText('9')).toHaveLength(2);
+    expect(screen.getAllByText("9")).toHaveLength(2);
     // 10 appears once in Game Bags end
-    expect(screen.getByText('10')).toBeInTheDocument();
+    expect(screen.getByText("10")).toBeInTheDocument();
     // And once in Carryover
     expect(screen.getByText(/Carryover: 10/)).toBeInTheDocument();
 
     // Check for "Initial Bags"
-    expect(screen.getAllByText('Initial Bags')).toHaveLength(2);
+    expect(screen.getAllByText("Initial Bags")).toHaveLength(2);
 
     // Team 2 should have "None" in penalties
-    expect(screen.getByText('None')).toBeInTheDocument();
+    expect(screen.getByText("None")).toBeInTheDocument();
   });
 
   it('shows "Bags reset to 0" when bags are cleared', () => {
@@ -194,21 +194,21 @@ describe('RoundSummary', () => {
           team1Stats={mockResetStats}
           team2Stats={mockStats2}
         />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
-    const button = screen.getByLabelText('Toggle details');
+    const button = screen.getByLabelText("Toggle details");
     fireEvent.click(button);
 
-    expect(screen.getByText('Bag Penalty')).toBeInTheDocument();
-    expect(screen.getByText('Reset to 0')).toBeInTheDocument();
+    expect(screen.getByText("Bag Penalty")).toBeInTheDocument();
+    expect(screen.getByText("Reset to 0")).toBeInTheDocument();
     expect(screen.queryByText(/Carryover/)).not.toBeInTheDocument();
 
     // Team 2 should have "None" in penalties
-    expect(screen.getByText('None')).toBeInTheDocument();
+    expect(screen.getByText("None")).toBeInTheDocument();
   });
 
-  it('shows Nil and Blind Nil penalties in red', () => {
+  it("shows Nil and Blind Nil penalties in red", () => {
     const mockNilStats = {
       ...mockStats,
       nilPenalty: 100,
@@ -240,24 +240,24 @@ describe('RoundSummary', () => {
           team1Stats={mockNilStats}
           team2Stats={mockBlindNilStats}
         />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
-    const button = screen.getByLabelText('Toggle details');
+    const button = screen.getByLabelText("Toggle details");
     fireEvent.click(button);
 
-    expect(screen.getByText('Nil Penalty')).toBeInTheDocument();
-    expect(screen.getByText('Blind Nil Penalty')).toBeInTheDocument();
-    expect(screen.getByText('Set Penalty')).toBeInTheDocument();
+    expect(screen.getByText("Nil Penalty")).toBeInTheDocument();
+    expect(screen.getByText("Blind Nil Penalty")).toBeInTheDocument();
+    expect(screen.getByText("Set Penalty")).toBeInTheDocument();
     // Nil Penalty -100 (once)
-    expect(screen.getByText('-100')).toBeInTheDocument();
+    expect(screen.getByText("-100")).toBeInTheDocument();
     // Blind Nil -200 (once)
-    expect(screen.getByText('-200')).toBeInTheDocument();
+    expect(screen.getByText("-200")).toBeInTheDocument();
     // Set Penalty -30 (once)
-    expect(screen.getByText('-30')).toBeInTheDocument();
+    expect(screen.getByText("-30")).toBeInTheDocument();
     // Net -230 (twice: Round Score and Net)
-    expect(screen.getAllByText('-230')).toHaveLength(2);
+    expect(screen.getAllByText("-230")).toHaveLength(2);
     // Net -60 (twice: Round Score and Net)
-    expect(screen.getAllByText('-60')).toHaveLength(2);
+    expect(screen.getAllByText("-60")).toHaveLength(2);
   });
 });

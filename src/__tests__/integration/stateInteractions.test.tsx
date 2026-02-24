@@ -1,13 +1,13 @@
-import { vi, type Mock } from 'vitest';
+import { vi, type Mock } from "vitest";
 
-import { render, screen, waitFor } from '@testing-library/react';
-import { Provider } from '../../components/ui/provider';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import type { GlobalContextValue, Round } from '../../types';
-import type { ReactNode } from 'react';
-import SpadesCalculator from '../../pages/SpadesCalculator';
-import HomePage from '../../pages/HomePage';
+import { render, screen, waitFor } from "@testing-library/react";
+import { Provider } from "../../components/ui/provider";
+import { GlobalContext } from "../../helpers/context/GlobalContext";
+import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import type { GlobalContextValue, Round } from "../../types";
+import type { ReactNode } from "react";
+import SpadesCalculator from "../../pages/SpadesCalculator";
+import HomePage from "../../pages/HomePage";
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -15,22 +15,25 @@ const mockLocalStorage = {
   setItem: vi.fn(),
   clear: vi.fn(),
 };
-Object.defineProperty(window, 'localStorage', {
+Object.defineProperty(window, "localStorage", {
   value: mockLocalStorage,
 });
 
 // Mock the math functions
-vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
-  const actual = await importOriginal() as Record<string, unknown>;
+vi.mock("../../helpers/math/spadesMath", async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
     addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
-    isNotDefaultValue: vi.fn((value) => value !== ''),
+    isNotDefaultValue: vi.fn((value) => value !== ""),
     calculateTeamScore: vi.fn((bids: string[], actuals: string[]) => {
-      const totalBid = bids.reduce((sum: number, bid: string) => sum + (parseInt(bid) || 0), 0);
+      const totalBid = bids.reduce(
+        (sum: number, bid: string) => sum + (parseInt(bid) || 0),
+        0,
+      );
       const totalActual = actuals.reduce(
         (sum: number, actual: string) => sum + (parseInt(actual) || 0),
-        0
+        0,
       );
       if (totalActual >= totalBid) {
         return totalBid * 10 + (totalActual - totalBid);
@@ -49,18 +52,18 @@ interface MockContextValue extends GlobalContextValue {
 const renderWithProviders = (
   component: ReactNode,
   contextValue: GlobalContextValue,
-  initialEntries = ['/']
+  initialEntries = ["/"],
 ) => {
   const router = createMemoryRouter(
     [
       {
-        path: '/',
+        path: "/",
         element: component,
       },
     ],
     {
       initialEntries,
-    }
+    },
   );
 
   return render(
@@ -68,11 +71,11 @@ const renderWithProviders = (
       <GlobalContext.Provider value={contextValue}>
         <RouterProvider router={router} />
       </GlobalContext.Provider>
-    </Provider>
+    </Provider>,
   );
 };
 
-describe('Complex State Interactions Between Unrelated Components', () => {
+describe("Complex State Interactions Between Unrelated Components", () => {
   let mockContextValue: MockContextValue;
   let mockSetCurrentRound: Mock;
   let mockSetRoundHistory: Mock;
@@ -86,26 +89,26 @@ describe('Complex State Interactions Between Unrelated Components', () => {
 
     mockContextValue = {
       names: {
-        team1Name: 'Team 1',
-        team2Name: 'Team 2',
-        t1p1Name: 'Mike',
-        t1p2Name: 'Kim',
-        t2p1Name: 'Mom',
-        t2p2Name: 'Dad',
+        team1Name: "Team 1",
+        team2Name: "Team 2",
+        t1p1Name: "Mike",
+        t1p2Name: "Kim",
+        t2p1Name: "Mom",
+        t2p2Name: "Dad",
       },
       setNames: mockSetNames,
       currentRound: {
         team1BidsAndActuals: {
-          p1Bid: '',
-          p2Bid: '',
-          p1Actual: '',
-          p2Actual: '',
+          p1Bid: "",
+          p2Bid: "",
+          p1Actual: "",
+          p2Actual: "",
         },
         team2BidsAndActuals: {
-          p1Bid: '',
-          p2Bid: '',
-          p1Actual: '',
-          p2Actual: '',
+          p1Bid: "",
+          p2Bid: "",
+          p1Actual: "",
+          p2Actual: "",
         },
       } as Round,
       setCurrentRound: mockSetCurrentRound,
@@ -120,12 +123,12 @@ describe('Complex State Interactions Between Unrelated Components', () => {
     } as unknown as MockContextValue;
 
     mockLocalStorage.getItem.mockReturnValue(
-      JSON.stringify(mockContextValue.names)
+      JSON.stringify(mockContextValue.names),
     );
   });
 
-  describe('Component Rendering', () => {
-    it('should render SpadesCalculator component with initial state', () => {
+  describe("Component Rendering", () => {
+    it("should render SpadesCalculator component with initial state", () => {
       renderWithProviders(<SpadesCalculator />, mockContextValue);
 
       // Verify component renders with team names (there are multiple instances)
@@ -133,33 +136,31 @@ describe('Complex State Interactions Between Unrelated Components', () => {
       expect(screen.getAllByText(/Team 2/i)).toHaveLength(1);
     });
 
-    it('should render HomePage component', () => {
+    it("should render HomePage component", () => {
       renderWithProviders(<HomePage />, mockContextValue);
 
       // Verify HomePage renders
-      expect(
-        screen.getByText(/SpadesCalculator/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/SpadesCalculator/i)).toBeInTheDocument();
     });
   });
 
-  describe('Score Calculation State Propagation', () => {
-    it('should update team scores when round is completed', async () => {
+  describe("Score Calculation State Propagation", () => {
+    it("should update team scores when round is completed", async () => {
       // Set up a completed round
       const completedRoundState = {
         ...mockContextValue,
         currentRound: {
           team1BidsAndActuals: {
-            p1Bid: '3',
-            p2Bid: '2',
-            p1Actual: '3',
-            p2Actual: '2',
+            p1Bid: "3",
+            p2Bid: "2",
+            p1Actual: "3",
+            p2Actual: "2",
           },
           team2BidsAndActuals: {
-            p1Bid: '4',
-            p2Bid: '4',
-            p1Actual: '4',
-            p2Actual: '4',
+            p1Bid: "4",
+            p2Bid: "4",
+            p1Actual: "4",
+            p2Actual: "4",
           },
         },
       };
@@ -174,20 +175,20 @@ describe('Complex State Interactions Between Unrelated Components', () => {
           expect.arrayContaining([
             expect.objectContaining({
               team1BidsAndActuals: expect.objectContaining({
-                p1Bid: '3',
-                p2Bid: '2',
-                p1Actual: '3',
-                p2Actual: '2',
+                p1Bid: "3",
+                p2Bid: "2",
+                p1Actual: "3",
+                p2Actual: "2",
               }),
             }),
-          ])
+          ]),
         );
       });
     });
   });
 
-  describe('Context Integration', () => {
-    it('should use context values correctly', () => {
+  describe("Context Integration", () => {
+    it("should use context values correctly", () => {
       renderWithProviders(<SpadesCalculator />, mockContextValue);
 
       // Verify that context values are used

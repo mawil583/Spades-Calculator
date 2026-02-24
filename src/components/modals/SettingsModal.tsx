@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { AppModal } from '../ui';
-import { ScoreSetting, UIModeSetting } from '../game';
-import { Box, Button } from '../ui';
-import { ScoreSettingsContent } from './ScoreSettingsModal';
-import { ArrowLeft } from 'lucide-react';
+import { useState } from "react";
+import { AppModal } from "../ui";
+import { ScoreSetting, UIModeSetting } from "../game";
+import { Box, Button } from "../ui";
+import { ScoreSettingsContent } from "./ScoreSettingsModal";
+import { ArrowLeft } from "lucide-react";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -11,29 +11,29 @@ interface SettingsModalProps {
 }
 
 const SettingsModal = ({ isOpen, setIsOpen }: SettingsModalProps) => {
-  const [view, setView] = useState('main'); // 'main' | 'scoreHelp'
+  const [view, setView] = useState("main"); // 'main' | 'scoreHelp'
 
   const handleClose = () => {
     setIsOpen(false);
     // Reset view slightly after closing for smooth transition next open
-    setTimeout(() => setView('main'), 300);
+    setTimeout(() => setView("main"), 300);
   };
 
   const handleOpenScoreHelp = () => {
-    setView('scoreHelp');
+    setView("scoreHelp");
   };
 
   const handleBack = () => {
-    setView('main');
+    setView("main");
   };
 
   return (
     <AppModal
       isOpen={isOpen}
       onClose={handleClose}
-      title={view === 'main' ? "Settings" : "Score Settings"}
+      title={view === "main" ? "Settings" : "Score Settings"}
     >
-      {view === 'main' ? (
+      {view === "main" ? (
         <>
           <Box mb={6}>
             <UIModeSetting />
@@ -44,13 +44,7 @@ const SettingsModal = ({ isOpen, setIsOpen }: SettingsModalProps) => {
         </>
       ) : (
         <Box>
-          <Button
-            onClick={handleBack}
-            variant="ghost"
-            mb={4}
-            pl={0}
-            size="sm"
-          >
+          <Button onClick={handleBack} variant="ghost" mb={4} pl={0} size="sm">
             <ArrowLeft size={16} />
             Back
           </Button>

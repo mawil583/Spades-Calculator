@@ -1,14 +1,7 @@
-
-import {
-  Box,
-  Button,
-  Text,
-  VStack,
-  HStack,
-} from './ui';
-import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, X } from 'lucide-react';
-import { useRegisterSW } from 'virtual:pwa-register/react';
+import { Box, Button, Text, VStack, HStack } from "./ui";
+import { motion, AnimatePresence } from "framer-motion";
+import { RefreshCw, X } from "lucide-react";
+import { useRegisterSW } from "virtual:pwa-register/react";
 
 const UpdateNotification = () => {
   const {
@@ -17,10 +10,10 @@ const UpdateNotification = () => {
     updateServiceWorker,
   } = useRegisterSW({
     onRegistered() {
-      console.log('SW Registered');
+      console.log("SW Registered");
     },
     onRegisterError(error: Error) {
-      console.error('SW registration error', error);
+      console.error("SW registration error", error);
     },
   });
 
@@ -42,9 +35,9 @@ const UpdateNotification = () => {
           exit={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2 }}
           style={{
-            position: 'fixed',
-            top: 'var(--app-spacing-4)',
-            right: 'var(--app-spacing-4)',
+            position: "fixed",
+            top: "var(--app-spacing-4)",
+            right: "var(--app-spacing-4)",
             zIndex: 9999,
           }}
         >
@@ -61,10 +54,14 @@ const UpdateNotification = () => {
           >
             <VStack gap="var(--app-spacing-4)" align="stretch">
               <HStack justify="space-between" align="center">
-                <Text fontWeight="extrabold" fontSize="md" letterSpacing="tight">
+                <Text
+                  fontWeight="extrabold"
+                  fontSize="md"
+                  letterSpacing="tight"
+                >
                   {needRefresh
-                    ? '🚀 New Version Available'
-                    : '✨ Ready for Offline Use'}
+                    ? "🚀 New Version Available"
+                    : "✨ Ready for Offline Use"}
                 </Text>
                 <Button
                   size="xs"
@@ -80,8 +77,8 @@ const UpdateNotification = () => {
 
               <Text fontSize="sm" opacity="0.9">
                 {needRefresh
-                  ? 'A new version of Spades Calculator is ready. Update now to get the latest features and improvements.'
-                  : 'The app has been cached and is ready to work offline.'}
+                  ? "A new version of Spades Calculator is ready. Update now to get the latest features and improvements."
+                  : "The app has been cached and is ready to work offline."}
               </Text>
 
               <HStack gap="var(--app-spacing-2)">
@@ -96,12 +93,8 @@ const UpdateNotification = () => {
                     Update Now
                   </Button>
                 )}
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={handleDismiss}
-                >
-                  {needRefresh ? 'Later' : 'Dismiss'}
+                <Button size="sm" variant="ghost" onClick={handleDismiss}>
+                  {needRefresh ? "Later" : "Dismiss"}
                 </Button>
               </HStack>
             </VStack>

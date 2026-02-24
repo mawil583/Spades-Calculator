@@ -1,20 +1,29 @@
-import { useState, useEffect, useContext, useMemo } from 'react';
-import { GlobalContext } from '../context/GlobalContext';
+import { useState, useEffect, useContext, useMemo } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 import {
   isNotDefaultValue,
   addInputs,
   calculateTeamScoreFromRoundHistory,
-  calculateRoundScore
-} from '../math/spadesMath';
-import { TEAM1, TEAM2 } from './constants';
+  calculateRoundScore,
+} from "../math/spadesMath";
+import { TEAM1, TEAM2 } from "./constants";
 
-import type { Names, Round, NilSetting, TeamKey, InputValue } from '../../types';
+import type {
+  Names,
+  Round,
+  NilSetting,
+  TeamKey,
+  InputValue,
+} from "../../types";
 
-export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T | ((val: T) => T)) => void] {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T,
+): [T, (value: T | ((val: T) => T)) => void] {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return initialValue;
     }
     try {
@@ -43,7 +52,7 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
@@ -54,20 +63,27 @@ export function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T 
   return [storedValue, setValue];
 }
 
-export function useRedirectWhenFalsey(names: Names | null, navigate: (path: string) => void) {
+export function useRedirectWhenFalsey(
+  names: Names | null,
+  navigate: (path: string) => void,
+) {
   useEffect(() => {
     if (!names) {
-      navigate('/');
+      navigate("/");
     } else {
       const nameVals = Object.values(names);
       if (!nameVals.every(isNotDefaultValue)) {
-        navigate('/');
+        navigate("/");
       }
     }
   }, [names, navigate]);
 }
 
-export function useSetUnclaimed(team1Bids: (string | number)[], team2Bids: (string | number)[], setNumUnclaimed: (num: number) => void) {
+export function useSetUnclaimed(
+  team1Bids: (string | number)[],
+  team2Bids: (string | number)[],
+  setNumUnclaimed: (num: number) => void,
+) {
   useEffect(() => {
     const totalClaimed: number = addInputs(...team1Bids, ...team2Bids);
     const unclaimed = 13 - totalClaimed;
@@ -78,7 +94,7 @@ export function useSetUnclaimed(team1Bids: (string | number)[], team2Bids: (stri
 export function useValidateActuals(
   allActualsAreSubmitted: boolean,
   totalActuals: number,
-  setIsValid: (isValid: boolean | ((prev: boolean) => boolean)) => void
+  setIsValid: (isValid: boolean | ((prev: boolean) => boolean)) => void,
 ) {
   useEffect(() => {
     if (allActualsAreSubmitted) {
@@ -102,7 +118,7 @@ export function useIndependentTeamScoring(
   resetCurrentRound: () => void,
   isNotDefaultValueFn: (val: InputValue) => boolean,
   setRoundHistory: (history: Round[]) => void,
-  roundHistory: Round[]
+  roundHistory: Round[],
 ) {
   useEffect(() => {
     const team1InputVals = Object.values(currentRound.team1BidsAndActuals);
@@ -125,7 +141,7 @@ export function useIndependentTeamScoring(
 
       const totalActuals = [...team1Actuals, ...team2Actuals].reduce(
         (sum: number, actual) => sum + parseInt(String(actual) || "0"),
-        0
+        0,
       );
 
       // Only complete the round if actuals are valid (add up to 13)
@@ -150,7 +166,7 @@ function calculateCurrentRoundTeamScore(
   currentRound: Round | null,
   teamKey: TeamKey,
   nilSetting: NilSetting | null,
-  isNotDefaultValue: (val: InputValue) => boolean
+  isNotDefaultValue: (val: InputValue) => boolean,
 ) {
   if (!currentRound) {
     return { teamScore: 0, teamBags: 0 };
@@ -175,7 +191,7 @@ function calculateCurrentRoundTeamScore(
     teamData.p2Bid,
     teamData.p1Actual,
     teamData.p2Actual,
-    nilSetting ?? undefined
+    nilSetting ?? undefined,
   );
 
   return {
@@ -190,8 +206,13 @@ export function useGameScores() {
   const currentRound = context?.currentRound || null;
 
   // Safe generic read?
-  const nilSettingStr = typeof window !== 'undefined' ? localStorage.getItem('nilScoringRule') : null;
-  const nilSetting: NilSetting | null = nilSettingStr ? JSON.parse(nilSettingStr) : null;
+  const nilSettingStr =
+    typeof window !== "undefined"
+      ? localStorage.getItem("nilScoringRule")
+      : null;
+  const nilSetting: NilSetting | null = nilSettingStr
+    ? JSON.parse(nilSettingStr)
+    : null;
 
   // Memoize history score calculation
   const historyScores = useMemo(() => {
@@ -199,12 +220,12 @@ export function useGameScores() {
     const team1 = calculateTeamScoreFromRoundHistory(
       history,
       TEAM1,
-      nilSetting
+      nilSetting,
     );
     const team2 = calculateTeamScoreFromRoundHistory(
       history,
       TEAM2,
-      nilSetting
+      nilSetting,
     );
     return { team1, team2 };
   }, [roundHistory, nilSetting]);
@@ -215,13 +236,13 @@ export function useGameScores() {
       currentRound,
       TEAM1,
       nilSetting,
-      isNotDefaultValue
+      isNotDefaultValue,
     );
     const team2 = calculateCurrentRoundTeamScore(
       currentRound,
       TEAM2,
       nilSetting,
-      isNotDefaultValue
+      isNotDefaultValue,
     );
     return { team1, team2 };
   }, [currentRound, nilSetting]);

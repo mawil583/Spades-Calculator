@@ -1,8 +1,7 @@
+import { Center, Heading, Flex, Text } from "../ui";
+import type { TeamScore as TeamScoreType } from "../../types";
 
-import { Center, Heading, Flex, Text } from '../ui';
-import type { TeamScore as TeamScoreType } from '../../types';
-
-import '../../App.css';
+import "../../App.css";
 
 interface TeamScoreProps {
   teamName: string;
@@ -13,20 +12,20 @@ interface TeamScoreProps {
 function TeamScore({ teamName, scoreObj, teamClassName }: TeamScoreProps) {
   return (
     <Flex
-      direction={'column'}
-      style={{ lineHeight: '45px' }}
+      direction={"column"}
+      style={{ lineHeight: "45px" }}
       className={teamClassName}
     >
       <Center>
-        <Heading as={'h2'} size="md" mb={0}>
+        <Heading as={"h2"} size="md" mb={0}>
           {teamName}
         </Heading>
       </Center>
       <Center>
-        <Text fontSize={'4xl'}>{scoreObj.teamScore}</Text>
+        <Text fontSize={"4xl"}>{scoreObj.teamScore}</Text>
       </Center>
       <Center>
-        <Text fontSize={'md'} style={{ lineHeight: '15px' }}>
+        <Text fontSize={"md"} style={{ lineHeight: "15px" }}>
           {scoreObj.teamBags} bags
         </Text>
       </Center>

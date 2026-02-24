@@ -1,15 +1,15 @@
-import { useState, useContext } from 'react';
-import type { BoxProps } from '../ui/box';
-import { useNavigate } from 'react-router-dom';
-import { AppModal } from '../ui';
+import { useState, useContext } from "react";
+import type { BoxProps } from "../ui/box";
+import { useNavigate } from "react-router-dom";
+import { AppModal } from "../ui";
 import {
   initialNames,
   initialFirstDealerOrder,
-} from '../../helpers/utils/constants';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { rotateArr } from '../../helpers/utils/helperFunctions';
-import DataWarningQuestion from '../forms/DataWarningQuestion';
-import NewPlayerQuestion from '../forms/NewPlayerQuestion';
+} from "../../helpers/utils/constants";
+import { GlobalContext } from "../../helpers/context/GlobalContext";
+import { rotateArr } from "../../helpers/utils/helperFunctions";
+import DataWarningQuestion from "../forms/DataWarningQuestion";
+import NewPlayerQuestion from "../forms/NewPlayerQuestion";
 
 interface WarningModalProps {
   isOpen: boolean;
@@ -17,7 +17,11 @@ interface WarningModalProps {
   resetNames?: (names: typeof initialNames) => void;
 }
 
-function WarningModal({ isOpen, setIsModalOpen, resetNames }: WarningModalProps) {
+function WarningModal({
+  isOpen,
+  setIsModalOpen,
+  resetNames,
+}: WarningModalProps) {
   const navigate = useNavigate();
   const {
     resetCurrentRound,
@@ -59,7 +63,7 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }: WarningModalProps)
     resetCurrentRound();
     setRoundHistory([]);
     setIsModalOpen(false);
-    navigate('/spades-calculator');
+    navigate("/spades-calculator");
   };
 
   const onDifferentTeams = () => {
@@ -68,19 +72,26 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }: WarningModalProps)
     if (resetNames) {
       resetNames(initialNames);
     } else {
-      localStorage.setItem('names', JSON.stringify(initialNames));
+      localStorage.setItem("names", JSON.stringify(initialNames));
     }
     setFirstDealerOrder(initialFirstDealerOrder);
     setIsModalOpen(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
-      title={showDataWarning ? 'Are you sure?' : 'Would you like to keep the same teams?'}
-      contentProps={{ 'data-testid': 'warning-modal' } as BoxProps & Record<`data-${string}`, string>}
+      title={
+        showDataWarning
+          ? "Are you sure?"
+          : "Would you like to keep the same teams?"
+      }
+      contentProps={
+        { "data-testid": "warning-modal" } as BoxProps &
+          Record<`data-${string}`, string>
+      }
     >
       {showDataWarning && (
         <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />

@@ -1,8 +1,8 @@
-import { vi } from 'vitest';
+import { vi } from "vitest";
 import {
   setLocalStorage,
   getLocalStorage,
-} from '../helpers/utils/helperFunctions';
+} from "../helpers/utils/helperFunctions";
 
 // Mock localStorage
 const localStorageMock = {
@@ -12,29 +12,29 @@ const localStorageMock = {
 };
 global.localStorage = localStorageMock as unknown as Storage;
 
-describe('Team Total Storage', () => {
+describe("Team Total Storage", () => {
   beforeEach(() => {
     localStorageMock.getItem.mockClear();
     localStorageMock.setItem.mockClear();
     localStorageMock.clear.mockClear();
   });
 
-  describe('team total localStorage operations', () => {
-    it('should save team total to localStorage', () => {
+  describe("team total localStorage operations", () => {
+    it("should save team total to localStorage", () => {
       const teamTotal = 8;
-      const key = 'team1ActualTotal';
+      const key = "team1ActualTotal";
 
       setLocalStorage(key, teamTotal);
 
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         key,
-        JSON.stringify(teamTotal)
+        JSON.stringify(teamTotal),
       );
     });
 
-    it('should retrieve team total from localStorage', () => {
+    it("should retrieve team total from localStorage", () => {
       const teamTotal = 8;
-      const key = 'team1ActualTotal';
+      const key = "team1ActualTotal";
 
       localStorageMock.getItem.mockReturnValue(JSON.stringify(teamTotal));
 
@@ -45,10 +45,10 @@ describe('Team Total Storage', () => {
     });
   });
 
-  describe('team total persistence', () => {
-    it('should persist team total across page reloads', () => {
+  describe("team total persistence", () => {
+    it("should persist team total across page reloads", () => {
       const teamTotal = 6;
-      const key = 'team1ActualTotal';
+      const key = "team1ActualTotal";
 
       // Simulate saving
       setLocalStorage(key, teamTotal);

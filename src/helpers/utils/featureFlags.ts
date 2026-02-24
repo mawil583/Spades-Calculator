@@ -1,6 +1,6 @@
 // Feature flag definitions and utilities
 export const FEATURE_FLAGS = {
-  TABLE_ROUND_UI: 'featureFlag_tableRoundUI',
+  TABLE_ROUND_UI: "featureFlag_tableRoundUI",
 };
 
 export const FLAG_DEFAULTS = {
@@ -15,5 +15,9 @@ export const getFeatureFlag = (flagKey: string) => {
 
 export const setFeatureFlag = (flagKey: string, value: boolean) => {
   localStorage.setItem(flagKey, JSON.stringify(value));
-  window.dispatchEvent(new CustomEvent('feature-flag-changed', { detail: { key: flagKey, value } }));
+  window.dispatchEvent(
+    new CustomEvent("feature-flag-changed", {
+      detail: { key: flagKey, value },
+    }),
+  );
 };

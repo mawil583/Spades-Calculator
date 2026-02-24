@@ -1,8 +1,7 @@
-
-import { Text, Center } from '../ui';
-import { getUnclaimedText } from '../../helpers/utils/helperFunctions';
-import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
-import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
+import { Text, Center } from "../ui";
+import { getUnclaimedText } from "../../helpers/utils/helperFunctions";
+import { useFeatureFlag } from "../../helpers/utils/useFeatureFlag";
+import { FEATURE_FLAGS } from "../../helpers/utils/featureFlags";
 
 interface UnclaimedProps {
   numUnclaimed: number;
