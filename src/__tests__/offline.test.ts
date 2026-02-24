@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 // No import needed for jest in this environment
 
 // Mock the offline page HTML content
@@ -81,17 +82,17 @@ const mockOfflinePageContent = `
 describe('Offline Page Content', () => {
   beforeEach(() => {
     // Mock DOMParser
-    global.DOMParser = jest.fn().mockImplementation(() => ({
-      parseFromString: jest.fn().mockReturnValue({
-        querySelector: jest.fn(),
-        querySelectorAll: jest.fn(),
-        getElementsByTagName: jest.fn(),
+    global.DOMParser = vi.fn().mockImplementation(() => ({
+      parseFromString: vi.fn().mockReturnValue({
+        querySelector: vi.fn(),
+        querySelectorAll: vi.fn(),
+        getElementsByTagName: vi.fn(),
       }),
     }));
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('HTML Structure', () => {

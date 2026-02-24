@@ -1,13 +1,16 @@
-// @ts-nocheck
 import { RadioGroup as ChakraRadioGroup } from "@chakra-ui/react"
 import { forwardRef } from "react"
 
 export const RadioGroup = ChakraRadioGroup.Root
 
-export const Radio = forwardRef(function Radio(props, ref) {
+export interface RadioProps extends ChakraRadioGroup.ItemProps {
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>
+}
+
+export const Radio = forwardRef<HTMLDivElement, RadioProps>(function Radio(props, ref) {
   const { children, inputProps, ...rest } = props
   return (
-    <ChakraRadioGroup.Item ref={ref} {...rest} sx={{ cursor: 'pointer', padding: '4px 0', display: 'flex !important', alignItems: 'center !important', width: 'fit-content !important' }}>
+    <ChakraRadioGroup.Item ref={ref} {...rest} cursor="pointer" py="1" display="flex" alignItems="center" width="fit-content">
       <ChakraRadioGroup.ItemHiddenInput {...inputProps} />
       <ChakraRadioGroup.ItemIndicator
         width="20px"
@@ -36,14 +39,14 @@ export const Radio = forwardRef(function Radio(props, ref) {
         }}
         position="relative"
         /* Remove the background color from theme override */
-        sx={{
+        css={{
           '&[data-state=checked]': {
             bg: 'transparent !important',
           }
         }}
       />
       {children && (
-        <ChakraRadioGroup.ItemText className="radio-label" sx={{ marginLeft: 'var(--app-spacing-2)', fontSize: 'var(--app-font-md)', display: 'inline-block !important' }}>{children}</ChakraRadioGroup.ItemText>
+        <ChakraRadioGroup.ItemText className="radio-label" ml="2" fontSize="md" display="inline-block">{children}</ChakraRadioGroup.ItemText>
       )}
     </ChakraRadioGroup.Item>
   )

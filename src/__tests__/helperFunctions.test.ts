@@ -7,6 +7,8 @@ import {
   getEditedRoundHistory,
 } from '../helpers/utils/helperFunctions';
 
+import type { Round } from '../types';
+
 describe('getActualsErrorText', () => {
   it('returns correct error message for total of 14', () => {
     const result = getActualsErrorText(14);
@@ -92,18 +94,18 @@ describe('getButtonValues', () => {
 });
 
 describe('updateInput', () => {
-  const mockCurrentRound = {
+  const mockCurrentRound: Round = {
     team1BidsAndActuals: {
       p1Bid: 3,
       p2Bid: 4,
-      p1Actual: null,
-      p2Actual: null,
+      p1Actual: '',
+      p2Actual: '',
     },
     team2BidsAndActuals: {
       p1Bid: 2,
       p2Bid: 3,
-      p1Actual: null,
-      p2Actual: null,
+      p1Actual: '',
+      p2Actual: '',
     },
   };
 
@@ -144,24 +146,24 @@ describe('updateInput', () => {
 
   it('handles null input values', () => {
     const result = updateInput({
-      input: null,
+      input: '',
       currentRound: mockCurrentRound,
       fieldToUpdate: 'team1BidsAndActuals.p1Actual',
     });
 
-    expect(result.team1BidsAndActuals.p1Actual).toBe(null);
+    expect(result.team1BidsAndActuals.p1Actual).toBe('');
   });
 });
 
 describe('getEditedRoundHistory', () => {
-  const mockRoundHistory = [
+  const mockRoundHistory: Round[] = [
     {
-      team1BidsAndActuals: { p1Bid: 3, p2Bid: 4 },
-      team2BidsAndActuals: { p1Bid: 2, p2Bid: 3 },
+      team1BidsAndActuals: { p1Bid: 3, p2Bid: 4, p1Actual: 3, p2Actual: 4 },
+      team2BidsAndActuals: { p1Bid: 2, p2Bid: 3, p1Actual: 2, p2Actual: 3 },
     },
     {
-      team1BidsAndActuals: { p1Bid: 1, p2Bid: 2 },
-      team2BidsAndActuals: { p1Bid: 3, p2Bid: 4 },
+      team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 1, p2Actual: 2 },
+      team2BidsAndActuals: { p1Bid: 3, p2Bid: 4, p1Actual: 3, p2Actual: 4 },
     },
   ];
 
@@ -173,7 +175,7 @@ describe('getEditedRoundHistory', () => {
 
     const result = getEditedRoundHistory({
       index: 0,
-      updatedRound,
+      updatedRound: updatedRound as Round,
       roundHistory: mockRoundHistory,
     });
 
@@ -183,14 +185,14 @@ describe('getEditedRoundHistory', () => {
 
   it('does not mutate the original array', () => {
     const original = JSON.parse(JSON.stringify(mockRoundHistory));
-    const updatedRound = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8 },
+    const updatedRound: Round = {
+      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6, p1Actual: 5, p2Actual: 6 },
+      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8, p1Actual: 7, p2Actual: 8 },
     };
 
     getEditedRoundHistory({
       index: 0,
-      updatedRound,
+      updatedRound: updatedRound,
       roundHistory: mockRoundHistory,
     });
 
@@ -205,7 +207,7 @@ describe('getEditedRoundHistory', () => {
 
     const result = getEditedRoundHistory({
       index: 0,
-      updatedRound,
+      updatedRound: updatedRound as Round,
       roundHistory: [],
     });
 
@@ -221,8 +223,8 @@ describe('getEditedRoundHistory', () => {
 
     const result = getEditedRoundHistory({
       index: 0,
-      updatedRound,
-      roundHistory: null,
+      updatedRound: updatedRound as Round,
+      roundHistory: null as unknown as Round[],
     });
 
     expect(result[0]).toEqual(updatedRound);
@@ -237,8 +239,8 @@ describe('getEditedRoundHistory', () => {
 
     const result = getEditedRoundHistory({
       index: 0,
-      updatedRound,
-      roundHistory: undefined,
+      updatedRound: updatedRound as Round,
+      roundHistory: undefined as unknown as Round[],
     });
 
     expect(result[0]).toEqual(updatedRound);

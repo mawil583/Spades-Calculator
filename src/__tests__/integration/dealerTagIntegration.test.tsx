@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from '../../components/ui/provider';
@@ -5,17 +6,23 @@ import BidSection from '../../components/game/BidSection';
 import ActualSection from '../../components/game/ActualSection';
 import Round from '../../components/game/Round';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import type { GlobalContextValue, Round as RoundType } from '../../types';
+import type { ReactNode } from 'react';
 
 // Mock the spadesMath functions
-jest.mock('../../helpers/math/spadesMath', () => ({
-  getDealerIdHistory: jest.fn(() => []),
-  getCurrentDealerId: jest.fn(() => 'team1BidsAndActuals.p1Bid'),
-  addInputs: jest.fn(() => 0),
-}));
+vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    isNotDefaultValue: vi.fn((value) => value !== ''),
+    getCurrentDealerId: vi.fn(() => 'team1BidsAndActuals.p1Bid'),
+    getDealerIdHistory: vi.fn(() => []),
+  };
+});
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(() =>
+  getItem: vi.fn(() =>
     JSON.stringify({
       t1p1Name: 'Player 1',
       t1p2Name: 'Player 2',
@@ -25,8 +32,8 @@ const localStorageMock = {
       team2Name: 'Team 2',
     })
   ),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -40,18 +47,23 @@ const mockContextValue = {
     'team2BidsAndActuals.p2Bid',
   ],
   currentRound: {
-    team1BidsAndActuals: { p1Bid: '', p2Bid: '' },
-    team2BidsAndActuals: { p1Bid: '', p2Bid: '' },
-  },
-  setDealerOverride: jest.fn(),
-  setCurrentRound: jest.fn(),
-  setRoundHistory: jest.fn(),
+    team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
+    team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
+  } as RoundType,
+  setDealerOverride: vi.fn(),
+  setCurrentRound: vi.fn(),
+  setRoundHistory: vi.fn(),
+  roundHistory: [],
+  isFirstGameAmongTeammates: false,
+  resetCurrentRound: vi.fn(),
+  resetRoundHistory: vi.fn(),
+  setFirstDealerOrder: vi.fn(),
 };
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component: ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={mockContextValue}>
+      <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -60,7 +72,7 @@ const renderWithProviders = (component) => {
 
 describe('Dealer Tag Integration at BidSection Level', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should open dealer selection modal when dealer tag is clicked, not bid modal', async () => {
@@ -79,7 +91,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound}
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />
     );
 
@@ -111,7 +123,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound}
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />
     );
 
@@ -146,7 +158,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound}
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />
     );
 
@@ -206,7 +218,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound}
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />
     );
 
@@ -231,7 +243,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
 
 describe('Dealer Tag Visibility Tests', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should show dealer tag only in bid section, not in actuals section', () => {
@@ -266,7 +278,7 @@ describe('Dealer Tag Visibility Tests', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={currentRoundWithBids}
+        currentRound={currentRoundWithBids as unknown as RoundType}
       />
     );
 
@@ -277,13 +289,13 @@ describe('Dealer Tag Visibility Tests', () => {
     // Clear the screen and render actuals section
     rerender(
       <Provider>
-        <GlobalContext.Provider value={mockContextValue}>
+        <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
           <ActualSection
             index={0}
             names={names}
             isCurrent={true}
             roundHistory={[]}
-            currentRound={currentRoundWithBids}
+            currentRound={currentRoundWithBids as unknown as RoundType}
           />
         </GlobalContext.Provider>
       </Provider>
@@ -317,7 +329,7 @@ describe('Dealer Tag Visibility Tests', () => {
 
     render(
       <Provider>
-        <GlobalContext.Provider value={contextWithRoundData}>
+        <GlobalContext.Provider value={contextWithRoundData as unknown as GlobalContextValue}>
           <Round roundHistory={[]} isCurrent={true} roundIndex={0} />
         </GlobalContext.Provider>
       </Provider>
@@ -363,7 +375,7 @@ describe('Dealer Tag Visibility Tests', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={currentRoundWithBids}
+        currentRound={currentRoundWithBids as unknown as RoundType}
       />
     );
 

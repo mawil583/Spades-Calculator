@@ -2,10 +2,10 @@ import { useState, useEffect, useRef } from 'react';
 import { toaster } from '../../components/ui/toaster';
 
 export const usePWAInstall = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isCheckingInstall, setIsCheckingInstall] = useState(true);
-  const deferredPromptRef = useRef(null);
+  const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     const checkIfInstalled = () => {
@@ -29,7 +29,7 @@ export const usePWAInstall = () => {
 
     checkIfInstalled();
 
-    const handleBeforeInstallPrompt = (e) => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       try {
         e.preventDefault();
         setDeferredPrompt(e);
@@ -109,7 +109,7 @@ export const usePWAInstall = () => {
 
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const isAndroid = /Android/.test(navigator.userAgent);
-      const isBrave = navigator.brave?.isBrave() || /Brave/.test(navigator.userAgent);
+      const isBrave = (await navigator.brave?.isBrave()) || /Brave/.test(navigator.userAgent);
       const isChrome = /Chrome/.test(navigator.userAgent) && !isBrave;
       const isSafari = /Safari/.test(navigator.userAgent) && !isChrome && !isBrave;
       const isFirefox = /Firefox/.test(navigator.userAgent);
@@ -126,7 +126,7 @@ export const usePWAInstall = () => {
     }
   };
 
-  const showMobileInstallInstructions = (isIOS, isAndroid, isBrave, isChrome, isSafari, isFirefox) => {
+  const showMobileInstallInstructions = (isIOS: boolean, isAndroid: boolean, isBrave: boolean, isChrome: boolean, isSafari: boolean, isFirefox: boolean) => {
     let instructions = '';
     let title = 'Install Instructions';
 
@@ -164,7 +164,8 @@ export const usePWAInstall = () => {
   };
 
   const showManualInstallInstructions = () => {
-    const isBrave = navigator.brave?.isBrave() || /Brave/.test(navigator.userAgent);
+    // Note: since this is sync, we can't await navigator.brave.isBrave(). Keep it simple.
+    const isBrave = /Brave/.test(navigator.userAgent);
     const isChrome = /Chrome/.test(navigator.userAgent) && !isBrave;
     const isFirefox = /Firefox/.test(navigator.userAgent);
 

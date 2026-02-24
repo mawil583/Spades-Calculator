@@ -1,9 +1,14 @@
-// @ts-nocheck
-import { Button as ChakraButton } from '@chakra-ui/react';
+import { Button as ChakraButton, type ButtonProps } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 
-export const Button = forwardRef((props, ref) => {
-  const { ...rest } = props;
-  return <ChakraButton ref={ref} {...rest} />;
+/** Custom variants defined in customTheme.ts buttonRecipe */
+type CustomButtonVariant = 'team1Outline' | 'team2Outline';
+
+export interface CustomButtonProps extends Omit<ButtonProps, 'variant'> {
+  variant?: ButtonProps['variant'] | CustomButtonVariant;
+}
+
+export const Button = forwardRef<HTMLButtonElement, CustomButtonProps>((props, ref) => {
+  return <ChakraButton ref={ref} {...(props as ButtonProps)} />;
 });
 Button.displayName = 'Button';

@@ -10,11 +10,13 @@ import {
 import { TEAM1, TEAM2 } from '../../helpers/utils/constants';
 import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
+import type { Round, TeamScore as TeamScoreType, NilSetting, InputValue } from '../../types';
+
 const GameScore = function () {
   const { roundHistory, currentRound } = useContext(GlobalContext);
-  const names = JSON.parse(localStorage.getItem('names'));
+  const names = JSON.parse(localStorage.getItem('names') || '"{}"');
   if (!names) return null;
-  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule') || '"{}"');
 
   // Calculate scores from completed rounds
   const team1ScoreFromHistory = calculateTeamScoreFromRoundHistory(
@@ -56,9 +58,9 @@ const GameScore = function () {
 
   return (
     <>
-      <Container 
-        pb={5} 
-        borderBottom="1px solid" 
+      <Container
+        pb={5}
+        borderBottom="1px solid"
         borderBottomColor="offWhite"
         data-testid="game-score-container"
       >
@@ -81,11 +83,11 @@ const GameScore = function () {
 
 // Helper function to calculate score for a team in the current round
 function calculateCurrentRoundTeamScore(
-  currentRound,
-  teamKey,
-  nilSetting,
-  isNotDefaultValue
-) {
+  currentRound: Round | null,
+  teamKey: 'team1BidsAndActuals' | 'team2BidsAndActuals',
+  nilSetting: NilSetting,
+  isNotDefaultValue: (val: InputValue) => boolean
+): TeamScoreType {
   if (!currentRound) {
     return { teamScore: 0, teamBags: 0 };
   }

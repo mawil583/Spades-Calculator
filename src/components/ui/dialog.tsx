@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { Dialog as ChakraDialog, Portal } from "@chakra-ui/react"
+import { Dialog as ChakraDialog, Portal, type PortalProps } from "@chakra-ui/react"
 import { forwardRef } from "react"
 
 const defaultPortalled = typeof process === 'undefined' || process.env.NODE_ENV !== 'test'
@@ -8,7 +7,13 @@ export const DialogRoot = ChakraDialog.Root
 export const DialogFooter = ChakraDialog.Footer
 export const DialogHeader = ChakraDialog.Header
 export const DialogBody = ChakraDialog.Body
-export const DialogBackdrop = forwardRef(
+
+export interface DialogBackdropProps extends ChakraDialog.BackdropProps {
+  portalled?: boolean
+  portalRef?: PortalProps["container"]
+}
+
+export const DialogBackdrop = forwardRef<HTMLDivElement, DialogBackdropProps>(
   function DialogBackdrop(props, ref) {
     const { portalled = defaultPortalled, portalRef, ...rest } = props
     return (
@@ -23,7 +28,12 @@ export const DialogDescription = ChakraDialog.Description
 export const DialogTrigger = ChakraDialog.Trigger
 export const DialogActionTrigger = ChakraDialog.ActionTrigger
 
-export const DialogContent = forwardRef(
+export interface DialogContentProps extends ChakraDialog.ContentProps {
+  portalled?: boolean
+  portalRef?: PortalProps["container"]
+}
+
+export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
   function DialogContent(props, ref) {
     const { children, portalled = defaultPortalled, portalRef, ...rest } = props
     return (
@@ -50,7 +60,7 @@ export const DialogContent = forwardRef(
   },
 )
 
-export const DialogCloseTrigger = forwardRef(
+export const DialogCloseTrigger = forwardRef<HTMLButtonElement, ChakraDialog.CloseTriggerProps>(
   function DialogCloseTrigger(props, ref) {
     return (
       <ChakraDialog.CloseTrigger

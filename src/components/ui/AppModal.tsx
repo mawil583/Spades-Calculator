@@ -1,4 +1,3 @@
-
 import {
   DialogRoot,
   DialogContent,
@@ -7,7 +6,21 @@ import {
   DialogCloseTrigger,
   DialogBackdrop,
 } from './dialog';
-import { X } from 'lucide-react';
+import type { ReactNode } from 'react';
+import type { BoxProps, DialogRootProps } from '@chakra-ui/react';
+
+export interface AppModalProps extends Omit<DialogRootProps, "children"> {
+  isOpen: boolean;
+  onClose: (isOpen: boolean) => void;
+  title?: string;
+  children: ReactNode;
+  contentStyle?: BoxProps;
+  headerStyle?: BoxProps;
+  bodyStyle?: BoxProps;
+  closeButtonColor?: string;
+  contentProps?: BoxProps;
+  showCloseButton?: boolean;
+}
 
 function AppModal({
   isOpen,
@@ -21,7 +34,7 @@ function AppModal({
   contentProps = {},
   showCloseButton = true,
   ...rest
-}) {
+}: AppModalProps) {
   return (
     <DialogRoot
       open={isOpen}
@@ -29,8 +42,7 @@ function AppModal({
       {...rest}
     >
       <DialogBackdrop
-        backdropFilter="blur(4px)"
-        bg="blackAlpha.600"
+        style={{ backdropFilter: 'blur(4px)', backgroundColor: 'rgba(0,0,0,0.6)' }}
       />
       <DialogContent
         bg="bg"
@@ -39,7 +51,7 @@ function AppModal({
         borderWidth="1px"
         mx={4}
         my="auto"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
         {...contentStyle}
         {...contentProps}
       >
@@ -48,7 +60,7 @@ function AppModal({
             fontSize="2xl"
             fontWeight="bold" // Bold is fine for a heading, but could be var(--app-font-weight-bold) if we defined it. Let's keep it bold for now as it's standard.
             pe="40px"
-            css={headerStyle}
+            {...headerStyle}
           >
             {title}
           </DialogHeader>
@@ -58,12 +70,9 @@ function AppModal({
             color={closeButtonColor}
             top="10px"
             right="10px"
-            css={headerStyle} // Using headerStyle for consistency if needed, but DialogCloseTrigger usually has its own style
-          >
-            <X size={24} />
-          </DialogCloseTrigger>
+          />
         )}
-        <DialogBody p="5px" css={bodyStyle}>
+        <DialogBody p="5px" {...bodyStyle}>
           {children}
         </DialogBody>
       </DialogContent>

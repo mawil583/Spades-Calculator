@@ -1,36 +1,41 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import ActualSection from '../components/game/ActualSection';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue, InputValue, Round } from '../types';
 
 // Mock the context
-const mockSetCurrentRound = jest.fn();
-const mockSetRoundHistory = jest.fn();
-const mockResetCurrentRound = jest.fn();
+const mockSetCurrentRound = vi.fn();
+const mockSetRoundHistory = vi.fn();
+const mockResetCurrentRound = vi.fn();
 
-const mockContextValue = {
-  currentRound: {},
+const mockContextValue: Partial<GlobalContextValue> = {
+  currentRound: {} as Round,
   setCurrentRound: mockSetCurrentRound,
   setRoundHistory: mockSetRoundHistory,
   resetCurrentRound: mockResetCurrentRound,
 };
 
+
+
 // Mock localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component: ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={mockContextValue}>
+      <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -39,7 +44,7 @@ const renderWithProviders = (component) => {
 
 describe('ActualSection Team Total Button Behavior', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(
       JSON.stringify({
         team1Name: 'Team 1',
@@ -52,7 +57,7 @@ describe('ActualSection Team Total Button Behavior', () => {
     );
   });
 
-  const createMockCurrentRound = (team1Bids, team2Bids) => ({
+  const createMockCurrentRound = (team1Bids: InputValue[], team2Bids: InputValue[]) => ({
     team1BidsAndActuals: {
       p1Bid: team1Bids[0],
       p2Bid: team1Bids[1],

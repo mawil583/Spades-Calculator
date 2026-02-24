@@ -1,20 +1,37 @@
+import { vi, type Mock } from 'vitest';
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../../components/ui/provider';
 import Header from '../../components/ui/Header';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import type { GlobalContextValue, Round } from '../../types';
+import type { ReactNode } from 'react';
 
 // Mock the context values
-const mockContextValue = {
-  resetCurrentRound: jest.fn(),
-  setRoundHistory: jest.fn(),
-  setFirstDealerOrder: jest.fn(),
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    hasPlayerNamesEntered: vi.fn(() => true),
+    hasDataEntered: vi.fn(() => true),
+  };
+});
+
+const mockContextValue: GlobalContextValue = {
+  resetCurrentRound: vi.fn(),
+  setRoundHistory: vi.fn(),
+  setFirstDealerOrder: vi.fn(),
   firstDealerOrder: ['player1', 'player2', 'player3', 'player4'],
   roundHistory: [],
-};
+  currentRound: {} as Round,
+  isFirstGameAmongTeammates: false,
+  setCurrentRound: vi.fn(),
+  resetRoundHistory: vi.fn(),
+  setDealerOverride: vi.fn(),
+} as unknown as GlobalContextValue;
 
-const renderWithProviders = (component, contextValue = mockContextValue) => {
+const renderWithProviders = (component: ReactNode, contextValue: GlobalContextValue = mockContextValue) => {
   return render(
     <BrowserRouter>
       <Provider>
@@ -28,13 +45,13 @@ const renderWithProviders = (component, contextValue = mockContextValue) => {
 
 describe('New Game Flow Integration', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
       },
       writable: true,
     });
@@ -56,7 +73,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -93,7 +110,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -124,7 +141,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -157,7 +174,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -188,7 +205,10 @@ describe('New Game Flow Integration', () => {
     it('should show data warning first, then team selection when clicking New Game', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
 
       // Set up some input data first
@@ -200,7 +220,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -241,7 +261,10 @@ describe('New Game Flow Integration', () => {
     it('should handle "Cancel" from data warning', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
 
       // Set up some input data first
@@ -253,7 +276,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -277,7 +300,10 @@ describe('New Game Flow Integration', () => {
     it('should handle complete flow: Continue -> Same Teams', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
 
       // Set up some input data first
@@ -289,7 +315,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -313,7 +339,10 @@ describe('New Game Flow Integration', () => {
     it('should handle complete flow: Continue -> Different Teams', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
 
       // Set up some input data first
@@ -325,7 +354,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -350,7 +379,10 @@ describe('New Game Flow Integration', () => {
     it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
 
       // Set up some input data first
@@ -362,7 +394,7 @@ describe('New Game Flow Integration', () => {
         team1Name: 'Team Alpha',
         team2Name: 'Team Beta',
       };
-      window.localStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 
@@ -397,8 +429,22 @@ describe('New Game Flow Integration', () => {
     it('should close modal when clicking the close button', async () => {
       const contextValue = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: '1', p2Bid: '2' },
+          team2BidsAndActuals: { p1Bid: '3', p2Bid: '4' }
+        } as unknown as Round],
       };
+
+      // Set up some input data first
+      const mockNames = {
+        t1p1Name: 'Alice',
+        t1p2Name: 'Bob',
+        t2p1Name: 'Charlie',
+        t2p2Name: 'Diana',
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
+      };
+      (window.localStorage.getItem as Mock).mockReturnValue(JSON.stringify(mockNames));
 
       renderWithProviders(<Header />, contextValue);
 

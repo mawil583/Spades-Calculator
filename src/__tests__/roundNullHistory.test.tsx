@@ -1,11 +1,18 @@
-
 import { render } from '@testing-library/react';
-import Round from '../components/game/Round';
+import { vi } from 'vitest';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue, Round as RoundType } from '../types';
+import RoundComponent from '../components/game/Round';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
-const MockProvider = ({ children, contextValue }) => (
-  <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>
-);
+
+const renderWithProviders = (component: ReactNode, contextValue: Partial<GlobalContextValue>) => {
+  return render(
+    <GlobalContext.Provider value={contextValue as GlobalContextValue}>
+      {component}
+    </GlobalContext.Provider>
+  );
+};
 
 describe('Round component - null safety', () => {
   beforeEach(() => {
@@ -23,14 +30,13 @@ describe('Round component - null safety', () => {
         team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
         team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
       },
-      resetCurrentRound: jest.fn(),
-      setRoundHistory: jest.fn(),
+      resetCurrentRound: vi.fn(),
+      setRoundHistory: vi.fn(),
     };
 
-    const { container } = render(
-      <MockProvider contextValue={ctx}>
-        <Round isCurrent={false} roundHistory={[null]} roundIndex={0} />
-      </MockProvider>
+    const { container } = renderWithProviders(
+      <RoundComponent isCurrent={false} roundHistory={[null as unknown as RoundType]} roundIndex={0} />,
+      ctx
     );
 
     // Should render nothing for this invalid past round (no crash)

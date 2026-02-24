@@ -1,13 +1,12 @@
-// @ts-nocheck
-import { Switch as ChakraSwitch } from "@chakra-ui/react";
+import { Switch as ChakraSwitch, type SwitchRootProps } from "@chakra-ui/react";
 import { forwardRef } from "react";
 
-export const Switch = forwardRef(function Switch(props, ref) {
+export const Switch = forwardRef<HTMLLabelElement, SwitchRootProps>(function Switch(props, ref) {
   return (
     <ChakraSwitch.Root ref={ref} {...props}>
       <ChakraSwitch.HiddenInput />
-      <ChakraSwitch.Control 
-        borderWidth="1px" 
+      <ChakraSwitch.Control
+        borderWidth="1px"
         borderColor="whiteAlpha.400"
         _checked={{ borderColor: "blue.400" }}
       />

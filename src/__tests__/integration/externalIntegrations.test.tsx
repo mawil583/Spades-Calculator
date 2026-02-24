@@ -1,5 +1,7 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { Provider } from '../../components/ui/provider';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { StateProvider } from '../../helpers/context/GlobalContext';
@@ -7,10 +9,10 @@ import App from '../../App';
 
 // Mock localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
-  removeItem: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
+  removeItem: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
@@ -18,10 +20,10 @@ Object.defineProperty(window, 'localStorage', {
 
 // Mock service worker
 const mockServiceWorker = {
-  register: jest.fn(),
-  getRegistrations: jest.fn(),
-  addEventListener: jest.fn(),
-  removeEventListener: jest.fn(),
+  register: vi.fn(),
+  getRegistrations: vi.fn(),
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
 };
 
 Object.defineProperty(window.navigator, 'serviceWorker', {
@@ -31,10 +33,10 @@ Object.defineProperty(window.navigator, 'serviceWorker', {
 
 // Mock caches
 const mockCaches = {
-  open: jest.fn(),
-  keys: jest.fn(),
-  delete: jest.fn(),
-  match: jest.fn(),
+  open: vi.fn(),
+  keys: vi.fn(),
+  delete: vi.fn(),
+  match: vi.fn(),
 };
 
 Object.defineProperty(window, 'caches', {
@@ -43,24 +45,28 @@ Object.defineProperty(window, 'caches', {
 });
 
 // Mock the math functions
-jest.mock('../../helpers/math/spadesMath', () => ({
-  addInputs: jest.fn((a, b) => (a || 0) + (b || 0)),
-  isNotDefaultValue: jest.fn((value) => value !== ''),
-  calculateTeamScore: jest.fn((bids, actuals) => {
-    const totalBid = bids.reduce((sum, bid) => sum + (parseInt(bid) || 0), 0);
-    const totalActual = actuals.reduce(
-      (sum, actual) => sum + (parseInt(actual) || 0),
-      0
-    );
-    if (totalActual >= totalBid) {
-      return totalBid * 10 + (totalActual - totalBid);
-    } else {
-      return -(totalBid * 10);
-    }
-  }),
-}));
+vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
+    isNotDefaultValue: vi.fn((value) => value !== ''),
+    calculateTeamScore: vi.fn((bids: string[], actuals: string[]) => {
+      const totalBid = bids.reduce((sum: number, bid: string) => sum + (parseInt(bid) || 0), 0);
+      const totalActual = actuals.reduce(
+        (sum: number, actual: string) => sum + (parseInt(actual) || 0),
+        0
+      );
+      if (totalActual >= totalBid) {
+        return totalBid * 10 + (totalActual - totalBid);
+      } else {
+        return -(totalBid * 10);
+      }
+    }),
+  };
+});
 
-const renderWithProviders = (component, initialEntries = ['/']) => {
+const renderWithProviders = (component: ReactNode, initialEntries = ['/']) => {
   const router = createMemoryRouter(
     [
       {
@@ -84,7 +90,7 @@ const renderWithProviders = (component, initialEntries = ['/']) => {
 
 describe('External Integrations', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
     mockServiceWorker.register.mockResolvedValue({});
     mockServiceWorker.getRegistrations.mockResolvedValue([]);
@@ -238,7 +244,7 @@ describe('External Integrations', () => {
 
     it('should handle network errors gracefully', async () => {
       // Mock fetch to simulate network error
-      global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
+      global.fetch = vi.fn().mockRejectedValue(new Error('Network error'));
 
       renderWithProviders(<App />);
 

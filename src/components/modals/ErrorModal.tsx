@@ -4,6 +4,19 @@ import { addInputs } from '../../helpers/math/spadesMath';
 import { PlayerInput } from '../forms';
 import { TeamInputHeading } from '../forms';
 import { GlobalContext } from '../../helpers/context';
+import type { Round, Names, ModalOpenArgs } from '../../types';
+
+export interface ErrorModalProps {
+  isOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+  index?: number;
+  names: Names;
+  isCurrent: boolean;
+  roundHistory: Round[];
+  currentRound?: Round;
+  errorMessage: string;
+  onOpenModal?: (args: ModalOpenArgs) => void;
+}
 
 function ErrorModal({
   isOpen,
@@ -15,11 +28,11 @@ function ErrorModal({
   currentRound: propCurrentRound, // Rename to avoid confusion
   errorMessage,
   onOpenModal,
-}) {
+}: ErrorModalProps) {
   const { currentRound: contextCurrentRound } = useContext(GlobalContext);
 
   const currentRound = propCurrentRound || contextCurrentRound;
-  
+
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const team1Actuals = {
     p1Actual: team1BidsAndActuals?.p1Actual ?? '',
@@ -58,31 +71,31 @@ function ErrorModal({
       closeOnInteractOutside={false}
       closeOnEscape={false}
     >
-        <div
-          data-cy="errorModalActualSection"
-          data-testid="actualSection"
-          style={{ paddingTop: '20px' }}
-        >
-          <TeamInputHeading
-            team1Total={team1ActualTotal}
-            team2Total={team2ActualTotal}
-            title="Actuals"
-            team1Bids={[team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid]}
-            team2Bids={[team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid]}
-            isEditable={true}
-            index={index}
-            isCurrent={isCurrent}
-            currentRound={currentRound}
-            roundHistory={roundHistory}
-            onOpenModal={onOpenModal}
-          />
-          <Flex
-            color="errorRed"
-            direction="row"
-            justify="center"
-            p="var(--app-spacing-5)"
-            dangerouslySetInnerHTML={{ __html: errorMessage }}
-          />
+      <div
+        data-cy="errorModalActualSection"
+        data-testid="actualSection"
+        style={{ paddingTop: '20px' }}
+      >
+        <TeamInputHeading
+          team1Total={team1ActualTotal}
+          team2Total={team2ActualTotal}
+          title="Actuals"
+          team1Bids={[team1BidsAndActuals?.p1Bid, team1BidsAndActuals?.p2Bid]}
+          team2Bids={[team2BidsAndActuals?.p1Bid, team2BidsAndActuals?.p2Bid]}
+          isEditable={true}
+          index={index}
+          isCurrent={isCurrent}
+          currentRound={currentRound}
+          roundHistory={roundHistory}
+          onOpenModal={onOpenModal}
+        />
+        <Flex
+          color="errorRed"
+          direction="row"
+          justify="center"
+          p="var(--app-spacing-5)"
+          dangerouslySetInnerHTML={{ __html: errorMessage }}
+        />
         <SimpleGrid
           columns={2}
           className="namesContainer"
@@ -92,7 +105,7 @@ function ErrorModal({
           <PlayerInput
             roundHistory={roundHistory}
             teamName={names.team1Name}
-            index={index}
+            index={index as number}
             isCurrent={isCurrent}
             type={'Actual'}
             playerName={names.t1p1Name}
@@ -107,7 +120,7 @@ function ErrorModal({
           <PlayerInput
             roundHistory={roundHistory}
             teamName={names.team2Name}
-            index={index}
+            index={index as number}
             isCurrent={isCurrent}
             type={'Actual'}
             playerName={names.t2p1Name}
@@ -122,7 +135,7 @@ function ErrorModal({
           <PlayerInput
             roundHistory={roundHistory}
             teamName={names.team1Name}
-            index={index}
+            index={index as number}
             isCurrent={isCurrent}
             type={'Actual'}
             playerName={names.t1p2Name}
@@ -137,7 +150,7 @@ function ErrorModal({
           <PlayerInput
             roundHistory={roundHistory}
             teamName={names.team2Name}
-            index={index}
+            index={index as number}
             isCurrent={isCurrent}
             type={'Actual'}
             playerName={names.t2p2Name}

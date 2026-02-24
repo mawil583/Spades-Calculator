@@ -1,6 +1,7 @@
 import { NIL } from './constants';
+import type { Round, TeamBidsAndActuals } from '../../types';
 
-export const roundHistoryWithTwelveBags = [
+export const roundHistoryWithTwelveBags: Round[] = [
   {
     team1BidsAndActuals: {
       p1Bid: '1',
@@ -30,7 +31,7 @@ export const roundHistoryWithTwelveBags = [
     },
   },
 ];
-export const roundHistoryWithBothTeamMembersMissingNil = [
+export const roundHistoryWithBothTeamMembersMissingNil: Round[] = [
   {
     team1BidsAndActuals: {
       p1Bid: NIL,
@@ -46,7 +47,7 @@ export const roundHistoryWithBothTeamMembersMissingNil = [
     },
   },
 ];
-export const roundHistoryWithOneTeamMembersGoingNil = [
+export const roundHistoryWithOneTeamMembersGoingNil: Round[] = [
   {
     team1BidsAndActuals: {
       p1Bid: NIL,
@@ -62,7 +63,7 @@ export const roundHistoryWithOneTeamMembersGoingNil = [
     },
   },
 ];
-export const teamHistoryWithBothTeamMembersMissingNil = [
+export const teamHistoryWithBothTeamMembersMissingNil: TeamBidsAndActuals[] = [
   {
     p1Bid: NIL,
     p2Bid: NIL,
@@ -70,7 +71,7 @@ export const teamHistoryWithBothTeamMembersMissingNil = [
     p2Actual: '1',
   },
 ];
-export const teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing = [
+export const teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing: TeamBidsAndActuals[] = [
   {
     p1Bid: NIL,
     p2Bid: NIL,
@@ -79,7 +80,7 @@ export const teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing = [
   },
 ];
 
-export const teamRoundHistoryMakingNilWithNoBags = [
+export const teamRoundHistoryMakingNilWithNoBags: TeamBidsAndActuals[] = [
   {
     p1Bid: '2',
     p2Bid: NIL,
@@ -87,7 +88,7 @@ export const teamRoundHistoryMakingNilWithNoBags = [
     p2Actual: 0,
   },
 ];
-export const teamRoundHistoryWithBagsNoNilNotSet = [
+export const teamRoundHistoryWithBagsNoNilNotSet: TeamBidsAndActuals[] = [
   {
     p1Bid: '2',
     p2Bid: '3',
@@ -102,7 +103,7 @@ export const teamRoundHistoryWithBagsNoNilNotSet = [
   },
 ];
 
-export const roundHistoryWithTenBags = [
+export const roundHistoryWithTenBags: Round[] = [
   {
     team1BidsAndActuals: {
       p1Bid: '1',

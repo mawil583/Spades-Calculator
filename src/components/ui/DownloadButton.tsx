@@ -4,10 +4,10 @@ import { Download } from 'lucide-react';
 import { toaster } from './toaster';
 
 const DownloadButton = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isCheckingInstall, setIsCheckingInstall] = useState(true);
-  const deferredPromptRef = useRef(null);
+  const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     // Check if the app is already installed
@@ -47,7 +47,7 @@ const DownloadButton = () => {
     checkIfInstalled();
 
     // Listen for the beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e) => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       try {
         e.preventDefault();
         setDeferredPrompt(e);
@@ -140,7 +140,7 @@ const DownloadButton = () => {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const isAndroid = /Android/.test(navigator.userAgent);
       const isBrave =
-        navigator.brave?.isBrave() || /Brave/.test(navigator.userAgent);
+        (await navigator.brave?.isBrave()) || /Brave/.test(navigator.userAgent);
       const isChrome = /Chrome/.test(navigator.userAgent) && !isBrave;
       const isSafari =
         /Safari/.test(navigator.userAgent) && !isChrome && !isBrave;
@@ -168,12 +168,12 @@ const DownloadButton = () => {
   };
 
   const showMobileInstallInstructions = (
-    isIOS,
-    isAndroid,
-    isBrave,
-    isChrome,
-    isSafari,
-    isFirefox
+    isIOS: boolean,
+    isAndroid: boolean,
+    isBrave: boolean,
+    isChrome: boolean,
+    isSafari: boolean,
+    isFirefox: boolean
   ) => {
     let instructions = '';
     let title = 'Install Instructions';

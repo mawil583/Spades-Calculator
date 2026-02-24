@@ -11,6 +11,12 @@ import {
 import { Provider } from '../components/ui/provider';
 import { InstallPrompt } from '../components/ui';
 
+interface BeforeInstallPromptEvent extends Event {
+  preventDefault: () => void;
+  prompt: () => void;
+  userChoice: Promise<{ outcome: string }>;
+}
+
 const { mockToaster } = vi.hoisted(() => {
   return {
     mockToaster: {
@@ -26,19 +32,21 @@ vi.mock('../components/ui/toaster', () => ({
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
 // Mock window.navigator.standalone
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(navigator as any).brave = undefined;
 Object.defineProperty(window.navigator, 'standalone', {
   writable: true,
   value: false,
@@ -47,7 +55,7 @@ Object.defineProperty(window.navigator, 'standalone', {
 // Mock setTimeout
 vi.useFakeTimers();
 
-const renderWithProvider = (component) => {
+const renderWithProvider = (component: React.ReactNode) => {
   return render(<Provider>{component}</Provider>);
 };
 
@@ -56,6 +64,8 @@ describe('InstallPrompt', () => {
     vi.clearAllMocks();
     vi.clearAllTimers();
     // Reset window.navigator.standalone
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (navigator as any).brave = undefined;
     Object.defineProperty(window.navigator, 'standalone', {
       writable: true,
       value: false,
@@ -63,15 +73,15 @@ describe('InstallPrompt', () => {
     // Reset window.matchMedia
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation((query) => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
   });
@@ -97,15 +107,15 @@ describe('InstallPrompt', () => {
     // Mock standalone mode
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: jest.fn().mockImplementation((query) => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: query === '(display-mode: standalone)',
         media: query,
         onchange: null,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
       })),
     });
 
@@ -134,9 +144,9 @@ describe('InstallPrompt', () => {
     renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as BeforeInstallPromptEvent;
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'accepted',
     });
@@ -162,9 +172,9 @@ describe('InstallPrompt', () => {
     renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event first
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as BeforeInstallPromptEvent;
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'accepted',
     });
@@ -201,9 +211,9 @@ describe('InstallPrompt', () => {
     renderWithProvider(<InstallPrompt />);
 
     // Simulate beforeinstallprompt event first
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
-    beforeInstallPromptEvent.preventDefault = jest.fn();
-    beforeInstallPromptEvent.prompt = jest.fn();
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as BeforeInstallPromptEvent;
+    beforeInstallPromptEvent.preventDefault = vi.fn();
+    beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
       outcome: 'accepted',
     });
@@ -264,7 +274,7 @@ describe('InstallPrompt', () => {
 
     // Fast-forward time by 10 seconds to trigger the prompt
     await act(async () => {
-      jest.advanceTimersByTime(10000);
+      vi.advanceTimersByTime(10000);
     });
 
     // Since no beforeinstallprompt event was fired, the prompt shouldn't appear
@@ -277,7 +287,7 @@ describe('InstallPrompt', () => {
     const { unmount } = renderWithProvider(<InstallPrompt />);
 
     // Spy on removeEventListener
-    const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 
     unmount();
 

@@ -2,6 +2,7 @@ import {
   rotateDealerOrder,
   getCurrentDealerId,
 } from '../helpers/math/spadesMath';
+import type { Round } from '../types';
 import { initialFirstDealerOrder as appInitialFirstDealerOrder } from '../helpers/utils/constants';
 import { expect } from 'chai';
 
@@ -20,7 +21,7 @@ describe('Dealer Functionality', () => {
     });
 
     test('handles empty array', () => {
-      const emptyOrder = [];
+      const emptyOrder: string[] = [];
       const rotatedEmpty = rotateDealerOrder(emptyOrder);
       expect(rotatedEmpty).deep.equals([]);
     });
@@ -336,9 +337,9 @@ describe('Dealer Functionality', () => {
       );
 
       // Simulate 2 rounds in history
-      const roundHistory = [
-        { team1BidsAndActuals: {}, team2BidsAndActuals: {} },
-        { team1BidsAndActuals: {}, team2BidsAndActuals: {} },
+      const roundHistory: Round[] = [
+        { team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' }, team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' } },
+        { team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' }, team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' } },
       ];
 
       const dealerIdHistory = getDealerIdHistory(
@@ -354,7 +355,7 @@ describe('Dealer Functionality', () => {
 
     test('fresh game should show dealer tag on t1p1, not t1p2', () => {
       // Fresh game with no round history
-      const dealerIdHistory = [];
+      const dealerIdHistory: string[] = [];
 
       // Check dealer for each player position
       const t1p1Dealer = getCurrentDealerId({
@@ -453,7 +454,7 @@ describe('Dealer Functionality', () => {
 
       testCases.forEach(({ rounds, expectedDealer, description }) => {
         // Create dealer history based on number of rounds
-        const dealerIdHistory = [];
+        const dealerIdHistory: string[] = [];
         for (let i = 0; i < rounds; i++) {
           dealerIdHistory.push(mockFirstDealerOrder[i % 4]);
         }
@@ -471,7 +472,7 @@ describe('Dealer Functionality', () => {
 
     test('application context: dealer should be correct in fresh game', () => {
       // Simulate a fresh game with no round history
-      const dealerIdHistory = [];
+      const dealerIdHistory: string[] = [];
 
       // For a fresh game (index 0), the dealer should be the first player in the order
       const currentDealer = getCurrentDealerId({

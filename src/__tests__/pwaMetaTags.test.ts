@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 describe('PWA Meta Tags', () => {
-  let htmlContent;
+  let htmlContent: string;
 
   beforeAll(() => {
     const htmlPath = path.join(__dirname, '../../public/index.html');

@@ -6,6 +6,31 @@ import RoundSummaryDrawer from './RoundSummaryDrawer';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 import RoundSummaryField from './RoundSummaryField';
 
+export interface TeamStats {
+  startScore?: number;
+  endScore?: number;
+  startBags?: number;
+  endBags?: number;
+  pointsGained?: number;
+  bagPenalty?: number;
+  setPenalty?: number;
+  nilPenalty?: number;
+  blindNilPenalty?: number;
+  netChange?: number;
+}
+
+interface RoundSummaryProps {
+  roundNumber: number;
+  team1RoundScore?: number;
+  team2RoundScore?: number;
+  team1RoundBags?: number;
+  team2RoundBags?: number;
+  team1Stats?: TeamStats;
+  team2Stats?: TeamStats;
+  team1Name?: string;
+  team2Name?: string;
+}
+
 function RoundSummary({
   roundNumber,
   team1RoundScore,
@@ -14,7 +39,7 @@ function RoundSummary({
   team2RoundBags,
   team1Stats,
   team2Stats,
-}) {
+}: RoundSummaryProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -24,26 +49,26 @@ function RoundSummary({
           Round Summary
         </Heading>
       </Center>
-      
+
       <SimpleGrid columns={2} width="full" mb="var(--app-spacing-4)">
         <Stack style={team1Styles} alignItems="center" gap="var(--app-spacing-4)">
-          <RoundSummaryField 
-            label={`Round ${roundNumber} Score`} 
-            value={team1RoundScore} 
+          <RoundSummaryField
+            label={`Round ${roundNumber} Score`}
+            value={team1RoundScore}
           />
-          <RoundSummaryField 
-            label={`Round ${roundNumber} Bags`} 
-            value={team1RoundBags} 
+          <RoundSummaryField
+            label={`Round ${roundNumber} Bags`}
+            value={team1RoundBags}
           />
         </Stack>
         <Stack style={team2Styles} alignItems="center" gap="var(--app-spacing-4)">
-          <RoundSummaryField 
-            label={`Round ${roundNumber} Score`} 
-            value={team2RoundScore} 
+          <RoundSummaryField
+            label={`Round ${roundNumber} Score`}
+            value={team2RoundScore}
           />
-          <RoundSummaryField 
-            label={`Round ${roundNumber} Bags`} 
-            value={team2RoundBags} 
+          <RoundSummaryField
+            label={`Round ${roundNumber} Bags`}
+            value={team2RoundBags}
           />
         </Stack>
       </SimpleGrid>

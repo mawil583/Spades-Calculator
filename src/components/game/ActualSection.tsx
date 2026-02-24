@@ -7,41 +7,60 @@ import { useValidateActuals } from '../../helpers/utils/hooks';
 import { getActualsErrorText } from '../../helpers/utils/helperFunctions';
 import { ErrorModal, InputModal } from '../modals';
 
+import type { Names, Round, InputValue, ModalOpenArgs } from '../../types';
+
+interface ActualSectionProps {
+  index: number;
+  names: Names;
+  isCurrent: boolean;
+  roundHistory: Round[];
+  currentRound: Round;
+}
+
+interface ModalState {
+  isOpen: boolean;
+  fieldToUpdate: string;
+  playerName: string;
+  type: 'Bid' | 'Actual';
+  onCustomUpdate?: (value: InputValue) => void;
+  inputId: string | undefined;
+  dealerId: string | undefined;
+}
+
 function ActualSection({
   index,
   names,
   isCurrent,
   roundHistory,
   currentRound,
-}) {
+}: ActualSectionProps) {
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const [isValid, setIsValid] = useState(true);
 
   // Hoist modal state
-  const [modalState, setModalState] = useState({
+  const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     fieldToUpdate: '',
     playerName: '',
     type: 'Actual',
-    onCustomUpdate: null,
-    // extra props for inputs
-    inputId: null,
-    dealerId: null, 
+    onCustomUpdate: undefined,
+    inputId: undefined,
+    dealerId: undefined,
   });
 
-  const handleOpenModal = ({ fieldToUpdate, type, playerName, onCustomUpdate, inputId, dealerId }) => {
+  const handleOpenModal = ({ fieldToUpdate, type, playerName, onCustomUpdate, inputId, dealerId }: ModalOpenArgs) => {
     setModalState({
       isOpen: true,
       fieldToUpdate,
       playerName,
-      type,
+      type: type as 'Bid' | 'Actual',
       onCustomUpdate,
       inputId,
       dealerId,
     });
   };
 
-  const handleCloseModal = (open) => {
+  const handleCloseModal = (open: boolean) => {
     if (!open) {
       setModalState((prev) => ({ ...prev, isOpen: false }));
     }
@@ -64,7 +83,7 @@ function ActualSection({
   };
 
   // Handle team total display logic
-  const getTeamTotalDisplay = (teamActuals) => {
+  const getTeamTotalDisplay = (teamActuals: { p1Actual: InputValue; p2Actual: InputValue }) => {
     const p1Actual = teamActuals.p1Actual;
     const p2Actual = teamActuals.p2Actual;
 
@@ -100,13 +119,13 @@ function ActualSection({
   ];
 
   // Handle validation for team total values
-  const isTeamTotalValue = (value) => value === '';
+  const isTeamTotalValue = (value: InputValue) => value === '';
   const allActualsAreSubmitted = roundActuals.every(
     (actual) => isNotDefaultValue(actual) && !isTeamTotalValue(actual)
   );
 
   // Calculate total for validation (only use numeric values)
-  const getNumericTotal = (teamActuals) => {
+  const getNumericTotal = (teamActuals: { p1Actual: InputValue; p2Actual: InputValue }) => {
     const p1Actual = teamActuals.p1Actual;
     const p2Actual = teamActuals.p2Actual;
 

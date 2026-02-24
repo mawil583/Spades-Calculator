@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { useFormik } from 'formik';
+import { useFormik, type FormikProps } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useLocalStorage } from '../../helpers/utils/hooks';
@@ -10,16 +10,15 @@ import { hasPlayerNamesEntered, hasRoundProgress } from '../../helpers/math/spad
 import { TeamNameInput, PlayerNameInput } from './';
 import { Button, SimpleGrid, Center } from '../ui';
 import { initialNames } from '../../helpers/utils/constants';
+import type { Names } from '../../types';
 
 function NameForm() {
   const navigate = useNavigate();
   const { roundHistory, currentRound } = useContext(GlobalContext);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-  const [names, setNames] = useLocalStorage('names', initialNames);
+  const [names, setNames] = useLocalStorage<Names>('names', initialNames);
 
   const hasGameData = hasPlayerNamesEntered(names) || hasRoundProgress(roundHistory, currentRound);
-
-
 
   const handleNewGame = () => {
     setIsWarningModalOpen(true);
@@ -32,7 +31,7 @@ function NameForm() {
     t2p2Name: Yup.string().required('Required'),
   });
 
-  const formik = useFormik({
+  const formik = useFormik<Names>({
     initialValues: {
       team1Name: names.team1Name,
       team2Name: names.team2Name,
@@ -49,7 +48,7 @@ function NameForm() {
     },
   });
 
-  const setDefaultTeamNames = (formik) => {
+  const DisableOnEmptyInputsAndTeams = ({ formik }: { formik: FormikProps<Names> }) => {
     if (formik.values.team1Name === '') {
       formik.setFieldValue('team1Name', 'Team 1');
     }
@@ -60,7 +59,7 @@ function NameForm() {
 
   // put this into hooks.
   useEffect(() => {
-    function setLocalStorageTeamNames(formVals) {
+    function checkUniqueNames(formVals: Names) {
       if (formVals.team1Name === '') {
         setNames({ ...names, team1Name: 'Team 1' });
       }
@@ -68,8 +67,8 @@ function NameForm() {
         setNames({ ...names, team2Name: 'Team 2' });
       }
     }
-    setLocalStorageTeamNames(formik.values);
-    setDefaultTeamNames(formik);
+    checkUniqueNames(formik.values);
+    DisableOnEmptyInputsAndTeams({ formik });
   }, [formik.values, formik, setNames, names]);
 
 
@@ -81,73 +80,69 @@ function NameForm() {
         resetNames={setNames}
       />
       <form onSubmit={formik.handleSubmit}>
-      {/* Team 1 Section */}
-      <Center mt={8} mb={2}>
-        <TeamNameInput
-          id="team1Name"
-          teamClassName="team1"
-          teamName={formik.values.team1Name}
-          handleChange={formik.handleChange}
-        />
-      </Center>
-      <SimpleGrid columns={2} gap={2}>
-        <PlayerNameInput
-          teamClassName="team1"
-          teamName={formik.values.team1Name}
-          id="t1p1Name"
-          label="You"
-          placeholder="Enter Your Name"
-          playerName={formik.values.t1p1Name}
-          errors={formik.errors.t1p1Name}
-          touched={formik.touched.t1p1Name}
-          handleChange={formik.handleChange}
-        />
-        <PlayerNameInput
-          teamClassName="team1"
-          id="t1p2Name"
-          label="Partner"
-          placeholder=""
-          teamName={formik.values.team1Name}
-          playerName={formik.values.t1p2Name}
-          errors={formik.errors.t1p2Name}
-          touched={formik.touched.t1p2Name}
-          handleChange={formik.handleChange}
-        />
-      </SimpleGrid>
+        {/* Team 1 Section */}
+        <Center mt={8} mb={2}>
+          <TeamNameInput
+            id="team1Name"
+            teamClassName="team1"
+            teamName={formik.values.team1Name}
+            handleChange={formik.handleChange}
+          />
+        </Center>
+        <SimpleGrid columns={2} gap={2}>
+          <PlayerNameInput
+            teamClassName="team1"
+            id="t1p1Name"
+            label="You"
+            placeholder="Enter Your Name"
+            playerName={formik.values.t1p1Name}
+            errors={formik.errors.t1p1Name}
+            touched={formik.touched.t1p1Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            teamClassName="team1"
+            id="t1p2Name"
+            label="Partner"
+            placeholder=""
+            playerName={formik.values.t1p2Name}
+            errors={formik.errors.t1p2Name}
+            touched={formik.touched.t1p2Name}
+            handleChange={formik.handleChange}
+          />
+        </SimpleGrid>
 
-      {/* Team 2 Section */}
-      <Center mt={6} mb={2}>
-        <TeamNameInput
-          id="team2Name"
-          teamClassName="team2"
-          teamName={formik.values.team2Name}
-          handleChange={formik.handleChange}
-        />
-      </Center>
-      <SimpleGrid columns={2} gap={2}>
-        <PlayerNameInput
-          teamName={formik.values.team2Name}
-          id="t2p1Name"
-          teamClassName="team2"
-          label="Left Opponent"
-          placeholder="Left Opponent"
-          playerName={formik.values.t2p1Name}
-          errors={formik.errors.t2p1Name}
-          touched={formik.touched.t2p1Name}
-          handleChange={formik.handleChange}
-        />
-        <PlayerNameInput
-          teamName={formik.values.team2Name}
-          teamClassName="team2"
-          id="t2p2Name"
-          label="Right Opponent"
-          placeholder=""
-          playerName={formik.values.t2p2Name}
-          errors={formik.errors.t2p2Name}
-          touched={formik.touched.t2p2Name}
-          handleChange={formik.handleChange}
-        />
-      </SimpleGrid>
+        {/* Team 2 Section */}
+        <Center mt={6} mb={2}>
+          <TeamNameInput
+            id="team2Name"
+            teamClassName="team2"
+            teamName={formik.values.team2Name}
+            handleChange={formik.handleChange}
+          />
+        </Center>
+        <SimpleGrid columns={2} gap={2}>
+          <PlayerNameInput
+            id="t2p1Name"
+            teamClassName="team2"
+            label="Left Opponent"
+            placeholder="Left Opponent"
+            playerName={formik.values.t2p1Name}
+            errors={formik.errors.t2p1Name}
+            touched={formik.touched.t2p1Name}
+            handleChange={formik.handleChange}
+          />
+          <PlayerNameInput
+            teamClassName="team2"
+            id="t2p2Name"
+            label="Right Opponent"
+            placeholder=""
+            playerName={formik.values.t2p2Name}
+            errors={formik.errors.t2p2Name}
+            touched={formik.touched.t2p2Name}
+            handleChange={formik.handleChange}
+          />
+        </SimpleGrid>
         {hasGameData ? (
           <SimpleGrid columns={2} gap={6} my={8}>
             <Button
@@ -196,7 +191,7 @@ function NameForm() {
             </Button>
           </Center>
         )}
-    </form>
+      </form>
     </>
   );
 }

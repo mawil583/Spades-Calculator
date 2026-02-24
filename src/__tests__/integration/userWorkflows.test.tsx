@@ -1,5 +1,7 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { ReactNode } from 'react';
 import { Provider } from '../../components/ui/provider';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import { StateProvider } from '../../helpers/context/GlobalContext';
@@ -7,33 +9,37 @@ import HomePage from '../../pages/HomePage';
 
 // Mock localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
 // Mock the math functions
-jest.mock('../helpers/math/spadesMath', () => ({
-  addInputs: jest.fn((a, b) => (a || 0) + (b || 0)),
-  isNotDefaultValue: jest.fn((value) => value !== ''),
-  calculateTeamScore: jest.fn((bids, actuals) => {
-    const totalBid = bids.reduce((sum, bid) => sum + (parseInt(bid) || 0), 0);
-    const totalActual = actuals.reduce(
-      (sum, actual) => sum + (parseInt(actual) || 0),
-      0
-    );
-    if (totalActual >= totalBid) {
-      return totalBid * 10 + (totalActual - totalBid);
-    } else {
-      return -(totalBid * 10);
-    }
-  }),
-}));
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
+    isNotDefaultValue: vi.fn((value) => value !== ''),
+    calculateTeamScore: vi.fn((bids: string[], actuals: string[]) => {
+      const totalBid = bids.reduce((sum: number, bid: string) => sum + (parseInt(bid) || 0), 0);
+      const totalActual = actuals.reduce(
+        (sum: number, actual: string) => sum + (parseInt(actual) || 0),
+        0
+      );
+      if (totalActual >= totalBid) {
+        return totalBid * 10 + (totalActual - totalBid);
+      } else {
+        return -(totalBid * 10);
+      }
+    }),
+  };
+});
 
-const renderWithProviders = (component, initialEntries = ['/']) => {
+const renderWithProviders = (component: ReactNode, initialEntries = ['/']) => {
   const router = createMemoryRouter(
     [
       {
@@ -57,7 +63,7 @@ const renderWithProviders = (component, initialEntries = ['/']) => {
 
 describe('Complete User Workflows', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
   });
 
@@ -150,14 +156,14 @@ describe('Complete User Workflows', () => {
   describe('PWA Integration Workflow', () => {
     it('should show and handle offline download in menu', async () => {
       renderWithProviders(<HomePage />);
-      
+
       // Open menu
       const menuButton = screen.getByLabelText(/Open Menu/i);
       fireEvent.click(menuButton);
 
       // Verify offline download item is present
       expect(screen.getByText(/Offline Download/i)).toBeInTheDocument();
-      
+
       // Click it
       fireEvent.click(screen.getByText(/Offline Download/i));
     });

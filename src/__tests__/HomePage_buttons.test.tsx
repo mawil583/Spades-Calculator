@@ -6,6 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import NameForm from '../components/forms/NameForm';
 import { initialNames } from '../helpers/utils/constants';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue } from '../types';
 
 // Mock mocks using vi.hoisted
 const { mockUseLocalStorage, mockedNavigate } = vi.hoisted(() => {
@@ -17,7 +19,7 @@ const { mockUseLocalStorage, mockedNavigate } = vi.hoisted(() => {
 
 // Mock localStorage
 const mockLocalStorage = (function () {
-  let store = {};
+  let store: Record<string, string> = {};
   return {
     getItem: vi.fn((key) => store[key] || null),
     setItem: vi.fn((key, value) => {
@@ -50,14 +52,14 @@ vi.mock('react-router-dom', async () => {
 
 // Mock WarningModal
 vi.mock('../components/modals', () => ({
-  WarningModal: ({ isOpen }) => (
+  WarningModal: ({ isOpen }: { isOpen: boolean }) => (
     isOpen ? <div data-testid="warning-modal">Warning Modal</div> : null
   ),
 }));
 
 // Mock math helpers
 vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
-  const actual = await importOriginal();
+  const actual = await importOriginal() as Record<string, unknown>;
   return {
     ...actual,
     isNotDefaultValue: vi.fn((val) => val !== '' && val !== undefined && val !== null),
@@ -65,38 +67,43 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
 });
 
 
-const renderWithProviders = (component, contextValue) => {
+const renderWithProviders = (
+  ui: ReactNode,
+  contextValue: Record<string, unknown>,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  isMobile = false
+) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={contextValue}>
+      <GlobalContext.Provider value={contextValue as unknown as GlobalContextValue}>
         <MemoryRouter>
-          {component}
+          {ui}
         </MemoryRouter>
       </GlobalContext.Provider>
     </Provider>
   );
 };
 
-  describe('NameForm Button Logic', () => {
-    const defaultContext = {
-      roundHistory: [],
-      currentRound: null,
-      resetCurrentRound: vi.fn(),
-      setRoundHistory: vi.fn(),
-      setFirstDealerOrder: vi.fn(),
-      firstDealerOrder: [],
-    };
-  
-    beforeEach(() => {
-      vi.clearAllMocks();
-      mockLocalStorage.clear();
-      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(initialNames));
-      mockUseLocalStorage.mockReturnValue([initialNames, vi.fn()]);
-    });
+describe('NameForm Button Logic', () => {
+  const defaultContext = {
+    roundHistory: [],
+    currentRound: null,
+    resetCurrentRound: vi.fn(),
+    setRoundHistory: vi.fn(),
+    setFirstDealerOrder: vi.fn(),
+    firstDealerOrder: [],
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockLocalStorage.clear();
+    mockLocalStorage.getItem.mockReturnValue(JSON.stringify(initialNames));
+    mockUseLocalStorage.mockReturnValue([initialNames, vi.fn()]);
+  });
 
   it('should render "Start" button when no game data exists', () => {
     renderWithProviders(<NameForm />, defaultContext);
-    
+
     expect(screen.getByText('Start')).toBeInTheDocument();
     expect(screen.queryByText('Continue')).not.toBeInTheDocument();
     expect(screen.queryByText('New Game')).not.toBeInTheDocument();
@@ -123,13 +130,13 @@ const renderWithProviders = (component, contextValue) => {
         team1BidsAndActuals: { p1Bid: '1' }, // Has some data
       },
     };
-    
+
     // We need to make sure the component logic detects this data.
     // Since we'll implement the check using isNotDefaultValue, 
     // we need to make sure our mock enables that path, OR we can just rely on
     // how the component will likely interpret "currentRound".
     // For now let's assume checking if currentRound has values.
-    
+
     // BUT since we haven't implemented it yet, we just pass the context.
     // The implementation should verify if currentRound has meaningful data.
 
@@ -160,22 +167,22 @@ const renderWithProviders = (component, contextValue) => {
 
 
   it('should open WarningModal when "New Game" is clicked', async () => {
-     const contextWithHistory = {
+    const contextWithHistory = {
       ...defaultContext,
       roundHistory: [{ someData: 'test' }],
     };
 
     renderWithProviders(<NameForm />, contextWithHistory);
-    
+
     const newGameBtn = screen.getByText('New Game');
     expect(newGameBtn).toBeEnabled();
     fireEvent.click(newGameBtn);
-    
+
     await waitFor(() => {
       expect(screen.getByTestId('warning-modal')).toBeInTheDocument();
     });
   });
-  
+
   it('should navigate when "Continue" is clicked', async () => {
     // Provide valid player names so form validation passes
     const validNames = {

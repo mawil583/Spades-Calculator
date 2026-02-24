@@ -6,7 +6,17 @@ import { TeamInputHeading } from '../forms';
 import { addInputs } from '../../helpers/math/spadesMath';
 import { Unclaimed } from './';
 
-function BidSection({ index, names, isCurrent, roundHistory, currentRound }) {
+import type { Names, Round } from '../../types';
+
+interface BidSectionProps {
+  index: number;
+  names: Names;
+  isCurrent: boolean;
+  roundHistory: Round[];
+  currentRound: Round;
+}
+
+function BidSection({ index, names, isCurrent, roundHistory, currentRound }: BidSectionProps) {
   const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     names;

@@ -1,6 +1,5 @@
-// @ts-nocheck
-import { IconButton as ChakraIconButton } from '@chakra-ui/react';
+import { IconButton as ChakraIconButton, type IconButtonProps } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 
-export const IconButton = forwardRef((props, ref) => <ChakraIconButton ref={ref} {...props} />);
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>((props, ref) => <ChakraIconButton ref={ref} {...props} />);
 IconButton.displayName = 'IconButton';

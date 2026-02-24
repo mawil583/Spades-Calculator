@@ -1,7 +1,7 @@
 
 import { Separator, Button, Flex } from '../ui';
 
-const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }) => {
+const NewPlayerQuestion = ({ onDifferentTeams, onSameTeams }: { onDifferentTeams: () => void; onSameTeams: () => void }) => {
   return (
     <div style={{ padding: 'var(--app-spacing-2)' }}>
       <Separator mb={4} />

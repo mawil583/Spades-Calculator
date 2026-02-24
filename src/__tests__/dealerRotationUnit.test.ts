@@ -3,6 +3,7 @@ import {
   getCurrentDealerId,
   getDealerIdHistory,
 } from '../helpers/math/spadesMath';
+import type { Round } from '../types';
 import { initialFirstDealerOrder } from '../helpers/utils/constants';
 
 describe('Dealer Rotation Unit Tests', () => {
@@ -308,10 +309,10 @@ describe('Dealer Rotation Unit Tests', () => {
 
   describe('getDealerIdHistory function', () => {
     test('should calculate dealer history correctly', () => {
-      const roundHistory = [
-        { team1BidsAndActuals: {}, team2BidsAndActuals: {} },
-        { team1BidsAndActuals: {}, team2BidsAndActuals: {} },
-        { team1BidsAndActuals: {}, team2BidsAndActuals: {} },
+      const roundHistory: Round[] = [
+        { team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' }, team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' } },
+        { team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' }, team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' } },
+        { team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' }, team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' } },
       ];
 
       const dealerIdHistory = getDealerIdHistory(

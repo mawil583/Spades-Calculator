@@ -1,8 +1,11 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import TeamInputHeading from '../components/forms/TeamInputHeading';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue, Round } from '../types';
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
@@ -27,15 +30,15 @@ const mockContextValue = {
       p2Actual: '',
     },
   },
-  setCurrentRound: jest.fn(),
-  setRoundHistory: jest.fn(),
-  setDealerOverride: jest.fn(),
+  setCurrentRound: vi.fn(),
+  setRoundHistory: vi.fn(),
+  setDealerOverride: vi.fn(),
 };
 
-const renderWithContext = (component) => {
+const renderWithContext = (component: ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={mockContextValue}>
+      <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -49,7 +52,7 @@ describe('TeamInputHeading', () => {
     title: 'Actuals',
     team1Bids: ['1', '2'],
     team2Bids: ['3', '4'],
-    onTeamTotalChange: jest.fn(),
+    onTeamTotalChange: vi.fn(),
     isEditable: false,
   };
 
@@ -71,7 +74,7 @@ describe('TeamInputHeading', () => {
       // Should NOT have contentEditable (prevent blinking caret)
       expect(team1Heading).not.toHaveAttribute('contenteditable');
       expect(team2Heading).not.toHaveAttribute('contenteditable');
-      
+
       // Should still indicate interactivity via cursor style or clickability (implicit in other tests)
       expect(team1Heading).toHaveStyle({ cursor: 'pointer' });
     });
@@ -118,20 +121,21 @@ describe('TeamInputHeading', () => {
 
 describe('TeamInputHeading Modal Integration', () => {
   it('should open InputModal when clicking on editable team heading', async () => {
-    const mockOnTeamTotalChange = jest.fn();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const mockOnTeamTotalChange = vi.fn();
 
     const { getAllByText, findByTestId } = renderWithContext(
       <TeamInputHeading
-        team1Total="0"
-        team2Total="0"
+        team1Total={0}
+        team2Total={0}
         title="Actuals"
         team1Bids={['1', '2']}
         team2Bids={['3', '4']}
-        onTeamTotalChange={mockOnTeamTotalChange}
+
         isEditable={true}
         index={0}
         isCurrent={true}
-        currentRound={{}}
+        currentRound={{} as Round}
         roundHistory={[]}
       />
     );
@@ -146,20 +150,22 @@ describe('TeamInputHeading Modal Integration', () => {
   });
 
   it('should not open InputModal when clicking on non-editable team heading', async () => {
-    const mockOnTeamTotalChange = jest.fn();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const mockOnTeamTotalChange = vi.fn();
 
     const { getAllByText, queryByTestId } = renderWithContext(
       <TeamInputHeading
-        team1Total="0"
-        team2Total="0"
+        team1Total={0}
+        team2Total={0}
         title="Actuals"
         team1Bids={['Nil', '2']} // Team1 has a nil bid
         team2Bids={['3', '4']}
-        onTeamTotalChange={mockOnTeamTotalChange}
+
         isEditable={true}
         index={0}
         isCurrent={true}
-        currentRound={{}}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        currentRound={{} as any}
         roundHistory={[]}
       />
     );
@@ -176,15 +182,15 @@ describe('TeamInputHeading Modal Integration', () => {
 
 describe('TeamInputHeading Team Total Updates', () => {
   it('should update individual player actuals when team total is selected', async () => {
-    const mockSetCurrentRound = jest.fn();
-    const mockSetRoundHistory = jest.fn();
+    const mockSetCurrentRound = vi.fn();
+    const mockSetRoundHistory = vi.fn();
 
     // Mock the GlobalContext
     const testContextValue = {
       ...mockContextValue,
       setCurrentRound: mockSetCurrentRound,
       setRoundHistory: mockSetRoundHistory,
-    };
+    } as unknown as GlobalContextValue;
 
     const { getAllByText, findByTestId } = render(
       <Provider>
@@ -239,14 +245,14 @@ describe('TeamInputHeading Team Total Updates', () => {
   });
 
   it('should handle odd team totals by giving remainder to first player', async () => {
-    const mockSetCurrentRound = jest.fn();
-    const mockSetRoundHistory = jest.fn();
+    const mockSetCurrentRound = vi.fn();
+    const mockSetRoundHistory = vi.fn();
 
     const testContextValue2 = {
       ...mockContextValue,
       setCurrentRound: mockSetCurrentRound,
       setRoundHistory: mockSetRoundHistory,
-    };
+    } as unknown as GlobalContextValue;
 
     const { getAllByText } = render(
       <Provider>
@@ -300,14 +306,14 @@ describe('TeamInputHeading Team Total Updates', () => {
 
 describe('TeamInputHeading Integration Tests', () => {
   it('should update both individual players and team total display when team total is selected', async () => {
-    const mockSetCurrentRound = jest.fn();
-    const mockSetRoundHistory = jest.fn();
+    const mockSetCurrentRound = vi.fn();
+    const mockSetRoundHistory = vi.fn();
 
     const testContextValue = {
       ...mockContextValue,
       setCurrentRound: mockSetCurrentRound,
       setRoundHistory: mockSetRoundHistory,
-    };
+    } as unknown as GlobalContextValue;
 
     // Mock the current round to simulate the actual state
     const mockCurrentRound = {
@@ -368,14 +374,14 @@ describe('TeamInputHeading Integration Tests', () => {
   });
 
   it('should handle odd team totals correctly (remainder to first player)', async () => {
-    const mockSetCurrentRound = jest.fn();
-    const mockSetRoundHistory = jest.fn();
+    const mockSetCurrentRound = vi.fn();
+    const mockSetRoundHistory = vi.fn();
 
     const testContextValue = {
       ...mockContextValue,
       setCurrentRound: mockSetCurrentRound,
       setRoundHistory: mockSetRoundHistory,
-    };
+    } as unknown as GlobalContextValue;
 
     const mockCurrentRound = {
       team1BidsAndActuals: {

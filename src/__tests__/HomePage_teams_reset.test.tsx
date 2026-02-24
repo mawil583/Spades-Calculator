@@ -6,6 +6,8 @@ import { GlobalContext } from '../helpers/context/GlobalContext';
 import NameForm from '../components/forms/NameForm';
 import { initialNames } from '../helpers/utils/constants'; // Should contain 'Team 1', 'Team 2'
 import { vi } from 'vitest';
+import React from 'react';
+import type { GlobalContextValue, Round } from '../types';
 
 // Mock hooks
 const { mockUseLocalStorage } = vi.hoisted(() => {
@@ -18,10 +20,10 @@ vi.mock('../helpers/utils/hooks', () => ({
 
 // Mock WarningModal to simulate trigger
 vi.mock('../components/modals/WarningModal', () => ({
-  default: ({ isOpen, resetNames }) => {
+  default: ({ isOpen, resetNames }: { isOpen: boolean; resetNames?: (names: typeof initialNames) => void; }) => {
     return isOpen ? (
       <div data-testid="warning-modal">
-        <button 
+        <button
           data-testid="trigger-reset"
           onClick={() => {
             if (resetNames) {
@@ -37,8 +39,20 @@ vi.mock('../components/modals/WarningModal', () => ({
   },
 }));
 
+vi.mock('react-router-dom', async (importOriginal: () => Promise<typeof import('react-router-dom')>) => {
+  const actual = await importOriginal();
+  // This mock is likely intended to mock specific hooks or components from react-router-dom
+  // The `isNotDefaultValue` function here seems to be a copy-paste error from spadesMath mock.
+  // If a specific mock for react-router-dom is needed, it should be defined here.
+  // For now, we'll just return the actual module to avoid breaking existing functionality
+  // unless a specific mock for react-router-dom is explicitly required by the tests.
+  return {
+    ...actual,
+  };
+});
+
 // Mock math helpers
-vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+vi.mock('../helpers/math/spadesMath', async (importOriginal: () => Promise<typeof import('../helpers/math/spadesMath')>) => {
   const actual = await importOriginal();
   return {
     ...actual,
@@ -46,10 +60,10 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   };
 });
 
-const renderWithProviders = (component, contextValue) => {
+const renderWithProviders = (component: React.ReactNode, contextValue: Partial<GlobalContextValue>) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={contextValue}>
+      <GlobalContext.Provider value={contextValue as GlobalContextValue}>
         <MemoryRouter>
           {component}
         </MemoryRouter>
@@ -59,9 +73,12 @@ const renderWithProviders = (component, contextValue) => {
 };
 
 describe('Team Name Reset Verification', () => {
-  const defaultContext = {
-    roundHistory: [{ round: 1 }], 
-    currentRound: null,
+  const defaultContext: Partial<GlobalContextValue> = {
+    roundHistory: [{
+      team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+      team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+    } as unknown as Round],
+    currentRound: undefined,
   };
 
   it('should reset team names to "Team 1" and "Team 2" when Different Teams is selected', async () => {
@@ -75,14 +92,12 @@ describe('Team Name Reset Verification', () => {
       t2p1Name: 'Charlie',
       t2p2Name: 'Dave',
     };
-    
+
     mockUseLocalStorage.mockReturnValue([currentNames, setNames]);
 
     renderWithProviders(<NameForm />, defaultContext);
 
     // Initial state check (optional, finding input values might be tricky with Editable/Hidden, 
-    // but we trust setNames verification mostly)
-
     // Open Warning Modal
     fireEvent.click(screen.getByText('New Game'));
     await waitFor(() => {

@@ -7,8 +7,16 @@ import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { Badge } from '../ui';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 import { DealerSelectionModal } from '../modals';
+import type { Round } from '../../types';
 
-const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
+export interface DealerTagProps {
+  id: string;
+  index?: number;
+  isCurrent: boolean;
+  roundHistory: Round[];
+}
+
+const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }: DealerTagProps) => {
   const { firstDealerOrder, currentRound, setDealerOverride } =
     useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +25,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
 
   const currentDealerId = getCurrentDealerId({
     dealerIdHistory,
-    index,
+    index: index as number,
     isCurrent,
     firstDealerOrder,
     dealerOverride: isCurrent ? currentRound?.dealerOverride : null,
@@ -27,9 +35,9 @@ const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
   const isDealer = currentDealerId === id;
 
   const dealerOptions = useMemo(() => {
-    const names = JSON.parse(localStorage.getItem('names')) || {};
+    const names = JSON.parse(localStorage.getItem('names') || '{}');
 
-    const getNameForId = (playerId) => {
+    const getNameForId = (playerId: string) => {
       const isTeam1 = playerId.includes('team1BidsAndActuals');
       const isP1 = playerId.includes('p1Bid');
       if (isTeam1 && isP1) return names.t1p1Name || 'Team 1 - P1';
@@ -45,7 +53,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
     return options;
   }, []);
 
-  const onSelectDealer = (selectedId) => {
+  const onSelectDealer = (selectedId: string) => {
     // Only allow dealer changes for the current round (isCurrent = true)
     if (!isCurrent) {
       setIsOpen(false);
@@ -57,7 +65,7 @@ const DealerTag = ({ id, index, isCurrent, roundHistory, ...props }) => {
     setIsOpen(false);
   };
 
-  const handleBadgeClick = (e) => {
+  const handleBadgeClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isCurrent) {
       setIsOpen(true);

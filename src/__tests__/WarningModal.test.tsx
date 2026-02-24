@@ -5,33 +5,35 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import WarningModal from '../components/modals/WarningModal';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import type { GlobalContextValue, Round } from '../types';
 
 // Mock the context values
-const mockContextValue = {
-  resetCurrentRound: jest.fn(),
-  setRoundHistory: jest.fn(),
-  setFirstDealerOrder: jest.fn(),
+// Mock the context values
+const mockContextValue: Partial<GlobalContextValue> = {
+  resetCurrentRound: vi.fn(),
+  setRoundHistory: vi.fn(),
+  setFirstDealerOrder: vi.fn(),
   firstDealerOrder: ['player1', 'player2', 'player3', 'player4'],
   roundHistory: [],
 };
 
-const { mockedNavigate } = vi.hoisted(() => {
-  return { mockedNavigate: vi.fn() };
-});
+const { mockedNavigate } = vi.hoisted(() => ({
+  mockedNavigate: vi.fn(),
+}));
 
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
   return {
     ...actual,
     useNavigate: () => mockedNavigate,
   };
 });
 
-const renderWithProviders = (component, contextValue = mockContextValue) => {
+const renderWithProviders = (component: React.ReactNode, contextValue: Partial<GlobalContextValue> = mockContextValue) => {
   return render(
     <BrowserRouter>
       <Provider>
-        <GlobalContext.Provider value={contextValue}>
+        <GlobalContext.Provider value={contextValue as GlobalContextValue}>
           {component}
         </GlobalContext.Provider>
       </Provider>
@@ -41,28 +43,23 @@ const renderWithProviders = (component, contextValue = mockContextValue) => {
 
 describe('WarningModal', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockedNavigate.mockClear();
-    // Mock localStorage
-    Object.defineProperty(window, 'localStorage', {
-      value: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
-      },
-      writable: true,
-    });
+    vi.spyOn(window.Storage.prototype, 'setItem');
+    vi.spyOn(window.Storage.prototype, 'getItem').mockReturnValue(null);
+    vi.spyOn(window.Storage.prototype, 'removeItem');
+    vi.spyOn(window.Storage.prototype, 'clear');
   });
 
   describe('when there is no round history', () => {
     it('should show only the NewPlayerQuestion modal', async () => {
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
         roundHistory: [],
       };
 
       renderWithProviders(
-        <WarningModal isOpen={true} setIsModalOpen={jest.fn()} />,
+        <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
         contextValue
       );
 
@@ -81,8 +78,8 @@ describe('WarningModal', () => {
     });
 
     it('should handle "Different Teams" selection', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
         roundHistory: [],
       };
@@ -93,15 +90,16 @@ describe('WarningModal', () => {
       );
 
       fireEvent.click(await screen.findByText('Different Teams'));
+      const ctx = contextValue as GlobalContextValue;
 
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
     it('should reset names to empty and navigate to home when selecting "Different Teams"', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
         roundHistory: [],
       };
@@ -112,27 +110,35 @@ describe('WarningModal', () => {
       );
 
       fireEvent.click(await screen.findByText('Different Teams'));
+      const ctx = contextValue as GlobalContextValue;
 
-      // Verify that localStorage.setItem was called with initialNames (empty player names)
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'names',
-        JSON.stringify({
-          t1p1Name: '',
-          t1p2Name: '',
-          t2p1Name: '',
-          t2p2Name: '',
-          team1Name: 'Team 1',
-          team2Name: 'Team 2',
-        })
-      );
-      expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
-      expect(setIsModalOpen).toHaveBeenCalledWith(false);
-      expect(mockedNavigate).toHaveBeenCalledWith('/');
+      await waitFor(() => {
+        expect(window.localStorage.setItem).toHaveBeenCalledWith(
+          'names',
+          JSON.stringify({
+            t1p1Name: '',
+            t1p2Name: '',
+            t2p1Name: '',
+            t2p2Name: '',
+            team1Name: 'Team 1',
+            team2Name: 'Team 2',
+          })
+        );
+      });
+      await waitFor(() => {
+        expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
+      });
+      await waitFor(() => {
+        expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      });
+      await waitFor(() => {
+        expect(mockedNavigate).toHaveBeenCalledWith('/');
+      });
     });
 
     it('should handle "Same Teams" selection', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
         roundHistory: [],
       };
@@ -143,9 +149,10 @@ describe('WarningModal', () => {
       );
 
       fireEvent.click(await screen.findByText('Same Teams'));
+      const ctx = contextValue as GlobalContextValue;
 
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
@@ -153,13 +160,16 @@ describe('WarningModal', () => {
 
   describe('when there is round history', () => {
     it('should show the DataWarningQuestion first', async () => {
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
-        <WarningModal isOpen={true} setIsModalOpen={jest.fn()} />,
+        <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
         contextValue
       );
 
@@ -178,10 +188,13 @@ describe('WarningModal', () => {
     });
 
     it('should handle "Cancel" from DataWarningQuestion', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
@@ -195,13 +208,16 @@ describe('WarningModal', () => {
     });
 
     it('should show NewPlayerQuestion after clicking "Continue"', async () => {
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
-        <WarningModal isOpen={true} setIsModalOpen={jest.fn()} />,
+        <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
         contextValue
       );
 
@@ -224,10 +240,13 @@ describe('WarningModal', () => {
     });
 
     it('should handle "Same Teams" selection with round history', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
@@ -240,19 +259,23 @@ describe('WarningModal', () => {
 
       // Then click Same Teams
       fireEvent.click(await screen.findByText('Same Teams'));
+      const ctx = contextValue as GlobalContextValue;
 
-      expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
 
     it('should handle "Different Teams" selection with round history', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
@@ -265,18 +288,22 @@ describe('WarningModal', () => {
 
       // Then click Different Teams
       fireEvent.click(await screen.findByText('Different Teams'));
+      const ctx = contextValue as GlobalContextValue;
 
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
     it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(
@@ -309,10 +336,13 @@ describe('WarningModal', () => {
 
   describe('modal state management', () => {
     it('should handle modal close', async () => {
-      const setIsModalOpen = jest.fn();
-      const contextValue = {
+      const setIsModalOpen = vi.fn();
+      const contextValue: Partial<GlobalContextValue> = {
         ...mockContextValue,
-        roundHistory: [{ round: 1, bids: [1, 2, 3, 4] }],
+        roundHistory: [{
+          team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
+          team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 }
+        } as Round],
       };
 
       renderWithProviders(

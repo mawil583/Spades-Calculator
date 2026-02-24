@@ -51,18 +51,18 @@ const Header = () => {
   return (
     <Box as="header" width="100%" py={0} position="relative" zIndex={100}>
       <Flex justify="space-between" align="center" position="relative" zIndex={110}>
-        <Text 
-          fontSize="var(--app-font-xl)" 
-          fontWeight="bold" 
+        <Text
+          fontSize="var(--app-font-xl)"
+          fontWeight="bold"
           letterSpacing="tight"
           cursor="pointer"
           onClick={handleNavigateHome}
         >
           SpadesCalculator
         </Text>
-        <IconButton 
-          variant="ghost" 
-          onClick={toggleMenu} 
+        <IconButton
+          variant="ghost"
+          onClick={toggleMenu}
           aria-label="Open Menu"
         >
           <MenuIcon size={24} />

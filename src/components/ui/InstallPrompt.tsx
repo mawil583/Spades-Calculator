@@ -4,7 +4,7 @@ import { Download } from 'lucide-react';
 import { toaster } from './toaster';
 
 const InstallPrompt = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const InstallPrompt = () => {
     }, 10000); // Show after 10 seconds if user is still on the page
 
     // Listen for the beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e) => {
+    const handleBeforeInstallPrompt = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };

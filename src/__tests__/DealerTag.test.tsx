@@ -1,18 +1,21 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent, createEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue } from '../types';
 
 // Mock the spadesMath functions
-jest.mock('../helpers/math/spadesMath', () => ({
-  getDealerIdHistory: jest.fn(() => []),
-  getCurrentDealerId: jest.fn(() => 'team1BidsAndActuals.p1Bid'),
+vi.mock('../helpers/math/spadesMath', () => ({
+  getDealerIdHistory: vi.fn(() => []),
+  getCurrentDealerId: vi.fn(() => 'team1BidsAndActuals.p1Bid'),
 }));
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(() =>
+  getItem: vi.fn(() =>
     JSON.stringify({
       t1p1Name: 'Player 1',
       t1p2Name: 'Player 2',
@@ -20,8 +23,8 @@ const localStorageMock = {
       t2p2Name: 'Player 4',
     })
   ),
-  setItem: jest.fn(),
-  removeItem: jest.fn(),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -35,13 +38,13 @@ const mockContextValue = {
     'team2BidsAndActuals.p2Bid',
   ],
   currentRound: {},
-  setDealerOverride: jest.fn(),
+  setDealerOverride: vi.fn(),
 };
 
-const renderWithProviders = (component) => {
+const renderWithProviders = (component: ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={mockContextValue}>
+      <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -50,7 +53,7 @@ const renderWithProviders = (component) => {
 
 describe('DealerTag', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Unit Tests', () => {
@@ -123,22 +126,22 @@ describe('DealerTag', () => {
     });
 
     it('should stop propagation when clicked', () => {
-        renderWithProviders(
-            <DealerTag
-            id="team1BidsAndActuals.p1Bid"
-            index={0}
-            isCurrent={true}
-            roundHistory={[]}
-            />
-        );
+      renderWithProviders(
+        <DealerTag
+          id="team1BidsAndActuals.p1Bid"
+          index={0}
+          isCurrent={true}
+          roundHistory={[]}
+        />
+      );
 
-        const dealerBadge = screen.getByTestId('dealerBadge');
-        const evt = createEvent.click(dealerBadge);
-        
-        evt.stopPropagation = jest.fn();
-        fireEvent(dealerBadge, evt);
+      const dealerBadge = screen.getByTestId('dealerBadge');
+      const evt = createEvent.click(dealerBadge);
 
-        expect(evt.stopPropagation).toHaveBeenCalled();
+      evt.stopPropagation = vi.fn();
+      fireEvent(dealerBadge, evt);
+
+      expect(evt.stopPropagation).toHaveBeenCalled();
     });
   });
 });

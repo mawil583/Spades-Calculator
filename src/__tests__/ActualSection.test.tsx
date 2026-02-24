@@ -1,49 +1,54 @@
+import { vi } from 'vitest';
 
 import { render, screen, within } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import ActualSection from '../components/game/ActualSection';
+import type { InputValue } from '../types';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue } from '../types';
 
 // Mock localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
 // Mock the math functions
-jest.mock('../helpers/math/spadesMath', () => ({
-  addInputs: jest.fn((a, b) => (a || 0) + (b || 0)),
-  isNotDefaultValue: jest.fn((value) => value !== ''),
-}));
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    addInputs: vi.fn((a: InputValue, b: InputValue) => (parseInt(String(a)) || 0) + (parseInt(String(b)) || 0)),
+    isNotDefaultValue: vi.fn((value: InputValue) => value !== ''),
+  };
+});
 
 // Mock the helper functions
-jest.mock('../helpers/utils/helperFunctions', () => ({
-  getActualsErrorText: jest.fn(
-    (total) =>
-      `The total amount of hands must always add up to 13. Yours totaled ${total}. Correct this before moving on.`
-  ),
-}));
+vi.mock('../helpers/utils/helperFunctions', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    getActualsErrorText: vi.fn(
+      (total) =>
+        `The total amount of hands must always add up to 13. Yours totaled ${total}. Correct this before moving on.`
+    ),
+  };
+});
 
 // Mock the useValidateActuals hook
-jest.mock('../helpers/utils/hooks', () => ({
-  useValidateActuals: jest.fn((allSubmitted, total, setIsValid) => {
-    // If all actuals are submitted and they don't add up to 13, it's invalid
-    if (allSubmitted && total !== 13) {
-      setIsValid(false);
-    } else {
-      setIsValid(true);
-    }
-  }),
-}));
+vi.mock('../helpers/utils/hooks', async (importOriginal) => {
+  return await importOriginal();
+});
 
-const renderWithProviders = (component, contextValue) => {
+const renderWithProviders = (component: ReactNode, contextValue: Partial<GlobalContextValue>) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={contextValue}>
+      <GlobalContext.Provider value={contextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -61,9 +66,10 @@ describe('ActualSection Component', () => {
   };
 
   const mockContextValue = {
-    setCurrentRound: jest.fn(),
-    setRoundHistory: jest.fn(),
+    setCurrentRound: vi.fn(),
+    setRoundHistory: vi.fn(),
   };
+
 
   const defaultProps = {
     index: 0,
@@ -93,7 +99,7 @@ describe('ActualSection Component', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockNames));
   });
 

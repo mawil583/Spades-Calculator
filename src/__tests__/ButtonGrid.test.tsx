@@ -1,25 +1,30 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 import ButtonGrid from '../components/ui/ButtonGrid';
+import type { GlobalContextValue } from '../types';
+import type { ReactNode } from 'react';
 
 // Mock the helper functions
-jest.mock('../helpers/utils/helperFunctions', () => ({
-  getButtonValues: jest.fn(() => [
-    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-  ]),
-  getEditedRoundHistory: jest.fn(() => []),
-  updateInput: jest.fn(({ input, fieldToUpdate, currentRound }) => ({
-    ...currentRound,
-    [fieldToUpdate]: input,
-  })),
-}));
+vi.mock('../helpers/utils/helperFunctions', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    // Use real getButtonValues
+    getEditedRoundHistory: vi.fn(() => []),
+    updateInput: vi.fn(({ input, fieldToUpdate, currentRound }) => ({
+      ...currentRound,
+      [fieldToUpdate]: input,
+    })),
+  };
+});
 
-const renderWithProviders = (component, contextValue) => {
+const renderWithProviders = (component: ReactNode, contextValue: Partial<GlobalContextValue>) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={contextValue}>
+      <GlobalContext.Provider value={contextValue as unknown as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>
@@ -28,9 +33,10 @@ const renderWithProviders = (component, contextValue) => {
 
 describe('ButtonGrid Component', () => {
   const mockContextValue = {
-    setCurrentRound: jest.fn(),
-    setRoundHistory: jest.fn(),
+    setCurrentRound: vi.fn(),
+    setRoundHistory: vi.fn(),
   };
+
 
   const defaultProps = {
     type: 'Bid',
@@ -52,11 +58,11 @@ describe('ButtonGrid Component', () => {
     index: 0,
     roundHistory: [],
     isCurrent: true,
-    setIsModalOpen: jest.fn(),
+    setIsModalOpen: vi.fn(),
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Button Display', () => {
@@ -103,7 +109,8 @@ describe('ButtonGrid Component', () => {
       // Test Actual type
       rerender(
         <Provider>
-          <GlobalContext.Provider value={mockContextValue}>
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          <GlobalContext.Provider value={mockContextValue as any}>
             <ButtonGrid {...defaultProps} type="Actual" />
           </GlobalContext.Provider>
         </Provider>
@@ -134,7 +141,7 @@ describe('ButtonGrid Component', () => {
     });
 
     it('should close modal when button is clicked', () => {
-      const mockSetIsModalOpen = jest.fn();
+      const mockSetIsModalOpen = vi.fn();
       renderWithProviders(
         <ButtonGrid {...defaultProps} setIsModalOpen={mockSetIsModalOpen} />,
         mockContextValue
@@ -181,7 +188,7 @@ describe('ButtonGrid Component', () => {
     });
 
     it('should close modal when button is clicked for past round', () => {
-      const mockSetIsModalOpen = jest.fn();
+      const mockSetIsModalOpen = vi.fn();
       renderWithProviders(
         <ButtonGrid
           {...defaultProps}
@@ -201,7 +208,8 @@ describe('ButtonGrid Component', () => {
   describe('Edge Cases', () => {
     it('should handle null setIsModalOpen gracefully', () => {
       renderWithProviders(
-        <ButtonGrid {...defaultProps} setIsModalOpen={null} />,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        <ButtonGrid {...defaultProps} setIsModalOpen={null as any} />,
         mockContextValue
       );
 
@@ -214,7 +222,8 @@ describe('ButtonGrid Component', () => {
 
     it('should handle empty roundHistory for past rounds', () => {
       renderWithProviders(
-        <ButtonGrid {...defaultProps} isCurrent={false} roundHistory={null} />,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        <ButtonGrid {...defaultProps} isCurrent={false} roundHistory={null as any} />,
         mockContextValue
       );
 

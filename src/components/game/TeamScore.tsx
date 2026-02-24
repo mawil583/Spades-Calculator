@@ -1,9 +1,16 @@
 
 import { Center, Heading, Flex, Text } from '../ui';
+import type { TeamScore as TeamScoreType } from '../../types';
 
 import '../../App.css';
 
-function TeamScore({ teamName, scoreObj, teamClassName }) {
+interface TeamScoreProps {
+  teamName: string;
+  scoreObj: TeamScoreType;
+  teamClassName?: string;
+}
+
+function TeamScore({ teamName, scoreObj, teamClassName }: TeamScoreProps) {
   return (
     <Flex
       direction={'column'}

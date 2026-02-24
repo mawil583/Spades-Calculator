@@ -1,13 +1,20 @@
-// @ts-nocheck
 import {
   FieldRoot,
   FieldLabel,
   FieldHelperText,
   FieldErrorText,
+  type FieldRootProps,
 } from "@chakra-ui/react"
-import { forwardRef } from "react"
+import { forwardRef, type ReactNode } from "react"
 
-export const Field = forwardRef(function Field(props, ref) {
+export interface FieldProps extends Omit<FieldRootProps, "label"> {
+  label?: ReactNode
+  helperText?: ReactNode
+  errorText?: ReactNode
+  optionalText?: ReactNode
+}
+
+export const Field = forwardRef<HTMLDivElement, FieldProps>(function Field(props, ref) {
   const { label, children, helperText, errorText, optionalText, ...rest } = props
   return (
     <FieldRoot ref={ref} {...rest}>

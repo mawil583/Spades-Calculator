@@ -7,9 +7,8 @@ import '@testing-library/jest-dom';
 // Configure global test environment
 import { vi } from 'vitest';
 
-// Make vi available globally as jest (cast needed due to slight API differences)
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(global as any).jest = vi;
+// Make vi available globally as jest (for libraries that reference jest globals)
+Object.defineProperty(global, 'jest', { value: vi, writable: true });
 
 // Mock console methods to avoid noise in tests
 global.console = {

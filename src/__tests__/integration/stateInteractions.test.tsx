@@ -1,42 +1,54 @@
+import { vi, type Mock } from 'vitest';
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from '../../components/ui/provider';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import type { GlobalContextValue, Round } from '../../types';
+import type { ReactNode } from 'react';
 import SpadesCalculator from '../../pages/SpadesCalculator';
 import HomePage from '../../pages/HomePage';
 
 // Mock localStorage
 const mockLocalStorage = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
 // Mock the math functions
-jest.mock('../../helpers/math/spadesMath', () => ({
-  addInputs: jest.fn((a, b) => (a || 0) + (b || 0)),
-  isNotDefaultValue: jest.fn((value) => value !== ''),
-  calculateTeamScore: jest.fn((bids, actuals) => {
-    const totalBid = bids.reduce((sum, bid) => sum + (parseInt(bid) || 0), 0);
-    const totalActual = actuals.reduce(
-      (sum, actual) => sum + (parseInt(actual) || 0),
-      0
-    );
-    if (totalActual >= totalBid) {
-      return totalBid * 10 + (totalActual - totalBid);
-    } else {
-      return -(totalBid * 10);
-    }
-  }),
-}));
+vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
+    isNotDefaultValue: vi.fn((value) => value !== ''),
+    calculateTeamScore: vi.fn((bids: string[], actuals: string[]) => {
+      const totalBid = bids.reduce((sum: number, bid: string) => sum + (parseInt(bid) || 0), 0);
+      const totalActual = actuals.reduce(
+        (sum: number, actual: string) => sum + (parseInt(actual) || 0),
+        0
+      );
+      if (totalActual >= totalBid) {
+        return totalBid * 10 + (totalActual - totalBid);
+      } else {
+        return -(totalBid * 10);
+      }
+    }),
+  };
+});
+
+interface MockContextValue extends GlobalContextValue {
+  names: Record<string, string>;
+  setNames: Mock;
+}
 
 const renderWithProviders = (
-  component,
-  contextValue,
+  component: ReactNode,
+  contextValue: GlobalContextValue,
   initialEntries = ['/']
 ) => {
   const router = createMemoryRouter(
@@ -61,16 +73,16 @@ const renderWithProviders = (
 };
 
 describe('Complex State Interactions Between Unrelated Components', () => {
-  let mockContextValue;
-  let mockSetCurrentRound;
-  let mockSetRoundHistory;
-  let mockSetNames;
+  let mockContextValue: MockContextValue;
+  let mockSetCurrentRound: Mock;
+  let mockSetRoundHistory: Mock;
+  let mockSetNames: Mock;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockSetCurrentRound = jest.fn();
-    mockSetRoundHistory = jest.fn();
-    mockSetNames = jest.fn();
+    vi.clearAllMocks();
+    mockSetCurrentRound = vi.fn();
+    mockSetRoundHistory = vi.fn();
+    mockSetNames = vi.fn();
 
     mockContextValue = {
       names: {
@@ -95,12 +107,17 @@ describe('Complex State Interactions Between Unrelated Components', () => {
           p1Actual: '',
           p2Actual: '',
         },
-      },
+      } as Round,
       setCurrentRound: mockSetCurrentRound,
-      resetCurrentRound: jest.fn(),
+      resetCurrentRound: vi.fn(),
       roundHistory: [],
       setRoundHistory: mockSetRoundHistory,
-    };
+      firstDealerOrder: [],
+      isFirstGameAmongTeammates: false,
+      setFirstDealerOrder: vi.fn(),
+      setDealerOverride: vi.fn(),
+      resetRoundHistory: vi.fn(),
+    } as unknown as MockContextValue;
 
     mockLocalStorage.getItem.mockReturnValue(
       JSON.stringify(mockContextValue.names)

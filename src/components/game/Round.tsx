@@ -16,14 +16,22 @@ import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
 
-function Round({ roundHistory, isCurrent = false, roundIndex }) {
+import type { Round as RoundType } from '../../types';
+
+interface RoundProps {
+  roundHistory: RoundType[];
+  isCurrent?: boolean;
+  roundIndex: number;
+}
+
+function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
   const { currentRound, resetCurrentRound, setRoundHistory } =
     useContext(GlobalContext);
 
   const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
 
-  const names = JSON.parse(localStorage.getItem('names'));
-  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule'));
+  const names = JSON.parse(localStorage.getItem('names') || '"{}"');
+  const nilSetting = JSON.parse(localStorage.getItem('nilScoringRule') || '""');
 
   const roundAtIndex = isCurrent ? null : roundHistory?.[roundIndex] ?? null;
   const roundInputs = isCurrent ? currentRound : roundAtIndex;
@@ -40,11 +48,11 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
   // Check if all bids are entered and update animation state
   const roundInputBids = roundInputs
     ? [
-        roundInputs.team1BidsAndActuals.p1Bid,
-        roundInputs.team1BidsAndActuals.p2Bid,
-        roundInputs.team2BidsAndActuals.p1Bid,
-        roundInputs.team2BidsAndActuals.p2Bid,
-      ]
+      roundInputs.team1BidsAndActuals.p1Bid,
+      roundInputs.team1BidsAndActuals.p2Bid,
+      roundInputs.team2BidsAndActuals.p1Bid,
+      roundInputs.team2BidsAndActuals.p2Bid,
+    ]
     : ['', '', '', '']; // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
 
@@ -133,7 +141,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       );
 
       // Calculation Helper
-      const calculateStats = (rawScore, netChange, startScore, endScore, bidsAndActuals) => {
+      const calculateStats = (rawScore: number, netChange: number, startScore: number, endScore: number, bidsAndActuals: RoundType['team1BidsAndActuals']) => {
         let nilPenalty = 0;
         let blindNilPenalty = 0;
         let setPenalty = 0;
@@ -158,30 +166,30 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
         // If both are Nil, there is no board bid to set.
         const p1IsNil = p1Bid === NIL || p1Bid === BLIND_NIL;
         const p2IsNil = p2Bid === NIL || p2Bid === BLIND_NIL;
-        
+
         let boardBid = 0;
         if (!p1IsNil) boardBid += p1BidVal;
         if (!p2IsNil) boardBid += p2BidVal;
 
         if (boardBid > 0) {
-            let teamActualForBoard = 0;
-            if (!p1IsNil) teamActualForBoard += p1ActVal;
-            if (!p2IsNil) teamActualForBoard += p2ActVal;
-            if (teamActualForBoard < boardBid) {
-                setPenalty += boardBid * 10;
-            }
+          let teamActualForBoard = 0;
+          if (!p1IsNil) teamActualForBoard += p1ActVal;
+          if (!p2IsNil) teamActualForBoard += p2ActVal;
+          if (teamActualForBoard < boardBid) {
+            setPenalty += boardBid * 10;
+          }
         }
         bagPenalty = rawScore - netChange === 100 ? 100 : 0;
-        
+
         const totalPenalties = nilPenalty + blindNilPenalty + setPenalty + bagPenalty;
         const pointsGained = netChange + totalPenalties;
 
         return {
-           pointsGained,
-           bagPenalty,
-           setPenalty,
-           nilPenalty,
-           blindNilPenalty,
+          pointsGained,
+          bagPenalty,
+          setPenalty,
+          nilPenalty,
+          blindNilPenalty,
         };
       };
 
@@ -189,7 +197,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
       const t1RawScore = team1RoundScoreFromHistory.score;
       const t1NetChange = t1End.teamScore - t1Start.teamScore;
       const t1Derived = calculateStats(t1RawScore, t1NetChange, t1Start.teamScore, t1End.teamScore, team1BidsAndActuals);
-      
+
       // Team 2 Stats
       const t2RawScore = team2RoundScoreFromHistory.score;
       const t2NetChange = t2End.teamScore - t2Start.teamScore;
@@ -266,7 +274,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
                 isCurrent={isCurrent}
                 index={roundIndex}
                 roundHistory={roundHistory}
-                currentRound={isCurrent ? currentRound : roundAtIndex}
+                currentRound={(isCurrent ? currentRound : roundAtIndex) as RoundType}
               />
             </motion.div>
           )}
@@ -279,7 +287,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }) {
           isCurrent={isCurrent}
           index={roundIndex}
           roundHistory={roundHistory}
-          currentRound={isCurrent ? currentRound : roundAtIndex}
+          currentRound={(isCurrent ? currentRound : roundAtIndex) as RoundType}
         />
       </Container>
     </div>

@@ -11,6 +11,7 @@ import {
   calculateScoreForDualNilWithOneBlind,
   calculateTeamRoundScoreWithBothBlindNil,
 } from './spadesMath';
+import { Round, TeamBidsAndActuals } from '../../types';
 import {
   NIL,
   BLIND_NIL,
@@ -162,8 +163,9 @@ test('calculate reaching exactly 10 bags', () => {
   both teams but only calculates score for one of the teams. consider refactoring
   */
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithTenBags,
-    TEAM1
+    roundHistoryWithTenBags as unknown as Round[],
+    TEAM1,
+    null
   );
   expect(result).deep.equals({
     teamScore: -10,
@@ -173,8 +175,9 @@ test('calculate reaching exactly 10 bags', () => {
 
 test('calculate reaching 12 bags', () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithTwelveBags,
-    TEAM1
+    roundHistoryWithTwelveBags as unknown as Round[],
+    TEAM1,
+    null
   );
   expect(result).deep.equals({
     teamScore: -8,
@@ -223,7 +226,8 @@ test('test calculateRoundScore for both teams missing nil', () => {
 
 test('test calculateTeamRoundScoresFromTeamHistory for both teams missing nil', () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamHistoryWithBothTeamMembersMissingNil
+    teamHistoryWithBothTeamMembersMissingNil as unknown as TeamBidsAndActuals[],
+    null
   );
   expect(result).deep.equals([
     {
@@ -235,8 +239,9 @@ test('test calculateTeamRoundScoresFromTeamHistory for both teams missing nil', 
 
 test('test calculateTeamScoreFromRoundHistory for both teams missing nil', () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithBothTeamMembersMissingNil,
-    TEAM1
+    roundHistoryWithBothTeamMembersMissingNil as unknown as Round[],
+    TEAM1,
+    null
   );
   expect(result).deep.equals({
     teamScore: -198,
@@ -246,7 +251,7 @@ test('test calculateTeamScoreFromRoundHistory for both teams missing nil', () =>
 
 test('test calculateTeamScoreFromRoundHistory for takes bags with one person going nil', () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithOneTeamMembersGoingNil,
+    roundHistoryWithOneTeamMembersGoingNil as unknown as Round[],
     TEAM1,
     TAKES_BAGS
   );
@@ -274,7 +279,8 @@ test('getTeamHistoryFromRoundHistory', () => {
 
 test('calculateTeamRoundScoresFromTeamHistory with nil', () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamRoundHistoryMakingNilWithNoBags
+    teamRoundHistoryMakingNilWithNoBags as unknown as TeamBidsAndActuals[],
+    null
   );
   expect(result).deep.equals([
     {
@@ -286,7 +292,8 @@ test('calculateTeamRoundScoresFromTeamHistory with nil', () => {
 
 test('calculateTeamRoundScoresFromTeamHistory with nil', () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamRoundHistoryWithBagsNoNilNotSet
+    teamRoundHistoryWithBagsNoNilNotSet as unknown as TeamBidsAndActuals[],
+    null
   );
   expect(result).deep.equals([
     {
@@ -305,7 +312,7 @@ test('using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRound
     roundHistoryWithTenBags,
     TEAM2
   );
-  const result = calculateTeamRoundScoresFromTeamHistory(teamHistory);
+  const result = calculateTeamRoundScoresFromTeamHistory(teamHistory as unknown as TeamBidsAndActuals[], null);
   expect(result).deep.equals([
     {
       teamScore: 42,
@@ -367,7 +374,7 @@ test('calculateTeamRoundScoreWithBothBlindNil, one missing and the other making'
 
 test('getTeamHistoryFromRoundHistory ignores null/undefined entries', () => {
   const round0 = roundHistoryWithTenBags[0];
-  const mixedHistory = [null, round0, undefined];
+  const mixedHistory = [null, round0, undefined] as unknown as Round[];
   const result = getTeamHistoryFromRoundHistory(mixedHistory, TEAM1);
   expect(result).deep.equals([
     {
@@ -380,10 +387,10 @@ test('getTeamHistoryFromRoundHistory ignores null/undefined entries', () => {
 });
 
 test('calculateTeamScoreFromRoundHistory tolerates null entries in history', () => {
-  const round0Only = [roundHistoryWithTenBags[0]];
-  const mixedHistory = [null, roundHistoryWithTenBags[0], undefined];
-  const expected = calculateTeamScoreFromRoundHistory(round0Only, TEAM1);
-  const result = calculateTeamScoreFromRoundHistory(mixedHistory, TEAM1);
+  const round0Only = [roundHistoryWithTenBags[0]] as unknown as Round[];
+  const mixedHistory = [null, roundHistoryWithTenBags[0], undefined] as unknown as Round[];
+  const expected = calculateTeamScoreFromRoundHistory(round0Only, TEAM1, null);
+  const result = calculateTeamScoreFromRoundHistory(mixedHistory, TEAM1, null);
   expect(result).deep.equals(expected);
 });
 

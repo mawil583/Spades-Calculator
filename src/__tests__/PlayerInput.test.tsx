@@ -1,17 +1,20 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import PlayerInput from '../components/forms/PlayerInput';
 import { GlobalContext } from '../helpers/context/GlobalContext';
+import type { GlobalContextValue, Round } from '../types';
+import type { ReactNode } from 'react';
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
 // Mock the DealerTag component
-jest.mock('../components/ui/DealerTag', () => {
-  return function MockDealerTag() {
+vi.mock('../components/ui/DealerTag', () => ({
+  default: function MockDealerTag() {
     return <div data-testid="dealerTag">Dealer</div>;
-  };
-});
+  },
+}));
 
 describe('PlayerInput', () => {
   const mockContextValue = {
@@ -35,10 +38,12 @@ describe('PlayerInput', () => {
         p2Actual: '',
       },
     },
-    setCurrentRound: jest.fn(),
-    setRoundHistory: jest.fn(),
-    setDealerOverride: jest.fn(),
+    setCurrentRound: vi.fn(),
+    setRoundHistory: vi.fn(),
+    setDealerOverride: vi.fn(),
   };
+
+
 
   const defaultProps = {
     inputId: 'testInput',
@@ -67,10 +72,10 @@ describe('PlayerInput', () => {
     fieldToUpdate: 'team1BidsAndActuals.p1Actual',
   };
 
-  const renderWithContext = (component) => {
+  const renderWithContext = (component: ReactNode, contextOverrides = {}) => {
     return render(
       <Provider>
-        <GlobalContext.Provider value={mockContextValue}>
+        <GlobalContext.Provider value={{ ...mockContextValue, ...contextOverrides } as unknown as GlobalContextValue}>
           {component}
         </GlobalContext.Provider>
       </Provider>
@@ -82,7 +87,7 @@ describe('PlayerInput', () => {
       const props = {
         ...defaultProps,
         playerInput: '',
-        type: 'Actual',
+        type: 'Actual' as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
@@ -95,7 +100,7 @@ describe('PlayerInput', () => {
       const props = {
         ...defaultProps,
         playerInput: '',
-        type: 'Bid',
+        type: 'Bid' as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
@@ -110,7 +115,7 @@ describe('PlayerInput', () => {
       const props = {
         ...defaultProps,
         playerInput: '',
-        type: 'Actual',
+        type: 'Actual' as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
@@ -123,7 +128,7 @@ describe('PlayerInput', () => {
       const props = {
         ...defaultProps,
         playerInput: '',
-        type: 'Bid',
+        type: 'Bid' as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
@@ -138,7 +143,7 @@ describe('PlayerInput', () => {
       const props = {
         ...defaultProps,
         playerInput: '',
-        type: 'Actual',
+        type: 'Actual' as const,
       };
 
       renderWithContext(<PlayerInput {...props} />);
@@ -154,7 +159,7 @@ describe('PlayerInput', () => {
     });
 
     it('should show individual values with asterisks when both players have numeric values and are auto-generated', async () => {
-      const mockSetCurrentRound = jest.fn();
+      const mockSetCurrentRound = vi.fn();
       const mockCurrentRound = {
         team1BidsAndActuals: {
           p1Actual: 3,
@@ -174,7 +179,7 @@ describe('PlayerInput', () => {
           type="Actual"
           fieldToUpdate="team1BidsAndActuals.p1Actual"
           playerInput={3}
-          currentRound={mockCurrentRound}
+          currentRound={mockCurrentRound as unknown as Round}
         />,
         { setCurrentRound: mockSetCurrentRound }
       );
@@ -192,7 +197,7 @@ describe('PlayerInput', () => {
     });
 
     it('should show individual values without asterisks when manually entered', () => {
-      const mockSetCurrentRound = jest.fn();
+      const mockSetCurrentRound = vi.fn();
       const mockCurrentRound = {
         team1BidsAndActuals: {
           p1Actual: 3,
@@ -212,7 +217,7 @@ describe('PlayerInput', () => {
           type="Actual"
           fieldToUpdate="team1BidsAndActuals.p1Actual"
           playerInput={3}
-          currentRound={mockCurrentRound}
+          currentRound={mockCurrentRound as unknown as Round}
         />,
         { setCurrentRound: mockSetCurrentRound }
       );
@@ -225,8 +230,8 @@ describe('PlayerInput', () => {
     });
 
     it('should show asterisk on auto-generated actual when other player is manually entered', () => {
-      const mockSetCurrentRound = jest.fn();
-      const mockSetRoundHistory = jest.fn();
+      const mockSetCurrentRound = vi.fn();
+      const mockSetRoundHistory = vi.fn();
 
       const testContextValue = {
         ...mockContextValue,
@@ -257,13 +262,13 @@ describe('PlayerInput', () => {
 
       render(
         <Provider>
-          <GlobalContext.Provider value={testContextValue}>
+          <GlobalContext.Provider value={testContextValue as unknown as GlobalContextValue}>
             <PlayerInput
               teamName="Team 1"
               roundHistory={[]}
               index={0}
               isCurrent={true}
-              currentRound={mockCurrentRound}
+              currentRound={mockCurrentRound as unknown as Round}
               playerName="Kim"
               inputId="team1BidsAndActuals.p2Actual"
               dealerId="team1BidsAndActuals.p2Bid"
@@ -284,8 +289,8 @@ describe('PlayerInput', () => {
     });
 
     it('should not show asterisk on manually entered actual', () => {
-      const mockSetCurrentRound = jest.fn();
-      const mockSetRoundHistory = jest.fn();
+      const mockSetCurrentRound = vi.fn();
+      const mockSetRoundHistory = vi.fn();
 
       const testContextValue = {
         ...mockContextValue,
@@ -316,13 +321,13 @@ describe('PlayerInput', () => {
 
       render(
         <Provider>
-          <GlobalContext.Provider value={testContextValue}>
+          <GlobalContext.Provider value={testContextValue as unknown as GlobalContextValue}>
             <PlayerInput
               teamName="Team 1"
               roundHistory={[]}
               index={0}
               isCurrent={true}
-              currentRound={mockCurrentRound}
+              currentRound={mockCurrentRound as unknown as Round}
               playerName="Mike"
               inputId="team1BidsAndActuals.p1Actual"
               dealerId="team1BidsAndActuals.p1Bid"

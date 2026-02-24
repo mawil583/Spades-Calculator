@@ -1,13 +1,26 @@
 import { useRef } from 'react';
 import { Button, VStack } from '../ui';
 import { AppModal } from '../ui';
+import type { BoxProps } from '../ui/box';
 
-const DealerSelectionModal = ({ 
-  isOpen, 
-  onClose, 
-  dealerOptions, 
-  onSelectDealer 
-}) => {
+interface DealerOption {
+  id: string;
+  label: string;
+}
+
+export interface DealerSelectionModalProps {
+  isOpen: boolean;
+  onClose: (isOpen: boolean) => void;
+  dealerOptions: DealerOption[];
+  onSelectDealer: (id: string) => void;
+}
+
+const DealerSelectionModal = ({
+  isOpen,
+  onClose,
+  dealerOptions,
+  onSelectDealer
+}: DealerSelectionModalProps) => {
   const containerRef = useRef(null);
 
   return (
@@ -19,7 +32,7 @@ const DealerSelectionModal = ({
       contentProps={{
         'data-cy': 'dealerSelectionModal',
         'data-testid': 'dealerSelectionModal',
-      }}
+      } as BoxProps & Record<`data-${string}`, string>}
     >
       <VStack align="stretch" gap={3} p={2} ref={containerRef} tabIndex={-1} css={{ outline: 'none' }}>
         {dealerOptions.map((opt) => (

@@ -96,6 +96,16 @@ export type AppAction =
     | { type: 'SET_FIRST_DEALER_ORDER'; payload: { firstDealerOrder: string[] } }
     | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } };
 
+// ─── Shared UI types ────────────────────────────────────────────────────────
+export interface ModalOpenArgs {
+    fieldToUpdate: string;
+    type: 'Bid' | 'Actual';
+    playerName: string;
+    inputId?: string;
+    dealerId?: string;
+    onCustomUpdate?: (val: InputValue) => void;
+}
+
 // ─── Global context value ─────────────────────────────────────────────────
 
 export interface UpdateInputArgs {

@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+// @ts-expect-error missing types
 import eslint from 'vite-plugin-eslint';
 import { resolve } from 'path';
 
@@ -18,11 +19,6 @@ export default defineConfig({
             cache: false,
             emitWarning: true,
             emitError: true,
-            overrideConfig: {
-                rules: {
-                    'no-unused-vars': 'warn',
-                },
-            },
         }),
         VitePWA({
             registerType: 'prompt',

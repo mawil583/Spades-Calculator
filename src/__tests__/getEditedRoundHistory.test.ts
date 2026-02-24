@@ -1,13 +1,15 @@
+import { vi } from 'vitest';
 import { getEditedRoundHistory } from '../helpers/utils/helperFunctions';
+import type { Round } from '../types';
 
 // Test the helper function directly
 describe('ButtonGrid - roundHistory Error Handling', () => {
-  let warnSpy;
+  let warnSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Silence expected warnings from guard logic during these tests
-    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   afterEach(() => {
@@ -19,8 +21,8 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
     expect(() => {
       getEditedRoundHistory({
         index: 0,
-        updatedRound: {},
-        roundHistory: null,
+        updatedRound: {} as unknown as Round,
+        roundHistory: null as unknown as Round[],
       });
     }).not.toThrow();
   });
@@ -30,8 +32,8 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
     expect(() => {
       getEditedRoundHistory({
         index: 0,
-        updatedRound: {},
-        roundHistory: undefined,
+        updatedRound: {} as unknown as Round,
+        roundHistory: undefined as unknown as Round[],
       });
     }).not.toThrow();
   });
@@ -41,8 +43,8 @@ describe('ButtonGrid - roundHistory Error Handling', () => {
     expect(() => {
       getEditedRoundHistory({
         index: 0,
-        updatedRound: {},
-        roundHistory: 'not an array',
+        updatedRound: {} as unknown as Round,
+        roundHistory: 'not an array' as unknown as Round[],
       });
     }).not.toThrow();
   });

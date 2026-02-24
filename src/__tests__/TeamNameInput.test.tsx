@@ -36,8 +36,8 @@ describe('TeamNameInput Behavior', () => {
         
         // This test is tricky in JSDOM. "select all" usually means `selectionStart` is 0 and `selectionEnd` is length.
         // Let's verify that.
-        expect(input.selectionStart).toBe(0);
-        expect(input.selectionEnd).toBe(6); // "Team 1".length
+        expect((input as HTMLInputElement).selectionStart).toBe(0);
+        expect((input as HTMLInputElement).selectionEnd).toBe(6); // "Team 1".length
     });
 
     it('should submit changes when clicking away (on blur)', async () => {

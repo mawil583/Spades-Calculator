@@ -1,7 +1,7 @@
 
 import { Separator, Button, Text, Flex } from '../ui';
 
-const DataWarningQuestion = ({ onContinue, onCancel }) => {
+const DataWarningQuestion = ({ onContinue, onCancel }: { onContinue: () => void; onCancel: () => void }) => {
   return (
     <div style={{ padding: 'var(--app-spacing-2)' }}>
       <Separator mb={4} />

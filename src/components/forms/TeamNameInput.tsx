@@ -1,10 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import { Center } from '../ui/center';
 
-function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
+interface TeamNameInputProps {
+  id: string;
+  teamName: string;
+  handleChange: (e: { target: { id: string; value: string } } | React.ChangeEvent<HTMLInputElement>) => void;
+  teamClassName: string;
+}
+
+function TeamNameInput({ id, teamName, handleChange, teamClassName }: TeamNameInputProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(teamName);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Sync internal state with external prop
   useEffect(() => {
@@ -26,7 +33,7 @@ function TeamNameInput({ id, teamName, handleChange, teamClassName }) {
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       onCommit();
     }

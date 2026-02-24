@@ -1,15 +1,27 @@
+import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../../components/ui/provider';
 import SpadesCalculator from '../../pages/SpadesCalculator';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
+import type { GlobalContextValue } from '../../types';
+
+vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
+    isNotDefaultValue: vi.fn((value) => value !== ''),
+    calculateTeamScore: vi.fn(() => 50),
+  };
+});
 
 // Mock the context values
 const mockContextValue = {
-  resetCurrentRound: jest.fn(),
-  setRoundHistory: jest.fn(),
-  setFirstDealerOrder: jest.fn(),
+  resetCurrentRound: vi.fn(),
+  setRoundHistory: vi.fn(),
+  setFirstDealerOrder: vi.fn(),
   firstDealerOrder: ['player1', 'player2', 'player3', 'player4'],
   roundHistory: [],
   currentRound: {
@@ -22,7 +34,7 @@ const renderApp = () => {
   return render(
     <BrowserRouter>
       <Provider>
-        <GlobalContext.Provider value={mockContextValue}>
+        <GlobalContext.Provider value={mockContextValue as unknown as GlobalContextValue}>
           <SpadesCalculator />
         </GlobalContext.Provider>
       </Provider>
@@ -32,9 +44,9 @@ const renderApp = () => {
 
 describe('UI Mode Toggle Integration', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     window.localStorage.clear();
-    
+
     // Set up names so the app renders the main content
     window.localStorage.setItem(
       'names',
@@ -71,10 +83,10 @@ describe('UI Mode Toggle Integration', () => {
     // The switch text says "Classic Layout" or "Table Layout" depending on state
     // Initially it should say "Classic Layout"
     expect(screen.getByText('Classic Layout')).toBeInTheDocument();
-    
+
     // Chakra UI Switch usually renders as a checkbox input
     const toggleSwitch = screen.getByRole('checkbox');
-    
+
     // Toggle ON (Switch to Table Layout)
     fireEvent.click(toggleSwitch);
 
@@ -83,7 +95,7 @@ describe('UI Mode Toggle Integration', () => {
 
     // 6. Close Modal
     // We don't need to close it to verify the background change, but let's check it's gone. 
-     expect(screen.queryByTestId('game-score-container')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('game-score-container')).not.toBeInTheDocument();
 
     // 7. Toggle OFF (Switch back to Classic Layout)
     fireEvent.click(toggleSwitch);

@@ -9,6 +9,13 @@ import {
 } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import { DownloadButton } from '../components/ui';
+import type { ReactNode } from 'react';
+
+/** Event mock type for beforeinstallprompt tests */
+interface MockBeforeInstallPromptEvent extends Event {
+  prompt: ReturnType<typeof vi.fn>;
+  userChoice: Promise<{ outcome: string }>;
+}
 
 const { mockToast } = vi.hoisted(() => {
   return { mockToast: vi.fn() };
@@ -24,12 +31,12 @@ vi.mock('../components/ui/toaster', () => ({
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
@@ -45,7 +52,7 @@ Object.defineProperty(window.navigator, 'standalone', {
 // Mock the appinstalled event
 const mockAppInstalledEvent = new Event('appinstalled');
 
-const renderWithProvider = (component) => {
+const renderWithProvider = (component: ReactNode) => {
   return render(<Provider>{component}</Provider>);
 };
 
@@ -72,8 +79,20 @@ describe('DownloadButton', () => {
       })),
     });
     // Reset navigator.share
-    if (navigator.share) {
-      delete navigator.share;
+    try {
+      Object.defineProperty(navigator, 'share', {
+        value: undefined,
+        configurable: true,
+        writable: true,
+      });
+    } catch {
+      // If it's already non-configurable, we can't change it this way
+      // But we can try a simple assignment if it's writable
+      try {
+        (navigator as unknown as Record<string, unknown>).share = undefined;
+      } catch {
+        // console.warn('Could not reset navigator.share');
+      }
     }
     // Reset navigator.userAgent
     Object.defineProperty(navigator, 'userAgent', {
@@ -159,7 +178,7 @@ describe('DownloadButton', () => {
     renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as MockBeforeInstallPromptEvent;
     beforeInstallPromptEvent.preventDefault = vi.fn();
     beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
@@ -180,7 +199,7 @@ describe('DownloadButton', () => {
     renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event first
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as MockBeforeInstallPromptEvent;
     beforeInstallPromptEvent.preventDefault = vi.fn();
     beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
@@ -214,7 +233,7 @@ describe('DownloadButton', () => {
     renderWithProvider(<DownloadButton />);
 
     // Simulate beforeinstallprompt event first
-    const beforeInstallPromptEvent = new Event('beforeinstallprompt');
+    const beforeInstallPromptEvent = new Event('beforeinstallprompt') as MockBeforeInstallPromptEvent;
     beforeInstallPromptEvent.preventDefault = vi.fn();
     beforeInstallPromptEvent.prompt = vi.fn();
     beforeInstallPromptEvent.userChoice = Promise.resolve({
@@ -465,10 +484,10 @@ describe('DownloadButton', () => {
         userChoice: Promise.resolve({
           outcome: 'accepted',
         }),
-      };
+      } as unknown as MockBeforeInstallPromptEvent;
 
       // Create a custom event that can be dispatched
-      const customEvent = new Event('beforeinstallprompt');
+      const customEvent = new Event('beforeinstallprompt') as MockBeforeInstallPromptEvent;
       // Add the required methods to the event
       customEvent.preventDefault = beforeInstallPromptEvent.preventDefault;
       customEvent.prompt = beforeInstallPromptEvent.prompt;
@@ -504,9 +523,9 @@ describe('DownloadButton', () => {
 
     it('should handle errors during installation gracefully', async () => {
       // Mock console.error to avoid noise in tests
-      const consoleErrorSpy = jest
+      const consoleErrorSpy = vi
         .spyOn(console, 'error')
-        .mockImplementation(() => {});
+        .mockImplementation(() => { });
 
       renderWithProvider(<DownloadButton />);
 
@@ -517,13 +536,13 @@ describe('DownloadButton', () => {
       // Mock a scenario where an error occurs during the installation process
       // by mocking the deferredPrompt.prompt method to throw an error
       const mockError = new Error('Installation failed');
-      const originalPrompt = window.Event.prototype.prompt;
-      window.Event.prototype.prompt = vi.fn().mockImplementation(() => {
+      const originalPrompt = (window.Event.prototype as unknown as Record<string, unknown>).prompt;
+      (window.Event.prototype as unknown as Record<string, unknown>).prompt = vi.fn().mockImplementation(() => {
         throw mockError;
       });
 
       // Create a beforeinstallprompt event to trigger the error
-      const beforeInstallPromptEvent = new Event('beforeinstallprompt');
+      const beforeInstallPromptEvent = new Event('beforeinstallprompt') as MockBeforeInstallPromptEvent;
       beforeInstallPromptEvent.preventDefault = vi.fn();
       beforeInstallPromptEvent.prompt = vi.fn().mockImplementation(() => {
         throw mockError;
@@ -557,14 +576,14 @@ describe('DownloadButton', () => {
       );
 
       consoleErrorSpy.mockRestore();
-      window.Event.prototype.prompt = originalPrompt;
+      (window.Event.prototype as unknown as Record<string, unknown>).prompt = originalPrompt;
     });
 
     it('should clean up event listeners on unmount', () => {
       const { unmount } = renderWithProvider(<DownloadButton />);
 
       // Spy on removeEventListener
-      const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
+      const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener');
 
       unmount();
 

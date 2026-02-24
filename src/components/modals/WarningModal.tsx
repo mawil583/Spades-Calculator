@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import type { BoxProps } from '../ui/box';
 import { useNavigate } from 'react-router-dom';
 import { AppModal } from '../ui';
 import {
@@ -10,7 +11,13 @@ import { rotateArr } from '../../helpers/utils/helperFunctions';
 import DataWarningQuestion from '../forms/DataWarningQuestion';
 import NewPlayerQuestion from '../forms/NewPlayerQuestion';
 
-function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
+interface WarningModalProps {
+  isOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+  resetNames?: (names: typeof initialNames) => void;
+}
+
+function WarningModal({ isOpen, setIsModalOpen, resetNames }: WarningModalProps) {
   const navigate = useNavigate();
   const {
     resetCurrentRound,
@@ -73,7 +80,7 @@ function WarningModal({ isOpen, setIsModalOpen, resetNames }) {
       isOpen={isOpen}
       onClose={setIsModalOpen}
       title={showDataWarning ? 'Are you sure?' : 'Would you like to keep the same teams?'}
-      contentProps={{ 'data-testid': 'warning-modal' }}
+      contentProps={{ 'data-testid': 'warning-modal' } as BoxProps & Record<`data-${string}`, string>}
     >
       {showDataWarning && (
         <DataWarningQuestion onContinue={onContinue} onCancel={onCancel} />

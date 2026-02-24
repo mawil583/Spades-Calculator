@@ -5,18 +5,28 @@ import { Provider } from '../components/ui/provider';
 import SpadesCalculator from '../pages/SpadesCalculator';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
+import { vi } from 'vitest';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue } from '../types';
+
 // Mock the math functions to control scoring
-const mockCalculateTeamScoreFromRoundHistory = jest.fn();
-jest.mock('../helpers/math/spadesMath', () => ({
-  ...jest.requireActual('../helpers/math/spadesMath'),
-  calculateTeamScoreFromRoundHistory: mockCalculateTeamScoreFromRoundHistory,
+const { mockCalculateTeamScoreFromRoundHistory } = vi.hoisted(() => ({
+  mockCalculateTeamScoreFromRoundHistory: vi.fn(),
 }));
 
-const renderWithProviders = (component, contextValue) => {
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    calculateTeamScoreFromRoundHistory: mockCalculateTeamScoreFromRoundHistory,
+  };
+});
+
+const renderWithProviders = (component: ReactNode, contextValue: Partial<GlobalContextValue>) => {
   return render(
     <BrowserRouter>
       <Provider>
-        <GlobalContext.Provider value={contextValue}>
+        <GlobalContext.Provider value={contextValue as GlobalContextValue}>
           {component}
         </GlobalContext.Provider>
       </Provider>
@@ -26,40 +36,33 @@ const renderWithProviders = (component, contextValue) => {
 
 describe('Independent Team Scoring', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
 
     // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
-        getItem: jest.fn(),
-        setItem: jest.fn(),
-        removeItem: jest.fn(),
+        getItem: vi.fn().mockImplementation((key) => {
+          if (key === 'names') return JSON.stringify({ team1Name: 'Team Alpha', team2Name: 'Team Beta' });
+          return null;
+        }),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
       },
       writable: true,
     });
 
-    // Set up default names
-    const mockNames = {
-      t1p1Name: 'Alice',
-      t1p2Name: 'Bob',
-      t2p1Name: 'Charlie',
-      t2p2Name: 'Diana',
-      team1Name: 'Team Alpha',
-      team2Name: 'Team Beta',
-    };
-    window.localStorage.getItem.mockImplementation((key) => {
-      if (key === 'names') return JSON.stringify(mockNames);
-      if (key === 'nilScoringRule') return JSON.stringify('helpsTeamBid');
-      return null;
-    });
+    mockCalculateTeamScoreFromRoundHistory.mockReturnValue({ teamScore: 0, teamBags: 0 });
   });
 
   describe('when only one team completes their actuals', () => {
     it("should update only that team's score when they complete their actuals", async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -83,13 +86,14 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       // Mock the score calculation to return different values
-      mockCalculateTeamScoreFromRoundHistory
-        .mockReturnValueOnce({ teamScore: 70, teamBags: 0 }) // Team 1 score
-        .mockReturnValueOnce({ teamScore: 0, teamBags: 0 }); // Team 2 score
+      mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, teamName) => {
+        if (teamName === 'Team Alpha') return { teamScore: 70, teamBags: 0 };
+        return { teamScore: 0, teamBags: 0 };
+      });
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -110,10 +114,12 @@ describe('Independent Team Scoring', () => {
     });
 
     it('should not allow progression to next round until both teams complete actuals', async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -137,7 +143,7 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       renderWithProviders(<SpadesCalculator />, contextValue);
@@ -155,10 +161,12 @@ describe('Independent Team Scoring', () => {
 
   describe('when both teams complete their actuals', () => {
     it('should complete the round and allow progression when both teams finish', async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -182,13 +190,15 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       // Mock the score calculation
-      mockCalculateTeamScoreFromRoundHistory
-        .mockReturnValueOnce({ teamScore: 70, teamBags: 0 }) // Team 1 score
-        .mockReturnValueOnce({ teamScore: 51, teamBags: 0 }); // Team 2 score (2+3=5 bids, 2+4=6 actuals = 50+1=51 points)
+      mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
+        if (name === "Team Alpha") return { teamScore: 70, teamBags: 0 };
+        if (name === "Team Beta") return { teamScore: 51, teamBags: 0 };
+        return { teamScore: 0, teamBags: 0 };
+      });
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -224,11 +234,13 @@ describe('Independent Team Scoring', () => {
 
   describe('score calculation timing', () => {
     it('should calculate team scores independently as each team completes', async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       // Start with Team 1 complete, Team 2 incomplete
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -252,13 +264,14 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       // Mock initial score calculation
-      mockCalculateTeamScoreFromRoundHistory
-        .mockReturnValueOnce({ teamScore: 70, teamBags: 0 }) // Team 1 score
-        .mockReturnValueOnce({ teamScore: 0, teamBags: 0 }); // Team 2 score
+      mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
+        if (name === "Team Alpha") return { teamScore: 70, teamBags: 0 };
+        return { teamScore: 0, teamBags: 0 };
+      });
 
       const { rerender } = renderWithProviders(
         <SpadesCalculator />,
@@ -286,15 +299,17 @@ describe('Independent Team Scoring', () => {
         },
       };
 
-      // Mock updated score calculation - after round completion, scores come from round history
-      mockCalculateTeamScoreFromRoundHistory
-        .mockReturnValueOnce({ teamScore: 70, teamBags: 0 }) // Team 1 score
-        .mockReturnValueOnce({ teamScore: 51, teamBags: 0 }); // Team 2 score (2+3=5 bids, 2+4=6 actuals = 50+1=51 points)
+      // Mock updated score calculation
+      mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
+        if (name === "Team Alpha") return { teamScore: 70, teamBags: 0 };
+        if (name === "Team Beta") return { teamScore: 51, teamBags: 0 };
+        return { teamScore: 0, teamBags: 0 };
+      });
 
       rerender(
         <BrowserRouter>
           <Provider>
-            <GlobalContext.Provider value={updatedContextValue}>
+            <GlobalContext.Provider value={updatedContextValue as unknown as GlobalContextValue}>
               <SpadesCalculator />
             </GlobalContext.Provider>
           </Provider>
@@ -318,10 +333,12 @@ describe('Independent Team Scoring', () => {
 
   describe('validation still works', () => {
     it('should still validate that total actuals equal 13 before completing round', async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -345,7 +362,7 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       renderWithProviders(<SpadesCalculator />, contextValue);
@@ -361,10 +378,12 @@ describe('Independent Team Scoring', () => {
     });
 
     it('should not complete round if total actuals do not equal 13', async () => {
-      const mockSetRoundHistory = jest.fn();
-      const mockResetCurrentRound = jest.fn();
+      const mockSetRoundHistory = vi.fn();
+      const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
+        team1Name: 'Team Alpha',
+        team2Name: 'Team Beta',
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -388,7 +407,7 @@ describe('Independent Team Scoring', () => {
           'team1BidsAndActuals.p2Bid',
           'team2BidsAndActuals.p2Bid',
         ],
-        setFirstDealerOrder: jest.fn(),
+        setFirstDealerOrder: vi.fn(),
       };
 
       renderWithProviders(<SpadesCalculator />, contextValue);

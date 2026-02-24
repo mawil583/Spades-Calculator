@@ -22,8 +22,8 @@
 //
 //
 // -- This will overwrite an existing command --
-Cypress.Commands.overwrite('visit', (originalFn, url, options) => {
-  return originalFn(url, options).then(() => {
+Cypress.Commands.overwrite('visit', (originalFn: any, url: any, options: any) => {
+  return (originalFn as any)(url, options).then(() => {
     // Hide/remove CRA dev server overlay if it appears and blocks interactions
     cy.window({ log: false }).then((win) => {
       const { document } = win;

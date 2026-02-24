@@ -14,13 +14,13 @@ describe('Settings Modal Overlay Bug', () => {
   it('should not show double overlays when opening More Info from Settings', () => {
     // 1. Open Hamburger Menu
     cy.get('button[aria-label="Open Menu"]').click();
-    
+
     // Wait for menu to appear (it's conditionally rendered)
     cy.contains('Settings').should('be.visible');
 
     // 2. Open Settings Modal
     cy.contains('Settings').click();
-    
+
     // Wait for modal dialog to be fully rendered
     cy.get('[role="dialog"]').should('be.visible');
     cy.contains('Select your preferred scoring rules').should('be.visible');
@@ -43,7 +43,7 @@ describe('Settings Modal Overlay Bug', () => {
       cy.get('[role="dialog"]').then($modal => {
         const backdropZ = parseInt($backdrop.css('z-index'));
         const modalZ = parseInt($modal.css('z-index'));
-        expect(modalZ).to.be.gt(backdropZ);
+        (expect(modalZ) as any).to.be.gt(backdropZ);
       });
     });
   });

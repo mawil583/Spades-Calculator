@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import {
   setLocalStorage,
   getLocalStorage,
@@ -5,11 +6,11 @@ import {
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: jest.fn(),
-  setItem: jest.fn(),
-  clear: jest.fn(),
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
 };
-global.localStorage = localStorageMock;
+global.localStorage = localStorageMock as unknown as Storage;
 
 describe('Team Total Storage', () => {
   beforeEach(() => {

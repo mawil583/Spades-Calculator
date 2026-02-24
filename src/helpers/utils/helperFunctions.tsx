@@ -5,7 +5,9 @@ import {
   team2Styles,
 } from './constants';
 
-export function getActualsErrorText(totalActuals) {
+import type { Round, UpdateInputArgs } from '../../types';
+
+export function getActualsErrorText(totalActuals: number) {
   const difference = 13 - totalActuals;
   const num = Math.abs(difference);
   const moreOrLess = difference >= 0 ? 'more' : 'less';
@@ -14,14 +16,14 @@ export function getActualsErrorText(totalActuals) {
   return text;
 }
 
-export function sIfPlural(num) {
+export function sIfPlural(num: number) {
   if (num > 1) {
     return 's';
   }
   return '';
 }
 
-export function getUnclaimedText(numUnclaimed, useTableUI = false) {
+export function getUnclaimedText(numUnclaimed: number, useTableUI = false) {
   const isSomeoneGettingSet = numUnclaimed < 0;
   if (isSomeoneGettingSet) {
     const numOverbid = Math.abs(numUnclaimed);
@@ -35,36 +37,45 @@ export function getUnclaimedText(numUnclaimed, useTableUI = false) {
   return `Unclaimed: ${numUnclaimed}`;
 }
 
-export const getButtonValues = (type) => {
+export const getButtonValues = (type: string) => {
   if (type === 'Bid') {
     return possibleBids;
   }
   return possibleActuals;
 };
 
-export const getTeamStyle = (teamName) => {
-  const { team1Name } = JSON.parse(localStorage.getItem('names'));
+export const getTeamStyle = (teamName: string) => {
+  const storedNames = localStorage.getItem('names');
+  if (!storedNames) return team1Styles;
+  const { team1Name } = JSON.parse(storedNames);
   const style = teamName === team1Name ? team1Styles : team2Styles;
   return style;
 };
 
 // consider renaming
-export const updateInput = ({ input, currentRound, fieldToUpdate }) => {
-  const clonedCurrentRound = {
+export const updateInput = ({ input, currentRound, fieldToUpdate }: UpdateInputArgs) => {
+  const clonedCurrentRound: Round = {
     ...currentRound,
     team1BidsAndActuals: { ...currentRound.team1BidsAndActuals },
     team2BidsAndActuals: { ...currentRound.team2BidsAndActuals },
   };
   const [team, player] = fieldToUpdate.split('.');
+  // @ts-ignore - this is a dynamic property access
   clonedCurrentRound[team][player] = input;
   return clonedCurrentRound;
 };
+
+interface GetEditedRoundHistoryArgs {
+  index: number;
+  updatedRound: Round;
+  roundHistory: Round[];
+}
 
 export const getEditedRoundHistory = ({
   index,
   updatedRound,
   roundHistory,
-}) => {
+}: GetEditedRoundHistoryArgs) => {
   // Ensure roundHistory is an array
   if (!Array.isArray(roundHistory)) {
     console.warn('roundHistory is not an array, initializing as empty array');
@@ -80,7 +91,7 @@ export const getEditedRoundHistory = ({
 if there's anything in localStorage, then return that value;
 otherwise, set a default value for that key in localStorage
 */
-export const defaultLocalStorage = (key, value) => {
+export const defaultLocalStorage = <T,>(key: string, value: T): T => {
   const item = window.localStorage.getItem(key);
   if (!item) {
     window.localStorage.setItem(key, JSON.stringify(value));
@@ -89,22 +100,21 @@ export const defaultLocalStorage = (key, value) => {
   return JSON.parse(item);
 };
 
-export const getLocalStorage = (key) => {
+export const getLocalStorage = <T,>(key: string): T | null => {
   const item = window.localStorage.getItem(key);
+  if (!item) return null;
   return JSON.parse(item);
 };
 
-export const setLocalStorage = (key, value) => {
-  const item = window.localStorage.getItem(key);
-  if (!item) {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }
+export const setLocalStorage = <T,>(key: string, value: T) => {
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const rotateArr = (arr) => {
+export const rotateArr = <T,>(arr: T[]): T[] => {
   const clonedArr = [...arr];
-  clonedArr.push(clonedArr[0]);
-  clonedArr.shift();
+  if (clonedArr.length > 0) {
+    clonedArr.push(clonedArr[0]);
+    clonedArr.shift();
+  }
   return clonedArr;
 };

@@ -5,7 +5,12 @@ import { Box, Button } from '../ui';
 import { ScoreSettingsContent } from './ScoreSettingsModal';
 import { ArrowLeft } from 'lucide-react';
 
-const SettingsModal = ({ isOpen, setIsOpen }) => {
+interface SettingsModalProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const SettingsModal = ({ isOpen, setIsOpen }: SettingsModalProps) => {
   const [view, setView] = useState('main'); // 'main' | 'scoreHelp'
 
   const handleClose = () => {
@@ -39,14 +44,14 @@ const SettingsModal = ({ isOpen, setIsOpen }) => {
         </>
       ) : (
         <Box>
-          <Button 
-            onClick={handleBack} 
-            variant="ghost" 
-            mb={4} 
+          <Button
+            onClick={handleBack}
+            variant="ghost"
+            mb={4}
             pl={0}
-            leftIcon={<ArrowLeft size={16} />}
             size="sm"
           >
+            <ArrowLeft size={16} />
             Back
           </Button>
           <ScoreSettingsContent />

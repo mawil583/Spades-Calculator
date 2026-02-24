@@ -9,6 +9,7 @@ import {
   NIL,
   BLIND_NIL,
 } from '../../helpers/utils/constants';
+import type { NilSetting } from '../../types';
 
 export const ScoreSettingsContent = () => {
   const sections = [
@@ -56,7 +57,7 @@ export const ScoreSettingsContent = () => {
               ex.p2Bid,
               ex.p1Actual,
               ex.p2Actual,
-              section.nilSetting
+              section.nilSetting as NilSetting
             );
             return (
               <SettingExample
@@ -76,7 +77,12 @@ export const ScoreSettingsContent = () => {
   );
 };
 
-function ScoreSettingsModal({ isOpen, setIsModalOpen }) {
+interface ScoreSettingsModalProps {
+  isOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+}
+
+function ScoreSettingsModal({ isOpen, setIsModalOpen }: ScoreSettingsModalProps) {
   return (
     <AppModal
       isOpen={isOpen}

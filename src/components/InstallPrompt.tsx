@@ -3,8 +3,17 @@ import { Box, Button, Text, VStack, HStack } from './ui';
 import { toaster } from './ui/toaster';
 import { Download } from 'lucide-react';
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 const InstallPrompt = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
 
   useEffect(() => {
@@ -26,9 +35,10 @@ const InstallPrompt = () => {
     }, 10000); // Show after 10 seconds if user is still on the page
 
     // Listen for the beforeinstallprompt event
-    const handleBeforeInstallPrompt = (e) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
+    const handleBeforeInstallPrompt = (e: Event) => {
+      const promptEvent = e as BeforeInstallPromptEvent;
+      promptEvent.preventDefault();
+      setDeferredPrompt(promptEvent);
     };
 
     // Listen for the appinstalled event
@@ -166,7 +176,7 @@ const InstallPrompt = () => {
       maxW="400px"
       w="90%"
     >
-      <VStack spacing={3} align="stretch">
+      <VStack gap={3} align="stretch">
         <HStack justify="space-between" align="center">
           <Text fontWeight="bold" fontSize="sm">
             📱 Install Spades Calculator
@@ -187,16 +197,14 @@ const InstallPrompt = () => {
           Add to your home screen for quick access and offline use
         </Text>
 
-        <HStack spacing={2}>
+        <HStack gap={2}>
           <Button
             data-testid="install-app-button"
-            leftIcon={<Download />}
-            colorScheme="blue"
             size="sm"
             onClick={handleInstallClick}
             flex={1}
           >
-            Install App
+            <Download /> Install App
           </Button>
           <Button variant="outline" size="sm" onClick={handleDismiss} flex={1}>
             Maybe Later

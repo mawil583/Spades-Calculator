@@ -19,7 +19,7 @@ const UpdateNotification = () => {
     onRegistered() {
       console.log('SW Registered');
     },
-    onRegisterError(error) {
+    onRegisterError(error: Error) {
       console.error('SW registration error', error);
     },
   });

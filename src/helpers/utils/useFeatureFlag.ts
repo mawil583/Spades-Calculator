@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { getFeatureFlag, setFeatureFlag } from './featureFlags';
 
-export function useFeatureFlag(flagKey) {
+export function useFeatureFlag(flagKey: string) {
   const [isEnabled, setIsEnabled] = useState(() => getFeatureFlag(flagKey));
 
   useEffect(() => {
-    const handleStorageChange = (event) => {
+    const handleStorageChange = (event: FeatureFlagEvent) => {
       if (event.detail.key === flagKey) {
         setIsEnabled(event.detail.value);
       }

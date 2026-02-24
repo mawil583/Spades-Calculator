@@ -5,23 +5,32 @@ import Unclaimed from '../components/game/Unclaimed';
 import BidSection from '../components/game/BidSection';
 import { GlobalContext } from '../helpers/context/GlobalContext';
 
+import { vi } from 'vitest';
+import type { GlobalContextValue, Round, InputValue } from '../types';
+
 // Mock the dependencies
-jest.mock('../helpers/utils/hooks', () => ({
-  useSetUnclaimed: jest.fn((team1Bids, team2Bids, setNumUnclaimed) => {
-    const totalClaimed =
-      team1Bids.reduce((sum, bid) => sum + (parseInt(bid) || 0), 0) +
-      team2Bids.reduce((sum, bid) => sum + (parseInt(bid) || 0), 0);
-    setNumUnclaimed(13 - totalClaimed);
-  }),
+vi.mock('../helpers/utils/hooks', async (importOriginal) => {
+  return await importOriginal();
+});
+
+
+const { mockSpadesMathFunctions } = vi.hoisted(() => ({
+  mockSpadesMathFunctions: {
+    addInputs: vi.fn((...args: InputValue[]) =>
+      args.reduce((sum: number, val) => sum + (parseInt(String(val)) || 0), 0)
+    ),
+  },
 }));
 
-jest.mock('../helpers/math/spadesMath', () => ({
-  addInputs: jest.fn((...args) =>
-    args.reduce((sum, val) => sum + (parseInt(val) || 0), 0)
-  ),
-}));
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    ...mockSpadesMathFunctions,
+  };
+});
 
-const mockGlobalContext = {
+const mockGlobalContext: Partial<GlobalContextValue> = {
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
@@ -31,14 +40,15 @@ const mockGlobalContext = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: '3', p2Bid: '2', p1Actual: '', p2Actual: '' },
     team2BidsAndActuals: { p1Bid: '4', p2Bid: '1', p1Actual: '', p2Actual: '' },
-  },
-  setDealerOverride: jest.fn(),
+  } as Round,
+  setDealerOverride: vi.fn(),
 };
 
-const renderWithChakra = (component) => {
+
+const renderWithChakra = (component: React.ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider value={mockGlobalContext}>
+      <GlobalContext.Provider value={mockGlobalContext as GlobalContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>

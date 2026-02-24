@@ -4,6 +4,7 @@ import {
   getLocalStorage,
 } from './helperFunctions';
 import { initialFirstDealerOrder } from './constants';
+import type { AppState, AppAction, Round } from '../../types';
 
 export const initialState = {
   currentRound: defaultLocalStorage('currentRound', {
@@ -38,21 +39,21 @@ export const initialState = {
   ),
 };
 
-const rootReducer = (state, action) => {
-  const { type, payload } = action;
+const rootReducer = (state: AppState, action: AppAction): AppState => {
 
-  switch (type) {
+  switch (action.type) {
     case 'SET_CURRENT_ROUND':
       try {
-        setLocalStorage('currentRound', { ...payload.currentRound });
+        setLocalStorage('currentRound', { ...action.payload.currentRound });
+        const round = getLocalStorage<Round>('currentRound');
         return {
           ...state,
-          currentRound: getLocalStorage('currentRound'),
+          currentRound: round ? round : state.currentRound,
         };
       } catch (err) {
         console.error(err);
+        return state;
       }
-      break;
     case 'RESET_CURRENT_ROUND':
       try {
         setLocalStorage('currentRound', {
@@ -76,14 +77,15 @@ const rootReducer = (state, action) => {
             team2P2: false,
           },
         });
+        const round = getLocalStorage<Round>('currentRound');
         return {
           ...state,
-          currentRound: getLocalStorage('currentRound'),
+          currentRound: round ? round : state.currentRound,
         };
       } catch (err) {
         console.error(err);
+        return state;
       }
-      break;
     case 'RESET_ROUND_HISTORY':
       return {
         ...state,
@@ -91,44 +93,46 @@ const rootReducer = (state, action) => {
       };
     case 'SET_ROUND_HISTORY':
       try {
-        setLocalStorage('roundHistory', [...payload.roundHistory]);
+        setLocalStorage('roundHistory', [...action.payload.roundHistory]);
+        const history = getLocalStorage<Round[]>('roundHistory');
         return {
           ...state,
-          roundHistory: getLocalStorage('roundHistory'),
+          roundHistory: history ? history : state.roundHistory,
         };
       } catch (err) {
         console.error(err);
+        return state;
       }
-      break;
     case 'SET_FIRST_DEALER_ORDER':
       try {
-        setLocalStorage('firstDealerOrder', [...payload.firstDealerOrder]);
+        setLocalStorage('firstDealerOrder', [...action.payload.firstDealerOrder]);
+        const order = getLocalStorage<string[]>('firstDealerOrder');
         return {
           ...state,
-          firstDealerOrder: getLocalStorage('firstDealerOrder'),
+          firstDealerOrder: order ? order : state.firstDealerOrder,
         };
       } catch (err) {
         console.error(err);
+        return state;
       }
-      break;
     case 'SET_DEALER_OVERRIDE':
       try {
         const updatedCurrentRound = {
           ...state.currentRound,
-          dealerOverride: payload.dealerOverride,
+          dealerOverride: action.payload.dealerOverride,
         };
 
         setLocalStorage('currentRound', updatedCurrentRound);
-        const storedRound = getLocalStorage('currentRound');
+        const storedRound = getLocalStorage<Round>('currentRound');
 
         return {
           ...state,
-          currentRound: storedRound,
+          currentRound: storedRound ? storedRound : state.currentRound,
         };
       } catch (err) {
         console.error('Error in SET_DEALER_OVERRIDE:', err);
+        return state;
       }
-      break;
     default:
       console.log('default called');
       return state;

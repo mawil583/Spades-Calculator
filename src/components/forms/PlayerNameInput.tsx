@@ -4,6 +4,18 @@ import { Field } from '../ui/field';
 
 import '../../App.css';
 
+interface PlayerNameInputProps {
+  teamClassName: string;
+  id: string;
+  label: string;
+  placeholder?: string;
+  playerName: string;
+  errors?: string;
+  touched?: boolean;
+  handleKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
 function PlayerNameInput({
   teamClassName,
   id,
@@ -13,7 +25,7 @@ function PlayerNameInput({
   errors,
   touched,
   handleChange,
-}) {
+}: PlayerNameInputProps) {
   return (
     <div className={teamClassName} style={{ color: 'inherit' }}>
       <Field

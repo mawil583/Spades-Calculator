@@ -9,9 +9,13 @@ import {
 import { useLocalStorage } from '../../helpers/utils/hooks';
 
 
-function ScoreSetting({ onOpenScoreHelp }) {
+interface ScoreSettingProps {
+  onOpenScoreHelp?: () => void;
+}
+
+function ScoreSetting({ onOpenScoreHelp }: ScoreSettingProps) {
   const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
-  
+
   const handleClick = () => {
     if (onOpenScoreHelp) {
       onOpenScoreHelp();
@@ -22,22 +26,22 @@ function ScoreSetting({ onOpenScoreHelp }) {
       <Text fontSize="lg" mt={3} mb={4}>
         Select your preferred scoring rules for failed nil.{' '}
         {
-        <HelpCircle
-          size={18}
-          onClick={handleClick}
-          data-testid="score-help-button"
-          style={{
-            cursor: 'pointer',
-            verticalAlign: 'middle',
-            marginLeft: '8px',
-            display: 'inline',
-            position: 'relative',
-            top: '-2px',
-          }}
-        />
+          <HelpCircle
+            size={18}
+            onClick={handleClick}
+            data-testid="score-help-button"
+            style={{
+              cursor: 'pointer',
+              verticalAlign: 'middle',
+              marginLeft: '8px',
+              display: 'inline',
+              position: 'relative',
+              top: '-2px',
+            }}
+          />
         }
       </Text>
-      <RadioGroup onValueChange={(e) => setNilRule(e.value)} value={nilRule}>
+      <RadioGroup onValueChange={(e: { value: string | null }) => setNilRule(e.value || '')} value={nilRule}>
         <Stack alignItems="start">
           <Radio value={TAKES_BAGS}>Takes Bags</Radio>
           <Radio value={HELPS_TEAM_BID}>Helps Team Bid</Radio>

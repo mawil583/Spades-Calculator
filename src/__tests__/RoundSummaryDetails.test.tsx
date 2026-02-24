@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import RoundSummary from '../components/game/RoundSummary';
@@ -43,8 +44,8 @@ const mockPenaltyStats = {
   netChange: -100,
 };
 
-const TestWrapper = ({ children }) => (
-    <Provider>{children}</Provider>
+const TestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <Provider>{children}</Provider>
 );
 
 describe('RoundSummary', () => {
@@ -97,24 +98,24 @@ describe('RoundSummary', () => {
     expect(screen.getAllByText('Game Score')).toHaveLength(2);
     expect(screen.getByText('200')).toBeInTheDocument();
     expect(screen.getByText('230')).toBeInTheDocument();
-    
+
     expect(screen.queryByText('Penalties')).not.toBeInTheDocument();
 
     expect(screen.getAllByText('Points Gained')).toHaveLength(2);
     // 30 appears thrice: Round 1 Score, Points Gained, and Net for Team 1
     expect(screen.getAllByText('30')).toHaveLength(3);
-    
+
     // Check for "Points Lost" label
     expect(screen.getAllByText('Points Lost')).toHaveLength(2);
-    
+
     expect(screen.getAllByText('Net')).toHaveLength(3); // 1 Title + 2 Labels
-    
+
     // Check for "Carryover" instead of "Bag Reset Carryover"
     expect(screen.queryByText(/Bag Reset Carryover:/)).not.toBeInTheDocument();
-    
+
     // In normal stats, we DO expect "Total Bags"
     expect(screen.getAllByText(/Total Bags/)).toHaveLength(2);
-    
+
     // Check for "Game Bags" and its value
     expect(screen.getAllByText('Game Bags')).toHaveLength(2);
     expect(screen.getAllByText('5')).toHaveLength(2); // Initial Bags and Game Bags start
@@ -126,7 +127,7 @@ describe('RoundSummary', () => {
   });
 
   it('shows penalties in red and uses "Bag Reset Carryover"', () => {
-     render(
+    render(
       <TestWrapper>
         <RoundSummary
           roundNumber={1}
@@ -149,17 +150,17 @@ describe('RoundSummary', () => {
     expect(screen.getByText('Bag Penalty')).toBeInTheDocument();
     // -100 should be present thrice (once in Round Score, once in Bag Penalty, once in Net)
     expect(screen.getAllByText('-100')).toHaveLength(3);
-    
+
     // Check for "Points Lost" label
     expect(screen.getAllByText('Points Lost')).toHaveLength(2);
     // The value 100 should be present (One in Bag Penalty, one in Points Lost)
     expect(screen.getAllByText('100')).toHaveLength(2);
 
     expect(screen.getAllByText('Net')).toHaveLength(3); // 1 Title + 2 Labels
-    
+
     // Since mockPenaltyStats has bagPenalty: 100, we expect "Carryover"
     expect(screen.getByText(/Carryover/)).toBeInTheDocument();
-    
+
     // Check for "Game Bags"
     expect(screen.getAllByText('Game Bags')).toHaveLength(2);
     // 9 appears once in Initial Bags, once in Game Bags start for Team 1
@@ -175,13 +176,13 @@ describe('RoundSummary', () => {
     // Team 2 should have "None" in penalties
     expect(screen.getByText('None')).toBeInTheDocument();
   });
-  
+
   it('shows "Bags reset to 0" when bags are cleared', () => {
     const mockResetStats = {
       ...mockPenaltyStats,
       endBags: 0, // Reset occurred, so end bags is 0
     };
-    
+
     render(
       <TestWrapper>
         <RoundSummary
@@ -195,14 +196,14 @@ describe('RoundSummary', () => {
         />
       </TestWrapper>
     );
-    
+
     const button = screen.getByLabelText('Toggle details');
     fireEvent.click(button);
 
     expect(screen.getByText('Bag Penalty')).toBeInTheDocument();
     expect(screen.getByText('Reset to 0')).toBeInTheDocument();
     expect(screen.queryByText(/Carryover/)).not.toBeInTheDocument();
-    
+
     // Team 2 should have "None" in penalties
     expect(screen.getByText('None')).toBeInTheDocument();
   });
@@ -217,15 +218,15 @@ describe('RoundSummary', () => {
       pointsGained: 40, // e.g. Made Board 4 (+40), Failed Nil (-100). Net -60.
       netChange: -60,
     };
-    
+
     const mockBlindNilStats = {
-     ...mockStats2,
-     nilPenalty: 0,
-     blindNilPenalty: 200,
-     setPenalty: 30, 
-     bagPenalty: 0,
-     pointsGained: 0,
-     netChange: -230,
+      ...mockStats2,
+      nilPenalty: 0,
+      blindNilPenalty: 200,
+      setPenalty: 30,
+      bagPenalty: 0,
+      pointsGained: 0,
+      netChange: -230,
     };
 
     render(

@@ -6,13 +6,15 @@ import {
   NO_BAGS_NO_HELP,
 } from '../utils/constants';
 
+import type { InputValue, NilSetting, Round, Names, TeamBidsAndActuals } from '../../types';
+
 // p1Bid, p2Bid, p1Actual, p2Actual
 export function calculateRoundScore(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
-  nilSetting = HELPS_TEAM_BID
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
+  nilSetting: NilSetting = HELPS_TEAM_BID
 ) {
   const someoneWentNil = isTypeNil(bid1) || isTypeNil(bid2);
   const teamBid =
@@ -25,7 +27,7 @@ export function calculateRoundScore(
   return score;
 }
 
-function teamRoundScore(teamBid, teamActual) {
+function teamRoundScore(teamBid: number, teamActual: number) {
   const gotSet = teamActual < teamBid;
   if (gotSet) {
     return { score: teamBid * -10, bags: 0 };
@@ -36,11 +38,11 @@ function teamRoundScore(teamBid, teamActual) {
 }
 
 export function nilTeamRoundScore(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
-  nilSetting = HELPS_TEAM_BID
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
+  nilSetting: NilSetting = HELPS_TEAM_BID
 ) {
   const score = calculateNilTeamRoundScore(
     bid1,
@@ -60,11 +62,11 @@ export function nilTeamRoundScore(
 }
 
 export function calculateNilTeamRoundScore(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
-  nilSetting
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
+  nilSetting: NilSetting
 ) {
   const areP1AndP2ScoredIndependently = nilSetting !== HELPS_TEAM_BID;
   if (!areP1AndP2ScoredIndependently) {
@@ -94,7 +96,7 @@ export function calculateNilTeamRoundScore(
           actual1,
           actual2,
           nilSetting
-        ).score;
+        )!.score;
       }
     } else {
       return calculateTeamRoundScoreWithOneNilBidder(
@@ -103,7 +105,7 @@ export function calculateNilTeamRoundScore(
         actual1,
         actual2,
         nilSetting
-      ).score;
+      )!.score;
     }
   }
 
@@ -121,7 +123,7 @@ export function calculateNilTeamRoundScore(
 }
 
 // bag penalty
-export function overPenalty(bid, actual, nilSetting) {
+export function overPenalty(bid: InputValue, actual: InputValue, nilSetting: string) {
   const shouldBePenalized =
     convertStringInputToNum(bid) < convertStringInputToNum(actual);
   if (!shouldBePenalized) {
@@ -140,7 +142,7 @@ export function overPenalty(bid, actual, nilSetting) {
 }
 
 // set penalty
-export function underPenalty(bid, actual) {
+export function underPenalty(bid: InputValue, actual: InputValue) {
   const playerWentNil = isTypeNil(bid);
   const gotSet = convertStringInputToNum(actual) < convertStringInputToNum(bid);
   const shouldBePenalized = !playerWentNil && gotSet;
@@ -152,7 +154,7 @@ export function underPenalty(bid, actual) {
   return penalty;
 }
 
-function isTypeNil(bid) {
+function isTypeNil(bid: InputValue) {
   return bid === NIL || bid === BLIND_NIL;
 }
 
@@ -180,11 +182,11 @@ export function getPlayerBags(bid: string | number, actual: string | number, nil
 }
 
 export function calculateNilTeamRoundBags(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
-  nilSetting
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
+  nilSetting: NilSetting
 ) {
   const areP1AndP2ScoredIndependently = nilSetting !== HELPS_TEAM_BID;
   if (!areP1AndP2ScoredIndependently) {
@@ -214,7 +216,7 @@ export function calculateNilTeamRoundBags(
           actual1,
           actual2,
           nilSetting
-        ).bags;
+        )!.bags;
       }
     } else {
       return calculateTeamRoundScoreWithOneNilBidder(
@@ -223,7 +225,7 @@ export function calculateNilTeamRoundBags(
         actual1,
         actual2,
         nilSetting
-      ).bags;
+      )!.bags;
     }
   }
   const bags =
@@ -233,7 +235,7 @@ export function calculateNilTeamRoundBags(
 }
 
 // only gets called if HELPS_TEAM_BID setting
-export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2, _nilSetting?: string) {
+export function calculateTeamRoundScoreWithBothNonBlindNil(actual1: InputValue, actual2: InputValue, _nilSetting?: string) {
   const player1AchievedNil = convertStringInputToNum(actual1) === 0;
   const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -263,10 +265,10 @@ export function calculateTeamRoundScoreWithBothNonBlindNil(actual1, actual2, _ni
 
 // only gets called if HELPS_TEAM_BID setting
 export function calculateScoreForDualNilWithOneBlind(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
   _nilSetting?: string
 ) {
   const { nilPlayerActual, blindNilPlayerActual } = whoWasBlind(
@@ -306,7 +308,7 @@ export function calculateScoreForDualNilWithOneBlind(
 }
 
 // only gets called if HELPS_TEAM_BID setting
-export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2, _nilSetting?: string) {
+export function calculateTeamRoundScoreWithBothBlindNil(actual1: InputValue, actual2: InputValue, _nilSetting?: string) {
   const player1AchievedNil = convertStringInputToNum(actual1) === 0;
   const player2AchievedNil = convertStringInputToNum(actual2) === 0;
   const onlyOnePlayerAchievedNil =
@@ -336,10 +338,10 @@ export function calculateTeamRoundScoreWithBothBlindNil(actual1, actual2, _nilSe
 
 // only gets called with HELPS_TEAM_BID setting
 export function calculateTeamRoundScoreWithOneNilBidder(
-  bid1,
-  bid2,
-  actual1,
-  actual2,
+  bid1: InputValue,
+  bid2: InputValue,
+  actual1: InputValue,
+  actual2: InputValue,
   _nilSetting?: string
 ) {
   const { nilPlayerBid, nonNilPlayerBid, nilPlayerActual } = whoWentNil(
@@ -358,8 +360,8 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       ? totalActuals - convertStringInputToNum(nonNilPlayerBid)
       : 0;
   const nonNilPlayerScore = didntGetSet
-    ? convertStringInputToNum(nonNilPlayerBid) * 10 + bags
-    : -convertStringInputToNum(nonNilPlayerBid) * 10;
+    ? convertStringInputToNum(String(nonNilPlayerBid)) * 10 + bags
+    : -convertStringInputToNum(String(nonNilPlayerBid)) * 10;
 
   if (achievedNil && didntGetSet) {
     return {
@@ -382,11 +384,13 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       bags,
     };
   }
+  // Default fallback if no conditions emit true
+  return { score: 0, bags: 0 };
 }
 
 // consider renaming.
 // also, this function assumes only one bid is NIL. that might also be a code smell. Consider refactoring into class for encapsulation
-export function whoWentNil(bid1, bid2, actual1, actual2) {
+export function whoWentNil(bid1: InputValue, bid2: InputValue, actual1: InputValue, actual2: InputValue) {
   const nilPlayerBid = [bid1, bid2].find((bid) => isTypeNil(bid));
   const nonNilPlayerBid = [bid1, bid2].find((bid) => !isTypeNil(bid));
   const nilPlayerActual = bid1 === nilPlayerBid ? actual1 : actual2;
@@ -401,7 +405,7 @@ export function whoWentNil(bid1, bid2, actual1, actual2) {
 }
 
 // this function assumes both bidders went Nil but only one went blind. that might also be a code smell. Consider refactoring into class for encapsulation
-export function whoWasBlind(bid1, bid2, actual1, actual2) {
+export function whoWasBlind(bid1: InputValue, bid2: InputValue, actual1: InputValue, actual2: InputValue) {
   const nilPlayerBid = [bid1, bid2].find((bid) => bid === NIL);
   const blindNilPlayerBid = [bid1, bid2].find((bid) => bid === BLIND_NIL);
   const nilPlayerActual = bid1 === nilPlayerBid ? actual1 : actual2;
@@ -414,27 +418,27 @@ export function whoWasBlind(bid1, bid2, actual1, actual2) {
 }
 
 export function calculateTeamRoundScoresFromTeamHistory(
-  teamHistory,
-  nilSetting
+  teamHistory: TeamBidsAndActuals[],
+  nilSetting: NilSetting | null
 ) {
   // guard against null/undefined or malformed entries
   const safeHistory = (Array.isArray(teamHistory) ? teamHistory : [])
-    .filter((round) => round && typeof round === 'object')
+    .filter((team) => team && typeof team === 'object')
     .filter(
-      (round) =>
-        Object.prototype.hasOwnProperty.call(round, 'p1Bid') &&
-        Object.prototype.hasOwnProperty.call(round, 'p2Bid') &&
-        Object.prototype.hasOwnProperty.call(round, 'p1Actual') &&
-        Object.prototype.hasOwnProperty.call(round, 'p2Actual')
+      (team) =>
+        Object.prototype.hasOwnProperty.call(team, 'p1Bid') &&
+        Object.prototype.hasOwnProperty.call(team, 'p2Bid') &&
+        Object.prototype.hasOwnProperty.call(team, 'p1Actual') &&
+        Object.prototype.hasOwnProperty.call(team, 'p2Actual')
     );
 
-  return safeHistory.map((round) => {
+  return safeHistory.map((team) => {
     const teamRoundScore = calculateRoundScore(
-      round.p1Bid,
-      round.p2Bid,
-      round.p1Actual,
-      round.p2Actual,
-      nilSetting
+      team.p1Bid,
+      team.p2Bid,
+      team.p1Actual,
+      team.p2Actual,
+      nilSetting || HELPS_TEAM_BID
     );
     return {
       teamScore: teamRoundScore.score,
@@ -443,14 +447,14 @@ export function calculateTeamRoundScoresFromTeamHistory(
   });
 }
 
-export function getDealerIdHistory(roundHistory, firstDealerOrder) {
+export function getDealerIdHistory(roundHistory: Round[], firstDealerOrder: string[]) {
   // Safety check: ensure firstDealerOrder is an array
   if (!Array.isArray(firstDealerOrder)) {
     console.warn('firstDealerOrder is not an array:', firstDealerOrder);
     return [];
   }
 
-  const dealerIdHistory = [];
+  const dealerIdHistory: string[] = [];
   let currentDealerOrder = [...firstDealerOrder];
 
   roundHistory.forEach((round) => {
@@ -488,12 +492,21 @@ export function getDealerIdHistory(roundHistory, firstDealerOrder) {
 }
 
 // Rotate the initial dealer order by one position and return a new array
-export function rotateDealerOrder(firstDealerOrder) {
+export function rotateDealerOrder(firstDealerOrder: string[]) {
   const clonedOrder = [...firstDealerOrder];
   if (clonedOrder.length === 0) return clonedOrder;
   clonedOrder.push(clonedOrder[0]);
   clonedOrder.shift();
   return clonedOrder;
+}
+
+interface GetCurrentDealerIdArgs {
+  dealerIdHistory: string[];
+  index: number;
+  isCurrent: boolean;
+  firstDealerOrder: string[];
+  dealerOverride?: string | null;
+  roundHistory?: Round[];
 }
 
 export function getCurrentDealerId({
@@ -503,7 +516,7 @@ export function getCurrentDealerId({
   firstDealerOrder,
   dealerOverride = null,
   roundHistory = [],
-}) {
+}: GetCurrentDealerIdArgs) {
   // If there's a dealer override for the current round, use it
   if (isCurrent && dealerOverride) {
     return dealerOverride;
@@ -546,20 +559,20 @@ export function getCurrentDealerId({
 }
 
 export function getTeamHistoryFromRoundHistory(
-  roundHistory,
-  teamBidsAndActuals
-) {
+  roundHistory: Round[],
+  teamBidsAndActuals: 'team1BidsAndActuals' | 'team2BidsAndActuals'
+): TeamBidsAndActuals[] {
   if (!Array.isArray(roundHistory)) return [];
   return roundHistory
     .filter((round) => round && typeof round === 'object')
     .map((round) => round[teamBidsAndActuals])
-    .filter((team) => team && typeof team === 'object');
+    .filter((team): team is TeamBidsAndActuals => team !== undefined && team !== null);
 }
 
 export function calculateTeamScoreFromRoundHistory(
-  roundHistory,
-  teamBidsAndActuals,
-  nilSetting
+  roundHistory: Round[],
+  teamBidsAndActuals: 'team1BidsAndActuals' | 'team2BidsAndActuals',
+  nilSetting: NilSetting | null
 ) {
   const teamRoundHistory = getTeamHistoryFromRoundHistory(
     roundHistory,
@@ -579,7 +592,7 @@ export function calculateTeamScoreFromRoundHistory(
   return gameScore;
 }
 
-function addRounds(prev, roundScore) {
+function addRounds(prev: { teamScore: number, teamBags: number }, roundScore: { teamScore: number, teamBags: number }) {
   prev.teamScore += roundScore.teamScore;
   prev.teamBags += roundScore.teamBags;
 
@@ -592,41 +605,43 @@ function addRounds(prev, roundScore) {
   return prev;
 }
 
-export function convertAchievedBidToScoreValue(input) {
-  switch (input) {
+export function convertAchievedBidToScoreValue(input: InputValue | undefined) {
+  if (input === undefined) return 0;
+  switch (String(input)) {
     case BLIND_NIL:
       return 200;
     case NIL:
       return 100;
     default:
-      return parseInt(input) * 10;
+      return parseInt(String(input)) * 10;
   }
 }
 
-export function convertStringInputToNum(input) {
-  switch (input) {
+export function convertStringInputToNum(input: InputValue | undefined) {
+  if (input === undefined) return 0;
+  switch (String(input)) {
     case BLIND_NIL:
     case NIL:
     case '':
       return 0;
     default:
-      return parseInt(input);
+      return parseInt(String(input));
   }
 }
 
-export function addInputs(...inputs) {
-  return inputs.reduce((acc, input) => {
-    return acc + convertStringInputToNum(input);
+export function addInputs(...inputs: InputValue[]) {
+  return inputs.reduce((acc: number, input) => {
+    return acc + convertStringInputToNum(String(input));
   }, 0);
 }
 
-export const isNotDefaultValue = (value) => {
+export const isNotDefaultValue = (value: InputValue) => {
   return value !== '';
 };
 
-export const hasPlayerNamesEntered = (names) => {
+export const hasPlayerNamesEntered = (names: Names | null) => {
   if (!names) return false;
-  const playerFields = ['t1p1Name', 't1p2Name', 't2p1Name', 't2p2Name'];
+  const playerFields: (keyof Names)[] = ['t1p1Name', 't1p2Name', 't2p1Name', 't2p2Name'];
   const hasPlayerNames = playerFields.some(
     (field) => names[field] && names[field] !== ''
   );
@@ -636,7 +651,7 @@ export const hasPlayerNamesEntered = (names) => {
   return hasPlayerNames || hasCustomTeamNames;
 };
 
-export const hasRoundProgress = (roundHistory, currentRound) => {
+export const hasRoundProgress = (roundHistory: Round[], currentRound: Round | null) => {
   const hasHistory = Array.isArray(roundHistory) && roundHistory.length > 0;
   if (hasHistory) return true;
 

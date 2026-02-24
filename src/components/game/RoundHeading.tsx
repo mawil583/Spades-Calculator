@@ -2,7 +2,15 @@
 import { Center, Heading, Flex, Box } from '../ui';
 import { team1Styles, team2Styles } from '../../helpers/utils/constants';
 
-function RoundHeading({ roundNumber, names }) {
+interface RoundHeadingProps {
+  roundNumber: number;
+  names: {
+    team1Name: string;
+    team2Name: string;
+  };
+}
+
+function RoundHeading({ roundNumber, names }: RoundHeadingProps) {
   return (
     <div>
       <Heading style={{ fontSize: 'var(--app-font-2xl)' }} as={'h3'}>
@@ -17,7 +25,7 @@ function RoundHeading({ roundNumber, names }) {
             ml={'5px'}
           >
             <Center style={team1Styles}>
-              <Heading size="15px">{names.team1Name}</Heading>
+              <Heading style={{ fontSize: '15px' }}>{names.team1Name}</Heading>
             </Center>
           </Box>
           <Box
@@ -27,7 +35,7 @@ function RoundHeading({ roundNumber, names }) {
             ml={'5px'}
           >
             <Center style={team2Styles}>
-              <Heading size="15px">{names.team2Name}</Heading>
+              <Heading style={{ fontSize: '15px' }}>{names.team2Name}</Heading>
             </Center>
           </Box>
         </Flex>

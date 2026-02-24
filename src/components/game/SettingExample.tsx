@@ -1,7 +1,18 @@
 
 import { Box, Text, Flex, Center, SimpleGrid } from '../ui';
 
-function SettingExample({ score, bags, p1Bid, p1Actual, p2Bid, p2Actual }) {
+import type { InputValue } from '../../types';
+
+interface SettingExampleProps {
+  score: number | string;
+  bags: number | string;
+  p1Bid: InputValue;
+  p1Actual: InputValue;
+  p2Bid: InputValue;
+  p2Actual: InputValue;
+}
+
+function SettingExample({ score, bags, p1Bid, p1Actual, p2Bid, p2Actual }: SettingExampleProps) {
   return (
     <>
       <SimpleGrid columns={2} style={{ marginBottom: '10px' }}>

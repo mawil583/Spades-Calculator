@@ -105,7 +105,7 @@ describe('Offline Page Functionality', () => {
 
       cy.visit('/offline.html').then(() => {
         const loadTime = Date.now() - startTime;
-        expect(loadTime).to.be.lessThan(2000); // Should load in under 2 seconds
+        (expect(loadTime) as any).to.be.lessThan(2000); // Should load in under 2 seconds
       });
     });
 
@@ -117,7 +117,7 @@ describe('Offline Page Functionality', () => {
         if (win.performance && win.performance.getEntriesByType) {
           const resourceEntries = win.performance.getEntriesByType('resource');
           // Should have minimal external resources
-          expect(resourceEntries.length).to.be.lessThan(5);
+          (expect(resourceEntries.length) as any).to.be.lessThan(5);
         }
       });
     });

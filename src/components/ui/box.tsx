@@ -1,5 +1,7 @@
-import { Box as ChakraBox } from '@chakra-ui/react';
+import { Box as ChakraBox, type BoxProps } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 
-export const Box = forwardRef((props, ref) => <ChakraBox ref={ref} {...props} />);
+export type { BoxProps };
+
+export const Box = forwardRef<HTMLDivElement, BoxProps>((props, ref) => <ChakraBox ref={ref} {...props} />);
 Box.displayName = 'Box';

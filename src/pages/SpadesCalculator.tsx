@@ -10,7 +10,7 @@ import { FEATURE_FLAGS } from '../helpers/utils/featureFlags';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
-  const names = JSON.parse(localStorage.getItem('names'));
+  const names = JSON.parse(localStorage.getItem('names') || 'null');
   useRedirectWhenFalsey(names, navigate);
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 
