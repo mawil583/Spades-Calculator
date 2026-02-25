@@ -365,9 +365,9 @@ function TableRound({
   const p3Actual = team2BidsAndActuals.p1Actual || "";
   const p4Actual = team2BidsAndActuals.p2Actual || "";
 
-  const allActualsSubmitted = [p1Actual, p2Actual, p3Actual, p4Actual].every(
-    (val) => isNotDefaultValue(val),
-  );
+  const allActualsSubmitted = (
+    [p1Actual, p2Actual, p3Actual, p4Actual] as InputValue[]
+  ).every((val) => isNotDefaultValue(val));
   const totalActuals = addInputs(p1Actual, p2Actual, p3Actual, p4Actual);
 
   useValidateActuals(allActualsSubmitted, totalActuals, setIsValid);

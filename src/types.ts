@@ -1,41 +1,13 @@
+import { possibleBids, possibleActuals } from "./helpers/utils/constants";
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain types shared across the Spades Calculator app
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type BidValue =
-  | "Blind Nil"
-  | "Nil"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10"
-  | "11"
-  | "12"
-  | "13";
+export type BidValue = (typeof possibleBids)[number];
+export type ActualValue = (typeof possibleActuals)[number];
 
-export type ActualValue =
-  | 0
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10"
-  | "11"
-  | "12"
-  | "13";
-
-export type InputValue = string | number;
+export type InputValue = BidValue | ActualValue | "";
 
 export type NilSetting = "takesBags" | "helpsTeamBid" | "noBagsNoHelp";
 

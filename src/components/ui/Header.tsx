@@ -11,7 +11,7 @@ import {
   hasRoundProgress,
 } from "../../helpers/math/spadesMath";
 import { getNames } from "../../helpers/utils/storage";
-import type { Names } from "../../types";
+import { initialNames } from "../../helpers/utils/constants";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ const Header = () => {
     useContext(GlobalContext);
   const { handleInstallClick, isInstalled } = usePWAInstall();
 
-  const names = getNames() || {};
+  const names = getNames() ?? initialNames;
   const hasAnyData =
-    hasPlayerNamesEntered(names as Names) ||
+    hasPlayerNamesEntered(names) ||
     hasRoundProgress(roundHistory, currentRound);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);

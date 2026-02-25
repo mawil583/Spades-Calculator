@@ -38,7 +38,7 @@ const mockGlobalContext: Partial<GlobalContextValue> = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: "3", p2Bid: "2", p1Actual: "", p2Actual: "" },
     team2BidsAndActuals: { p1Bid: "4", p2Bid: "1", p1Actual: "", p2Actual: "" },
-  } as Round,
+  } as unknown as Round as Round,
   setDealerOverride: vi.fn(),
 };
 
@@ -96,7 +96,7 @@ describe("BidSection - Unclaimed Positioning", () => {
       p1Actual: "",
       p2Actual: "",
     },
-  };
+  } as unknown as Round;
 
   it("should position unclaimed section in the center between both teams bids", () => {
     renderWithChakra(

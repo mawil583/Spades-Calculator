@@ -220,7 +220,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 
@@ -280,7 +280,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 
@@ -323,7 +323,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 
@@ -366,7 +366,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 
@@ -410,7 +410,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 
@@ -464,7 +464,7 @@ describe("New Game Flow Integration", () => {
           {
             team1BidsAndActuals: { p1Bid: "1", p2Bid: "2" },
             team2BidsAndActuals: { p1Bid: "3", p2Bid: "4" },
-          } as unknown as Round,
+          } as unknown as Round as unknown as Round,
         ],
       };
 

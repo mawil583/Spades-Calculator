@@ -6,17 +6,17 @@ import {
   updateInput,
 } from "../../helpers/utils/helperFunctions";
 import { GlobalContext } from "../../helpers/context/GlobalContext";
-import type { Round } from "../../types";
+import type { Round, InputValue } from "../../types";
 
 export interface ButtonGridProps {
-  type: string;
+  type: "Bid" | "Actual";
   fieldToUpdate: string;
   currentRound: Round;
   index?: number | string;
   roundHistory?: Round[];
   isCurrent: boolean;
   setIsModalOpen?: (isOpen: boolean) => void;
-  onCustomUpdate?: (input: string | number) => void;
+  onCustomUpdate?: (input: InputValue) => void;
 }
 
 function ButtonGrid({
@@ -32,7 +32,7 @@ function ButtonGrid({
   const { setCurrentRound, setRoundHistory } = useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
 
-  const onSelect = (input: string | number) => {
+  const onSelect = (input: InputValue) => {
     if (setIsModalOpen) {
       setIsModalOpen(false);
     }

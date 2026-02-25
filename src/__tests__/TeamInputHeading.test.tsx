@@ -29,7 +29,7 @@ const mockContextValue = {
       p1Actual: "",
       p2Actual: "",
     },
-  },
+  } as unknown as Round,
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setDealerOverride: vi.fn(),
@@ -52,8 +52,8 @@ describe("TeamInputHeading", () => {
     team1Total: 0,
     team2Total: 0,
     title: "Actuals",
-    team1Bids: ["1", "2"],
-    team2Bids: ["3", "4"],
+    team1Bids: ["1", "2"] as unknown as import("../types").InputValue[],
+    team2Bids: ["3", "4"] as unknown as import("../types").InputValue[],
     onTeamTotalChange: vi.fn(),
     isEditable: false,
   };
@@ -62,8 +62,8 @@ describe("TeamInputHeading", () => {
     it("should be interactive (clickable) but NOT editable for team total input", () => {
       const props = {
         ...defaultProps,
-        team1Bids: ["1", "2"], // Neither is nil
-        team2Bids: ["3", "4"], // Neither is nil
+        team1Bids: ["1", "2"] as unknown as import("../types").InputValue[], // Neither is nil
+        team2Bids: ["3", "4"] as unknown as import("../types").InputValue[], // Neither is nil
         isEditable: true,
       };
 
@@ -86,8 +86,8 @@ describe("TeamInputHeading", () => {
     it("should not be editable for team total input", () => {
       const props = {
         ...defaultProps,
-        team1Bids: ["Nil", "2"], // One player went nil
-        team2Bids: ["3", "4"], // Neither is nil
+        team1Bids: ["Nil", "2"] as unknown as import("../types").InputValue[], // One player went nil
+        team2Bids: ["3", "4"] as unknown as import("../types").InputValue[], // Neither is nil
         isEditable: false,
       };
 
@@ -106,8 +106,8 @@ describe("TeamInputHeading", () => {
     it("should show calculated team totals when individual values are empty", () => {
       const props = {
         ...defaultProps,
-        team1Bids: ["1", "2"], // Neither is nil
-        team2Bids: ["3", "4"], // Neither is nil
+        team1Bids: ["1", "2"] as unknown as import("../types").InputValue[], // Neither is nil
+        team2Bids: ["3", "4"] as unknown as import("../types").InputValue[], // Neither is nil
         isEditable: true,
         team1Total: 0, // Calculated from empty individual values
         team2Total: 0, // Calculated from empty individual values
@@ -123,9 +123,6 @@ describe("TeamInputHeading", () => {
 
 describe("TeamInputHeading Modal Integration", () => {
   it("should open InputModal when clicking on editable team heading", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const mockOnTeamTotalChange = vi.fn();
-
     const { getAllByText, findByTestId } = renderWithContext(
       <TeamInputHeading
         team1Total={0}
@@ -151,9 +148,6 @@ describe("TeamInputHeading Modal Integration", () => {
   });
 
   it("should not open InputModal when clicking on non-editable team heading", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const mockOnTeamTotalChange = vi.fn();
-
     const { getAllByText, queryByTestId } = renderWithContext(
       <TeamInputHeading
         team1Total={0}
@@ -164,8 +158,7 @@ describe("TeamInputHeading Modal Integration", () => {
         isEditable={true}
         index={0}
         isCurrent={true}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        currentRound={{} as any}
+        currentRound={{} as unknown as Round}
         roundHistory={[]}
       />,
     );
@@ -204,20 +197,22 @@ describe("TeamInputHeading Team Total Updates", () => {
             isEditable={true}
             index={0}
             isCurrent={true}
-            currentRound={{
-              team1BidsAndActuals: {
-                p1Bid: "1",
-                p2Bid: "2",
-                p1Actual: "",
-                p2Actual: "",
-              },
-              team2BidsAndActuals: {
-                p1Bid: "3",
-                p2Bid: "4",
-                p1Actual: "",
-                p2Actual: "",
-              },
-            }}
+            currentRound={
+              {
+                team1BidsAndActuals: {
+                  p1Bid: "1",
+                  p2Bid: "2",
+                  p1Actual: "",
+                  p2Actual: "",
+                },
+                team2BidsAndActuals: {
+                  p1Bid: "3",
+                  p2Bid: "4",
+                  p1Actual: "",
+                  p2Actual: "",
+                },
+              } as unknown as Round
+            }
             roundHistory={[]}
           />
         </GlobalContext.Provider>
@@ -266,20 +261,22 @@ describe("TeamInputHeading Team Total Updates", () => {
             isEditable={true}
             index={0}
             isCurrent={true}
-            currentRound={{
-              team1BidsAndActuals: {
-                p1Bid: "1",
-                p2Bid: "2",
-                p1Actual: "",
-                p2Actual: "",
-              },
-              team2BidsAndActuals: {
-                p1Bid: "3",
-                p2Bid: "4",
-                p1Actual: "",
-                p2Actual: "",
-              },
-            }}
+            currentRound={
+              {
+                team1BidsAndActuals: {
+                  p1Bid: "1",
+                  p2Bid: "2",
+                  p1Actual: "",
+                  p2Actual: "",
+                },
+                team2BidsAndActuals: {
+                  p1Bid: "3",
+                  p2Bid: "4",
+                  p1Actual: "",
+                  p2Actual: "",
+                },
+              } as unknown as Round
+            }
             roundHistory={[]}
           />
         </GlobalContext.Provider>
@@ -329,7 +326,7 @@ describe("TeamInputHeading Integration Tests", () => {
         p1Actual: "",
         p2Actual: "",
       },
-    };
+    } as unknown as Round;
 
     const { getAllByText, findByTestId } = render(
       <Provider>
@@ -396,7 +393,7 @@ describe("TeamInputHeading Integration Tests", () => {
         p1Actual: "",
         p2Actual: "",
       },
-    };
+    } as unknown as Round;
 
     const { getAllByText, findByTestId } = render(
       <Provider>

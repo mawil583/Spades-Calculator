@@ -52,9 +52,15 @@ describe("TableRound Component", () => {
     currentRound: {
       team1BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
       team2BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
-    },
+    } as unknown as Round,
     resetCurrentRound: vi.fn(),
     setRoundHistory: vi.fn(),
+    firstDealerOrder: [
+      "team1BidsAndActuals.p1Bid",
+      "team2BidsAndActuals.p1Bid",
+      "team1BidsAndActuals.p2Bid",
+      "team2BidsAndActuals.p2Bid",
+    ],
   });
 
   it("renders all 4 player sections with correct names", () => {

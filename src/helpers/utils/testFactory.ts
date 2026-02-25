@@ -53,13 +53,13 @@ export const roundHistoryWithOneTeamMembersGoingNil: Round[] = [
       p1Bid: NIL,
       p2Bid: "1",
       p1Actual: "1",
-      p2Actual: 0,
+      p2Actual: "0",
     },
     team2BidsAndActuals: {
       p1Bid: NIL,
       p2Bid: "1",
       p1Actual: "2",
-      p2Actual: 0,
+      p2Actual: "0",
     },
   },
 ];
@@ -76,7 +76,7 @@ export const teamHistoryWithBothTeamMembersBettingNonBlindNilAndOneFailing: Team
     {
       p1Bid: NIL,
       p2Bid: NIL,
-      p1Actual: 0,
+      p1Actual: "0",
       p2Actual: "1",
     },
   ];
@@ -86,7 +86,7 @@ export const teamRoundHistoryMakingNilWithNoBags: TeamBidsAndActuals[] = [
     p1Bid: "2",
     p2Bid: NIL,
     p1Actual: "2",
-    p2Actual: 0,
+    p2Actual: "0",
   },
 ];
 export const teamRoundHistoryWithBagsNoNilNotSet: TeamBidsAndActuals[] = [

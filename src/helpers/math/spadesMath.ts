@@ -147,8 +147,8 @@ function isTypeNil(bid: InputValue) {
 }
 
 export function getPlayerBags(
-  bid: string | number,
-  actual: string | number,
+  bid: InputValue,
+  actual: InputValue,
   nilSetting: string,
 ): number {
   let bags = 0;
@@ -220,8 +220,9 @@ export function calculateScoreForDualNilWithOneBlind(
     actual1,
     actual2,
   );
-  const nilPlayerAchievedNil = nilPlayerActual === 0;
-  const blindNilPlayerAchievedNil = blindNilPlayerActual === 0;
+  const nilPlayerAchievedNil = convertStringInputToNum(nilPlayerActual) === 0;
+  const blindNilPlayerAchievedNil =
+    convertStringInputToNum(blindNilPlayerActual) === 0;
   if (nilPlayerAchievedNil && blindNilPlayerAchievedNil) {
     return {
       score: 100 + 200,
@@ -307,8 +308,8 @@ export function calculateTeamRoundScoreWithOneNilBidder(
       ? totalActuals - convertStringInputToNum(nonNilPlayerBid)
       : 0;
   const nonNilPlayerScore = didntGetSet
-    ? convertStringInputToNum(String(nonNilPlayerBid)) * 10 + bags
-    : -convertStringInputToNum(String(nonNilPlayerBid)) * 10;
+    ? convertStringInputToNum(nonNilPlayerBid) * 10 + bags
+    : -convertStringInputToNum(nonNilPlayerBid) * 10;
 
   const nilScore = wasBlind ? 200 : 100;
   const nilMultiplier = achievedNil ? 1 : -1;
@@ -361,42 +362,27 @@ export function calculateTeamRoundScoresFromTeamHistory(
   teamHistory: TeamBidsAndActuals[],
   nilSetting: NilSetting | null,
 ) {
-  // guard against null/undefined or malformed entries
-  const safeHistory = (Array.isArray(teamHistory) ? teamHistory : [])
-    .filter((team) => team && typeof team === "object")
-    .filter(
-      (team) =>
-        Object.prototype.hasOwnProperty.call(team, "p1Bid") &&
-        Object.prototype.hasOwnProperty.call(team, "p2Bid") &&
-        Object.prototype.hasOwnProperty.call(team, "p1Actual") &&
-        Object.prototype.hasOwnProperty.call(team, "p2Actual"),
-    );
-
-  return safeHistory.map((team) => {
-    const teamRoundScore = calculateRoundScore(
-      team.p1Bid,
-      team.p2Bid,
-      team.p1Actual,
-      team.p2Actual,
-      nilSetting || HELPS_TEAM_BID,
-    );
-    return {
-      teamScore: teamRoundScore.score,
-      teamBags: teamRoundScore.bags,
-    };
-  });
+  return teamHistory
+    .filter((team): team is TeamBidsAndActuals => team != null)
+    .map((team) => {
+      const teamRoundScore = calculateRoundScore(
+        team.p1Bid,
+        team.p2Bid,
+        team.p1Actual,
+        team.p2Actual,
+        nilSetting || HELPS_TEAM_BID,
+      );
+      return {
+        teamScore: teamRoundScore.score,
+        teamBags: teamRoundScore.bags,
+      };
+    });
 }
 
 export function getDealerIdHistory(
   roundHistory: Round[],
   firstDealerOrder: string[],
 ) {
-  // Safety check: ensure firstDealerOrder is an array
-  if (!Array.isArray(firstDealerOrder)) {
-    console.warn("firstDealerOrder is not an array:", firstDealerOrder);
-    return [];
-  }
-
   const dealerIdHistory: string[] = [];
   let currentDealerOrder = [...firstDealerOrder];
 
@@ -434,7 +420,6 @@ export function getDealerIdHistory(
   return dealerIdHistory;
 }
 
-
 interface GetCurrentDealerIdArgs {
   dealerIdHistory: string[];
   index: number;
@@ -460,15 +445,6 @@ export function getCurrentDealerId({
   // If there's a dealer override for a past round, use it
   if (!isCurrent && roundHistory[index]?.dealerOverride) {
     return roundHistory[index].dealerOverride;
-  }
-
-  // Safety check: ensure firstDealerOrder is an array
-  if (!Array.isArray(firstDealerOrder)) {
-    console.warn(
-      "firstDealerOrder is not an array in getCurrentDealerId:",
-      firstDealerOrder,
-    );
-    return null;
   }
 
   if (isCurrent) {
@@ -497,13 +473,10 @@ export function getTeamHistoryFromRoundHistory(
   roundHistory: Round[],
   teamBidsAndActuals: "team1BidsAndActuals" | "team2BidsAndActuals",
 ): TeamBidsAndActuals[] {
-  if (!Array.isArray(roundHistory)) return [];
   return roundHistory
-    .filter((round) => round && typeof round === "object")
+    .filter((round): round is Round => round != null)
     .map((round) => round[teamBidsAndActuals])
-    .filter(
-      (team): team is TeamBidsAndActuals => team !== undefined && team !== null,
-    );
+    .filter((team): team is TeamBidsAndActuals => team != null);
 }
 
 export function calculateTeamScoreFromRoundHistory(
@@ -544,31 +517,31 @@ function addRounds(
 
 export function convertAchievedBidToScoreValue(input: InputValue | undefined) {
   if (input === undefined) return 0;
-  switch (String(input)) {
+  switch (input) {
     case BLIND_NIL:
       return 200;
     case NIL:
       return 100;
     default:
-      return parseInt(String(input)) * 10;
+      return (typeof input === "number" ? input : parseInt(input, 10)) * 10;
   }
 }
 
 export function convertStringInputToNum(input: InputValue | undefined) {
   if (input === undefined) return 0;
-  switch (String(input)) {
+  switch (input) {
     case BLIND_NIL:
     case NIL:
     case "":
       return 0;
     default:
-      return parseInt(String(input));
+      return typeof input === "number" ? input : parseInt(input, 10);
   }
 }
 
 export function addInputs(...inputs: InputValue[]) {
   return inputs.reduce((acc: number, input) => {
-    return acc + convertStringInputToNum(String(input));
+    return acc + convertStringInputToNum(input);
   }, 0);
 }
 
@@ -597,17 +570,15 @@ export const hasRoundProgress = (
   roundHistory: Round[],
   currentRound: Round | null,
 ) => {
-  const hasHistory = Array.isArray(roundHistory) && roundHistory.length > 0;
-  if (hasHistory) return true;
-
+  if (roundHistory.length > 0) return true;
   if (!currentRound) return false;
 
-  const hasTeam1Progress = Object.values(
-    currentRound.team1BidsAndActuals || {},
-  ).some(isNotDefaultValue);
-  const hasTeam2Progress = Object.values(
-    currentRound.team2BidsAndActuals || {},
-  ).some(isNotDefaultValue);
+  const hasTeam1Progress = Object.values(currentRound.team1BidsAndActuals).some(
+    isNotDefaultValue,
+  );
+  const hasTeam2Progress = Object.values(currentRound.team2BidsAndActuals).some(
+    isNotDefaultValue,
+  );
 
   return hasTeam1Progress || hasTeam2Progress;
 };

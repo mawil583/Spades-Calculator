@@ -1,3 +1,4 @@
+import type { Round } from "../types";
 import { updateInput } from "../helpers/utils/helperFunctions";
 
 describe("updateInput function", () => {
@@ -16,7 +17,7 @@ describe("updateInput function", () => {
         p2Actual: "4",
       },
       dealerOverride: "team2BidsAndActuals.p1Bid",
-    };
+    } as unknown as Round;
 
     const updatedRound = updateInput({
       input: "5",
@@ -50,7 +51,7 @@ describe("updateInput function", () => {
         p2Actual: "4",
       },
       dealerOverride: null,
-    };
+    } as unknown as Round;
 
     const updatedRound = updateInput({
       input: "6",
@@ -80,7 +81,7 @@ describe("updateInput function", () => {
         p2Actual: "4",
       },
       // No dealerOverride property
-    };
+    } as unknown as Round;
 
     const updatedRound = updateInput({
       input: "7",
@@ -110,7 +111,7 @@ describe("updateInput function", () => {
         p2Actual: "4",
       },
       dealerOverride: "team1BidsAndActuals.p1Bid",
-    };
+    } as unknown as Round;
 
     const updatedRound = updateInput({
       input: "8",
@@ -144,7 +145,7 @@ describe("updateInput function", () => {
         p2Actual: "4",
       },
       dealerOverride: "team2BidsAndActuals.p2Bid",
-    };
+    } as unknown as Round;
 
     const updatedRound = updateInput({
       input: "9",

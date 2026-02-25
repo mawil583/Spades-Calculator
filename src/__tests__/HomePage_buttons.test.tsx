@@ -69,8 +69,6 @@ vi.mock("../helpers/math/spadesMath", async (importOriginal) => {
 const renderWithProviders = (
   ui: ReactNode,
   contextValue: Record<string, unknown>,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  isMobile = false,
 ) => {
   return render(
     <Provider>
@@ -127,6 +125,7 @@ describe("NameForm Button Logic", () => {
       ...defaultContext,
       currentRound: {
         team1BidsAndActuals: { p1Bid: "1" }, // Has some data
+        team2BidsAndActuals: {},
       },
     };
 

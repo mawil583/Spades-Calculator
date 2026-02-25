@@ -110,7 +110,7 @@ describe("Complex State Interactions Between Unrelated Components", () => {
           p1Actual: "",
           p2Actual: "",
         },
-      } as Round,
+      } as unknown as Round as Round,
       setCurrentRound: mockSetCurrentRound,
       resetCurrentRound: vi.fn(),
       roundHistory: [],
@@ -162,7 +162,7 @@ describe("Complex State Interactions Between Unrelated Components", () => {
             p1Actual: "4",
             p2Actual: "4",
           },
-        },
+        } as unknown as Round,
       };
 
       renderWithProviders(<SpadesCalculator />, completedRoundState);

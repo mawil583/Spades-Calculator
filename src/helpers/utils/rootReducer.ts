@@ -1,7 +1,4 @@
-import {
-  defaultLocalStorage,
-  setLocalStorage,
-} from "./helperFunctions";
+import { defaultLocalStorage, setLocalStorage } from "./helperFunctions";
 import { initialFirstDealerOrder, EMPTY_ROUND } from "./constants";
 import type { AppState, AppAction } from "../../types";
 
@@ -90,7 +87,7 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
         return state;
       }
     default:
-      // @ts-ignore
+      // @ts-expect-error import.meta.env is Vite-specific
       if (import.meta.env.DEV) {
         console.log("default called");
       }

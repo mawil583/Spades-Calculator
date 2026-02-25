@@ -92,9 +92,19 @@ describe("Team Name Reset Verification", () => {
   const defaultContext: Partial<GlobalContextValue> = {
     roundHistory: [
       {
-        team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
-        team2BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 3, p2Actual: 4 },
-      } as unknown as Round,
+        team1BidsAndActuals: {
+          p1Bid: "1",
+          p2Bid: "2",
+          p1Actual: "3",
+          p2Actual: "4",
+        },
+        team2BidsAndActuals: {
+          p1Bid: "1",
+          p2Bid: "2",
+          p1Actual: "3",
+          p2Actual: "4",
+        },
+      } as unknown as Round as unknown as Round,
     ],
     currentRound: undefined,
   };

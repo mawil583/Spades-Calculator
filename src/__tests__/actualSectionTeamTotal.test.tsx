@@ -60,24 +60,34 @@ describe("ActualSection Team Total Button Behavior", () => {
   const createMockCurrentRound = (
     team1Bids: InputValue[],
     team2Bids: InputValue[],
-  ) => ({
-    team1BidsAndActuals: {
-      p1Bid: team1Bids[0],
-      p2Bid: team1Bids[1],
-      p1Actual: "",
-      p2Actual: "",
-    },
-    team2BidsAndActuals: {
-      p1Bid: team2Bids[0],
-      p2Bid: team2Bids[1],
-      p1Actual: "",
-      p2Actual: "",
-    },
-  });
+  ) =>
+    ({
+      team1BidsAndActuals: {
+        p1Bid: team1Bids[0],
+        p2Bid: team1Bids[1],
+        p1Actual: "",
+        p2Actual: "",
+      },
+      team2BidsAndActuals: {
+        p1Bid: team2Bids[0],
+        p2Bid: team2Bids[1],
+        p1Actual: "",
+        p2Actual: "",
+      },
+    }) as unknown as import("../types").Round;
 
   describe("Team Actual Button Clickability", () => {
     test("both teams can click team actual buttons when neither team has nil bids", () => {
-      const currentRound = createMockCurrentRound([5, 3], [4, 2]);
+      const currentRound = createMockCurrentRound(
+        [
+          "5" as import("../types").InputValue,
+          "3" as import("../types").InputValue,
+        ],
+        [
+          "4" as import("../types").InputValue,
+          "2" as import("../types").InputValue,
+        ],
+      );
       mockContextValue.currentRound = currentRound;
 
       renderWithProviders(
@@ -107,7 +117,13 @@ describe("ActualSection Team Total Button Behavior", () => {
     });
 
     test("only team with no nil bids can click their team actual button", () => {
-      const currentRound = createMockCurrentRound([5, 3], ["Nil", 2]);
+      const currentRound = createMockCurrentRound(
+        [
+          "5" as import("../types").InputValue,
+          "3" as import("../types").InputValue,
+        ],
+        ["Nil", "2" as import("../types").InputValue],
+      );
       mockContextValue.currentRound = currentRound;
 
       renderWithProviders(
@@ -137,7 +153,13 @@ describe("ActualSection Team Total Button Behavior", () => {
     });
 
     test("team with blind nil bid cannot click their team actual button", () => {
-      const currentRound = createMockCurrentRound(["Blind Nil", 3], [4, 2]);
+      const currentRound = createMockCurrentRound(
+        ["Blind Nil", "3" as import("../types").InputValue],
+        [
+          "4" as import("../types").InputValue,
+          "2" as import("../types").InputValue,
+        ],
+      );
       mockContextValue.currentRound = currentRound;
 
       renderWithProviders(
@@ -167,7 +189,10 @@ describe("ActualSection Team Total Button Behavior", () => {
     });
 
     test("both teams cannot click team actual buttons when both teams have nil bids", () => {
-      const currentRound = createMockCurrentRound(["Nil", 3], [4, "Blind Nil"]);
+      const currentRound = createMockCurrentRound(
+        ["Nil", "3" as import("../types").InputValue],
+        ["4" as import("../types").InputValue, "Blind Nil"],
+      );
       mockContextValue.currentRound = currentRound;
 
       renderWithProviders(
@@ -197,7 +222,13 @@ describe("ActualSection Team Total Button Behavior", () => {
     });
 
     test("team actual button click opens modal for clickable team", () => {
-      const currentRound = createMockCurrentRound([5, 3], ["Nil", 2]);
+      const currentRound = createMockCurrentRound(
+        [
+          "5" as import("../types").InputValue,
+          "3" as import("../types").InputValue,
+        ],
+        ["Nil", "2" as import("../types").InputValue],
+      );
       mockContextValue.currentRound = currentRound;
 
       renderWithProviders(

@@ -17,7 +17,7 @@ import RoundHeading from "./RoundHeading";
 import { GlobalContext } from "../../helpers/context/GlobalContext";
 import { getNames, getNilSetting } from "../../helpers/utils/storage";
 
-import type { Round as RoundType } from "../../types";
+import type { Round as RoundType, InputValue } from "../../types";
 
 interface RoundProps {
   roundHistory: RoundType[];
@@ -48,13 +48,13 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
 
   // Check if all bids are entered and update animation state
   const roundInputBids = roundInputs
-    ? [
+    ? ([
         roundInputs.team1BidsAndActuals.p1Bid,
         roundInputs.team1BidsAndActuals.p2Bid,
         roundInputs.team2BidsAndActuals.p1Bid,
         roundInputs.team2BidsAndActuals.p2Bid,
-      ]
-    : ["", "", "", ""]; // Default empty values if roundInputs is null
+      ] as InputValue[])
+    : (["", "", "", ""] as InputValue[]); // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
 
   // Derive visibility:

@@ -3,6 +3,7 @@ import { GlobalContext } from "../context/GlobalContext";
 import {
   isNotDefaultValue,
   addInputs,
+  convertStringInputToNum,
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
 } from "../math/spadesMath";
@@ -80,8 +81,8 @@ export function useRedirectWhenFalsey(
 }
 
 export function useSetUnclaimed(
-  team1Bids: (string | number)[],
-  team2Bids: (string | number)[],
+  team1Bids: InputValue[],
+  team2Bids: InputValue[],
   setNumUnclaimed: (num: number) => void,
 ) {
   useEffect(() => {
@@ -97,19 +98,9 @@ export function useValidateActuals(
   setIsValid: (isValid: boolean | ((prev: boolean) => boolean)) => void,
 ) {
   useEffect(() => {
-    if (allActualsAreSubmitted) {
-      if (totalActuals !== 13) {
-        setIsValid(false);
-      } else {
-        setIsValid(true);
-      }
-    } else {
-      if (totalActuals > 13) {
-        setIsValid(false);
-      } else {
-        setIsValid(true);
-      }
-    }
+    setIsValid(
+      allActualsAreSubmitted ? totalActuals === 13 : totalActuals <= 13,
+    );
   }, [totalActuals, allActualsAreSubmitted, setIsValid]);
 }
 
@@ -140,7 +131,7 @@ export function useIndependentTeamScoring(
       ];
 
       const totalActuals = [...team1Actuals, ...team2Actuals].reduce(
-        (sum: number, actual) => sum + parseInt(String(actual) || "0"),
+        (sum: number, actual) => sum + convertStringInputToNum(actual),
         0,
       );
 

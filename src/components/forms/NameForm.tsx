@@ -57,11 +57,11 @@ function NameForm() {
   const { team1Name, team2Name } = values;
 
   useEffect(() => {
-    if (team1Name === '') {
-      setFieldValue('team1Name', 'Team 1');
+    if (team1Name === "") {
+      setFieldValue("team1Name", "Team 1");
     }
-    if (team2Name === '') {
-      setFieldValue('team2Name', 'Team 2');
+    if (team2Name === "") {
+      setFieldValue("team2Name", "Team 2");
     }
   }, [team1Name, team2Name, setFieldValue]);
   return (

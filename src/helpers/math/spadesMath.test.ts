@@ -11,7 +11,7 @@ import {
   calculateScoreForDualNilWithOneBlind,
   calculateTeamRoundScoreWithBothBlindNil,
 } from "./spadesMath";
-import { Round, TeamBidsAndActuals } from "../../types";
+import type { Round } from "../../types";
 import {
   NIL,
   BLIND_NIL,
@@ -34,126 +34,126 @@ import {
 } from "../utils/testFactory";
 
 test("calculate when bids equals actuals", () => {
-  const result = calculateRoundScore(2, 3, 2, 3);
+  const result = calculateRoundScore("2", "3", "2", "3");
   expect(result).deep.equals({ bags: 0, score: 50 });
 });
 
 test("calculate bags correctly", () => {
-  const result = calculateRoundScore(2, 3, 3, 3);
+  const result = calculateRoundScore("2", "3", "3", "3");
   expect(result).deep.equals({ bags: 1, score: 51 });
 });
 
 test("calculate getting set correctly", () => {
-  const result = calculateRoundScore(2, 3, 2, 2);
+  const result = calculateRoundScore("2", "3", "2", "2");
   expect(result).deep.equals({ bags: 0, score: -50 });
 });
 
 test("calculate making nill correctly", () => {
-  const result = calculateRoundScore(2, NIL, 2, 0);
+  const result = calculateRoundScore("2", NIL, "2", "0");
   expect(result).deep.equals({ bags: 0, score: 120 });
-  const result2 = calculateRoundScore(NIL, 2, 0, 2);
+  const result2 = calculateRoundScore(NIL, "2", "0", "2");
   expect(result2).deep.equals({ bags: 0, score: 120 });
 });
 
 test("calculate making nil and getting set", () => {
-  const result = calculateRoundScore(2, NIL, 1, 0);
+  const result = calculateRoundScore("2", NIL, "1", "0");
   expect(result).deep.equals({ bags: 0, score: 80 });
-  const result2 = calculateRoundScore(NIL, 2, 0, 1);
+  const result2 = calculateRoundScore(NIL, "2", "0", "1");
   expect(result2).deep.equals({ bags: 0, score: 80 });
 });
 
 test("calculate making nil with a bag", () => {
-  const result = calculateRoundScore(2, NIL, 3, 0);
+  const result = calculateRoundScore("2", NIL, "3", "0");
   expect(result).deep.equals({ bags: 1, score: 121 });
-  const result2 = calculateRoundScore(NIL, 2, 0, 3);
+  const result2 = calculateRoundScore(NIL, "2", "0", "3");
   expect(result2).deep.equals({ bags: 1, score: 121 });
 });
 
 test("calculate missing nil without bags", () => {
-  const result = calculateRoundScore(2, NIL, 1, 1);
+  const result = calculateRoundScore("2", NIL, "1", "1");
   expect(result).deep.equals({ bags: 0, score: -80 });
-  const result2 = calculateRoundScore(NIL, 2, 1, 1);
+  const result2 = calculateRoundScore(NIL, "2", "1", "1");
   expect(result2).deep.equals({ bags: 0, score: -80 });
-  const result3 = calculateRoundScore(NIL, 1, 1, 0);
+  const result3 = calculateRoundScore(NIL, "1", "1", "0");
   expect(result3).deep.equals({ bags: 0, score: -90 });
 });
 
 test("calculate missing nil with bags", () => {
-  const result = calculateRoundScore(2, NIL, 2, 1);
+  const result = calculateRoundScore("2", NIL, "2", "1");
   expect(result).deep.equals({ bags: 1, score: -79 });
-  const result2 = calculateRoundScore(NIL, 2, 1, 2);
+  const result2 = calculateRoundScore(NIL, "2", "1", "2");
   expect(result2).deep.equals({ bags: 1, score: -79 });
   const result3 = calculateRoundScore(NIL, "3", "4", "3");
   expect(result3).deep.equals({ bags: 4, score: -66 });
-  const result4 = calculateRoundScore(NIL, 3, 3, 3);
+  const result4 = calculateRoundScore(NIL, "3", "3", "3");
   expect(result4).deep.equals({ bags: 3, score: -67 });
-  const result5 = calculateRoundScore(NIL, 1, 1, 0, TAKES_BAGS);
+  const result5 = calculateRoundScore(NIL, "1", "1", "0", TAKES_BAGS);
   expect(result5).deep.equals({ bags: 1, score: -109 });
-  const result9 = calculateRoundScore(NIL, "1", "1", 0, TAKES_BAGS);
+  const result9 = calculateRoundScore(NIL, "1", "1", "0", TAKES_BAGS);
   expect(result9).deep.equals({ bags: 1, score: -109 });
-  const result6 = calculateRoundScore(NIL, 1, 2, 0, TAKES_BAGS);
+  const result6 = calculateRoundScore(NIL, "1", "2", "0", TAKES_BAGS);
   expect(result6).deep.equals({ bags: 2, score: -108 });
-  const result7 = calculateRoundScore(NIL, 1, 2, 0);
+  const result7 = calculateRoundScore(NIL, "1", "2", "0");
   expect(result7).deep.equals({ bags: 1, score: -89 });
-  const result8 = calculateRoundScore(NIL, 1, 3, 2, NO_BAGS_NO_HELP);
+  const result8 = calculateRoundScore(NIL, "1", "3", "2", NO_BAGS_NO_HELP);
   expect(result8).deep.equals({ bags: 1, score: -89 });
   const result10 = calculateRoundScore(NIL, "1", "3", "2", NO_BAGS_NO_HELP);
   expect(result10).deep.equals({ bags: 1, score: -89 });
 });
 
 test("calculate missing nil and getting set", () => {
-  const result = calculateRoundScore(2, NIL, 0, 1);
+  const result = calculateRoundScore("2", NIL, "0", "1");
   expect(result).deep.equals({ bags: 0, score: -120 });
-  const result2 = calculateRoundScore(NIL, 2, 1, 0);
+  const result2 = calculateRoundScore(NIL, "2", "1", "0");
   expect(result2).deep.equals({ bags: 0, score: -120 });
 });
 
 test("calculate when player 1 misses nill, player 2 getting set, but bid total equals actuals total", () => {
-  const result = calculateRoundScore(NIL, 1, 1, 0);
+  const result = calculateRoundScore(NIL, "1", "1", "0");
   expect(result).deep.equals({ bags: 0, score: -90 });
-  const result2 = calculateRoundScore(NIL, 1, 1, 0, TAKES_BAGS);
+  const result2 = calculateRoundScore(NIL, "1", "1", "0", TAKES_BAGS);
   expect(result2).deep.equals({ bags: 1, score: -109 });
 });
 
 test("calculate making blind nil correctly", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 2, 0);
+  const result = calculateRoundScore("2", BLIND_NIL, "2", "0");
   expect(result).deep.equals({ bags: 0, score: 220 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 0, 2);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "0", "2");
   expect(result2).deep.equals({ bags: 0, score: 220 });
 });
 
 test("calculate making blind nil and getting set", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 1, 0);
+  const result = calculateRoundScore("2", BLIND_NIL, "1", "0");
   expect(result).deep.equals({ bags: 0, score: 180 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 0, 1);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "0", "1");
   expect(result2).deep.equals({ bags: 0, score: 180 });
 });
 
 test("calculate making blind nil with a bag", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 3, 0);
+  const result = calculateRoundScore("2", BLIND_NIL, "3", "0");
   expect(result).deep.equals({ bags: 1, score: 221 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 0, 3);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "0", "3");
   expect(result2).deep.equals({ bags: 1, score: 221 });
 });
 
 test("calculate missing blind nil without bags", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 1, 1);
+  const result = calculateRoundScore("2", BLIND_NIL, "1", "1");
   expect(result).deep.equals({ bags: 0, score: -180 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 1, 1);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "1", "1");
   expect(result2).deep.equals({ bags: 0, score: -180 });
 });
 
 test("calculate missing blind nil with bags", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 2, 1);
+  const result = calculateRoundScore("2", BLIND_NIL, "2", "1");
   expect(result).deep.equals({ bags: 1, score: -179 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 1, 2);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "1", "2");
   expect(result2).deep.equals({ bags: 1, score: -179 });
 });
 
 test("calculate missing blind nil and getting set", () => {
-  const result = calculateRoundScore(2, BLIND_NIL, 0, 1);
+  const result = calculateRoundScore("2", BLIND_NIL, "0", "1");
   expect(result).deep.equals({ bags: 0, score: -220 });
-  const result2 = calculateRoundScore(BLIND_NIL, 2, 1, 0);
+  const result2 = calculateRoundScore(BLIND_NIL, "2", "1", "0");
   expect(result2).deep.equals({ bags: 0, score: -220 });
 });
 
@@ -163,7 +163,7 @@ test("calculate reaching exactly 10 bags", () => {
   both teams but only calculates score for one of the teams. consider refactoring
   */
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithTenBags as unknown as Round[],
+    roundHistoryWithTenBags,
     TEAM1,
     null,
   );
@@ -175,7 +175,7 @@ test("calculate reaching exactly 10 bags", () => {
 
 test("calculate reaching 12 bags", () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithTwelveBags as unknown as Round[],
+    roundHistoryWithTwelveBags,
     TEAM1,
     null,
   );
@@ -226,7 +226,7 @@ test("test calculateRoundScore for both teams missing nil", () => {
 
 test("test calculateTeamRoundScoresFromTeamHistory for both teams missing nil", () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamHistoryWithBothTeamMembersMissingNil as unknown as TeamBidsAndActuals[],
+    teamHistoryWithBothTeamMembersMissingNil,
     null,
   );
   expect(result).deep.equals([
@@ -239,7 +239,7 @@ test("test calculateTeamRoundScoresFromTeamHistory for both teams missing nil", 
 
 test("test calculateTeamScoreFromRoundHistory for both teams missing nil", () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithBothTeamMembersMissingNil as unknown as Round[],
+    roundHistoryWithBothTeamMembersMissingNil,
     TEAM1,
     null,
   );
@@ -251,7 +251,7 @@ test("test calculateTeamScoreFromRoundHistory for both teams missing nil", () =>
 
 test("test calculateTeamScoreFromRoundHistory for takes bags with one person going nil", () => {
   const result = calculateTeamScoreFromRoundHistory(
-    roundHistoryWithOneTeamMembersGoingNil as unknown as Round[],
+    roundHistoryWithOneTeamMembersGoingNil,
     TEAM1,
     TAKES_BAGS,
   );
@@ -279,7 +279,7 @@ test("getTeamHistoryFromRoundHistory", () => {
 
 test("calculateTeamRoundScoresFromTeamHistory with nil", () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamRoundHistoryMakingNilWithNoBags as unknown as TeamBidsAndActuals[],
+    teamRoundHistoryMakingNilWithNoBags,
     null,
   );
   expect(result).deep.equals([
@@ -292,7 +292,7 @@ test("calculateTeamRoundScoresFromTeamHistory with nil", () => {
 
 test("calculateTeamRoundScoresFromTeamHistory with nil", () => {
   const result = calculateTeamRoundScoresFromTeamHistory(
-    teamRoundHistoryWithBagsNoNilNotSet as unknown as TeamBidsAndActuals[],
+    teamRoundHistoryWithBagsNoNilNotSet,
     null,
   );
   expect(result).deep.equals([
@@ -312,10 +312,7 @@ test("using calculateTeamRoundScoresFromTeamHistory with getTeamHistoryFromRound
     roundHistoryWithTenBags,
     TEAM2,
   );
-  const result = calculateTeamRoundScoresFromTeamHistory(
-    teamHistory as unknown as TeamBidsAndActuals[],
-    null,
-  );
+  const result = calculateTeamRoundScoresFromTeamHistory(teamHistory, null);
   expect(result).deep.equals([
     {
       teamScore: 42,
@@ -352,7 +349,7 @@ test("calculateTeamRoundScoreWithOneNilBidder", () => {
 });
 
 test("calculateTeamRoundScoreWithBothNonBlindNil, one missing and the other making", () => {
-  const result = calculateTeamRoundScoreWithBothNonBlindNil(0, "1");
+  const result = calculateTeamRoundScoreWithBothNonBlindNil("0", "1");
   expect(result).deep.equals({
     score: 1,
     bags: 1,
@@ -360,7 +357,7 @@ test("calculateTeamRoundScoreWithBothNonBlindNil, one missing and the other maki
 });
 
 test("calculateScoreForDualNilWithOneBlind, one missing and the other making", () => {
-  const result = calculateScoreForDualNilWithOneBlind(NIL, BLIND_NIL, 0, 1);
+  const result = calculateScoreForDualNilWithOneBlind(NIL, BLIND_NIL, "0", "1");
   expect(result).deep.equals({
     score: -99,
     bags: 1,
@@ -368,7 +365,7 @@ test("calculateScoreForDualNilWithOneBlind, one missing and the other making", (
 });
 
 test("calculateTeamRoundScoreWithBothBlindNil, one missing and the other making", () => {
-  const result = calculateTeamRoundScoreWithBothBlindNil(0, 1);
+  const result = calculateTeamRoundScoreWithBothBlindNil("0", "1");
   expect(result).deep.equals({
     score: 1,
     bags: 1,

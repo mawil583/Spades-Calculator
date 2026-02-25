@@ -49,7 +49,7 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
     team2BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
-  } as RoundType,
+  } as unknown as import("../../types").Round as RoundType,
   setDealerOverride: vi.fn(),
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
@@ -93,7 +93,9 @@ describe("Dealer Tag Integration at BidSection Level", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound as unknown as RoundType}
+        currentRound={
+          mockContextValue.currentRound as unknown as import("../../types").Round
+        }
       />,
     );
 
@@ -127,7 +129,9 @@ describe("Dealer Tag Integration at BidSection Level", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound as unknown as RoundType}
+        currentRound={
+          mockContextValue.currentRound as unknown as import("../../types").Round
+        }
       />,
     );
 
@@ -162,7 +166,9 @@ describe("Dealer Tag Integration at BidSection Level", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound as unknown as RoundType}
+        currentRound={
+          mockContextValue.currentRound as unknown as import("../../types").Round
+        }
       />,
     );
 
@@ -224,7 +230,9 @@ describe("Dealer Tag Integration at BidSection Level", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={mockContextValue.currentRound as unknown as RoundType}
+        currentRound={
+          mockContextValue.currentRound as unknown as import("../../types").Round
+        }
       />,
     );
 
@@ -275,7 +283,7 @@ describe("Dealer Tag Visibility Tests", () => {
         p1Actual: "",
         p2Actual: "",
       },
-    };
+    } as unknown as import("../../types").Round;
 
     // Render bid section
     const { rerender } = renderWithProviders(
@@ -284,7 +292,9 @@ describe("Dealer Tag Visibility Tests", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={currentRoundWithBids as unknown as RoundType}
+        currentRound={
+          currentRoundWithBids as unknown as import("../../types").Round
+        }
       />,
     );
 
@@ -303,7 +313,9 @@ describe("Dealer Tag Visibility Tests", () => {
             names={names}
             isCurrent={true}
             roundHistory={[]}
-            currentRound={currentRoundWithBids as unknown as RoundType}
+            currentRound={
+              currentRoundWithBids as unknown as import("../../types").Round
+            }
           />
         </GlobalContext.Provider>
       </Provider>,
@@ -327,7 +339,7 @@ describe("Dealer Tag Visibility Tests", () => {
         p1Actual: "2",
         p2Actual: "3",
       },
-    };
+    } as unknown as import("../../types").Round;
 
     // Create a context value with the current round data
     const contextWithRoundData = {
@@ -377,7 +389,7 @@ describe("Dealer Tag Visibility Tests", () => {
         p1Actual: "",
         p2Actual: "",
       },
-    };
+    } as unknown as import("../../types").Round;
 
     renderWithProviders(
       <BidSection
@@ -385,7 +397,9 @@ describe("Dealer Tag Visibility Tests", () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={currentRoundWithBids as unknown as RoundType}
+        currentRound={
+          currentRoundWithBids as unknown as import("../../types").Round
+        }
       />,
     );
 

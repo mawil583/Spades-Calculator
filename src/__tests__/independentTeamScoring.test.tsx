@@ -1,3 +1,4 @@
+import type { Round } from "../types";
 import { render, screen, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "../components/ui/provider";
@@ -85,7 +86,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "", // Team 2 hasn't finished
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,
@@ -144,7 +145,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "", // Team 2 hasn't finished
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,
@@ -191,7 +192,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "4",
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,
@@ -237,7 +238,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "4",
           },
-        }),
+        } as unknown as Round),
       ]);
       expect(mockResetCurrentRound).toHaveBeenCalled();
     });
@@ -265,7 +266,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "", // Team 2 hasn't finished
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,
@@ -307,7 +308,7 @@ describe("Independent Team Scoring", () => {
             ...contextValue.currentRound.team2BidsAndActuals,
             p2Actual: "4", // Team 2 now complete (2+4=6 actuals, total = 7+6=13)
           },
-        },
+        } as unknown as Round,
       };
 
       // Mock updated score calculation
@@ -365,7 +366,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "4", // This makes total 13, but Team 2 should still be able to complete
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,
@@ -410,7 +411,7 @@ describe("Independent Team Scoring", () => {
             p1Actual: "2",
             p2Actual: "5", // This makes total 14, which is invalid
           },
-        },
+        } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
         resetCurrentRound: mockResetCurrentRound,

@@ -45,8 +45,8 @@ Object.defineProperty(window, "matchMedia", {
 });
 
 // Mock window.navigator.standalone
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-(navigator as any).brave = undefined;
+
+(navigator as { brave?: boolean }).brave = undefined;
 Object.defineProperty(window.navigator, "standalone", {
   writable: true,
   value: false,
@@ -64,8 +64,8 @@ describe("InstallPrompt", () => {
     vi.clearAllMocks();
     vi.clearAllTimers();
     // Reset window.navigator.standalone
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (navigator as any).brave = undefined;
+
+    (navigator as { brave?: boolean }).brave = undefined;
     Object.defineProperty(window.navigator, "standalone", {
       writable: true,
       value: false,

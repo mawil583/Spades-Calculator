@@ -1,3 +1,5 @@
+import type { Names, Round } from "../../types";
+
 export const possibleBids = [
   "Blind Nil",
   "Nil",
@@ -14,7 +16,7 @@ export const possibleBids = [
   "11",
   "12",
   "13",
-];
+] as const;
 
 export const possibleActuals = [
   "0",
@@ -31,9 +33,9 @@ export const possibleActuals = [
   "11",
   "12",
   "13",
-];
+] as const;
 
-export const initialNames = {
+export const initialNames: Names = {
   t1p1Name: "",
   t1p2Name: "",
   t2p1Name: "",
@@ -42,7 +44,7 @@ export const initialNames = {
   team2Name: "Team 2",
 };
 
-export const EMPTY_ROUND = {
+export const EMPTY_ROUND: Round = {
   team1BidsAndActuals: {
     p1Bid: "",
     p2Bid: "",
@@ -81,8 +83,8 @@ export const initialFirstDealerOrder = [t1p1ID, t2p1ID, t1p2ID, t2p2ID];
 export const team1Styles = {
   color: "var(--app-team1)",
   borderColor: "var(--app-team1)",
-};
+} as const;
 export const team2Styles = {
   color: "var(--app-team2)",
   borderColor: "var(--app-team2)",
-};
+} as const;

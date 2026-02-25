@@ -87,7 +87,7 @@ describe("getButtonValues", () => {
   });
 
   it("returns possibleActuals for any other type", () => {
-    const result = getButtonValues("Other");
+    const result = getButtonValues("Other" as "Bid");
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
   });
@@ -96,47 +96,47 @@ describe("getButtonValues", () => {
 describe("updateInput", () => {
   const mockCurrentRound: Round = {
     team1BidsAndActuals: {
-      p1Bid: 3,
-      p2Bid: 4,
+      p1Bid: "3",
+      p2Bid: "4",
       p1Actual: "",
       p2Actual: "",
     },
     team2BidsAndActuals: {
-      p1Bid: 2,
-      p2Bid: 3,
+      p1Bid: "2",
+      p2Bid: "3",
       p1Actual: "",
       p2Actual: "",
     },
-  };
+  } as unknown as Round;
 
   it("updates team1BidsAndActuals.p1Bid correctly", () => {
     const result = updateInput({
-      input: 5,
+      input: "5" as unknown as import("../types").InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: "team1BidsAndActuals.p1Bid",
     });
 
-    expect(result.team1BidsAndActuals.p1Bid).toBe(5);
-    expect(result.team1BidsAndActuals.p2Bid).toBe(4); // unchanged
-    expect(result.team2BidsAndActuals.p1Bid).toBe(2); // unchanged
+    expect(result.team1BidsAndActuals.p1Bid).toBe("5");
+    expect(result.team1BidsAndActuals.p2Bid).toBe("4"); // unchanged
+    expect(result.team2BidsAndActuals.p1Bid).toBe("2"); // unchanged
   });
 
   it("updates team2BidsAndActuals.p2Actual correctly", () => {
     const result = updateInput({
-      input: 6,
+      input: "6" as unknown as import("../types").InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: "team2BidsAndActuals.p2Actual",
     });
 
-    expect(result.team2BidsAndActuals.p2Actual).toBe(6);
-    expect(result.team1BidsAndActuals.p1Bid).toBe(3); // unchanged
-    expect(result.team2BidsAndActuals.p1Bid).toBe(2); // unchanged
+    expect(result.team2BidsAndActuals.p2Actual).toBe("6");
+    expect(result.team1BidsAndActuals.p1Bid).toBe("3"); // unchanged
+    expect(result.team2BidsAndActuals.p1Bid).toBe("2"); // unchanged
   });
 
   it("does not mutate the original object", () => {
     const original = JSON.parse(JSON.stringify(mockCurrentRound));
     updateInput({
-      input: 5,
+      input: "5" as unknown as import("../types").InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: "team1BidsAndActuals.p1Bid",
     });
@@ -158,20 +158,40 @@ describe("updateInput", () => {
 describe("getEditedRoundHistory", () => {
   const mockRoundHistory: Round[] = [
     {
-      team1BidsAndActuals: { p1Bid: 3, p2Bid: 4, p1Actual: 3, p2Actual: 4 },
-      team2BidsAndActuals: { p1Bid: 2, p2Bid: 3, p1Actual: 2, p2Actual: 3 },
-    },
+      team1BidsAndActuals: {
+        p1Bid: "3",
+        p2Bid: "4",
+        p1Actual: "3",
+        p2Actual: "4",
+      },
+      team2BidsAndActuals: {
+        p1Bid: "2",
+        p2Bid: "3",
+        p1Actual: "2",
+        p2Actual: "3",
+      },
+    } as unknown as Round,
     {
-      team1BidsAndActuals: { p1Bid: 1, p2Bid: 2, p1Actual: 1, p2Actual: 2 },
-      team2BidsAndActuals: { p1Bid: 3, p2Bid: 4, p1Actual: 3, p2Actual: 4 },
-    },
+      team1BidsAndActuals: {
+        p1Bid: "1",
+        p2Bid: "2",
+        p1Actual: "1",
+        p2Actual: "2",
+      },
+      team2BidsAndActuals: {
+        p1Bid: "3",
+        p2Bid: "4",
+        p1Actual: "3",
+        p2Actual: "4",
+      },
+    } as unknown as Round,
   ];
 
   it("updates round at specified index", () => {
     const updatedRound = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8 },
-    };
+      team1BidsAndActuals: { p1Bid: "5", p2Bid: "6" },
+      team2BidsAndActuals: { p1Bid: "7", p2Bid: "8" },
+    } as unknown as Round;
 
     const result = getEditedRoundHistory({
       index: 0,
@@ -186,9 +206,19 @@ describe("getEditedRoundHistory", () => {
   it("does not mutate the original array", () => {
     const original = JSON.parse(JSON.stringify(mockRoundHistory));
     const updatedRound: Round = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6, p1Actual: 5, p2Actual: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8, p1Actual: 7, p2Actual: 8 },
-    };
+      team1BidsAndActuals: {
+        p1Bid: "5",
+        p2Bid: "6",
+        p1Actual: "5",
+        p2Actual: "6",
+      },
+      team2BidsAndActuals: {
+        p1Bid: "7",
+        p2Bid: "8",
+        p1Actual: "7",
+        p2Actual: "8",
+      },
+    } as unknown as Round;
 
     getEditedRoundHistory({
       index: 0,
@@ -201,9 +231,9 @@ describe("getEditedRoundHistory", () => {
 
   it("handles empty roundHistory array", () => {
     const updatedRound = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8 },
-    };
+      team1BidsAndActuals: { p1Bid: "5", p2Bid: "6" },
+      team2BidsAndActuals: { p1Bid: "7", p2Bid: "8" },
+    } as unknown as Round;
 
     const result = getEditedRoundHistory({
       index: 0,
@@ -217,9 +247,9 @@ describe("getEditedRoundHistory", () => {
 
   it("handles null roundHistory by converting to empty array", () => {
     const updatedRound = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8 },
-    };
+      team1BidsAndActuals: { p1Bid: "5", p2Bid: "6" },
+      team2BidsAndActuals: { p1Bid: "7", p2Bid: "8" },
+    } as unknown as Round;
 
     const result = getEditedRoundHistory({
       index: 0,
@@ -233,9 +263,9 @@ describe("getEditedRoundHistory", () => {
 
   it("handles undefined roundHistory by converting to empty array", () => {
     const updatedRound = {
-      team1BidsAndActuals: { p1Bid: 5, p2Bid: 6 },
-      team2BidsAndActuals: { p1Bid: 7, p2Bid: 8 },
-    };
+      team1BidsAndActuals: { p1Bid: "5", p2Bid: "6" },
+      team2BidsAndActuals: { p1Bid: "7", p2Bid: "8" },
+    } as unknown as Round;
 
     const result = getEditedRoundHistory({
       index: 0,

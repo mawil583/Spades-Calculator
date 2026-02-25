@@ -1,3 +1,4 @@
+import type { Round } from "../../types";
 import { vi } from "vitest";
 
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -27,7 +28,7 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
     team2BidsAndActuals: { p1Bid: "", p2Bid: "", p1Actual: "", p2Actual: "" },
-  },
+  } as unknown as Round,
 };
 
 const renderApp = () => {

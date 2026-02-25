@@ -5,7 +5,12 @@ import {
   team2Styles,
 } from "./constants";
 
-import type { Round, UpdateInputArgs, TeamBidsAndActuals } from "../../types";
+import type {
+  Round,
+  UpdateInputArgs,
+  TeamBidsAndActuals,
+  TeamColorStyle,
+} from "../../types";
 
 export function getActualsErrorText(totalActuals: number) {
   const difference = 13 - totalActuals;
@@ -33,19 +38,18 @@ export function getUnclaimedText(numUnclaimed: number, useTableUI = false) {
   return `Unclaimed: ${numUnclaimed}`;
 }
 
-export const getButtonValues = (type: string) => {
+export const getButtonValues = (type: "Bid" | "Actual") => {
   if (type === "Bid") {
     return possibleBids;
   }
   return possibleActuals;
 };
 
-export const getTeamStyle = (teamName: string) => {
+export const getTeamStyle = (teamName: string): TeamColorStyle => {
   const storedNames = localStorage.getItem("names");
   if (!storedNames) return team1Styles;
   const { team1Name } = JSON.parse(storedNames);
-  const style = teamName === team1Name ? team1Styles : team2Styles;
-  return style;
+  return teamName === team1Name ? team1Styles : team2Styles;
 };
 
 // consider renaming
@@ -78,12 +82,10 @@ export const getEditedRoundHistory = ({
   updatedRound,
   roundHistory,
 }: GetEditedRoundHistoryArgs) => {
-  // Ensure roundHistory is an array
   if (!Array.isArray(roundHistory)) {
-    console.warn("roundHistory is not an array, initializing as empty array");
-    roundHistory = [];
+    console.warn("Invalid roundHistory passed to getEditedRoundHistory");
+    return [updatedRound];
   }
-
   const clonedRoundHistory = [...roundHistory];
   clonedRoundHistory[index] = updatedRound;
   return clonedRoundHistory;
@@ -112,7 +114,7 @@ export const setLocalStorage = <T>(key: string, value: T) => {
   window.localStorage.setItem(key, JSON.stringify(value));
 };
 
-export const rotateArr = <T,>(arr: T[]): T[] => {
+export const rotateArr = <T>(arr: T[]): T[] => {
   if (arr.length <= 1) return [...arr];
   return [...arr.slice(1), arr[0]];
 };

@@ -137,7 +137,7 @@ describe("Dealer Rotation Unit Tests", () => {
           },
           dealerOverride: null, // Round 1 had no override
         },
-      ];
+      ] as unknown as import("../types").Round[];
 
       // Round 0 should show Bob as dealer (from override)
       const round0Dealer = getCurrentDealerId({
@@ -250,7 +250,7 @@ describe("Dealer Rotation Unit Tests", () => {
           },
           dealerOverride: "team1BidsAndActuals.p1Bid", // Round 2: Alice
         },
-      ];
+      ] as unknown as import("../types").Round[];
 
       // Verify past rounds still have their correct dealers
       const round0Dealer = getCurrentDealerId({
@@ -389,7 +389,7 @@ describe("Dealer Rotation Unit Tests", () => {
           },
           dealerOverride: "team1BidsAndActuals.p2Bid", // Round 0: Bob instead of Alice
         },
-      ];
+      ] as unknown as import("../types").Round[];
 
       const dealerIdHistory = getDealerIdHistory(
         roundHistory,

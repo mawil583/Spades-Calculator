@@ -8,7 +8,7 @@ import {
   NIL,
   BLIND_NIL,
 } from "../../helpers/utils/constants";
-import type { NilSetting } from "../../types";
+import type { NilSetting, InputValue } from "../../types";
 
 export const ScoreSettingsContent = () => {
   const sections = [
@@ -18,7 +18,7 @@ export const ScoreSettingsContent = () => {
       nilSetting: TAKES_BAGS,
       examples: [
         // Nil succeeds, partner overbids by 1
-        { p1Bid: NIL, p1Actual: 0, p2Bid: "5", p2Actual: "6" },
+        { p1Bid: NIL, p1Actual: "0", p2Bid: "5", p2Actual: "6" },
         // Nil fails, partner gets 6
         { p1Bid: NIL, p1Actual: "2", p2Bid: "5", p2Actual: "6" },
         // Blind Nil fails
@@ -30,7 +30,7 @@ export const ScoreSettingsContent = () => {
       desc: "A successful Nil is worth +100 (or +200 for Blind Nil) and does not produce bags. Partner’s bid is evaluated against the team bid (Nil helps meet team bid).",
       nilSetting: HELPS_TEAM_BID,
       examples: [
-        { p1Bid: NIL, p1Actual: 0, p2Bid: "5", p2Actual: "6" },
+        { p1Bid: NIL, p1Actual: "0", p2Bid: "5", p2Actual: "6" },
         { p1Bid: NIL, p1Actual: "2", p2Bid: "5", p2Actual: "6" },
       ],
     },
@@ -39,7 +39,7 @@ export const ScoreSettingsContent = () => {
       desc: "Nil does not create bags and does not help partner meet their bid. Partner’s bid is scored independently of the Nil attempt.",
       nilSetting: NO_BAGS_NO_HELP,
       examples: [
-        { p1Bid: NIL, p1Actual: 0, p2Bid: "5", p2Actual: "6" },
+        { p1Bid: NIL, p1Actual: "0", p2Bid: "5", p2Actual: "6" },
         { p1Bid: NIL, p1Actual: "2", p2Bid: "5", p2Actual: "6" },
       ],
     },
@@ -52,19 +52,19 @@ export const ScoreSettingsContent = () => {
           <SettingDescription title={section.title} desc={section.desc} />
           {section.examples.map((ex, j) => {
             const result = calculateRoundScore(
-              ex.p1Bid,
-              ex.p2Bid,
-              ex.p1Actual,
-              ex.p2Actual,
+              ex.p1Bid as InputValue,
+              ex.p2Bid as InputValue,
+              ex.p1Actual as InputValue,
+              ex.p2Actual as InputValue,
               section.nilSetting as NilSetting,
             );
             return (
               <SettingExample
                 key={`${idx}-${j}`}
-                p1Bid={ex.p1Bid}
-                p1Actual={ex.p1Actual}
-                p2Bid={ex.p2Bid}
-                p2Actual={ex.p2Actual}
+                p1Bid={ex.p1Bid as InputValue}
+                p1Actual={ex.p1Actual as InputValue}
+                p2Bid={ex.p2Bid as InputValue}
+                p2Actual={ex.p2Actual as InputValue}
                 score={result.score}
                 bags={result.bags}
               />

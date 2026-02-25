@@ -56,7 +56,8 @@
     "test:pwa:debug": "playwright test --debug",
     "test:browserstack": "node tests/browserstack.js",
     "lighthouse": "lighthouse http://localhost:5173 --output=json --output-path=./lighthouse-report.json",
-    "lighthouse:ci": "lhci autorun"
+    "lighthouse:ci": "lhci autorun",
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\""
   },
   "browserslist": {
     "production": [
@@ -91,6 +92,7 @@
     "lighthouse": "^13.0.1",
     "lint-staged": "^16.1.5",
     "playwright": "^1.54.2",
+    "prettier": "^3.8.1",
     "start-server-and-test": "^2.0.13",
     "typescript": "^5.9.3",
     "vite": "^7.1.1",

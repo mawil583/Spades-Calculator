@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { vi } from "vitest";
 
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -43,7 +45,7 @@ describe("ButtonGrid Component", () => {
   };
 
   const defaultProps = {
-    type: "Bid",
+    type: "Bid" as const,
     fieldToUpdate: "team1BidsAndActuals.p1Bid",
     currentRound: {
       team1BidsAndActuals: {
@@ -58,7 +60,7 @@ describe("ButtonGrid Component", () => {
         p1Actual: "",
         p2Actual: "",
       },
-    },
+    } as any,
     index: 0,
     roundHistory: [],
     isCurrent: true,
@@ -113,7 +115,7 @@ describe("ButtonGrid Component", () => {
       // Test Actual type
       rerender(
         <Provider>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {}
           <GlobalContext.Provider value={mockContextValue as any}>
             <ButtonGrid {...defaultProps} type="Actual" />
           </GlobalContext.Provider>
@@ -212,7 +214,6 @@ describe("ButtonGrid Component", () => {
   describe("Edge Cases", () => {
     it("should handle null setIsModalOpen gracefully", () => {
       renderWithProviders(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         <ButtonGrid {...defaultProps} setIsModalOpen={null as any} />,
         mockContextValue,
       );
@@ -226,7 +227,6 @@ describe("ButtonGrid Component", () => {
 
     it("should handle empty roundHistory for past rounds", () => {
       renderWithProviders(
-
         <ButtonGrid
           {...defaultProps}
           isCurrent={false}

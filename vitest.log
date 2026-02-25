@@ -1,0 +1,193 @@
+
+ RUN  v3.2.4 /Users/michaelwilliams/code/personal/Spades-Calculator
+
+ ❯ src/__tests__/TableRound.test.tsx (8 tests | 4 failed) 1843ms
+   × TableRound Component > renders all 4 player sections with correct names 228ms
+     → firstDealerOrder is not iterable
+   × TableRound Component > renders game scores for both teams 96ms
+     → firstDealerOrder is not iterable
+   × TableRound Component > shows "Bid" buttons when bids are not entered 101ms
+     → firstDealerOrder is not iterable
+   ✓ TableRound Component > shows "Actual" buttons when all bids are entered  625ms
+   ✓ TableRound Component > shows bid pills in actuals phase 249ms
+   ✓ TableRound Component > shows unclaimed remaining bids in center 173ms
+   × TableRound Component > opens InputModal when clicking a bid/actual button 163ms
+     → firstDealerOrder is not iterable
+   ✓ TableRound Component > displays asterisks for auto-generated actuals 205ms
+ ❯ src/__tests__/HomePage_buttons.test.tsx (6 tests | 1 failed) 2265ms
+   ✓ NameForm Button Logic > should render "Start" button when no game data exists  554ms
+   ✓ NameForm Button Logic > should render "Continue" and "New Game" buttons when round history exists 235ms
+   × NameForm Button Logic > should render "Continue" and "New Game" buttons when current round has data 32ms
+     → Cannot convert undefined or null to object
+   ✓ NameForm Button Logic > should render "Continue" and "New Game" buttons when names are modified 258ms
+   ✓ NameForm Button Logic > should open WarningModal when "New Game" is clicked  871ms
+   ✓ NameForm Button Logic > should navigate when "Continue" is clicked  311ms
+ ✓ src/__tests__/integration/uiModeToggle.test.tsx (1 test) 3187ms
+   ✓ UI Mode Toggle Integration > should immediately toggle UI mode without refresh  3185ms
+ ✓ src/__tests__/TeamInputHeading.test.tsx (9 tests) 3444ms
+   ✓ TeamInputHeading > when neither player on a team went nil > should be interactive (clickable) but NOT editable for team total input  1042ms
+   ✓ TeamInputHeading Modal Integration > should open InputModal when clicking on editable team heading  565ms
+   ✓ TeamInputHeading Team Total Updates > should update individual player actuals when team total is selected  358ms
+   ✓ TeamInputHeading Team Total Updates > should handle odd team totals by giving remainder to first player  396ms
+ ✓ src/__tests__/ActualSection.test.tsx (19 tests) 4144ms
+   ✓ ActualSection Component > Component Rendering > should render actuals section with correct data-cy attribute  832ms
+   ✓ ActualSection Component > Team Totals Display > should display correct team totals when actuals are entered  827ms
+   ✓ ActualSection Component > Validation Logic > should call useValidateActuals with correct parameters when all actuals are entered  309ms
+ ✓ src/__tests__/integration/externalIntegrations.test.tsx (8 tests) 4656ms
+   ✓ External Integrations > localStorage Integration > should save and load game data from localStorage  2129ms
+   ✓ External Integrations > localStorage Integration > should load existing game data on app start  463ms
+   ✓ External Integrations > PWA Integration > should show offline download in menu when PWA is installable  324ms
+   ✓ External Integrations > Navigation Integration > should handle browser navigation correctly  772ms
+ ✓ src/__tests__/integration/dealerTagIntegration.test.tsx (7 tests) 4429ms
+   ✓ Dealer Tag Integration at BidSection Level > should open dealer selection modal when dealer tag is clicked, not bid modal  1680ms
+   ✓ Dealer Tag Integration at BidSection Level > should open bid modal when bid button is clicked, not dealer modal  738ms
+   ✓ Dealer Tag Integration at BidSection Level > should allow both modals to work independently  815ms
+   ✓ Dealer Tag Visibility Tests > should show dealer tag only in bid section, not in actuals section  417ms
+   ✓ Dealer Tag Visibility Tests > should maintain dealer tag functionality in bid section while ensuring it does not appear in actuals  307ms
+ ✓ src/__tests__/independentTeamScoring.test.tsx (6 tests) 4457ms
+   ✓ Independent Team Scoring > when only one team completes their actuals > should update only that team's score when they complete their actuals  1834ms
+   ✓ Independent Team Scoring > when only one team completes their actuals > should not allow progression to next round until both teams complete actuals  560ms
+   ✓ Independent Team Scoring > when both teams complete their actuals > should complete the round and allow progression when both teams finish  450ms
+   ✓ Independent Team Scoring > score calculation timing > should calculate team scores independently as each team completes  736ms
+   ✓ Independent Team Scoring > validation still works > should still validate that total actuals equal 13 before completing round  327ms
+   ✓ Independent Team Scoring > validation still works > should not complete round if total actuals do not equal 13  510ms
+ ✓ src/__tests__/ErrorModal.test.tsx (14 tests) 5073ms
+   ✓ ErrorModal Component > Modal Interaction > should render modal correctly  1172ms
+   ✓ ErrorModal Component > Modal Interaction > should allow editing actuals from within error modal  500ms
+   ✓ ErrorModal Component > Accessibility > should have proper modal role  311ms
+   ✓ ErrorModal Component > Accessibility > should open team total modal when clicking on team total headings  680ms
+   ✓ ErrorModal Component > Auto-generated tracking in ErrorModal > should remove asterisk when user manually edits an auto-generated actual  671ms
+ ✓ src/__tests__/integration/userWorkflows.test.tsx (6 tests) 4953ms
+   ✓ Complete User Workflows > Basic Game Setup Workflow > should complete full game setup process  2363ms
+   ✓ Complete User Workflows > Form Validation Workflow > should handle form validation errors gracefully  387ms
+   ✓ Complete User Workflows > Form Validation Workflow > should handle valid form submission  665ms
+   ✓ Complete User Workflows > Settings Integration Workflow > should show scoring rules in settings modal  710ms
+   ✓ Complete User Workflows > Settings Integration Workflow > should allow changing scoring rules in modal  532ms
+ ✓ src/__tests__/integration/newGameFlow.test.tsx (10 tests) 5080ms
+   ✓ New Game Flow Integration > when there is no round history > should show only the team selection modal when clicking New Game  1657ms
+   ✓ New Game Flow Integration > when there is no round history > should handle "Same Teams" selection from New Game button  443ms
+   ✓ New Game Flow Integration > when there is no round history > should handle "Different Teams" selection from New Game button  528ms
+   ✓ New Game Flow Integration > when there is no round history > should reset names to empty and navigate to home when selecting "Different Teams"  340ms
+   ✓ New Game Flow Integration > when there is round history > should show data warning first, then team selection when clicking New Game  345ms
+   ✓ New Game Flow Integration > when there is round history > should handle "Cancel" from data warning  329ms
+   ✓ New Game Flow Integration > when there is round history > should handle complete flow: Continue -> Different Teams  314ms
+   ✓ New Game Flow Integration > when there is round history > should reset names to empty and navigate to home when selecting "Different Teams" with round history  358ms
+   ✓ New Game Flow Integration > modal accessibility > should close modal when clicking the close button  495ms
+ ✓ src/__tests__/DownloadButton.test.tsx (17 tests) 2702ms
+   ✓ DownloadButton > should render download button when app is not installed  813ms
+ ✓ src/__tests__/RoundSummaryDetails.test.tsx (5 tests) 2269ms
+   ✓ RoundSummary > renders summary and toggle button  631ms
+   ✓ RoundSummary > toggles drawer and shows details  503ms
+   ✓ RoundSummary > shows penalties in red and uses "Bag Reset Carryover"  482ms
+   ✓ RoundSummary > shows "Bags reset to 0" when bags are cleared  303ms
+   ✓ RoundSummary > shows Nil and Blind Nil penalties in red  348ms
+ ✓ src/__tests__/ButtonGrid.test.tsx (12 tests) 2772ms
+   ✓ ButtonGrid Component > Button Display > should display all button values for Bid type  703ms
+   ✓ ButtonGrid Component > Button Display > should have correct data-cy attributes on buttons based on type  687ms
+ ✓ src/__tests__/actualSectionTeamTotal.test.tsx (5 tests) 2327ms
+   ✓ ActualSection Team Total Button Behavior > Team Actual Button Clickability > both teams can click team actual buttons when neither team has nil bids  1179ms
+   ✓ ActualSection Team Total Button Behavior > Team Actual Button Clickability > team actual button click opens modal for clickable team  570ms
+ ✓ src/__tests__/WarningModal.test.tsx (11 tests) 2989ms
+   ✓ WarningModal > when there is no round history > should show only the NewPlayerQuestion modal  1221ms
+ ✓ src/__tests__/DealerTag.test.tsx (5 tests) 1950ms
+   ✓ DealerTag > Unit Tests > should render dealer badge when player is dealer  567ms
+   ✓ DealerTag > Unit Tests > should open dealer selection modal when clicked on current round  879ms
+ ✓ src/__tests__/PlayerInput.test.tsx (9 tests) 2342ms
+   ✓ PlayerInput > when team total is being used > should show empty string instead of "Actual" button when playerInput is empty  680ms
+   ✓ PlayerInput > individual input override capability > should allow editing individual inputs even when team total is being used  701ms
+ ✓ src/__tests__/ScoreSettingsModal.test.tsx (2 tests) 1850ms
+   ✓ ScoreSettingsModal > renders examples without NaN values for score or bags  1497ms
+   ✓ ScoreSettingsModal > renders all sections with visible content (not blank)  351ms
+ ✓ src/__tests__/InstallPrompt.test.tsx (9 tests) 1979ms
+   ✓ InstallPrompt > should not render initially when app is not installed  590ms
+   ✓ InstallPrompt > should show prompt after 10 seconds when beforeinstallprompt event is fired  356ms
+   ✓ InstallPrompt > should handle install button click with deferred prompt  457ms
+ ✓ src/__tests__/Unclaimed.test.tsx (5 tests) 1669ms
+   ✓ Unclaimed Component > should display unclaimed text correctly  608ms
+   ✓ BidSection - Unclaimed Positioning > should position unclaimed section in the center between both teams bids  489ms
+ ✓ src/__tests__/integration/stateInteractions.test.tsx (4 tests) 2888ms
+   ✓ Complex State Interactions Between Unrelated Components > Component Rendering > should render SpadesCalculator component with initial state  1027ms
+   ✓ Complex State Interactions Between Unrelated Components > Component Rendering > should render HomePage component  519ms
+   ✓ Complex State Interactions Between Unrelated Components > Score Calculation State Propagation > should update team scores when round is completed  1057ms
+stdout | src/__tests__/dealer.test.ts > Dealer Functionality > Dealer Calculation Logic > bug demonstration: dealer calculation is wrong when dealerIdHistory.length > 0 but < 4
+Current dealer: team2BidsAndActuals.p1Bid
+Expected: team2BidsAndActuals.p1Bid
+Bug returns: team1BidsAndActuals.p2Bid (clonedfirstDealerOrder[1])
+
+ ✓ src/__tests__/dealer.test.ts (17 tests) 9ms
+ ✓ src/__tests__/helperFunctions.test.ts (23 tests) 9ms
+ ✓ src/__tests__/dealerOverrideScenario.test.ts (1 test) 3ms
+ ✓ src/helpers/utils/useFeatureFlag.test.ts (3 tests) 103ms
+ ✓ src/__tests__/useValidateActuals.test.ts (5 tests) 80ms
+ ✓ src/__tests__/teamTotalMath.test.ts (6 tests) 8ms
+ ✓ src/helpers/math/spadesMath.test.ts (38 tests) 22ms
+ ✓ src/__tests__/offline.test.ts (16 tests) 35ms
+ ✓ src/__tests__/pwaManifest.test.ts (20 tests) 8ms
+ ✓ src/helpers/utils/featureFlags.test.ts (4 tests) 6ms
+ ✓ src/__tests__/TeamNameInput.test.tsx (2 tests) 476ms
+ ✓ src/__tests__/AppModal.test.tsx (5 tests) 987ms
+   ✓ AppModal Component > renders correctly when open  438ms
+ ✓ src/__tests__/pwaMetaTags.test.ts (18 tests) 6ms
+ ✓ src/__tests__/integration/modalFocus.test.tsx (1 test) 1065ms
+   ✓ DealerSelectionModal Focus Behavior > should NOT focus the close button initially  1064ms
+ ✓ src/__tests__/dealerRotationUnit.test.ts (8 tests) 7ms
+ ✓ src/__tests__/teamTotalStorage.test.ts (3 tests) 5ms
+ ✓ src/__tests__/updateInput.test.ts (5 tests) 9ms
+ ✓ src/__tests__/getEditedRoundHistory.test.ts (3 tests) 6ms
+ ✓ src/__tests__/integration/modalPropagation.test.tsx (1 test) 264ms
+ ✓ src/__tests__/HomePage_teams_reset.test.tsx (1 test) 342ms
+   ✓ Team Name Reset Verification > should reset team names to "Team 1" and "Team 2" when Different Teams is selected  340ms
+ ✓ src/__tests__/roundNullHistory.test.tsx (1 test) 23ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/__tests__/HomePage_buttons.test.tsx > NameForm Button Logic > should render "Continue" and "New Game" buttons when current round has data
+TypeError: Cannot convert undefined or null to object
+ ❯ hasRoundProgress src/helpers/math/spadesMath.ts:583:35
+    581|     currentRound.team1BidsAndActuals,
+    582|   ).some(isNotDefaultValue);
+    583|   const hasTeam2Progress = Object.values(
+       |                                   ^
+    584|     currentRound.team2BidsAndActuals,
+    585|   ).some(isNotDefaultValue);
+ ❯ NameForm src/components/forms/NameForm.tsx:26:5
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  src/__tests__/TableRound.test.tsx > TableRound Component > renders all 4 player sections with correct names
+ FAIL  src/__tests__/TableRound.test.tsx > TableRound Component > renders game scores for both teams
+ FAIL  src/__tests__/TableRound.test.tsx > TableRound Component > shows "Bid" buttons when bids are not entered
+ FAIL  src/__tests__/TableRound.test.tsx > TableRound Component > opens InputModal when clicking a bid/actual button
+TypeError: firstDealerOrder is not iterable
+ ❯ getDealerIdHistory src/helpers/math/spadesMath.ts:388:32
+    386| 
+    387|   const dealerIdHistory: string[] = [];
+    388|   let currentDealerOrder = [...firstDealerOrder];
+       |                                ^
+    389| 
+    390|   roundHistory.forEach((round) => {
+ ❯ DealerTag src/components/ui/DealerTag.tsx:31:27
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:25904:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:7662:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10166:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:11778:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:874:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:17641:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:17469:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:17450:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+
+ Test Files  2 failed | 41 passed (43)
+      Tests  5 failed | 354 passed (359)
+   Start at  17:38:03
+   Duration  36.98s (transform 1.16s, setup 10.66s, collect 195.95s, tests 72.74s, environment 85.40s, prepare 13.48s)
+

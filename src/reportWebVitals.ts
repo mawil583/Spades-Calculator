@@ -1,7 +1,7 @@
 import type { Metric } from "web-vitals";
 
 const reportWebVitals = (onPerfEntry?: (metric: Metric) => void) => {
-  if (typeof onPerfEntry === 'function') {
+  if (typeof onPerfEntry === "function") {
     import("web-vitals").then(({ onCLS, onINP, onFCP, onLCP, onTTFB }) => {
       onCLS(onPerfEntry);
       onINP(onPerfEntry);

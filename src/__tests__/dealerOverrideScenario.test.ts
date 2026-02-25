@@ -16,16 +16,16 @@ describe("Dealer Override Scenario Test", () => {
     const round1History = [
       {
         team1BidsAndActuals: {
-          p1Bid: "3",
-          p2Bid: "4",
-          p1Actual: "3",
-          p2Actual: "4",
+          p1Bid: "3" as import("../types").InputValue,
+          p2Bid: "4" as import("../types").InputValue,
+          p1Actual: "3" as import("../types").InputValue,
+          p2Actual: "4" as import("../types").InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "2",
-          p2Bid: "1",
-          p1Actual: "2",
-          p2Actual: "1",
+          p1Bid: "2" as import("../types").InputValue,
+          p2Bid: "1" as import("../types").InputValue,
+          p1Actual: "2" as import("../types").InputValue,
+          p2Actual: "1" as import("../types").InputValue,
         },
         dealerOverride: null, // No override for round 1
       },
@@ -36,16 +36,16 @@ describe("Dealer Override Scenario Test", () => {
       ...round1History,
       {
         team1BidsAndActuals: {
-          p1Bid: "2",
-          p2Bid: "1",
-          p1Actual: "2",
-          p2Actual: "1",
+          p1Bid: "2" as import("../types").InputValue,
+          p2Bid: "1" as import("../types").InputValue,
+          p1Actual: "2" as import("../types").InputValue,
+          p2Actual: "1" as import("../types").InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "3",
-          p2Bid: "4",
-          p1Actual: "3",
-          p2Actual: "4",
+          p1Bid: "3" as import("../types").InputValue,
+          p2Bid: "4" as import("../types").InputValue,
+          p1Actual: "3" as import("../types").InputValue,
+          p2Actual: "4" as import("../types").InputValue,
         },
         dealerOverride: "team1BidsAndActuals.p1Bid", // Override to t1p1 for round 2
       },
@@ -56,16 +56,16 @@ describe("Dealer Override Scenario Test", () => {
       ...round2History,
       {
         team1BidsAndActuals: {
-          p1Bid: "1",
-          p2Bid: "3",
-          p1Actual: "1",
-          p2Actual: "3",
+          p1Bid: "1" as import("../types").InputValue,
+          p2Bid: "3" as import("../types").InputValue,
+          p1Actual: "1" as import("../types").InputValue,
+          p2Actual: "3" as import("../types").InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "4",
-          p2Bid: "2",
-          p1Actual: "4",
-          p2Actual: "2",
+          p1Bid: "4" as import("../types").InputValue,
+          p2Bid: "2" as import("../types").InputValue,
+          p1Actual: "4" as import("../types").InputValue,
+          p2Actual: "2" as import("../types").InputValue,
         },
         dealerOverride: null, // No override for round 3
       },
@@ -76,16 +76,16 @@ describe("Dealer Override Scenario Test", () => {
       ...round3History,
       {
         team1BidsAndActuals: {
-          p1Bid: "2",
-          p2Bid: "1",
-          p1Actual: "2",
-          p2Actual: "1",
+          p1Bid: "2" as import("../types").InputValue,
+          p2Bid: "1" as import("../types").InputValue,
+          p1Actual: "2" as import("../types").InputValue,
+          p2Actual: "1" as import("../types").InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "3",
-          p2Bid: "4",
-          p1Actual: "3",
-          p2Actual: "4",
+          p1Bid: "3" as import("../types").InputValue,
+          p2Bid: "4" as import("../types").InputValue,
+          p1Actual: "3" as import("../types").InputValue,
+          p2Actual: "4" as import("../types").InputValue,
         },
         dealerOverride: null, // No override for round 4
       },

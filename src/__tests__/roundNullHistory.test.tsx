@@ -1,3 +1,4 @@
+import type { Round } from "../types";
 import { render } from "@testing-library/react";
 import { vi } from "vitest";
 import type { ReactNode } from "react";
@@ -41,7 +42,7 @@ describe("Round component - null safety", () => {
           p1Actual: "",
           p2Actual: "",
         },
-      },
+      } as unknown as Round,
       resetCurrentRound: vi.fn(),
       setRoundHistory: vi.fn(),
     };
