@@ -1,8 +1,8 @@
-import { vi } from "vitest";
-import { renderHook } from "@testing-library/react";
-import { useValidateActuals } from "../helpers/utils/hooks";
+import { vi } from 'vitest';
+import { renderHook } from '@testing-library/react';
+import { useValidateActuals } from '../helpers/utils/hooks';
 
-describe("useValidateActuals with nil bids", () => {
+describe('useValidateActuals with nil bids', () => {
   it("should set isValid to false when someone goes nil and all actuals are entered but don't add up to 13", () => {
     const setIsValid = vi.fn();
 
@@ -19,7 +19,7 @@ describe("useValidateActuals with nil bids", () => {
     expect(setIsValid).toHaveBeenCalledWith(false);
   });
 
-  it("should set isValid to false when someone goes nil and all actuals are entered but add up to less than 13", () => {
+  it('should set isValid to false when someone goes nil and all actuals are entered but add up to less than 13', () => {
     const setIsValid = vi.fn();
 
     // Test case: Player 1 goes nil (actual = 0), others bid normally
@@ -35,7 +35,7 @@ describe("useValidateActuals with nil bids", () => {
     expect(setIsValid).toHaveBeenCalledWith(false);
   });
 
-  it("should set isValid to true when someone goes nil and all actuals are entered and add up to exactly 13", () => {
+  it('should set isValid to true when someone goes nil and all actuals are entered and add up to exactly 13', () => {
     const setIsValid = vi.fn();
 
     // Test case: Player 1 goes nil (actual = 0), others bid normally
@@ -51,7 +51,7 @@ describe("useValidateActuals with nil bids", () => {
     expect(setIsValid).toHaveBeenCalledWith(true);
   });
 
-  it("should set isValid to true when not all actuals are submitted yet", () => {
+  it('should set isValid to true when not all actuals are submitted yet', () => {
     const setIsValid = vi.fn();
 
     // Test case: Not all actuals are submitted yet
@@ -65,7 +65,7 @@ describe("useValidateActuals with nil bids", () => {
     expect(setIsValid).toHaveBeenCalledWith(true);
   });
 
-  it("should set isValid to false when not all actuals are submitted but total exceeds 13", () => {
+  it('should set isValid to false when not all actuals are submitted but total exceeds 13', () => {
     const setIsValid = vi.fn();
 
     // Test case: Not all actuals are submitted but total already exceeds 13

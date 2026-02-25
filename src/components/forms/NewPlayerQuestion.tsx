@@ -1,4 +1,4 @@
-import { Separator, Button, Flex } from "../ui";
+import { Separator, Button, Flex } from '../ui';
 
 const NewPlayerQuestion = ({
   onDifferentTeams,
@@ -8,9 +8,9 @@ const NewPlayerQuestion = ({
   onSameTeams: () => void;
 }) => {
   return (
-    <div style={{ padding: "var(--app-spacing-2)" }}>
+    <div style={{ padding: 'var(--app-spacing-2)' }}>
       <Separator mb={4} />
-      <Flex direction={"row"} justifyContent={"space-evenly"} gap={4}>
+      <Flex direction={'row'} justifyContent={'space-evenly'} gap={4}>
         <Button variant="outline" onClick={onDifferentTeams}>
           Different Teams
         </Button>

@@ -1,11 +1,11 @@
-import { Badge as ChakraBadge, type BadgeProps } from "@chakra-ui/react";
-import { forwardRef } from "react";
+import { Badge as ChakraBadge, type BadgeProps } from '@chakra-ui/react';
+import { forwardRef } from 'react';
 
 /** Custom variants defined in customTheme.ts badgeRecipe */
-type CustomBadgeVariant = "dealer";
+type CustomBadgeVariant = 'dealer';
 
-export interface CustomBadgeProps extends Omit<BadgeProps, "variant"> {
-  variant?: BadgeProps["variant"] | CustomBadgeVariant;
+export interface CustomBadgeProps extends Omit<BadgeProps, 'variant'> {
+  variant?: BadgeProps['variant'] | CustomBadgeVariant;
 }
 
 export const Badge = forwardRef<HTMLSpanElement, CustomBadgeProps>(
@@ -14,4 +14,4 @@ export const Badge = forwardRef<HTMLSpanElement, CustomBadgeProps>(
   },
 );
 
-Badge.displayName = "Badge";
+Badge.displayName = 'Badge';

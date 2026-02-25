@@ -4,7 +4,7 @@ import {
   TAKES_BAGS,
   HELPS_TEAM_BID,
   NO_BAGS_NO_HELP,
-} from "../utils/constants";
+} from '../utils/constants';
 
 import type {
   InputValue,
@@ -12,7 +12,7 @@ import type {
   Round,
   Names,
   TeamBidsAndActuals,
-} from "../../types";
+} from '../../types';
 
 // p1Bid, p2Bid, p1Actual, p2Actual
 export function calculateRoundScore(
@@ -168,7 +168,7 @@ export function getPlayerBags(
       return bags;
     default:
       throw new Error(
-        "This function should not be called unless setting is BLIND_NIL or TAKES_BAGS",
+        'This function should not be called unless setting is BLIND_NIL or TAKES_BAGS',
       );
   }
 }
@@ -471,7 +471,7 @@ export function getCurrentDealerId({
 
 export function getTeamHistoryFromRoundHistory(
   roundHistory: Round[],
-  teamBidsAndActuals: "team1BidsAndActuals" | "team2BidsAndActuals",
+  teamBidsAndActuals: 'team1BidsAndActuals' | 'team2BidsAndActuals',
 ): TeamBidsAndActuals[] {
   return roundHistory
     .filter((round): round is Round => round != null)
@@ -481,7 +481,7 @@ export function getTeamHistoryFromRoundHistory(
 
 export function calculateTeamScoreFromRoundHistory(
   roundHistory: Round[],
-  teamBidsAndActuals: "team1BidsAndActuals" | "team2BidsAndActuals",
+  teamBidsAndActuals: 'team1BidsAndActuals' | 'team2BidsAndActuals',
   nilSetting: NilSetting | null,
 ) {
   const teamRoundHistory = getTeamHistoryFromRoundHistory(
@@ -523,7 +523,7 @@ export function convertAchievedBidToScoreValue(input: InputValue | undefined) {
     case NIL:
       return 100;
     default:
-      return (typeof input === "number" ? input : parseInt(input, 10)) * 10;
+      return (typeof input === 'number' ? input : parseInt(input, 10)) * 10;
   }
 }
 
@@ -532,10 +532,10 @@ export function convertStringInputToNum(input: InputValue | undefined) {
   switch (input) {
     case BLIND_NIL:
     case NIL:
-    case "":
+    case '':
       return 0;
     default:
-      return typeof input === "number" ? input : parseInt(input, 10);
+      return typeof input === 'number' ? input : parseInt(input, 10);
   }
 }
 
@@ -546,23 +546,23 @@ export function addInputs(...inputs: InputValue[]) {
 }
 
 export const isNotDefaultValue = (value: InputValue) => {
-  return value !== "";
+  return value !== '';
 };
 
 export const hasPlayerNamesEntered = (names: Names | null) => {
   if (!names) return false;
   const playerFields: (keyof Names)[] = [
-    "t1p1Name",
-    "t1p2Name",
-    "t2p1Name",
-    "t2p2Name",
+    't1p1Name',
+    't1p2Name',
+    't2p1Name',
+    't2p2Name',
   ];
   const hasPlayerNames = playerFields.some(
-    (field) => names[field] && names[field] !== "",
+    (field) => names[field] && names[field] !== '',
   );
   const hasCustomTeamNames =
-    (names.team1Name && names.team1Name !== "Team 1") ||
-    (names.team2Name && names.team2Name !== "Team 2");
+    (names.team1Name && names.team1Name !== 'Team 1') ||
+    (names.team2Name && names.team2Name !== 'Team 2');
   return hasPlayerNames || hasCustomTeamNames;
 };
 

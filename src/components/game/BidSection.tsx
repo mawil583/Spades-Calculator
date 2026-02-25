@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { SimpleGrid } from "../ui";
-import { PlayerInput } from "../forms";
-import { useSetUnclaimed } from "../../helpers/utils/hooks";
-import { TeamInputHeading } from "../forms";
-import { addInputs } from "../../helpers/math/spadesMath";
-import { Unclaimed } from "./";
+import { useState } from 'react';
+import { SimpleGrid } from '../ui';
+import { PlayerInput } from '../forms';
+import { useSetUnclaimed } from '../../helpers/utils/hooks';
+import { TeamInputHeading } from '../forms';
+import { addInputs } from '../../helpers/math/spadesMath';
+import { Unclaimed } from './';
 
-import type { Names, Round } from "../../types";
+import type { Names, Round } from '../../types';
 
 interface BidSectionProps {
   index: number;
@@ -49,7 +49,7 @@ function BidSection({
       <Unclaimed numUnclaimed={numUnclaimed} />
       <SimpleGrid columns={2} mb="var(--app-spacing-4)">
         <PlayerInput
-          type={"Bid"}
+          type={'Bid'}
           index={index}
           teamName={team1Name}
           playerName={t1p1Name}
@@ -74,7 +74,7 @@ function BidSection({
           dealerId="team2BidsAndActuals.p1Bid"
           fieldToUpdate="team2BidsAndActuals.p1Bid"
           teamClassName="team2"
-          type={"Bid"}
+          type={'Bid'}
         />
         <PlayerInput
           teamName={team1Name}
@@ -87,7 +87,7 @@ function BidSection({
           inputId="team1BidsAndActuals.p2Bid"
           dealerId="team1BidsAndActuals.p2Bid"
           fieldToUpdate="team1BidsAndActuals.p2Bid"
-          type={"Bid"}
+          type={'Bid'}
           teamClassName="team1"
         />
         <PlayerInput
@@ -102,7 +102,7 @@ function BidSection({
           dealerId="team2BidsAndActuals.p2Bid"
           fieldToUpdate="team2BidsAndActuals.p2Bid"
           teamClassName="team2"
-          type={"Bid"}
+          type={'Bid'}
         />
       </SimpleGrid>
     </div>

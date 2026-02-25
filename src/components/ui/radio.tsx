@@ -1,5 +1,5 @@
-import { RadioGroup as ChakraRadioGroup } from "@chakra-ui/react";
-import { forwardRef } from "react";
+import { RadioGroup as ChakraRadioGroup } from '@chakra-ui/react';
+import { forwardRef } from 'react';
 
 export const RadioGroup = ChakraRadioGroup.Root;
 
@@ -32,25 +32,25 @@ export const Radio = forwardRef<HTMLDivElement, RadioProps>(
           justifyContent="center"
           flexShrink={0}
           _checked={{
-            borderColor: "blue.400",
+            borderColor: 'blue.400',
             _before: {
               content: '""',
-              display: "block",
-              width: "10px",
-              height: "10px",
-              borderRadius: "full",
-              bg: "blue.400",
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
+              display: 'block',
+              width: '10px',
+              height: '10px',
+              borderRadius: 'full',
+              bg: 'blue.400',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
             },
           }}
           position="relative"
           /* Remove the background color from theme override */
           css={{
-            "&[data-state=checked]": {
-              bg: "transparent !important",
+            '&[data-state=checked]': {
+              bg: 'transparent !important',
             },
           }}
         />

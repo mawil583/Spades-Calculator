@@ -1,11 +1,11 @@
-import { SimpleGrid, Text, Stack } from "../ui";
-import { team1Styles, team2Styles } from "../../helpers/utils/constants";
-import { MoveRight } from "lucide-react";
-import RoundSummaryField from "./RoundSummaryField";
-import RoundSummarySubHeading from "./RoundSummarySubHeading";
+import { SimpleGrid, Text, Stack } from '../ui';
+import { team1Styles, team2Styles } from '../../helpers/utils/constants';
+import { MoveRight } from 'lucide-react';
+import RoundSummaryField from './RoundSummaryField';
+import RoundSummarySubHeading from './RoundSummarySubHeading';
 
-import type { ReactNode } from "react";
-import type { TeamStats } from "./RoundSummary";
+import type { ReactNode } from 'react';
+import type { TeamStats } from './RoundSummary';
 
 interface SharedSectionProps {
   title: string;
@@ -123,7 +123,7 @@ function RoundSummaryDrawer({
             label="Points Lost"
             value={t1Derived.totalPointsLost}
             color={
-              t1Derived.totalPointsLost > 0 ? "var(--app-error-red)" : "inherit"
+              t1Derived.totalPointsLost > 0 ? 'var(--app-error-red)' : 'inherit'
             }
           />
           <RoundSummaryField label="Net" value={team1Stats.netChange} />
@@ -141,7 +141,7 @@ function RoundSummaryDrawer({
             label="Points Lost"
             value={t2Derived.totalPointsLost}
             color={
-              t2Derived.totalPointsLost > 0 ? "var(--app-error-red)" : "inherit"
+              t2Derived.totalPointsLost > 0 ? 'var(--app-error-red)' : 'inherit'
             }
           />
           <RoundSummaryField label="Net" value={team2Stats.netChange} />
@@ -250,11 +250,11 @@ function RoundSummaryDrawer({
           <RoundSummaryField label="Bags Taken" value={t1Derived.bagsTaken} />
           <RoundSummaryField
             label={
-              (team1Stats.bagPenalty ?? 0) > 0 ? "Bag Result" : "Total Bags"
+              (team1Stats.bagPenalty ?? 0) > 0 ? 'Bag Result' : 'Total Bags'
             }
             value={
               (team1Stats.bagPenalty ?? 0) > 0 && team1Stats.endBags === 0
-                ? "Reset to 0"
+                ? 'Reset to 0'
                 : (team1Stats.bagPenalty ?? 0) > 0
                   ? `Carryover: ${team1Stats.endBags}`
                   : team1Stats.endBags
@@ -273,11 +273,11 @@ function RoundSummaryDrawer({
           <RoundSummaryField label="Bags Taken" value={t2Derived.bagsTaken} />
           <RoundSummaryField
             label={
-              (team2Stats.bagPenalty ?? 0) > 0 ? "Bag Result" : "Total Bags"
+              (team2Stats.bagPenalty ?? 0) > 0 ? 'Bag Result' : 'Total Bags'
             }
             value={
               (team2Stats.bagPenalty ?? 0) > 0 && team2Stats.endBags === 0
-                ? "Reset to 0"
+                ? 'Reset to 0'
                 : (team2Stats.bagPenalty ?? 0) > 0
                   ? `Carryover: ${team2Stats.endBags}`
                   : team2Stats.endBags

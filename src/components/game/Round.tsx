@@ -1,23 +1,23 @@
-import { useEffect, useContext, useState } from "react";
-import { Container, Separator } from "../ui";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useContext, useState } from 'react';
+import { Container, Separator } from '../ui';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import {
   calculateRoundScore,
   isNotDefaultValue,
   calculateTeamScoreFromRoundHistory,
   convertStringInputToNum,
-} from "../../helpers/math/spadesMath";
-import { NIL, BLIND_NIL, HELPS_TEAM_BID } from "../../helpers/utils/constants";
-import { useIndependentTeamScoring } from "../../helpers/utils/hooks";
-import RoundSummary from "./RoundSummary";
-import BidSection from "./BidSection";
-import ActualSection from "./ActualSection";
-import RoundHeading from "./RoundHeading";
-import { GlobalContext } from "../../helpers/context/GlobalContext";
-import { getNames, getNilSetting } from "../../helpers/utils/storage";
+} from '../../helpers/math/spadesMath';
+import { NIL, BLIND_NIL, HELPS_TEAM_BID } from '../../helpers/utils/constants';
+import { useIndependentTeamScoring } from '../../helpers/utils/hooks';
+import RoundSummary from './RoundSummary';
+import BidSection from './BidSection';
+import ActualSection from './ActualSection';
+import RoundHeading from './RoundHeading';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { getNames, getNilSetting } from '../../helpers/utils/storage';
 
-import type { Round as RoundType, InputValue } from "../../types";
+import type { Round as RoundType, InputValue } from '../../types';
 
 interface RoundProps {
   roundHistory: RoundType[];
@@ -54,7 +54,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
         roundInputs.team2BidsAndActuals.p1Bid,
         roundInputs.team2BidsAndActuals.p2Bid,
       ] as InputValue[])
-    : (["", "", "", ""] as InputValue[]); // Default empty values if roundInputs is null
+    : (['', '', '', ''] as InputValue[]); // Default empty values if roundInputs is null
   const allBidsEntered = roundInputBids.every(isNotDefaultValue);
 
   // Derive visibility:
@@ -121,23 +121,23 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
 
       const t1Start = calculateTeamScoreFromRoundHistory(
         historyUpToStart,
-        "team1BidsAndActuals",
+        'team1BidsAndActuals',
         nilSetting,
       );
       const t1End = calculateTeamScoreFromRoundHistory(
         historyUpToEnd,
-        "team1BidsAndActuals",
+        'team1BidsAndActuals',
         nilSetting,
       );
 
       const t2Start = calculateTeamScoreFromRoundHistory(
         historyUpToStart,
-        "team2BidsAndActuals",
+        'team2BidsAndActuals',
         nilSetting,
       );
       const t2End = calculateTeamScoreFromRoundHistory(
         historyUpToEnd,
-        "team2BidsAndActuals",
+        'team2BidsAndActuals',
         nilSetting,
       );
 
@@ -147,7 +147,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
         netChange: number,
         startScore: number,
         endScore: number,
-        bidsAndActuals: RoundType["team1BidsAndActuals"],
+        bidsAndActuals: RoundType['team1BidsAndActuals'],
       ) => {
         let nilPenalty = 0;
         let blindNilPenalty = 0;
@@ -280,14 +280,14 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
         <AnimatePresence>
           {showActuals && (
             <motion.div
-              initial={{ opacity: 0, height: 0, overflow: "hidden" }}
-              animate={{ opacity: 1, height: "auto" }}
+              initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+              animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{
-                height: { duration: 0.5, ease: "easeInOut" },
+                height: { duration: 0.5, ease: 'easeInOut' },
                 opacity: { duration: 0.3, delay: 0.2 },
               }}
-              style={{ overflow: "hidden" }}
+              style={{ overflow: 'hidden' }}
             >
               <ActualSection
                 names={names}

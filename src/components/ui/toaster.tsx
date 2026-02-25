@@ -5,19 +5,19 @@ import {
   Stack,
   Toast,
   createToaster,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 export const toaster = createToaster({
-  placement: "bottom-end",
+  placement: 'bottom-end',
   pauseOnPageIdle: true,
 });
 
 export const Toaster = () => {
   return (
     <Portal>
-      <ChakraToaster toaster={toaster} insetInline={{ md: "16" }}>
+      <ChakraToaster toaster={toaster} insetInline={{ md: '16' }}>
         {(toast) => (
-          <Toast.Root width={{ md: "sm" }}>
+          <Toast.Root width={{ md: 'sm' }}>
             {toast.indicator && (
               <Toast.Indicator>{toast.indicator}</Toast.Indicator>
             )}

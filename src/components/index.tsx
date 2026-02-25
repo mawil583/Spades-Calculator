@@ -1,14 +1,14 @@
 // UI Components
-export * from "./ui";
+export * from './ui';
 
 // Game Components
-export * from "./game";
+export * from './game';
 
 // Form Components
-export * from "./forms";
+export * from './forms';
 
 // Modal Components
-export * from "./modals";
+export * from './modals';
 
 // Update Notification
-export { default as UpdateNotification } from "./UpdateNotification";
+export { default as UpdateNotification } from './UpdateNotification';

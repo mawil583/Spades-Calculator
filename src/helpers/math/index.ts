@@ -1,1 +1,1 @@
-export * from "./spadesMath";
+export * from './spadesMath';

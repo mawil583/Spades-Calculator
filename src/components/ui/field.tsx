@@ -4,10 +4,10 @@ import {
   FieldHelperText,
   FieldErrorText,
   type FieldRootProps,
-} from "@chakra-ui/react";
-import { forwardRef, type ReactNode } from "react";
+} from '@chakra-ui/react';
+import { forwardRef, type ReactNode } from 'react';
 
-export interface FieldProps extends Omit<FieldRootProps, "label"> {
+export interface FieldProps extends Omit<FieldRootProps, 'label'> {
   label?: ReactNode;
   helperText?: ReactNode;
   errorText?: ReactNode;
@@ -25,7 +25,7 @@ export const Field = forwardRef<HTMLDivElement, FieldProps>(
             {label}
             {optionalText && (
               <span
-                style={{ fontSize: "0.8em", color: "gray", marginLeft: "4px" }}
+                style={{ fontSize: '0.8em', color: 'gray', marginLeft: '4px' }}
               >
                 {optionalText}
               </span>

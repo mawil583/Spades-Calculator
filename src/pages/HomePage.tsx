@@ -1,7 +1,7 @@
-import "../App.css";
-import { NameForm } from "../components/forms";
-import { Header } from "../components/ui";
-import { UpdateNotification } from "../components";
+import '../App.css';
+import { NameForm } from '../components/forms';
+import { Header } from '../components/ui';
+import { UpdateNotification } from '../components';
 
 function HomePage() {
   return (

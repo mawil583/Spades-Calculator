@@ -1,4 +1,4 @@
-import SpadesCalculator from "./pages/index";
+import SpadesCalculator from './pages/index';
 
 function App() {
   return <SpadesCalculator />;

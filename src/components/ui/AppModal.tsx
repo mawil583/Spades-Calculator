@@ -5,11 +5,11 @@ import {
   DialogBody,
   DialogCloseTrigger,
   DialogBackdrop,
-} from "./dialog";
-import type { ReactNode } from "react";
-import type { BoxProps, DialogRootProps } from "@chakra-ui/react";
+} from './dialog';
+import type { ReactNode } from 'react';
+import type { BoxProps, DialogRootProps } from '@chakra-ui/react';
 
-export interface AppModalProps extends Omit<DialogRootProps, "children"> {
+export interface AppModalProps extends Omit<DialogRootProps, 'children'> {
   isOpen: boolean;
   onClose: (isOpen: boolean) => void;
   title?: string;
@@ -30,7 +30,7 @@ function AppModal({
   contentStyle = {},
   headerStyle = {},
   bodyStyle = {},
-  closeButtonColor = "offWhite",
+  closeButtonColor = 'offWhite',
   contentProps = {},
   showCloseButton = true,
   ...rest
@@ -39,8 +39,8 @@ function AppModal({
     <DialogRoot open={isOpen} onOpenChange={(e) => onClose(e.open)} {...rest}>
       <DialogBackdrop
         style={{
-          backdropFilter: "blur(4px)",
-          backgroundColor: "rgba(0,0,0,0.6)",
+          backdropFilter: 'blur(4px)',
+          backgroundColor: 'rgba(0,0,0,0.6)',
         }}
       />
       <DialogContent

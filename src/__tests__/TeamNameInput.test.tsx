@@ -1,9 +1,9 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { vi, describe, it, expect } from "vitest";
-import TeamNameInput from "../components/forms/TeamNameInput";
-import { Provider } from "../components/ui/provider";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { vi, describe, it, expect } from 'vitest';
+import TeamNameInput from '../components/forms/TeamNameInput';
+import { Provider } from '../components/ui/provider';
 
-describe("TeamNameInput Behavior", () => {
+describe('TeamNameInput Behavior', () => {
   const mockHandleChange = vi.fn();
 
   const renderComponent = () => {
@@ -19,15 +19,15 @@ describe("TeamNameInput Behavior", () => {
     );
   };
 
-  it("should select all text when input is focused (edit mode)", async () => {
+  it('should select all text when input is focused (edit mode)', async () => {
     renderComponent();
 
     // Find the editable preview and click it to enter edit mode
-    const preview = screen.getByText("Team 1");
+    const preview = screen.getByText('Team 1');
     fireEvent.click(preview);
 
     // input should now be visible
-    const input = screen.getByDisplayValue("Team 1"); // Assuming defaultValue populates this
+    const input = screen.getByDisplayValue('Team 1'); // Assuming defaultValue populates this
 
     // We can't easily check "text selected" in JSDOM, but we can check if the prop is honored or if we can spy on select().
     // For Chakra's Editable, the `selectAllOnFocus` prop should exist on the Root.
@@ -39,15 +39,15 @@ describe("TeamNameInput Behavior", () => {
     expect((input as HTMLInputElement).selectionEnd).toBe(6); // "Team 1".length
   });
 
-  it("should submit changes when clicking away (on blur)", async () => {
+  it('should submit changes when clicking away (on blur)', async () => {
     renderComponent();
 
     // Enter edit mode
-    fireEvent.click(screen.getByText("Team 1"));
+    fireEvent.click(screen.getByText('Team 1'));
 
     // Change value
-    const input = screen.getByDisplayValue("Team 1");
-    fireEvent.change(input, { target: { value: "New Name" } });
+    const input = screen.getByDisplayValue('Team 1');
+    fireEvent.change(input, { target: { value: 'New Name' } });
 
     // Reset mock before blur
     mockHandleChange.mockClear();
@@ -59,8 +59,8 @@ describe("TeamNameInput Behavior", () => {
     expect(mockHandleChange).toHaveBeenCalledWith(
       expect.objectContaining({
         target: expect.objectContaining({
-          id: "team1Name",
-          value: "New Name",
+          id: 'team1Name',
+          value: 'New Name',
         }),
       }),
     );

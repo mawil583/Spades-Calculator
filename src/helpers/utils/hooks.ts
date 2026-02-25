@@ -1,13 +1,13 @@
-import { useState, useEffect, useContext, useMemo } from "react";
-import { GlobalContext } from "../context/GlobalContext";
+import { useState, useEffect, useContext, useMemo } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 import {
   isNotDefaultValue,
   addInputs,
   convertStringInputToNum,
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
-} from "../math/spadesMath";
-import { TEAM1, TEAM2 } from "./constants";
+} from '../math/spadesMath';
+import { TEAM1, TEAM2 } from './constants';
 
 import type {
   Names,
@@ -15,7 +15,7 @@ import type {
   NilSetting,
   TeamKey,
   InputValue,
-} from "../../types";
+} from '../../types';
 
 export function useLocalStorage<T>(
   key: string,
@@ -24,7 +24,7 @@ export function useLocalStorage<T>(
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === 'undefined') {
       return initialValue;
     }
     try {
@@ -53,7 +53,7 @@ export function useLocalStorage<T>(
       // Save state
       setStoredValue(valueToStore);
       // Save to local storage
-      if (typeof window !== "undefined") {
+      if (typeof window !== 'undefined') {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
@@ -70,11 +70,11 @@ export function useRedirectWhenFalsey(
 ) {
   useEffect(() => {
     if (!names) {
-      navigate("/");
+      navigate('/');
     } else {
       const nameVals = Object.values(names);
       if (!nameVals.every(isNotDefaultValue)) {
-        navigate("/");
+        navigate('/');
       }
     }
   }, [names, navigate]);
@@ -198,8 +198,8 @@ export function useGameScores() {
 
   // Safe generic read?
   const nilSettingStr =
-    typeof window !== "undefined"
-      ? localStorage.getItem("nilScoringRule")
+    typeof window !== 'undefined'
+      ? localStorage.getItem('nilScoringRule')
       : null;
   const nilSetting: NilSetting | null = nilSettingStr
     ? JSON.parse(nilSettingStr)

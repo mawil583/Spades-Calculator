@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { toaster } from "../../components/ui/toaster";
+import { useState, useEffect, useRef } from 'react';
+import { toaster } from '../../components/ui/toaster';
 
 export const usePWAInstall = () => {
   const [deferredPrompt, setDeferredPrompt] =
@@ -12,19 +12,19 @@ export const usePWAInstall = () => {
     const checkIfInstalled = () => {
       try {
         const isStandalone = window.matchMedia(
-          "(display-mode: standalone)",
+          '(display-mode: standalone)',
         ).matches;
         const isIOSStandalone = window.navigator.standalone === true;
         const isInApp =
-          window.navigator.userAgent.includes("wv") ||
-          (window.navigator.userAgent.includes("Mobile") &&
-            !window.navigator.userAgent.includes("Safari"));
+          window.navigator.userAgent.includes('wv') ||
+          (window.navigator.userAgent.includes('Mobile') &&
+            !window.navigator.userAgent.includes('Safari'));
 
         const installed = isStandalone || isIOSStandalone || isInApp;
         setIsInstalled(installed);
         setIsCheckingInstall(false);
       } catch (error) {
-        console.log("Error checking if installed:", error);
+        console.log('Error checking if installed:', error);
         setIsInstalled(false);
         setIsCheckingInstall(false);
       }
@@ -38,7 +38,7 @@ export const usePWAInstall = () => {
         setDeferredPrompt(e);
         deferredPromptRef.current = e;
       } catch (error) {
-        console.log("Error handling beforeinstallprompt:", error);
+        console.log('Error handling beforeinstallprompt:', error);
       }
     };
 
@@ -48,26 +48,26 @@ export const usePWAInstall = () => {
         setDeferredPrompt(null);
         deferredPromptRef.current = null;
         toaster.create({
-          title: "App Installed!",
-          description: "Spades Calculator has been added to your home screen.",
-          type: "success",
+          title: 'App Installed!',
+          description: 'Spades Calculator has been added to your home screen.',
+          type: 'success',
           duration: 3000,
         });
       } catch (error) {
-        console.log("Error handling appinstalled:", error);
+        console.log('Error handling appinstalled:', error);
       }
     };
 
-    if (typeof window !== "undefined") {
-      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      window.addEventListener("appinstalled", handleAppInstalled);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.addEventListener('appinstalled', handleAppInstalled);
 
       return () => {
         window.removeEventListener(
-          "beforeinstallprompt",
+          'beforeinstallprompt',
           handleBeforeInstallPrompt,
         );
-        window.removeEventListener("appinstalled", handleAppInstalled);
+        window.removeEventListener('appinstalled', handleAppInstalled);
       };
     }
   }, []);
@@ -80,32 +80,32 @@ export const usePWAInstall = () => {
 
         if (
           currentDeferredPrompt.userChoice &&
-          typeof currentDeferredPrompt.userChoice.then === "function"
+          typeof currentDeferredPrompt.userChoice.then === 'function'
         ) {
           const { outcome } = await currentDeferredPrompt.userChoice;
 
-          if (outcome === "accepted") {
+          if (outcome === 'accepted') {
             toaster.create({
-              title: "Installation Started!",
+              title: 'Installation Started!',
               description:
-                "Please follow the browser prompts to complete the installation.",
-              type: "success",
+                'Please follow the browser prompts to complete the installation.',
+              type: 'success',
               duration: 3000,
             });
           } else {
             toaster.create({
-              title: "Installation Cancelled",
-              description: "You can try again anytime from the menu.",
-              type: "info",
+              title: 'Installation Cancelled',
+              description: 'You can try again anytime from the menu.',
+              type: 'info',
               duration: 3000,
             });
           }
         } else {
           toaster.create({
-            title: "Installation Prompt Shown",
+            title: 'Installation Prompt Shown',
             description:
-              "Please follow the browser prompts to complete the installation.",
-            type: "info",
+              'Please follow the browser prompts to complete the installation.',
+            type: 'info',
             duration: 3000,
           });
         }
@@ -138,7 +138,7 @@ export const usePWAInstall = () => {
 
       showManualInstallInstructions();
     } catch (error) {
-      console.error("Error during installation:", error);
+      console.error('Error during installation:', error);
       showManualInstallInstructions();
     }
   };
@@ -151,38 +151,38 @@ export const usePWAInstall = () => {
     isSafari: boolean,
     isFirefox: boolean,
   ) => {
-    let instructions = "";
-    let title = "Install Instructions";
+    let instructions = '';
+    let title = 'Install Instructions';
 
     if (isIOS) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App".';
       } else if (isSafari) {
-        title = "Install in Safari";
+        title = 'Install in Safari';
         instructions = 'Tap the Share button (📤), then "Add to Home Screen"';
       } else if (isChrome) {
-        title = "Install in Chrome";
+        title = 'Install in Chrome';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
-        title = "Install on iOS";
+        title = 'Install on iOS';
         instructions =
           'Tap the Share button (📤) in your browser, then "Add to Home Screen"';
       }
     } else if (isAndroid) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App".';
       } else if (isChrome) {
-        title = "Install in Chrome";
+        title = 'Install in Chrome';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else if (isFirefox) {
-        title = "Install in Firefox";
+        title = 'Install in Firefox';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
-        title = "Install on Android";
+        title = 'Install on Android';
         instructions =
           'Tap the menu (⋯) in your browser, then "Add to Home Screen"';
       }
@@ -191,7 +191,7 @@ export const usePWAInstall = () => {
     toaster.create({
       title,
       description: instructions,
-      type: "info",
+      type: 'info',
       duration: 8000,
     });
   };
@@ -204,18 +204,18 @@ export const usePWAInstall = () => {
 
     let instructions =
       "Look for the share/install icon (↗️) in your browser's address bar";
-    let title = "Install Instructions";
+    let title = 'Install Instructions';
 
     if (isBrave) {
-      title = "Install in Brave Browser";
+      title = 'Install in Brave Browser';
       instructions =
         "Look for the install icon (↗️) in Brave's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
     } else if (isChrome) {
-      title = "Install in Chrome";
+      title = 'Install in Chrome';
       instructions =
         "Look for the install icon (↗️) in Chrome's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
     } else if (isFirefox) {
-      title = "Install in Firefox";
+      title = 'Install in Firefox';
       instructions =
         "Tap the menu (⋯) in Firefox and select 'Install Spades Calculator'";
     }
@@ -223,7 +223,7 @@ export const usePWAInstall = () => {
     toaster.create({
       title,
       description: instructions,
-      type: "info",
+      type: 'info',
       duration: 8000,
     });
   };

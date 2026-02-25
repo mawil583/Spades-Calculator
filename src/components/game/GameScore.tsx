@@ -1,22 +1,22 @@
-import { useContext } from "react";
-import { Container, SimpleGrid } from "../ui";
+import { useContext } from 'react';
+import { Container, SimpleGrid } from '../ui';
 
-import TeamScore from "./TeamScore";
-import { GlobalContext } from "../../helpers/context/GlobalContext";
+import TeamScore from './TeamScore';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
 import {
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
-} from "../../helpers/math/spadesMath";
-import { TEAM1, TEAM2, HELPS_TEAM_BID } from "../../helpers/utils/constants";
-import { isNotDefaultValue } from "../../helpers/math/spadesMath";
+} from '../../helpers/math/spadesMath';
+import { TEAM1, TEAM2, HELPS_TEAM_BID } from '../../helpers/utils/constants';
+import { isNotDefaultValue } from '../../helpers/math/spadesMath';
 
 import type {
   Round,
   TeamScore as TeamScoreType,
   NilSetting,
   InputValue,
-} from "../../types";
-import { getNames, getNilSetting } from "../../helpers/utils/storage";
+} from '../../types';
+import { getNames, getNilSetting } from '../../helpers/utils/storage';
 
 const GameScore = function () {
   const { roundHistory, currentRound } = useContext(GlobalContext);
@@ -90,7 +90,7 @@ const GameScore = function () {
 // Helper function to calculate score for a team in the current round
 function calculateCurrentRoundTeamScore(
   currentRound: Round | null,
-  teamKey: "team1BidsAndActuals" | "team2BidsAndActuals",
+  teamKey: 'team1BidsAndActuals' | 'team2BidsAndActuals',
   nilSetting: NilSetting,
   isNotDefaultValue: (val: InputValue) => boolean,
 ): TeamScoreType {

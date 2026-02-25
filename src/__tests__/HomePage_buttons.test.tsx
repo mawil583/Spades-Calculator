@@ -1,12 +1,12 @@
-import { vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Provider } from "../components/ui/provider";
-import { MemoryRouter } from "react-router-dom";
-import { GlobalContext } from "../helpers/context/GlobalContext";
-import NameForm from "../components/forms/NameForm";
-import { initialNames } from "../helpers/utils/constants";
-import type { ReactNode } from "react";
-import type { GlobalContextValue } from "../types";
+import { vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { Provider } from '../components/ui/provider';
+import { MemoryRouter } from 'react-router-dom';
+import { GlobalContext } from '../helpers/context/GlobalContext';
+import NameForm from '../components/forms/NameForm';
+import { initialNames } from '../helpers/utils/constants';
+import type { ReactNode } from 'react';
+import type { GlobalContextValue } from '../types';
 
 // Mock mocks using vi.hoisted
 const { mockUseLocalStorage, mockedNavigate } = vi.hoisted(() => {
@@ -33,16 +33,16 @@ const mockLocalStorage = (function () {
   };
 })();
 
-Object.defineProperty(window, "localStorage", {
+Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
-vi.mock("../helpers/utils/hooks", () => ({
+vi.mock('../helpers/utils/hooks', () => ({
   useLocalStorage: mockUseLocalStorage,
 }));
 
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
     useNavigate: () => mockedNavigate,
@@ -50,18 +50,18 @@ vi.mock("react-router-dom", async () => {
 });
 
 // Mock WarningModal
-vi.mock("../components/modals", () => ({
+vi.mock('../components/modals', () => ({
   WarningModal: ({ isOpen }: { isOpen: boolean }) =>
     isOpen ? <div data-testid="warning-modal">Warning Modal</div> : null,
 }));
 
 // Mock math helpers
-vi.mock("../helpers/math/spadesMath", async (importOriginal) => {
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
     isNotDefaultValue: vi.fn(
-      (val) => val !== "" && val !== undefined && val !== null,
+      (val) => val !== '' && val !== undefined && val !== null,
     ),
   };
 });
@@ -81,7 +81,7 @@ const renderWithProviders = (
   );
 };
 
-describe("NameForm Button Logic", () => {
+describe('NameForm Button Logic', () => {
   const defaultContext = {
     roundHistory: [],
     currentRound: null,
@@ -101,22 +101,22 @@ describe("NameForm Button Logic", () => {
   it('should render "Start" button when no game data exists', () => {
     renderWithProviders(<NameForm />, defaultContext);
 
-    expect(screen.getByText("Start")).toBeInTheDocument();
-    expect(screen.queryByText("Continue")).not.toBeInTheDocument();
-    expect(screen.queryByText("New Game")).not.toBeInTheDocument();
+    expect(screen.getByText('Start')).toBeInTheDocument();
+    expect(screen.queryByText('Continue')).not.toBeInTheDocument();
+    expect(screen.queryByText('New Game')).not.toBeInTheDocument();
   });
 
   it('should render "Continue" and "New Game" buttons when round history exists', () => {
     const contextWithHistory = {
       ...defaultContext,
-      roundHistory: [{ someData: "test" }],
+      roundHistory: [{ someData: 'test' }],
     };
 
     renderWithProviders(<NameForm />, contextWithHistory);
 
-    expect(screen.queryByText("Start")).not.toBeInTheDocument();
-    expect(screen.getByText("Continue")).toBeInTheDocument();
-    expect(screen.getByText("New Game")).toBeInTheDocument();
+    expect(screen.queryByText('Start')).not.toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+    expect(screen.getByText('New Game')).toBeInTheDocument();
   });
 
   it('should render "Continue" and "New Game" buttons when current round has data', () => {
@@ -124,7 +124,7 @@ describe("NameForm Button Logic", () => {
     const contextWithCurrentRound = {
       ...defaultContext,
       currentRound: {
-        team1BidsAndActuals: { p1Bid: "1" }, // Has some data
+        team1BidsAndActuals: { p1Bid: '1' }, // Has some data
         team2BidsAndActuals: {},
       },
     };
@@ -140,74 +140,74 @@ describe("NameForm Button Logic", () => {
 
     renderWithProviders(<NameForm />, contextWithCurrentRound);
 
-    expect(screen.queryByText("Start")).not.toBeInTheDocument();
-    expect(screen.getByText("Continue")).toBeInTheDocument();
-    expect(screen.getByText("New Game")).toBeInTheDocument();
+    expect(screen.queryByText('Start')).not.toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+    expect(screen.getByText('New Game')).toBeInTheDocument();
   });
 
   it('should render "Continue" and "New Game" buttons when names are modified', () => {
     mockUseLocalStorage.mockReturnValue([
       {
-        team1Name: "Modified Team",
-        team2Name: "Team 2",
-        t1p1Name: "",
-        t1p2Name: "",
-        t2p1Name: "",
-        t2p2Name: "",
+        team1Name: 'Modified Team',
+        team2Name: 'Team 2',
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
       },
       vi.fn(),
     ]);
 
     renderWithProviders(<NameForm />, defaultContext);
 
-    expect(screen.queryByText("Start")).not.toBeInTheDocument();
-    expect(screen.getByText("Continue")).toBeInTheDocument();
-    expect(screen.getByText("New Game")).toBeInTheDocument();
+    expect(screen.queryByText('Start')).not.toBeInTheDocument();
+    expect(screen.getByText('Continue')).toBeInTheDocument();
+    expect(screen.getByText('New Game')).toBeInTheDocument();
   });
 
   it('should open WarningModal when "New Game" is clicked', async () => {
     const contextWithHistory = {
       ...defaultContext,
-      roundHistory: [{ someData: "test" }],
+      roundHistory: [{ someData: 'test' }],
     };
 
     renderWithProviders(<NameForm />, contextWithHistory);
 
-    const newGameBtn = screen.getByText("New Game");
+    const newGameBtn = screen.getByText('New Game');
     expect(newGameBtn).toBeEnabled();
     fireEvent.click(newGameBtn);
 
     await waitFor(() => {
-      expect(screen.getByTestId("warning-modal")).toBeInTheDocument();
+      expect(screen.getByTestId('warning-modal')).toBeInTheDocument();
     });
   });
 
   it('should navigate when "Continue" is clicked', async () => {
     // Provide valid player names so form validation passes
     const validNames = {
-      team1Name: "Team 1",
-      team2Name: "Team 2",
-      t1p1Name: "Alice",
-      t1p2Name: "Bob",
-      t2p1Name: "Charlie",
-      t2p2Name: "Diana",
+      team1Name: 'Team 1',
+      team2Name: 'Team 2',
+      t1p1Name: 'Alice',
+      t1p2Name: 'Bob',
+      t2p1Name: 'Charlie',
+      t2p2Name: 'Diana',
     };
     mockUseLocalStorage.mockReturnValue([validNames, vi.fn()]);
 
     const contextWithHistory = {
       ...defaultContext,
-      roundHistory: [{ someData: "test" }],
+      roundHistory: [{ someData: 'test' }],
     };
 
     renderWithProviders(<NameForm />, contextWithHistory);
 
-    const continueBtn = screen.getByText("Continue");
+    const continueBtn = screen.getByText('Continue');
     expect(continueBtn).toBeEnabled();
     fireEvent.click(continueBtn);
 
     await waitFor(() => {
       expect(mockedNavigate).toHaveBeenCalledWith(
-        "/spades-calculator",
+        '/spades-calculator',
         expect.any(Object),
       );
     });

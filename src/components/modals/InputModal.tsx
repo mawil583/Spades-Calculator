@@ -1,8 +1,8 @@
-import { useRef } from "react";
-import { AppModal, ButtonGrid } from "../ui";
-import { Box } from "../ui";
-import type { Round, InputValue } from "../../types";
-import type { BoxProps } from "../ui/box";
+import { useRef } from 'react';
+import { AppModal, ButtonGrid } from '../ui';
+import { Box } from '../ui';
+import type { Round, InputValue } from '../../types';
+import type { BoxProps } from '../ui/box';
 
 export interface InputModalProps {
   index?: number | string;
@@ -10,7 +10,7 @@ export interface InputModalProps {
   playerName: string;
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  type: "Bid" | "Actual";
+  type: 'Bid' | 'Actual';
   typeLabel?: string;
   fieldToUpdate: string;
   currentRound: Round;
@@ -41,12 +41,12 @@ function InputModal({
       initialFocusEl={() => containerRef.current}
       contentProps={
         {
-          "data-cy": "bidSelectionModal",
-          "data-testid": "bidSelectionModal",
+          'data-cy': 'bidSelectionModal',
+          'data-testid': 'bidSelectionModal',
         } as BoxProps & Record<`data-${string}`, string>
       }
     >
-      <Box ref={containerRef} tabIndex={-1} css={{ outline: "none" }}>
+      <Box ref={containerRef} tabIndex={-1} css={{ outline: 'none' }}>
         <ButtonGrid
           isCurrent={isCurrent}
           fieldToUpdate={fieldToUpdate}

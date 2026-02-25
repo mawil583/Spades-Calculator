@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { Center } from "../ui/center";
+import { useState, useRef, useEffect } from 'react';
+import { Center } from '../ui/center';
 
 interface TeamNameInputProps {
   id: string;
@@ -43,7 +43,7 @@ function TeamNameInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       onCommit();
     }
   };
@@ -59,16 +59,16 @@ function TeamNameInput({
           onKeyDown={handleKeyDown}
           className={teamClassName}
           id={id}
-          data-cy={id + "Input"}
+          data-cy={id + 'Input'}
           style={{
-            fontSize: "var(--app-font-2xl)",
-            fontWeight: "bold",
-            textAlign: "center",
-            width: "100%",
-            background: "transparent",
-            border: "1px solid transparent", // maintain sizing
-            outline: "none",
-            fontFamily: "inherit",
+            fontSize: 'var(--app-font-2xl)',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            width: '100%',
+            background: 'transparent',
+            border: '1px solid transparent', // maintain sizing
+            outline: 'none',
+            fontFamily: 'inherit',
           }}
         />
       ) : (
@@ -76,16 +76,16 @@ function TeamNameInput({
           onClick={() => setIsEditing(true)}
           className={teamClassName}
           id={id}
-          data-cy={id + "Input"}
+          data-cy={id + 'Input'}
           style={{
-            fontSize: "var(--app-font-2xl)",
-            fontWeight: "bold",
-            textAlign: "center",
-            width: "100%",
-            cursor: "pointer",
+            fontSize: 'var(--app-font-2xl)',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            width: '100%',
+            cursor: 'pointer',
           }}
         >
-          {value || "Enter Team Name"}
+          {value || 'Enter Team Name'}
         </div>
       )}
     </Center>

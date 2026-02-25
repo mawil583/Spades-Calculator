@@ -1,7 +1,7 @@
-import { Text, Stack } from "../ui";
-import RoundSummarySubHeading from "./RoundSummarySubHeading";
+import { Text, Stack } from '../ui';
+import RoundSummarySubHeading from './RoundSummarySubHeading';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 interface RoundSummaryFieldProps {
   label: string;

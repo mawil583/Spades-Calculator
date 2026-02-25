@@ -1,7 +1,7 @@
-import { Input } from "../ui/input";
-import { Field } from "../ui/field";
+import { Input } from '../ui/input';
+import { Field } from '../ui/field';
 
-import "../../App.css";
+import '../../App.css';
 
 interface PlayerNameInputProps {
   teamClassName: string;
@@ -26,23 +26,23 @@ function PlayerNameInput({
   handleChange,
 }: PlayerNameInputProps) {
   return (
-    <div className={teamClassName} style={{ color: "inherit" }}>
+    <div className={teamClassName} style={{ color: 'inherit' }}>
       <Field
         label={label}
         invalid={!!(errors && touched)}
         errorText={errors}
         pb={4}
-        color={teamClassName === "team1" ? "team1" : "team2"}
+        color={teamClassName === 'team1' ? 'team1' : 'team2'}
       >
         <Input
           px={1}
-          placeholder={`${placeholder ? placeholder : ""}`}
+          placeholder={`${placeholder ? placeholder : ''}`}
           type="text"
           value={playerName}
           onChange={handleChange}
           id={id}
           name={id}
-          data-cy={id + "Input"}
+          data-cy={id + 'Input'}
           fontSize="lg"
         />
       </Field>

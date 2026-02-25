@@ -1,25 +1,25 @@
-import { useEffect, useState, useContext } from "react";
-import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
-import { useLocalStorage } from "../../helpers/utils/hooks";
-import { GlobalContext } from "../../helpers/context/GlobalContext";
-import WarningModal from "../modals/WarningModal";
+import { useEffect, useState, useContext } from 'react';
+import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import { useLocalStorage } from '../../helpers/utils/hooks';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+import WarningModal from '../modals/WarningModal';
 import {
   hasPlayerNamesEntered,
   hasRoundProgress,
-} from "../../helpers/math/spadesMath";
+} from '../../helpers/math/spadesMath';
 
-import { TeamNameInput, PlayerNameInput } from "./";
-import { Button, SimpleGrid, Center } from "../ui";
-import { initialNames } from "../../helpers/utils/constants";
-import type { Names } from "../../types";
+import { TeamNameInput, PlayerNameInput } from './';
+import { Button, SimpleGrid, Center } from '../ui';
+import { initialNames } from '../../helpers/utils/constants';
+import type { Names } from '../../types';
 
 function NameForm() {
   const navigate = useNavigate();
   const { roundHistory, currentRound } = useContext(GlobalContext);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-  const [names, setNames] = useLocalStorage<Names>("names", initialNames);
+  const [names, setNames] = useLocalStorage<Names>('names', initialNames);
 
   const hasGameData =
     hasPlayerNamesEntered(names) ||
@@ -30,10 +30,10 @@ function NameForm() {
   };
 
   const validationSchema = Yup.object({
-    t1p1Name: Yup.string().required("Required"),
-    t2p1Name: Yup.string().required("Required"),
-    t1p2Name: Yup.string().required("Required"),
-    t2p2Name: Yup.string().required("Required"),
+    t1p1Name: Yup.string().required('Required'),
+    t2p1Name: Yup.string().required('Required'),
+    t1p2Name: Yup.string().required('Required'),
+    t2p2Name: Yup.string().required('Required'),
   });
 
   const formik = useFormik<Names>({
@@ -49,7 +49,7 @@ function NameForm() {
     enableReinitialize: true,
     onSubmit: (values) => {
       setNames(values);
-      navigate("/spades-calculator", { state: values });
+      navigate('/spades-calculator', { state: values });
     },
   });
 
@@ -57,11 +57,11 @@ function NameForm() {
   const { team1Name, team2Name } = values;
 
   useEffect(() => {
-    if (team1Name === "") {
-      setFieldValue("team1Name", "Team 1");
+    if (team1Name === '') {
+      setFieldValue('team1Name', 'Team 1');
     }
-    if (team2Name === "") {
-      setFieldValue("team2Name", "Team 2");
+    if (team2Name === '') {
+      setFieldValue('team2Name', 'Team 2');
     }
   }, [team1Name, team2Name, setFieldValue]);
   return (

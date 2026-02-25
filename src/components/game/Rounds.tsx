@@ -1,9 +1,9 @@
-import { useContext, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Round, TableRound } from "./";
-import { GlobalContext } from "../../helpers/context/GlobalContext";
-import { useFeatureFlag } from "../../helpers/utils/useFeatureFlag";
-import { FEATURE_FLAGS } from "../../helpers/utils/featureFlags";
+import { useContext, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Round, TableRound } from './';
+import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
+import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 
 function Rounds() {
   const { roundHistory } = useContext(GlobalContext);
@@ -37,7 +37,7 @@ function Rounds() {
   }, [isCompleting]);
 
   return (
-    <div style={{ paddingBottom: "40px" }}>
+    <div style={{ paddingBottom: '40px' }}>
       <AnimatePresence>
         {showNewRound && (
           <motion.div
@@ -46,7 +46,7 @@ function Rounds() {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.3,
-              ease: "easeOut",
+              ease: 'easeOut',
             }}
           >
             <CurrentRoundComponent
@@ -67,7 +67,7 @@ function Rounds() {
               key={`history-${i}`}
               animate={
                 isCompleting && i === roundHistory.length - 1
-                  ? { y: 200, transition: { duration: 0.8, ease: "easeInOut" } }
+                  ? { y: 200, transition: { duration: 0.8, ease: 'easeInOut' } }
                   : { y: 0 }
               }
             >

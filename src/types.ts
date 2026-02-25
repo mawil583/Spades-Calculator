@@ -1,4 +1,4 @@
-import { possibleBids, possibleActuals } from "./helpers/utils/constants";
+import { possibleBids, possibleActuals } from './helpers/utils/constants';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Domain types shared across the Spades Calculator app
@@ -7,11 +7,11 @@ import { possibleBids, possibleActuals } from "./helpers/utils/constants";
 export type BidValue = (typeof possibleBids)[number];
 export type ActualValue = (typeof possibleActuals)[number];
 
-export type InputValue = BidValue | ActualValue | "";
+export type InputValue = BidValue | ActualValue | '';
 
-export type NilSetting = "takesBags" | "helpsTeamBid" | "noBagsNoHelp";
+export type NilSetting = 'takesBags' | 'helpsTeamBid' | 'noBagsNoHelp';
 
-export type TeamKey = "team1BidsAndActuals" | "team2BidsAndActuals";
+export type TeamKey = 'team1BidsAndActuals' | 'team2BidsAndActuals';
 
 // ─── Player / team bids & actuals ────────────────────────────────────────────
 
@@ -86,17 +86,17 @@ export interface AppState {
 // ─── Reducer actions ──────────────────────────────────────────────────────
 
 export type AppAction =
-  | { type: "SET_CURRENT_ROUND"; payload: { currentRound: Round } }
-  | { type: "RESET_CURRENT_ROUND" }
-  | { type: "SET_ROUND_HISTORY"; payload: { roundHistory: Round[] } }
-  | { type: "RESET_ROUND_HISTORY" }
-  | { type: "SET_FIRST_DEALER_ORDER"; payload: { firstDealerOrder: string[] } }
-  | { type: "SET_DEALER_OVERRIDE"; payload: { dealerOverride: string | null } };
+  | { type: 'SET_CURRENT_ROUND'; payload: { currentRound: Round } }
+  | { type: 'RESET_CURRENT_ROUND' }
+  | { type: 'SET_ROUND_HISTORY'; payload: { roundHistory: Round[] } }
+  | { type: 'RESET_ROUND_HISTORY' }
+  | { type: 'SET_FIRST_DEALER_ORDER'; payload: { firstDealerOrder: string[] } }
+  | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } };
 
 // ─── Shared UI types ────────────────────────────────────────────────────────
 export interface ModalOpenArgs {
   fieldToUpdate: string;
-  type: "Bid" | "Actual";
+  type: 'Bid' | 'Actual';
   playerName: string;
   inputId?: string;
   dealerId?: string;

@@ -1,31 +1,31 @@
 import {
   getCurrentDealerId,
   getDealerIdHistory,
-} from "../helpers/math/spadesMath";
+} from '../helpers/math/spadesMath';
 
-describe("Dealer Override Scenario Test", () => {
+describe('Dealer Override Scenario Test', () => {
   const mockFirstDealerOrder = [
-    "team1BidsAndActuals.p1Bid", // t1p1
-    "team2BidsAndActuals.p1Bid", // t2p1
-    "team1BidsAndActuals.p2Bid", // t1p2
-    "team2BidsAndActuals.p2Bid", // t2p2
+    'team1BidsAndActuals.p1Bid', // t1p1
+    'team2BidsAndActuals.p1Bid', // t2p1
+    'team1BidsAndActuals.p2Bid', // t1p2
+    'team2BidsAndActuals.p2Bid', // t2p2
   ];
 
-  test("dealer override scenario: Round 2 override should affect Round 3 but Round 3 should still show correct dealer", () => {
+  test('dealer override scenario: Round 2 override should affect Round 3 but Round 3 should still show correct dealer', () => {
     // Step 1: Round 1 - no override, normal rotation
     const round1History = [
       {
         team1BidsAndActuals: {
-          p1Bid: "3" as import("../types").InputValue,
-          p2Bid: "4" as import("../types").InputValue,
-          p1Actual: "3" as import("../types").InputValue,
-          p2Actual: "4" as import("../types").InputValue,
+          p1Bid: '3' as import('../types').InputValue,
+          p2Bid: '4' as import('../types').InputValue,
+          p1Actual: '3' as import('../types').InputValue,
+          p2Actual: '4' as import('../types').InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "2" as import("../types").InputValue,
-          p2Bid: "1" as import("../types").InputValue,
-          p1Actual: "2" as import("../types").InputValue,
-          p2Actual: "1" as import("../types").InputValue,
+          p1Bid: '2' as import('../types').InputValue,
+          p2Bid: '1' as import('../types').InputValue,
+          p1Actual: '2' as import('../types').InputValue,
+          p2Actual: '1' as import('../types').InputValue,
         },
         dealerOverride: null, // No override for round 1
       },
@@ -36,18 +36,18 @@ describe("Dealer Override Scenario Test", () => {
       ...round1History,
       {
         team1BidsAndActuals: {
-          p1Bid: "2" as import("../types").InputValue,
-          p2Bid: "1" as import("../types").InputValue,
-          p1Actual: "2" as import("../types").InputValue,
-          p2Actual: "1" as import("../types").InputValue,
+          p1Bid: '2' as import('../types').InputValue,
+          p2Bid: '1' as import('../types').InputValue,
+          p1Actual: '2' as import('../types').InputValue,
+          p2Actual: '1' as import('../types').InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "3" as import("../types").InputValue,
-          p2Bid: "4" as import("../types").InputValue,
-          p1Actual: "3" as import("../types").InputValue,
-          p2Actual: "4" as import("../types").InputValue,
+          p1Bid: '3' as import('../types').InputValue,
+          p2Bid: '4' as import('../types').InputValue,
+          p1Actual: '3' as import('../types').InputValue,
+          p2Actual: '4' as import('../types').InputValue,
         },
-        dealerOverride: "team1BidsAndActuals.p1Bid", // Override to t1p1 for round 2
+        dealerOverride: 'team1BidsAndActuals.p1Bid', // Override to t1p1 for round 2
       },
     ];
 
@@ -56,16 +56,16 @@ describe("Dealer Override Scenario Test", () => {
       ...round2History,
       {
         team1BidsAndActuals: {
-          p1Bid: "1" as import("../types").InputValue,
-          p2Bid: "3" as import("../types").InputValue,
-          p1Actual: "1" as import("../types").InputValue,
-          p2Actual: "3" as import("../types").InputValue,
+          p1Bid: '1' as import('../types').InputValue,
+          p2Bid: '3' as import('../types').InputValue,
+          p1Actual: '1' as import('../types').InputValue,
+          p2Actual: '3' as import('../types').InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "4" as import("../types").InputValue,
-          p2Bid: "2" as import("../types").InputValue,
-          p1Actual: "4" as import("../types").InputValue,
-          p2Actual: "2" as import("../types").InputValue,
+          p1Bid: '4' as import('../types').InputValue,
+          p2Bid: '2' as import('../types').InputValue,
+          p1Actual: '4' as import('../types').InputValue,
+          p2Actual: '2' as import('../types').InputValue,
         },
         dealerOverride: null, // No override for round 3
       },
@@ -76,16 +76,16 @@ describe("Dealer Override Scenario Test", () => {
       ...round3History,
       {
         team1BidsAndActuals: {
-          p1Bid: "2" as import("../types").InputValue,
-          p2Bid: "1" as import("../types").InputValue,
-          p1Actual: "2" as import("../types").InputValue,
-          p2Actual: "1" as import("../types").InputValue,
+          p1Bid: '2' as import('../types').InputValue,
+          p2Bid: '1' as import('../types').InputValue,
+          p1Actual: '2' as import('../types').InputValue,
+          p2Actual: '1' as import('../types').InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: "3" as import("../types").InputValue,
-          p2Bid: "4" as import("../types").InputValue,
-          p1Actual: "3" as import("../types").InputValue,
-          p2Actual: "4" as import("../types").InputValue,
+          p1Bid: '3' as import('../types').InputValue,
+          p2Bid: '4' as import('../types').InputValue,
+          p1Actual: '3' as import('../types').InputValue,
+          p2Actual: '4' as import('../types').InputValue,
         },
         dealerOverride: null, // No override for round 4
       },
@@ -105,7 +105,7 @@ describe("Dealer Override Scenario Test", () => {
       firstDealerOrder: mockFirstDealerOrder,
       roundHistory: round1History,
     });
-    expect(round1Dealer).toBe("team1BidsAndActuals.p1Bid"); // t1p1
+    expect(round1Dealer).toBe('team1BidsAndActuals.p1Bid'); // t1p1
 
     // Round 2 should have t1p1 as dealer (due to override)
     const round2Dealer = getCurrentDealerId({
@@ -115,7 +115,7 @@ describe("Dealer Override Scenario Test", () => {
       firstDealerOrder: mockFirstDealerOrder,
       roundHistory: round2History,
     });
-    expect(round2Dealer).toBe("team1BidsAndActuals.p1Bid"); // t1p1 (override)
+    expect(round2Dealer).toBe('team1BidsAndActuals.p1Bid'); // t1p1 (override)
 
     // Round 3 should have t2p1 as dealer (normal rotation after override)
     const round3Dealer = getCurrentDealerId({
@@ -125,7 +125,7 @@ describe("Dealer Override Scenario Test", () => {
       firstDealerOrder: mockFirstDealerOrder,
       roundHistory: round3History,
     });
-    expect(round3Dealer).toBe("team2BidsAndActuals.p1Bid"); // t2p1
+    expect(round3Dealer).toBe('team2BidsAndActuals.p1Bid'); // t2p1
 
     // Round 4 should have t1p2 as dealer (normal rotation)
     const round4Dealer = getCurrentDealerId({
@@ -135,7 +135,7 @@ describe("Dealer Override Scenario Test", () => {
       firstDealerOrder: mockFirstDealerOrder,
       roundHistory: round4History,
     });
-    expect(round4Dealer).toBe("team1BidsAndActuals.p2Bid"); // t1p2
+    expect(round4Dealer).toBe('team1BidsAndActuals.p2Bid'); // t1p2
 
     // Now test the current round (Round 5) - should have t2p2 as dealer
     const round5Dealer = getCurrentDealerId({
@@ -144,7 +144,7 @@ describe("Dealer Override Scenario Test", () => {
       isCurrent: true,
       firstDealerOrder: mockFirstDealerOrder,
     });
-    expect(round5Dealer).toBe("team2BidsAndActuals.p2Bid"); // t2p2
+    expect(round5Dealer).toBe('team2BidsAndActuals.p2Bid'); // t2p2
 
     // The key assertion: Round 3 should still show t2p1 as dealer when we navigate back to it
     // This tests that the dealer override in Round 2 doesn't permanently change the dealer order
@@ -155,6 +155,6 @@ describe("Dealer Override Scenario Test", () => {
       firstDealerOrder: mockFirstDealerOrder,
       roundHistory: round3History,
     });
-    expect(round3DealerAfterNavigation).toBe("team2BidsAndActuals.p1Bid"); // t2p1
+    expect(round3DealerAfterNavigation).toBe('team2BidsAndActuals.p1Bid'); // t2p1
   });
 });

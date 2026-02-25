@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { SimpleGrid, Center, Heading, IconButton, Stack } from "../ui";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import RoundSummaryDrawer from "./RoundSummaryDrawer";
-import { team1Styles, team2Styles } from "../../helpers/utils/constants";
-import RoundSummaryField from "./RoundSummaryField";
+import { useState } from 'react';
+import { SimpleGrid, Center, Heading, IconButton, Stack } from '../ui';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import RoundSummaryDrawer from './RoundSummaryDrawer';
+import { team1Styles, team2Styles } from '../../helpers/utils/constants';
+import RoundSummaryField from './RoundSummaryField';
 
 export interface TeamStats {
   startScore?: number;
@@ -43,14 +43,14 @@ function RoundSummary({
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div style={{ marginBottom: "var(--app-spacing-5)" }}>
+    <div style={{ marginBottom: 'var(--app-spacing-5)' }}>
       <Center>
         <Heading
           style={{
-            marginTop: "var(--app-spacing-2)",
-            marginBottom: "var(--app-spacing-3)",
+            marginTop: 'var(--app-spacing-2)',
+            marginBottom: 'var(--app-spacing-3)',
           }}
-          size={"lg"}
+          size={'lg'}
         >
           Round Summary
         </Heading>
@@ -102,7 +102,7 @@ function RoundSummary({
               bg="bg"
               borderColor="white"
               color="white"
-              _hover={{ bg: "gray.700" }}
+              _hover={{ bg: 'gray.700' }}
             >
               {isOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
             </IconButton>
@@ -111,10 +111,10 @@ function RoundSummary({
             {isOpen && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+                animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{ overflow: "hidden" }}
+                style={{ overflow: 'hidden' }}
               >
                 <RoundSummaryDrawer
                   team1Stats={team1Stats}

@@ -1,6 +1,6 @@
-import { Text } from "../ui";
+import { Text } from '../ui';
 
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 interface RoundSummarySubHeadingProps {
   children: ReactNode;
@@ -9,7 +9,7 @@ interface RoundSummarySubHeadingProps {
 
 const RoundSummarySubHeading = ({
   children,
-  color = "gray.400",
+  color = 'gray.400',
 }: RoundSummarySubHeadingProps) => (
   <Text
     color={color}

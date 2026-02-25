@@ -1,4 +1,4 @@
-import { Editable as ChakraEditable } from "@chakra-ui/react";
+import { Editable as ChakraEditable } from '@chakra-ui/react';
 
 export const EditableRoot = ChakraEditable.Root;
 export const EditableInput = ChakraEditable.Input;

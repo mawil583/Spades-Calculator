@@ -2,11 +2,11 @@ import {
   Dialog as ChakraDialog,
   Portal,
   type PortalProps,
-} from "@chakra-ui/react";
-import { forwardRef } from "react";
+} from '@chakra-ui/react';
+import { forwardRef } from 'react';
 
 const defaultPortalled =
-  typeof process === "undefined" || process.env.NODE_ENV !== "test";
+  typeof process === 'undefined' || process.env.NODE_ENV !== 'test';
 
 export const DialogRoot = ChakraDialog.Root;
 export const DialogFooter = ChakraDialog.Footer;
@@ -15,7 +15,7 @@ export const DialogBody = ChakraDialog.Body;
 
 export interface DialogBackdropProps extends ChakraDialog.BackdropProps {
   portalled?: boolean;
-  portalRef?: PortalProps["container"];
+  portalRef?: PortalProps['container'];
 }
 
 export const DialogBackdrop = forwardRef<HTMLDivElement, DialogBackdropProps>(
@@ -40,7 +40,7 @@ export const DialogActionTrigger = ChakraDialog.ActionTrigger;
 
 export interface DialogContentProps extends ChakraDialog.ContentProps {
   portalled?: boolean;
-  portalRef?: PortalProps["container"];
+  portalRef?: PortalProps['container'];
 }
 
 export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(

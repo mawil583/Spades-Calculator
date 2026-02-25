@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { getFeatureFlag, setFeatureFlag } from "./featureFlags";
+import { useState, useEffect } from 'react';
+import { getFeatureFlag, setFeatureFlag } from './featureFlags';
 
 export function useFeatureFlag(flagKey: string) {
   const [isEnabled, setIsEnabled] = useState(() => getFeatureFlag(flagKey));
@@ -11,9 +11,9 @@ export function useFeatureFlag(flagKey: string) {
       }
     };
 
-    window.addEventListener("feature-flag-changed", handleStorageChange);
+    window.addEventListener('feature-flag-changed', handleStorageChange);
     return () =>
-      window.removeEventListener("feature-flag-changed", handleStorageChange);
+      window.removeEventListener('feature-flag-changed', handleStorageChange);
   }, [flagKey]);
 
   const toggle = () => {

@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import { Button, Box, Text, VStack } from "./";
-import { Download } from "lucide-react";
-import { toaster } from "./toaster";
+import { useState, useEffect, useRef } from 'react';
+import { Button, Box, Text, VStack } from './';
+import { Download } from 'lucide-react';
+import { toaster } from './toaster';
 
 const DownloadButton = () => {
   const [deferredPrompt, setDeferredPrompt] =
@@ -16,13 +16,13 @@ const DownloadButton = () => {
       try {
         // Multiple ways to detect if the app is installed
         const isStandalone = window.matchMedia(
-          "(display-mode: standalone)",
+          '(display-mode: standalone)',
         ).matches;
         const isIOSStandalone = window.navigator.standalone === true;
         const isInApp =
-          window.navigator.userAgent.includes("wv") ||
-          (window.navigator.userAgent.includes("Mobile") &&
-            !window.navigator.userAgent.includes("Safari"));
+          window.navigator.userAgent.includes('wv') ||
+          (window.navigator.userAgent.includes('Mobile') &&
+            !window.navigator.userAgent.includes('Safari'));
 
         const installed = isStandalone || isIOSStandalone || isInApp;
         setIsInstalled(installed);
@@ -31,15 +31,15 @@ const DownloadButton = () => {
         // If already installed, show a message
         if (installed) {
           toaster.create({
-            title: "App Already Installed",
+            title: 'App Already Installed',
             description:
-              "Spades Calculator is already installed on your device.",
-            type: "info",
+              'Spades Calculator is already installed on your device.',
+            type: 'info',
             duration: 3000,
           });
         }
       } catch (error) {
-        console.log("Error checking if installed:", error);
+        console.log('Error checking if installed:', error);
         setIsInstalled(false);
         setIsCheckingInstall(false);
       }
@@ -54,7 +54,7 @@ const DownloadButton = () => {
         setDeferredPrompt(e);
         deferredPromptRef.current = e;
       } catch (error) {
-        console.log("Error handling beforeinstallprompt:", error);
+        console.log('Error handling beforeinstallprompt:', error);
       }
     };
 
@@ -65,27 +65,27 @@ const DownloadButton = () => {
         setDeferredPrompt(null);
         deferredPromptRef.current = null;
         toaster.create({
-          title: "App Installed!",
-          description: "Spades Calculator has been added to your home screen.",
-          type: "success",
+          title: 'App Installed!',
+          description: 'Spades Calculator has been added to your home screen.',
+          type: 'success',
           duration: 3000,
         });
       } catch (error) {
-        console.log("Error handling appinstalled:", error);
+        console.log('Error handling appinstalled:', error);
       }
     };
 
     // Only add event listeners if window is available
-    if (typeof window !== "undefined") {
-      window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      window.addEventListener("appinstalled", handleAppInstalled);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.addEventListener('appinstalled', handleAppInstalled);
 
       return () => {
         window.removeEventListener(
-          "beforeinstallprompt",
+          'beforeinstallprompt',
           handleBeforeInstallPrompt,
         );
-        window.removeEventListener("appinstalled", handleAppInstalled);
+        window.removeEventListener('appinstalled', handleAppInstalled);
       };
     }
   }, []);
@@ -100,34 +100,34 @@ const DownloadButton = () => {
         // Check if userChoice exists and is a Promise
         if (
           currentDeferredPrompt.userChoice &&
-          typeof currentDeferredPrompt.userChoice.then === "function"
+          typeof currentDeferredPrompt.userChoice.then === 'function'
         ) {
           const { outcome } = await currentDeferredPrompt.userChoice;
 
-          if (outcome === "accepted") {
+          if (outcome === 'accepted') {
             toaster.create({
-              title: "Installation Started!",
+              title: 'Installation Started!',
               description:
-                "Please follow the browser prompts to complete the installation.",
-              type: "success",
+                'Please follow the browser prompts to complete the installation.',
+              type: 'success',
               duration: 3000,
             });
           } else {
             toaster.create({
-              title: "Installation Cancelled",
+              title: 'Installation Cancelled',
               description:
-                "You can try again anytime by clicking the download button.",
-              type: "info",
+                'You can try again anytime by clicking the download button.',
+              type: 'info',
               duration: 3000,
             });
           }
         } else {
           // If userChoice is not available, show a generic success message
           toaster.create({
-            title: "Installation Prompt Shown",
+            title: 'Installation Prompt Shown',
             description:
-              "Please follow the browser prompts to complete the installation.",
-            type: "info",
+              'Please follow the browser prompts to complete the installation.',
+            type: 'info',
             duration: 3000,
           });
         }
@@ -163,7 +163,7 @@ const DownloadButton = () => {
       // For desktop browsers, show manual instructions
       showManualInstallInstructions();
     } catch (error) {
-      console.error("Error during installation:", error);
+      console.error('Error during installation:', error);
       showManualInstallInstructions();
     }
   };
@@ -176,38 +176,38 @@ const DownloadButton = () => {
     isSafari: boolean,
     isFirefox: boolean,
   ) => {
-    let instructions = "";
-    let title = "Install Instructions";
+    let instructions = '';
+    let title = 'Install Instructions';
 
     if (isIOS) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else if (isSafari) {
-        title = "Install in Safari";
+        title = 'Install in Safari';
         instructions = 'Tap the Share button (📤), then "Add to Home Screen"';
       } else if (isChrome) {
-        title = "Install in Chrome";
+        title = 'Install in Chrome';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
-        title = "Install on iOS";
+        title = 'Install on iOS';
         instructions =
           'Tap the Share button (📤) in your browser, then "Add to Home Screen"';
       }
     } else if (isAndroid) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else if (isChrome) {
-        title = "Install in Chrome";
+        title = 'Install in Chrome';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else if (isFirefox) {
-        title = "Install in Firefox";
+        title = 'Install in Firefox';
         instructions = 'Tap the menu (⋯), then "Add to Home Screen"';
       } else {
-        title = "Install on Android";
+        title = 'Install on Android';
         instructions =
           'Tap the menu (⋯) in your browser, then "Add to Home Screen"';
       }
@@ -216,7 +216,7 @@ const DownloadButton = () => {
     toaster.create({
       title: title,
       description: instructions,
-      type: "info",
+      type: 'info',
       duration: 8000,
     });
   };
@@ -229,44 +229,44 @@ const DownloadButton = () => {
     const isChrome = /Chrome/.test(navigator.userAgent) && !isBrave;
     const isFirefox = /Firefox/.test(navigator.userAgent);
 
-    let instructions = "";
-    let title = "Install Instructions";
+    let instructions = '';
+    let title = 'Install Instructions';
 
     if (isIOS) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else {
-        title = "Install on iOS";
+        title = 'Install on iOS';
         instructions =
           'Tap the Share button (📤) in Safari, then "Add to Home Screen"';
       }
     } else if (isAndroid) {
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           'Tap the menu (⋯) in Brave, then look for "Add to Home Screen" or "Install App". If you don\'t see these options, try tapping "Share" first.';
       } else {
-        title = "Install on Android";
+        title = 'Install on Android';
         instructions = 'Tap the menu (⋯) in Chrome, then "Add to Home Screen"';
       }
     } else {
       // Desktop browsers
       if (isBrave) {
-        title = "Install in Brave Browser";
+        title = 'Install in Brave Browser';
         instructions =
           "Look for the install icon (↗️) in Brave's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
       } else if (isChrome) {
-        title = "Install in Chrome";
+        title = 'Install in Chrome';
         instructions =
           "Look for the install icon (↗️) in Chrome's address bar, or tap the menu (⋯) and select 'Install Spades Calculator'";
       } else if (isFirefox) {
-        title = "Install in Firefox";
+        title = 'Install in Firefox';
         instructions =
           "Tap the menu (⋯) in Firefox and select 'Install Spades Calculator'";
       } else {
-        title = "Install Instructions";
+        title = 'Install Instructions';
         instructions =
           "Look for the share/install icon (↗️) in your browser's address bar";
       }
@@ -275,7 +275,7 @@ const DownloadButton = () => {
     toaster.create({
       title: title,
       description: instructions,
-      type: "info",
+      type: 'info',
       duration: 8000,
     });
   };

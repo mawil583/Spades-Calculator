@@ -1,24 +1,24 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Provider } from "../components/ui/provider";
-import { MemoryRouter } from "react-router-dom";
-import { GlobalContext } from "../helpers/context/GlobalContext";
-import NameForm from "../components/forms/NameForm";
-import { initialNames } from "../helpers/utils/constants"; // Should contain 'Team 1', 'Team 2'
-import { vi } from "vitest";
-import React from "react";
-import type { GlobalContextValue, Round } from "../types";
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { Provider } from '../components/ui/provider';
+import { MemoryRouter } from 'react-router-dom';
+import { GlobalContext } from '../helpers/context/GlobalContext';
+import NameForm from '../components/forms/NameForm';
+import { initialNames } from '../helpers/utils/constants'; // Should contain 'Team 1', 'Team 2'
+import { vi } from 'vitest';
+import React from 'react';
+import type { GlobalContextValue, Round } from '../types';
 
 // Mock hooks
 const { mockUseLocalStorage } = vi.hoisted(() => {
   return { mockUseLocalStorage: vi.fn() };
 });
 
-vi.mock("../helpers/utils/hooks", () => ({
+vi.mock('../helpers/utils/hooks', () => ({
   useLocalStorage: mockUseLocalStorage,
 }));
 
 // Mock WarningModal to simulate trigger
-vi.mock("../components/modals/WarningModal", () => ({
+vi.mock('../components/modals/WarningModal', () => ({
   default: ({
     isOpen,
     resetNames,
@@ -45,8 +45,8 @@ vi.mock("../components/modals/WarningModal", () => ({
 }));
 
 vi.mock(
-  "react-router-dom",
-  async (importOriginal: () => Promise<typeof import("react-router-dom")>) => {
+  'react-router-dom',
+  async (importOriginal: () => Promise<typeof import('react-router-dom')>) => {
     const actual = await importOriginal();
     // This mock is likely intended to mock specific hooks or components from react-router-dom
     // The `isNotDefaultValue` function here seems to be a copy-paste error from spadesMath mock.
@@ -61,15 +61,15 @@ vi.mock(
 
 // Mock math helpers
 vi.mock(
-  "../helpers/math/spadesMath",
+  '../helpers/math/spadesMath',
   async (
-    importOriginal: () => Promise<typeof import("../helpers/math/spadesMath")>,
+    importOriginal: () => Promise<typeof import('../helpers/math/spadesMath')>,
   ) => {
     const actual = await importOriginal();
     return {
       ...actual,
       isNotDefaultValue: vi.fn(
-        (val) => val !== "" && val !== undefined && val !== null,
+        (val) => val !== '' && val !== undefined && val !== null,
       ),
     };
   },
@@ -88,21 +88,21 @@ const renderWithProviders = (
   );
 };
 
-describe("Team Name Reset Verification", () => {
+describe('Team Name Reset Verification', () => {
   const defaultContext: Partial<GlobalContextValue> = {
     roundHistory: [
       {
         team1BidsAndActuals: {
-          p1Bid: "1",
-          p2Bid: "2",
-          p1Actual: "3",
-          p2Actual: "4",
+          p1Bid: '1',
+          p2Bid: '2',
+          p1Actual: '3',
+          p2Actual: '4',
         },
         team2BidsAndActuals: {
-          p1Bid: "1",
-          p2Bid: "2",
-          p1Actual: "3",
-          p2Actual: "4",
+          p1Bid: '1',
+          p2Bid: '2',
+          p1Actual: '3',
+          p2Actual: '4',
         },
       } as unknown as Round as unknown as Round,
     ],
@@ -113,12 +113,12 @@ describe("Team Name Reset Verification", () => {
     const setNames = vi.fn();
     // Start with CUSTOM team names
     const currentNames = {
-      team1Name: "Alpha Squad",
-      team2Name: "Omega Squad",
-      t1p1Name: "Alice",
-      t1p2Name: "Bob",
-      t2p1Name: "Charlie",
-      t2p2Name: "Dave",
+      team1Name: 'Alpha Squad',
+      team2Name: 'Omega Squad',
+      t1p1Name: 'Alice',
+      t1p2Name: 'Bob',
+      t2p1Name: 'Charlie',
+      t2p2Name: 'Dave',
     };
 
     mockUseLocalStorage.mockReturnValue([currentNames, setNames]);
@@ -127,24 +127,24 @@ describe("Team Name Reset Verification", () => {
 
     // Initial state check (optional, finding input values might be tricky with Editable/Hidden,
     // Open Warning Modal
-    fireEvent.click(screen.getByText("New Game"));
+    fireEvent.click(screen.getByText('New Game'));
     await waitFor(() => {
-      expect(screen.getByTestId("warning-modal")).toBeInTheDocument();
+      expect(screen.getByTestId('warning-modal')).toBeInTheDocument();
     });
 
     // Trigger Reset
-    const triggerBtn = screen.getByTestId("trigger-reset");
+    const triggerBtn = screen.getByTestId('trigger-reset');
     fireEvent.click(triggerBtn);
 
     // Verify setNames was called with initialNames, which should contain "Team 1" and "Team 2"
     expect(setNames).toHaveBeenCalledWith(
       expect.objectContaining({
-        team1Name: "Team 1",
-        team2Name: "Team 2",
-        t1p1Name: "",
-        t1p2Name: "",
-        t2p1Name: "",
-        t2p2Name: "",
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
       }),
     );
   });

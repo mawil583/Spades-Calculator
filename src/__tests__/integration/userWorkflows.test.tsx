@@ -1,11 +1,11 @@
-import { vi } from "vitest";
+import { vi } from 'vitest';
 
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import type { ReactNode } from "react";
-import { Provider } from "../../components/ui/provider";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
-import { StateProvider } from "../../helpers/context/GlobalContext";
-import HomePage from "../../pages/HomePage";
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import type { ReactNode } from 'react';
+import { Provider } from '../../components/ui/provider';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { StateProvider } from '../../helpers/context/GlobalContext';
+import HomePage from '../../pages/HomePage';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -13,17 +13,17 @@ const mockLocalStorage = {
   setItem: vi.fn(),
   clear: vi.fn(),
 };
-Object.defineProperty(window, "localStorage", {
+Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
 // Mock the math functions
-vi.mock("../helpers/math/spadesMath", async (importOriginal) => {
+vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
     addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
-    isNotDefaultValue: vi.fn((value) => value !== ""),
+    isNotDefaultValue: vi.fn((value) => value !== ''),
     calculateTeamScore: vi.fn((bids: string[], actuals: string[]) => {
       const totalBid = bids.reduce(
         (sum: number, bid: string) => sum + (parseInt(bid) || 0),
@@ -42,11 +42,11 @@ vi.mock("../helpers/math/spadesMath", async (importOriginal) => {
   };
 });
 
-const renderWithProviders = (component: ReactNode, initialEntries = ["/"]) => {
+const renderWithProviders = (component: ReactNode, initialEntries = ['/']) => {
   const router = createMemoryRouter(
     [
       {
-        path: "/",
+        path: '/',
         element: component,
       },
     ],
@@ -64,39 +64,39 @@ const renderWithProviders = (component: ReactNode, initialEntries = ["/"]) => {
   );
 };
 
-describe("Complete User Workflows", () => {
+describe('Complete User Workflows', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockLocalStorage.getItem.mockReturnValue(null);
   });
 
-  describe("Basic Game Setup Workflow", () => {
-    it("should complete full game setup process", async () => {
+  describe('Basic Game Setup Workflow', () => {
+    it('should complete full game setup process', async () => {
       renderWithProviders(<HomePage />);
 
       // Fill in team names
       // Fill in team names
-      const team1Display = screen.getByText("Team 1");
+      const team1Display = screen.getByText('Team 1');
       fireEvent.click(team1Display);
-      const team1Input = screen.getByDisplayValue("Team 1");
-      fireEvent.change(team1Input, { target: { value: "Team A" } });
+      const team1Input = screen.getByDisplayValue('Team 1');
+      fireEvent.change(team1Input, { target: { value: 'Team A' } });
       fireEvent.blur(team1Input);
 
-      const team2Display = screen.getByText("Team 2");
+      const team2Display = screen.getByText('Team 2');
       fireEvent.click(team2Display);
-      const team2Input = screen.getByDisplayValue("Team 2");
-      fireEvent.change(team2Input, { target: { value: "Team B" } });
+      const team2Input = screen.getByDisplayValue('Team 2');
+      fireEvent.change(team2Input, { target: { value: 'Team B' } });
       fireEvent.blur(team2Input);
 
       // Fill in player names
-      const playerInputs = screen.getAllByRole("textbox");
-      fireEvent.change(playerInputs[0], { target: { value: "Player 1" } });
-      fireEvent.change(playerInputs[1], { target: { value: "Player 2" } });
-      fireEvent.change(playerInputs[2], { target: { value: "Player 3" } });
-      fireEvent.change(playerInputs[3], { target: { value: "Player 4" } });
+      const playerInputs = screen.getAllByRole('textbox');
+      fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });
+      fireEvent.change(playerInputs[1], { target: { value: 'Player 2' } });
+      fireEvent.change(playerInputs[2], { target: { value: 'Player 3' } });
+      fireEvent.change(playerInputs[3], { target: { value: 'Player 4' } });
 
       // Submit the form
-      const startButton = screen.getByText("Start");
+      const startButton = screen.getByText('Start');
       fireEvent.click(startButton);
 
       // Verify navigation to game page
@@ -106,12 +106,12 @@ describe("Complete User Workflows", () => {
     });
   });
 
-  describe("Form Validation Workflow", () => {
-    it("should handle form validation errors gracefully", async () => {
+  describe('Form Validation Workflow', () => {
+    it('should handle form validation errors gracefully', async () => {
       renderWithProviders(<HomePage />);
 
       // Try to submit without filling required fields
-      const startButton = screen.getByText("Start");
+      const startButton = screen.getByText('Start');
       fireEvent.click(startButton);
 
       // Should stay on the same page and show validation errors
@@ -120,31 +120,31 @@ describe("Complete User Workflows", () => {
       });
     });
 
-    it("should handle valid form submission", async () => {
+    it('should handle valid form submission', async () => {
       renderWithProviders(<HomePage />);
 
       // Fill in form with valid data
       // Fill in form with valid data
-      const team1Display = screen.getByText("Team 1");
+      const team1Display = screen.getByText('Team 1');
       fireEvent.click(team1Display);
-      const team1Input = screen.getByDisplayValue("Team 1");
-      fireEvent.change(team1Input, { target: { value: "Team A" } });
+      const team1Input = screen.getByDisplayValue('Team 1');
+      fireEvent.change(team1Input, { target: { value: 'Team A' } });
       fireEvent.blur(team1Input);
 
-      const team2Display = screen.getByText("Team 2");
+      const team2Display = screen.getByText('Team 2');
       fireEvent.click(team2Display);
-      const team2Input = screen.getByDisplayValue("Team 2");
-      fireEvent.change(team2Input, { target: { value: "Team B" } });
+      const team2Input = screen.getByDisplayValue('Team 2');
+      fireEvent.change(team2Input, { target: { value: 'Team B' } });
       fireEvent.blur(team2Input);
 
-      const playerInputs = screen.getAllByRole("textbox");
-      fireEvent.change(playerInputs[0], { target: { value: "Player 1" } });
-      fireEvent.change(playerInputs[1], { target: { value: "Player 2" } });
-      fireEvent.change(playerInputs[2], { target: { value: "Player 3" } });
-      fireEvent.change(playerInputs[3], { target: { value: "Player 4" } });
+      const playerInputs = screen.getAllByRole('textbox');
+      fireEvent.change(playerInputs[0], { target: { value: 'Player 1' } });
+      fireEvent.change(playerInputs[1], { target: { value: 'Player 2' } });
+      fireEvent.change(playerInputs[2], { target: { value: 'Player 3' } });
+      fireEvent.change(playerInputs[3], { target: { value: 'Player 4' } });
 
       // Submit the form
-      const startButton = screen.getByText("Start");
+      const startButton = screen.getByText('Start');
       fireEvent.click(startButton);
 
       // Verify navigation to game page
@@ -154,8 +154,8 @@ describe("Complete User Workflows", () => {
     });
   });
 
-  describe("PWA Integration Workflow", () => {
-    it("should show and handle offline download in menu", async () => {
+  describe('PWA Integration Workflow', () => {
+    it('should show and handle offline download in menu', async () => {
       renderWithProviders(<HomePage />);
 
       // Open menu
@@ -170,8 +170,8 @@ describe("Complete User Workflows", () => {
     });
   });
 
-  describe("Settings Integration Workflow", () => {
-    it("should show scoring rules in settings modal", async () => {
+  describe('Settings Integration Workflow', () => {
+    it('should show scoring rules in settings modal', async () => {
       renderWithProviders(<HomePage />);
 
       // Open settings
@@ -190,7 +190,7 @@ describe("Complete User Workflows", () => {
       expect(screen.getByText(/No Bags\/No Help/i)).toBeInTheDocument();
     });
 
-    it("should allow changing scoring rules in modal", async () => {
+    it('should allow changing scoring rules in modal', async () => {
       renderWithProviders(<HomePage />);
 
       // Open settings
