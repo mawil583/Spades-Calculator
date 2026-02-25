@@ -36,7 +36,12 @@ function AppModal({
   ...rest
 }: AppModalProps) {
   return (
-    <DialogRoot open={isOpen} onOpenChange={(e) => onClose(e.open)} {...rest}>
+    <DialogRoot
+      open={isOpen}
+      onOpenChange={(e) => onClose(e.open)}
+      preventScroll={false}
+      {...rest}
+    >
       <DialogBackdrop
         style={{
           backdropFilter: 'blur(4px)',

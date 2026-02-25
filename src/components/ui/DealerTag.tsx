@@ -93,12 +93,14 @@ const DealerTag = ({
         >
           D
         </Badge>
-        <DealerSelectionModal
-          isOpen={isOpen}
-          onClose={setIsOpen}
-          dealerOptions={dealerOptions}
-          onSelectDealer={onSelectDealer}
-        />
+        {isOpen && (
+          <DealerSelectionModal
+            isOpen={isOpen}
+            onClose={setIsOpen}
+            dealerOptions={dealerOptions}
+            onSelectDealer={onSelectDealer}
+          />
+        )}
       </>
     )
   );

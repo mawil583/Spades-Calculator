@@ -196,14 +196,12 @@ export function useGameScores() {
   const roundHistory = context?.roundHistory;
   const currentRound = context?.currentRound || null;
 
-  // Safe generic read?
-  const nilSettingStr =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('nilScoringRule')
-      : null;
-  const nilSetting: NilSetting | null = nilSettingStr
-    ? JSON.parse(nilSettingStr)
-    : null;
+  // Safe generic read
+  const nilSetting: NilSetting | null = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    const nilSettingStr = localStorage.getItem('nilScoringRule');
+    return nilSettingStr ? JSON.parse(nilSettingStr) : null;
+  }, []); // Empty deps because it represents the initial/constant config for this hook's lifecycle
 
   // Memoize history score calculation
   const historyScores = useMemo(() => {

@@ -19,7 +19,7 @@ interface PlayerInputProps {
   currentRound: Round;
   teamClassName: string;
   fieldToUpdate: string;
-  onOpenModal?: (args: ModalOpenArgs) => void;
+  onOpenParentModal?: (args: ModalOpenArgs) => void;
   teamName?: string; // allow it but we might not use it
 }
 
@@ -35,13 +35,14 @@ const PlayerInput = ({
   currentRound,
   teamClassName,
   fieldToUpdate,
-  onOpenModal,
+  onOpenParentModal,
 }: PlayerInputProps) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLocalModalOpen, setIsLocalModalOpen] = useState(false);
+  const isUsingParentModal = Boolean(onOpenParentModal);
 
   const onEdit = () => {
-    if (onOpenModal) {
-      onOpenModal({
+    if (isUsingParentModal && onOpenParentModal) {
+      onOpenParentModal({
         fieldToUpdate,
         type,
         playerName,
@@ -49,7 +50,7 @@ const PlayerInput = ({
         dealerId,
       });
     } else {
-      setIsModalOpen(true);
+      setIsLocalModalOpen(true);
     }
   };
 
@@ -62,12 +63,12 @@ const PlayerInput = ({
 
   return (
     <>
-      {!onOpenModal && (
+      {!isUsingParentModal && isLocalModalOpen && (
         <InputModal
           isCurrent={isCurrent}
           playerName={playerName}
-          isOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
+          isOpen={isLocalModalOpen}
+          setIsModalOpen={setIsLocalModalOpen}
           type={type}
           fieldToUpdate={fieldToUpdate}
           currentRound={currentRound}

@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, useMemo } from 'react';
 import { Container, Separator } from '../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -15,9 +15,13 @@ import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
 import { GlobalContext } from '../../helpers/context/GlobalContext';
-import { getNames, getNilSetting } from '../../helpers/utils/storage';
 
-import type { Round as RoundType, InputValue } from '../../types';
+import type {
+  Round as RoundType,
+  InputValue,
+  Names,
+  NilSetting,
+} from '../../types';
 
 interface RoundProps {
   roundHistory: RoundType[];
@@ -31,8 +35,21 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
 
   const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
 
-  const names = getNames();
-  const nilSetting = getNilSetting();
+  const namesStr =
+    typeof window !== 'undefined' ? localStorage.getItem('names') : null;
+  const names: Names | null = useMemo(
+    () => (namesStr ? JSON.parse(namesStr) : null),
+    [namesStr],
+  );
+
+  const nilSettingStr =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('nilScoringRule')
+      : null;
+  const nilSetting: NilSetting | null = useMemo(
+    () => (nilSettingStr ? JSON.parse(nilSettingStr) : null),
+    [nilSettingStr],
+  );
 
   const roundAtIndex = isCurrent ? null : (roundHistory?.[roundIndex] ?? null);
   const roundInputs = isCurrent ? currentRound : roundAtIndex;

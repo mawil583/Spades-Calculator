@@ -29,7 +29,7 @@ interface TablePlayerInputProps {
   teamClassName: string;
   currentRound: Round;
   fieldToUpdate: string;
-  onOpenModal: (args: ModalOpenArgs) => void;
+  onOpenParentModal: (args: ModalOpenArgs) => void;
   bidDisplay?: InputValue;
   showBid?: boolean;
   bidField?: string;
@@ -49,7 +49,7 @@ const TablePlayerInput = memo(
     teamClassName,
     currentRound,
     fieldToUpdate,
-    onOpenModal,
+    onOpenParentModal,
     bidDisplay, // Pass bid specific string if needed
     showBid, // Pass boolean to show bid
     bidField, // Pass bid field for editing
@@ -105,7 +105,7 @@ const TablePlayerInput = memo(
           align="center"
           justify="center"
           cursor="pointer"
-          onClick={() => onOpenModal({ fieldToUpdate, type, playerName })}
+          onClick={() => onOpenParentModal({ fieldToUpdate, type, playerName })}
           p={2}
           borderRadius="md"
           _hover={{ bg: 'whiteAlpha.100' }}
@@ -201,7 +201,7 @@ const TablePlayerInput = memo(
               _hover={{ bg: 'gray.700' }}
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
-                onOpenModal({
+                onOpenParentModal({
                   fieldToUpdate: bidField || '',
                   type: 'Bid',
                   playerName,
@@ -498,7 +498,7 @@ function TableRound({
         roundHistory={roundHistory}
         currentRound={currentRound}
         index={roundIndex}
-        onOpenModal={handleOpenModal}
+        onOpenParentModal={handleOpenModal}
         showBid={allBidsEntered}
         bidDisplay={data.bid}
         bidField={data.bidField}
@@ -519,7 +519,7 @@ function TableRound({
         roundHistory={roundHistory}
         currentRound={currentRound}
         errorMessage={getActualsErrorText(totalActuals)}
-        onOpenModal={handleOpenModal}
+        onOpenParentModal={handleOpenModal}
       />
 
       {/* Hoisted Input Modal */}
