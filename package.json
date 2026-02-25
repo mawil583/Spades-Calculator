@@ -9,7 +9,7 @@
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix --max-warnings=0"
     ]
   },
@@ -47,15 +47,17 @@
     "preview": "vite preview",
     "unit": "vitest run",
     "unit:watch": "vitest",
-    "lint": "eslint src --ext .js,.jsx --fix --max-warnings=0",
-    "lint:check": "eslint src --ext .js,.jsx --max-warnings=0",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix --max-warnings=0",
+    "lint:check": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings=0",
     "lint:staged": "lint-staged",
-    "test:pwa": "playwright test tests/minimal-pwa-test.spec.js",
+    "typecheck": "tsc --noEmit",
+    "test:pwa": "playwright test tests/minimal-pwa-test.spec.ts",
     "test:pwa:ui": "playwright test --ui",
     "test:pwa:debug": "playwright test --debug",
     "test:browserstack": "node tests/browserstack.js",
     "lighthouse": "lighthouse http://localhost:5173 --output=json --output-path=./lighthouse-report.json",
-    "lighthouse:ci": "lhci autorun"
+    "lighthouse:ci": "lhci autorun",
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\""
   },
   "browserslist": {
     "production": [
@@ -71,6 +73,12 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.54.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
     "@vitejs/plugin-react": "^5.0.0",
     "browserstack-local": "^1.5.8",
     "chai": "^6.2.2",
@@ -84,7 +92,9 @@
     "lighthouse": "^13.0.1",
     "lint-staged": "^16.1.5",
     "playwright": "^1.54.2",
+    "prettier": "^3.8.1",
     "start-server-and-test": "^2.0.13",
+    "typescript": "^5.9.3",
     "vite": "^7.1.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-pwa": "^1.0.2",
