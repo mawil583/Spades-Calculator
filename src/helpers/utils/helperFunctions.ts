@@ -96,12 +96,17 @@ if there's anything in localStorage, then return that value;
 otherwise, set a default value for that key in localStorage
 */
 export const defaultLocalStorage = <T>(key: string, value: T): T => {
-  const item = window.localStorage.getItem(key);
-  if (!item) {
-    window.localStorage.setItem(key, JSON.stringify(value));
+  try {
+    const item = window.localStorage.getItem(key);
+    if (!item) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+      return value;
+    }
+    return JSON.parse(item);
+  } catch (err) {
+    console.error(`Error in defaultLocalStorage for key ${key}:`, err);
     return value;
   }
-  return JSON.parse(item);
 };
 
 export const getLocalStorage = <T>(key: string): T | null => {

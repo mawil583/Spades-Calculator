@@ -2,16 +2,15 @@ import { vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import { MemoryRouter } from 'react-router-dom';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import NameForm from '../components/forms/NameForm';
 import { initialNames } from '../helpers/utils/constants';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue } from '../types';
 
 // Mock mocks using vi.hoisted
-const { mockUseLocalStorage, mockedNavigate } = vi.hoisted(() => {
+const { mockedNavigate } = vi.hoisted(() => {
   return {
-    mockUseLocalStorage: vi.fn(),
     mockedNavigate: vi.fn(),
   };
 });
@@ -37,9 +36,7 @@ Object.defineProperty(window, 'localStorage', {
   value: mockLocalStorage,
 });
 
-vi.mock('../helpers/utils/hooks', () => ({
-  useLocalStorage: mockUseLocalStorage,
-}));
+// Removed useLocalStorage mock since NameForm uses GlobalContext directly now
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -83,6 +80,8 @@ const renderWithProviders = (
 
 describe('NameForm Button Logic', () => {
   const defaultContext = {
+    names: initialNames,
+    setNames: vi.fn(),
     roundHistory: [],
     currentRound: null,
     resetCurrentRound: vi.fn(),
@@ -95,7 +94,6 @@ describe('NameForm Button Logic', () => {
     vi.clearAllMocks();
     mockLocalStorage.clear();
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify(initialNames));
-    mockUseLocalStorage.mockReturnValue([initialNames, vi.fn()]);
   });
 
   it('should render "Start" button when no game data exists', () => {
@@ -146,8 +144,9 @@ describe('NameForm Button Logic', () => {
   });
 
   it('should render "Continue" and "New Game" buttons when names are modified', () => {
-    mockUseLocalStorage.mockReturnValue([
-      {
+    const contextWithModifiedNames = {
+      ...defaultContext,
+      names: {
         team1Name: 'Modified Team',
         team2Name: 'Team 2',
         t1p1Name: '',
@@ -155,10 +154,9 @@ describe('NameForm Button Logic', () => {
         t2p1Name: '',
         t2p2Name: '',
       },
-      vi.fn(),
-    ]);
+    };
 
-    renderWithProviders(<NameForm />, defaultContext);
+    renderWithProviders(<NameForm />, contextWithModifiedNames);
 
     expect(screen.queryByText('Start')).not.toBeInTheDocument();
     expect(screen.getByText('Continue')).toBeInTheDocument();
@@ -192,10 +190,10 @@ describe('NameForm Button Logic', () => {
       t2p1Name: 'Charlie',
       t2p2Name: 'Diana',
     };
-    mockUseLocalStorage.mockReturnValue([validNames, vi.fn()]);
 
     const contextWithHistory = {
       ...defaultContext,
+      names: validNames,
       roundHistory: [{ someData: 'test' }],
     };
 
@@ -203,7 +201,8 @@ describe('NameForm Button Logic', () => {
 
     const continueBtn = screen.getByText('Continue');
     expect(continueBtn).toBeEnabled();
-    fireEvent.click(continueBtn);
+    const form = continueBtn.closest('form') as HTMLFormElement;
+    fireEvent.submit(form);
 
     await waitFor(() => {
       expect(mockedNavigate).toHaveBeenCalledWith(

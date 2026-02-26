@@ -14,7 +14,7 @@ import RoundSummary from './RoundSummary';
 import BidSection from './BidSection';
 import ActualSection from './ActualSection';
 import RoundHeading from './RoundHeading';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 
 import type {
   Round as RoundType,

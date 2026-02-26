@@ -1,23 +1,14 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import { MemoryRouter } from 'react-router-dom';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import NameForm from '../components/forms/NameForm';
 import { initialNames } from '../helpers/utils/constants'; // Should contain 'Team 1', 'Team 2'
 import { vi } from 'vitest';
 import React from 'react';
 import type { GlobalContextValue, Round } from '../types';
 
-// Mock hooks
-const { mockUseLocalStorage } = vi.hoisted(() => {
-  return { mockUseLocalStorage: vi.fn() };
-});
-
-vi.mock('../helpers/utils/hooks', () => ({
-  useLocalStorage: mockUseLocalStorage,
-}));
-
-// Mock WarningModal to simulate trigger
+// Removed useLocalStorage mock as NameForm uses GlobalContext now
 vi.mock('../components/modals/WarningModal', () => ({
   default: ({
     isOpen,
@@ -89,7 +80,10 @@ const renderWithProviders = (
 };
 
 describe('Team Name Reset Verification', () => {
+  const setNames = vi.fn();
+
   const defaultContext: Partial<GlobalContextValue> = {
+    setNames,
     roundHistory: [
       {
         team1BidsAndActuals: {
@@ -110,7 +104,6 @@ describe('Team Name Reset Verification', () => {
   };
 
   it('should reset team names to "Team 1" and "Team 2" when Different Teams is selected', async () => {
-    const setNames = vi.fn();
     // Start with CUSTOM team names
     const currentNames = {
       team1Name: 'Alpha Squad',
@@ -121,9 +114,12 @@ describe('Team Name Reset Verification', () => {
       t2p2Name: 'Dave',
     };
 
-    mockUseLocalStorage.mockReturnValue([currentNames, setNames]);
+    const contextWithNames = {
+      ...defaultContext,
+      names: currentNames,
+    };
 
-    renderWithProviders(<NameForm />, defaultContext);
+    renderWithProviders(<NameForm />, contextWithNames);
 
     // Initial state check (optional, finding input values might be tricky with Editable/Hidden,
     // Open Warning Modal

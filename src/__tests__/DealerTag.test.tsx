@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import { render, screen, fireEvent, createEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue } from '../types';
 

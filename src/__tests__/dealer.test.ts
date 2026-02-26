@@ -1,3 +1,4 @@
+import type { InputValue } from '../types';
 import { getCurrentDealerId } from '../helpers/math/spadesMath';
 import { rotateArr } from '../helpers/utils/helperFunctions';
 import type { Round } from '../types';
@@ -43,31 +44,31 @@ describe('Dealer Functionality', () => {
       const roundHistory = [
         {
           team1BidsAndActuals: {
-            p1Bid: '3' as import('../types').InputValue,
-            p2Bid: '2' as import('../types').InputValue,
-            p1Actual: '3' as import('../types').InputValue,
-            p2Actual: '2' as import('../types').InputValue,
+            p1Bid: '3' as InputValue,
+            p2Bid: '2' as InputValue,
+            p1Actual: '3' as InputValue,
+            p2Actual: '2' as InputValue,
           },
           team2BidsAndActuals: {
-            p1Bid: '4' as import('../types').InputValue,
-            p2Bid: '4' as import('../types').InputValue,
-            p1Actual: '4' as import('../types').InputValue,
-            p2Actual: '4' as import('../types').InputValue,
+            p1Bid: '4' as InputValue,
+            p2Bid: '4' as InputValue,
+            p1Actual: '4' as InputValue,
+            p2Actual: '4' as InputValue,
           },
           dealerOverride: null, // No override for round 0
         },
         {
           team1BidsAndActuals: {
-            p1Bid: '2' as import('../types').InputValue,
-            p2Bid: '3' as import('../types').InputValue,
-            p1Actual: '2' as import('../types').InputValue,
-            p2Actual: '3' as import('../types').InputValue,
+            p1Bid: '2' as InputValue,
+            p2Bid: '3' as InputValue,
+            p1Actual: '2' as InputValue,
+            p2Actual: '3' as InputValue,
           },
           team2BidsAndActuals: {
-            p1Bid: '3' as import('../types').InputValue,
-            p2Bid: '5' as import('../types').InputValue,
-            p1Actual: '3' as import('../types').InputValue,
-            p2Actual: '5' as import('../types').InputValue,
+            p1Bid: '3' as InputValue,
+            p2Bid: '5' as InputValue,
+            p1Actual: '3' as InputValue,
+            p2Actual: '5' as InputValue,
           },
           dealerOverride: null, // No override for round 1
         },
@@ -126,16 +127,16 @@ describe('Dealer Functionality', () => {
       const roundHistoryWithOverride = [
         {
           team1BidsAndActuals: {
-            p1Bid: '3' as import('../types').InputValue,
-            p2Bid: '2' as import('../types').InputValue,
-            p1Actual: '3' as import('../types').InputValue,
-            p2Actual: '2' as import('../types').InputValue,
+            p1Bid: '3' as InputValue,
+            p2Bid: '2' as InputValue,
+            p1Actual: '3' as InputValue,
+            p2Actual: '2' as InputValue,
           },
           team2BidsAndActuals: {
-            p1Bid: '4' as import('../types').InputValue,
-            p2Bid: '4' as import('../types').InputValue,
-            p1Actual: '4' as import('../types').InputValue,
-            p2Actual: '4' as import('../types').InputValue,
+            p1Bid: '4' as InputValue,
+            p2Bid: '4' as InputValue,
+            p1Actual: '4' as InputValue,
+            p2Actual: '4' as InputValue,
           },
           dealerOverride: 'team2BidsAndActuals.p2Bid', // Override to David for round 0
         },
@@ -161,31 +162,31 @@ describe('Dealer Functionality', () => {
       const roundHistory = [
         {
           team1BidsAndActuals: {
-            p1Bid: '3' as import('../types').InputValue,
-            p2Bid: '2' as import('../types').InputValue,
-            p1Actual: '3' as import('../types').InputValue,
-            p2Actual: '2' as import('../types').InputValue,
+            p1Bid: '3' as InputValue,
+            p2Bid: '2' as InputValue,
+            p1Actual: '3' as InputValue,
+            p2Actual: '2' as InputValue,
           },
           team2BidsAndActuals: {
-            p1Bid: '4' as import('../types').InputValue,
-            p2Bid: '4' as import('../types').InputValue,
-            p1Actual: '4' as import('../types').InputValue,
-            p2Actual: '4' as import('../types').InputValue,
+            p1Bid: '4' as InputValue,
+            p2Bid: '4' as InputValue,
+            p1Actual: '4' as InputValue,
+            p2Actual: '4' as InputValue,
           },
           dealerOverride: 'team1BidsAndActuals.p2Bid', // Round 0 has Bob as dealer
         },
         {
           team1BidsAndActuals: {
-            p1Bid: '2' as import('../types').InputValue,
-            p2Bid: '3' as import('../types').InputValue,
-            p1Actual: '2' as import('../types').InputValue,
-            p2Actual: '3' as import('../types').InputValue,
+            p1Bid: '2' as InputValue,
+            p2Bid: '3' as InputValue,
+            p1Actual: '2' as InputValue,
+            p2Actual: '3' as InputValue,
           },
           team2BidsAndActuals: {
-            p1Bid: '3' as import('../types').InputValue,
-            p2Bid: '5' as import('../types').InputValue,
-            p1Actual: '3' as import('../types').InputValue,
-            p2Actual: '5' as import('../types').InputValue,
+            p1Bid: '3' as InputValue,
+            p2Bid: '5' as InputValue,
+            p1Actual: '3' as InputValue,
+            p2Actual: '5' as InputValue,
           },
           dealerOverride: 'team2BidsAndActuals.p1Bid', // Round 1 has Charlie as dealer
         },
@@ -231,16 +232,16 @@ describe('Dealer Functionality', () => {
 
       const roundWithNullOverride = {
         team1BidsAndActuals: {
-          p1Bid: '3' as import('../types').InputValue,
-          p2Bid: '2' as import('../types').InputValue,
-          p1Actual: '3' as import('../types').InputValue,
-          p2Actual: '2' as import('../types').InputValue,
+          p1Bid: '3' as InputValue,
+          p2Bid: '2' as InputValue,
+          p1Actual: '3' as InputValue,
+          p2Actual: '2' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '4' as import('../types').InputValue,
-          p2Bid: '4' as import('../types').InputValue,
-          p1Actual: '4' as import('../types').InputValue,
-          p2Actual: '4' as import('../types').InputValue,
+          p1Bid: '4' as InputValue,
+          p2Bid: '4' as InputValue,
+          p1Actual: '4' as InputValue,
+          p2Actual: '4' as InputValue,
         },
         dealerOverride: null,
       } as unknown as Round;
@@ -260,16 +261,16 @@ describe('Dealer Functionality', () => {
 
       const roundWithoutOverride = {
         team1BidsAndActuals: {
-          p1Bid: '3' as import('../types').InputValue,
-          p2Bid: '2' as import('../types').InputValue,
-          p1Actual: '3' as import('../types').InputValue,
-          p2Actual: '2' as import('../types').InputValue,
+          p1Bid: '3' as InputValue,
+          p2Bid: '2' as InputValue,
+          p1Actual: '3' as InputValue,
+          p2Actual: '2' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '4' as import('../types').InputValue,
-          p2Bid: '4' as import('../types').InputValue,
-          p1Actual: '4' as import('../types').InputValue,
-          p2Actual: '4' as import('../types').InputValue,
+          p1Bid: '4' as InputValue,
+          p2Bid: '4' as InputValue,
+          p1Actual: '4' as InputValue,
+          p2Actual: '4' as InputValue,
         },
         // No dealerOverride property
       };

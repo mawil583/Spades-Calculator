@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { Text, Stack } from '../ui';
 import { Radio, RadioGroup } from '../ui/radio';
 import { HelpCircle } from 'lucide-react';
@@ -6,14 +7,14 @@ import {
   NO_BAGS_NO_HELP,
   TAKES_BAGS,
 } from '../../helpers/utils/constants';
-import { useLocalStorage } from '../../helpers/utils/hooks';
+import { GlobalContext } from '../../store/GlobalContext';
 
 interface ScoreSettingProps {
   onOpenScoreHelp?: () => void;
 }
 
 function ScoreSetting({ onOpenScoreHelp }: ScoreSettingProps) {
-  const [nilRule, setNilRule] = useLocalStorage('nilScoringRule', TAKES_BAGS);
+  const { nilScoringRule, setNilScoringRule } = useContext(GlobalContext);
 
   const handleClick = () => {
     if (onOpenScoreHelp) {
@@ -42,9 +43,9 @@ function ScoreSetting({ onOpenScoreHelp }: ScoreSettingProps) {
       </Text>
       <RadioGroup
         onValueChange={(e: { value: string | null }) =>
-          setNilRule(e.value || '')
+          setNilScoringRule(e.value || '')
         }
-        value={nilRule}
+        value={nilScoringRule}
       >
         <Stack alignItems="start">
           <Radio value={TAKES_BAGS}>Takes Bags</Radio>

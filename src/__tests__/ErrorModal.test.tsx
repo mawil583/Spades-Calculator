@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from '../components/ui/provider';
 import ErrorModal from '../components/modals/ErrorModal';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round } from '../types';
 

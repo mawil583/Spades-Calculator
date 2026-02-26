@@ -5,7 +5,7 @@ import { Provider } from '../../components/ui/provider';
 import BidSection from '../../components/game/BidSection';
 import ActualSection from '../../components/game/ActualSection';
 import Round from '../../components/game/Round';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue, Round as RoundType } from '../../types';
 import type { ReactNode } from 'react';
 
@@ -49,7 +49,7 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
     team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-  } as unknown as import('../../types').Round as RoundType,
+  } as unknown as RoundType,
   setDealerOverride: vi.fn(),
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
@@ -93,9 +93,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          mockContextValue.currentRound as unknown as import('../../types').Round
-        }
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />,
     );
 
@@ -129,9 +127,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          mockContextValue.currentRound as unknown as import('../../types').Round
-        }
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />,
     );
 
@@ -166,9 +162,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          mockContextValue.currentRound as unknown as import('../../types').Round
-        }
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />,
     );
 
@@ -230,9 +224,7 @@ describe('Dealer Tag Integration at BidSection Level', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          mockContextValue.currentRound as unknown as import('../../types').Round
-        }
+        currentRound={mockContextValue.currentRound as unknown as RoundType}
       />,
     );
 
@@ -283,7 +275,7 @@ describe('Dealer Tag Visibility Tests', () => {
         p1Actual: '',
         p2Actual: '',
       },
-    } as unknown as import('../../types').Round;
+    } as unknown as RoundType;
 
     // Render bid section
     const { rerender } = renderWithProviders(
@@ -292,9 +284,7 @@ describe('Dealer Tag Visibility Tests', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          currentRoundWithBids as unknown as import('../../types').Round
-        }
+        currentRound={currentRoundWithBids as unknown as RoundType}
       />,
     );
 
@@ -313,9 +303,7 @@ describe('Dealer Tag Visibility Tests', () => {
             names={names}
             isCurrent={true}
             roundHistory={[]}
-            currentRound={
-              currentRoundWithBids as unknown as import('../../types').Round
-            }
+            currentRound={currentRoundWithBids as unknown as RoundType}
           />
         </GlobalContext.Provider>
       </Provider>,
@@ -339,7 +327,7 @@ describe('Dealer Tag Visibility Tests', () => {
         p1Actual: '2',
         p2Actual: '3',
       },
-    } as unknown as import('../../types').Round;
+    } as unknown as RoundType;
 
     // Create a context value with the current round data
     const contextWithRoundData = {
@@ -389,7 +377,7 @@ describe('Dealer Tag Visibility Tests', () => {
         p1Actual: '',
         p2Actual: '',
       },
-    } as unknown as import('../../types').Round;
+    } as unknown as RoundType;
 
     renderWithProviders(
       <BidSection
@@ -397,9 +385,7 @@ describe('Dealer Tag Visibility Tests', () => {
         names={names}
         isCurrent={true}
         roundHistory={[]}
-        currentRound={
-          currentRoundWithBids as unknown as import('../../types').Round
-        }
+        currentRound={currentRoundWithBids as unknown as RoundType}
       />,
     );
 

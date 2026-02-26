@@ -2,8 +2,7 @@ import { useEffect, useState, useContext } from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { useLocalStorage } from '../../helpers/utils/hooks';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import WarningModal from '../modals/WarningModal';
 import {
   hasPlayerNamesEntered,
@@ -12,14 +11,13 @@ import {
 
 import { TeamNameInput, PlayerNameInput } from './';
 import { Button, SimpleGrid, Center } from '../ui';
-import { initialNames } from '../../helpers/utils/constants';
 import type { Names } from '../../types';
 
 function NameForm() {
   const navigate = useNavigate();
-  const { roundHistory, currentRound } = useContext(GlobalContext);
+  const { roundHistory, currentRound, names, setNames } =
+    useContext(GlobalContext);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
-  const [names, setNames] = useLocalStorage<Names>('names', initialNames);
 
   const hasGameData =
     hasPlayerNamesEntered(names) ||

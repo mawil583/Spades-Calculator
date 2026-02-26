@@ -1,3 +1,4 @@
+import type { InputValue } from '../types';
 import {
   getActualsErrorText,
   getUnclaimedText,
@@ -111,7 +112,7 @@ describe('updateInput', () => {
 
   it('updates team1BidsAndActuals.p1Bid correctly', () => {
     const result = updateInput({
-      input: '5' as unknown as import('../types').InputValue,
+      input: '5' as unknown as InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: 'team1BidsAndActuals.p1Bid',
     });
@@ -123,7 +124,7 @@ describe('updateInput', () => {
 
   it('updates team2BidsAndActuals.p2Actual correctly', () => {
     const result = updateInput({
-      input: '6' as unknown as import('../types').InputValue,
+      input: '6' as unknown as InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: 'team2BidsAndActuals.p2Actual',
     });
@@ -136,7 +137,7 @@ describe('updateInput', () => {
   it('does not mutate the original object', () => {
     const original = JSON.parse(JSON.stringify(mockCurrentRound));
     updateInput({
-      input: '5' as unknown as import('../types').InputValue,
+      input: '5' as unknown as InputValue,
       currentRound: mockCurrentRound,
       fieldToUpdate: 'team1BidsAndActuals.p1Bid',
     });

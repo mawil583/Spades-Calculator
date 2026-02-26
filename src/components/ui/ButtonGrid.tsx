@@ -5,7 +5,7 @@ import {
   getEditedRoundHistory,
   updateInput,
 } from '../../helpers/utils/helperFunctions';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import type { Round, InputValue } from '../../types';
 
 export interface ButtonGridProps {

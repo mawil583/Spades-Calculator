@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Round, TableRound } from './';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 

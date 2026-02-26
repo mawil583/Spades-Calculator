@@ -3,7 +3,7 @@ import { AppModal, SimpleGrid, Flex } from '../ui';
 import { addInputs } from '../../helpers/math/spadesMath';
 import { PlayerInput } from '../forms';
 import { TeamInputHeading } from '../forms';
-import { GlobalContext } from '../../helpers/context';
+import { GlobalContext } from '../../store/GlobalContext';
 import type { Round, Names, ModalOpenArgs } from '../../types';
 
 export interface ErrorModalProps {
@@ -33,7 +33,7 @@ function ErrorModal({
 
   const currentRound = propCurrentRound || contextCurrentRound;
 
-  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound;
+  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound || {};
   const team1Actuals = {
     p1Actual: team1BidsAndActuals?.p1Actual ?? '',
     p2Actual: team1BidsAndActuals?.p2Actual ?? '',

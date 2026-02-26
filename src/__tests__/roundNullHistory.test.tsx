@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round as RoundType } from '../types';
 import RoundComponent from '../components/game/Round';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 
 const renderWithProviders = (
   component: ReactNode,

@@ -1,9 +1,10 @@
+import type { InputValue } from '../types';
 import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import PlayerInput from '../components/forms/PlayerInput';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
 import type { ReactNode } from 'react';
 
@@ -50,7 +51,7 @@ describe('PlayerInput', () => {
     index: 0,
     isCurrent: true,
     playerName: 'Test Player',
-    playerInput: '' as unknown as import('../types').InputValue,
+    playerInput: '' as unknown as InputValue,
     roundHistory: [],
     currentRound: {
       team1BidsAndActuals: {
@@ -91,7 +92,7 @@ describe('PlayerInput', () => {
     it('should show empty string instead of "Actual" button when playerInput is empty', () => {
       const props = {
         ...defaultProps,
-        playerInput: '' as unknown as import('../types').InputValue,
+        playerInput: '' as unknown as InputValue,
         type: 'Actual' as const,
       };
 
@@ -104,7 +105,7 @@ describe('PlayerInput', () => {
     it('should show empty string instead of "Bid" button when playerInput is empty and type is Bid', () => {
       const props = {
         ...defaultProps,
-        playerInput: '' as unknown as import('../types').InputValue,
+        playerInput: '' as unknown as InputValue,
         type: 'Bid' as const,
       };
 
@@ -119,7 +120,7 @@ describe('PlayerInput', () => {
     it('should show "Actual" button when playerInput is empty and type is Actual', () => {
       const props = {
         ...defaultProps,
-        playerInput: '' as unknown as import('../types').InputValue,
+        playerInput: '' as unknown as InputValue,
         type: 'Actual' as const,
       };
 
@@ -132,7 +133,7 @@ describe('PlayerInput', () => {
     it('should show "Bid" button when playerInput is empty and type is Bid', () => {
       const props = {
         ...defaultProps,
-        playerInput: '' as unknown as import('../types').InputValue,
+        playerInput: '' as unknown as InputValue,
         type: 'Bid' as const,
       };
 
@@ -147,7 +148,7 @@ describe('PlayerInput', () => {
     it('should allow editing individual inputs even when team total is being used', async () => {
       const props = {
         ...defaultProps,
-        playerInput: '' as unknown as import('../types').InputValue,
+        playerInput: '' as unknown as InputValue,
         type: 'Actual' as const,
       };
 
@@ -185,7 +186,7 @@ describe('PlayerInput', () => {
           {...defaultProps}
           type="Actual"
           fieldToUpdate="team1BidsAndActuals.p1Actual"
-          playerInput={'3' as unknown as import('../types').InputValue}
+          playerInput={'3' as unknown as InputValue}
           currentRound={mockCurrentRound as unknown as Round}
         />,
         { setCurrentRound: mockSetCurrentRound },
@@ -225,7 +226,7 @@ describe('PlayerInput', () => {
           {...defaultProps}
           type="Actual"
           fieldToUpdate="team1BidsAndActuals.p1Actual"
-          playerInput={'3' as unknown as import('../types').InputValue}
+          playerInput={'3' as unknown as InputValue}
           currentRound={mockCurrentRound as unknown as Round}
         />,
         { setCurrentRound: mockSetCurrentRound },

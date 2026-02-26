@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import WarningModal from '../components/modals/WarningModal';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
 
 // Mock the context values
@@ -14,6 +14,7 @@ const mockContextValue: Partial<GlobalContextValue> = {
   setFirstDealerOrder: vi.fn(),
   firstDealerOrder: ['player1', 'player2', 'player3', 'player4'],
   roundHistory: [],
+  setNames: vi.fn(),
 };
 
 const { mockedNavigate } = vi.hoisted(() => ({
@@ -115,17 +116,14 @@ describe('WarningModal', () => {
       const ctx = contextValue as GlobalContextValue;
 
       await waitFor(() => {
-        expect(window.localStorage.setItem).toHaveBeenCalledWith(
-          'names',
-          JSON.stringify({
-            t1p1Name: '',
-            t1p2Name: '',
-            t2p1Name: '',
-            t2p2Name: '',
-            team1Name: 'Team 1',
-            team2Name: 'Team 2',
-          }),
-        );
+        expect(ctx.setNames).toHaveBeenCalledWith({
+          t1p1Name: '',
+          t1p2Name: '',
+          t2p1Name: '',
+          t2p2Name: '',
+          team1Name: 'Team 1',
+          team2Name: 'Team 2',
+        });
       });
       await waitFor(() => {
         expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
@@ -391,18 +389,15 @@ describe('WarningModal', () => {
       // Then click Different Teams
       fireEvent.click(await screen.findByText('Different Teams'));
 
-      // Verify that localStorage.setItem was called with initialNames (empty player names)
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'names',
-        JSON.stringify({
-          t1p1Name: '',
-          t1p2Name: '',
-          t2p1Name: '',
-          t2p2Name: '',
-          team1Name: 'Team 1',
-          team2Name: 'Team 2',
-        }),
-      );
+      // Verify that setNames was called with initialNames (empty player names)
+      expect(contextValue.setNames).toHaveBeenCalledWith({
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+      });
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/');
     });

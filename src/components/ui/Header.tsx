@@ -5,7 +5,7 @@ import { SettingsModal, WarningModal } from '../modals';
 import { usePWAInstall } from '../../helpers/utils/usePWAInstall';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import {
   hasPlayerNamesEntered,
   hasRoundProgress,

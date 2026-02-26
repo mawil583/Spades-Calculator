@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Heading } from '../ui';
 import { InputModal } from '../modals';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { team1Color, team2Color } from '../../customTheme';
 
 import type { Round, InputValue, ModalOpenArgs } from '../../types';

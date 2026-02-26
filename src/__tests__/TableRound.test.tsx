@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
 import TableRound from '../components/game/TableRound';
 import { vi } from 'vitest';

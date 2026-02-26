@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 
 import { render, screen, within } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import ActualSection from '../components/game/ActualSection';
 import type { InputValue } from '../types';
 import type { ReactNode } from 'react';

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import Unclaimed from '../components/game/Unclaimed';
 import BidSection from '../components/game/BidSection';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 
 import { vi } from 'vitest';
 import type { GlobalContextValue, Round, InputValue } from '../types';

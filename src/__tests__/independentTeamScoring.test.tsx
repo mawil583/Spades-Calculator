@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import SpadesCalculator from '../pages/SpadesCalculator';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 
 import { vi } from 'vitest';
 import type { ReactNode } from 'react';
@@ -71,8 +71,18 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -89,7 +99,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -97,7 +110,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       // Mock the score calculation to return different values
       mockCalculateTeamScoreFromRoundHistory.mockImplementation(
@@ -130,8 +143,18 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -148,7 +171,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -156,7 +182,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -177,8 +203,18 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -195,7 +231,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -203,7 +242,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       // Mock the score calculation
       mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
@@ -251,8 +290,18 @@ describe('Independent Team Scoring', () => {
 
       // Start with Team 1 complete, Team 2 incomplete
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -269,7 +318,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -277,7 +329,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       // Mock initial score calculation
       mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
@@ -351,8 +403,18 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -369,7 +431,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -377,7 +442,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -396,8 +461,18 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       const contextValue = {
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
+        names: {
+          team1Name: 'Team Alpha',
+          team2Name: 'Team Beta',
+          t1p1Name: 'p1',
+          t1p2Name: 'p2',
+          t2p1Name: 'p3',
+          t2p2Name: 'p4',
+        },
+        setNames: vi.fn(),
+        nilScoringRule: 'takesBags',
+        setNilScoringRule: vi.fn(),
+        setDealerOverride: vi.fn(),
         currentRound: {
           team1BidsAndActuals: {
             p1Bid: '3',
@@ -414,7 +489,10 @@ describe('Independent Team Scoring', () => {
         } as unknown as Round,
         roundHistory: [],
         setRoundHistory: mockSetRoundHistory,
+        resetRoundHistory: vi.fn(),
         resetCurrentRound: mockResetCurrentRound,
+        setCurrentRound: vi.fn(),
+        isFirstGameAmongTeammates: false,
         firstDealerOrder: [
           'team1BidsAndActuals.p1Bid',
           'team2BidsAndActuals.p1Bid',
@@ -422,7 +500,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      };
+      } as unknown as GlobalContextValue;
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 

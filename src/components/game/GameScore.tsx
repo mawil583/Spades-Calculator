@@ -1,10 +1,11 @@
 import { Container, SimpleGrid } from '../ui';
 import TeamScore from './TeamScore';
 import { useGameScores } from '../../helpers/utils/hooks';
-import { getNames } from '../../helpers/utils/storage';
+import { useContext } from 'react';
+import { GlobalContext } from '../../store/GlobalContext';
 
 const GameScore = function () {
-  const names = getNames();
+  const { names } = useContext(GlobalContext);
 
   const { team1Score, team2Score } = useGameScores();
 

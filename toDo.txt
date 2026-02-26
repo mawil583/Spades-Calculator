@@ -1,8 +1,8 @@
 --High Priority--
 
+
 - See if I could put a div around both players names inside the bidding/actuals sections. The make it only wide enough to fit the content. Then do a space-between ORRR make it match the style of the round summary section where there's a centered heading and the value is directly underneath it. 
 There's a lot of things like "var(--app-spacing-5)" that are very verbose. Could we not just assign those to shorter, better named variables? 
-Verify - When toggling UI mode, the UI actually doesn’t update until closing the modal. Make sure it updates as soon as it is toggled, even before going out of the modal
 Go through customTheme and see if I can cut back on the amount of definitions I have. There shouldn't be that many use-cases for such a simple UI. There are probably outliers. Do an inventory of how many times each definition is used. Then remove the ones that aren't used much by swapping them with a more commonly used definition. This will ensure better consistency and simplicity.
 When I select a team's total actuals button, the button has a blue hue around it indicating that it's still selected or hovered. This is not desired. Remove the blue hue.
 Make UI more professional with background pictures, maybe a real card playing table, better wallpaper and Icons and animations. 
@@ -12,20 +12,18 @@ Organize app to where every .jsx file has a corresponding .test.jsx file within 
 
 --Backlog--
 There is a popup that says "ready for offline use". It has an X button to dismiss and it has y padding but not x padding, so it looks bad.
-In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
 see if it's possible to architect my app in such a way that past rounds and current rounds don't need to be logically separate. We could simply have a single history array that always stores to localStorage
-hook up useReducer for names, and nilScoringRule form state. 
 Try to decrease amount of props sent to ActualSection and PlayerInput
+Redo settings page to make sure language is very simple to follow for someone who is unfamiliar with spades. And make sure examples are very simple too.
 Translate my app into Ark UI and apply vanilla CSS with BEM and scoped CSS
 The ActualsValidationModal isn't being used anywhere. See if it can be used in place of ErrorModal. If not, delete it.
 The ErrorModal is copy-pasting most of ActualSection which is not DRY but if I import ActualSection into this, then I'll be in an infinite loop because I'll have an ActualSection that renders an error modal but this error modal renders an ActualSection. Refactor
 install react devtools
-make sure all instances of useLocalStorage are converted to redux. Or at least consider whether it makes sense to use both
+Verify - When toggling UI mode, the UI actually doesn’t update until closing the modal. Make sure it updates as soon as it is toggled, even before going out of the modal
 change name form to have team1 section span entire width, and team2 span entire width
-create a redux folder and put all corresponding files in it
 is passing 'isCurrent' prop down a code smell? consider refactoring for better separation of concerns for currentRound vs pastround. See onSelect function inside ButtonGrid.jsx
 refactor getCurrentDealerId
-do i need try/catch in reducer?
+In places where I'm doing a ton of prop drilling, spred props so that it's easier to see JSX structure
 implement validation for name length and team length such that it won't create layout issues on small mobile devices. consider also adding CSS that makes longer names possible without messing up the layout
 improve UI so that senior citizens can easily use my appI want to implement some animations and I'm wondering if I should download an additional UI library for this that is more capable than chakra. The current implementation is that the div for a round will resize according to its content. So when it only contains a bid section, it's a little bit smaller than if all bids have been entered and a new actuals section appears. Then the div for that round is larger to account for both. What I would like to have happen is, when the lat bid gets entered and the div expands to show the actuals section, I want the div to slowly expand to fit the actuals section, and I don't want the actuals section to show until the div has finally expanded (with the animation) to the point where it is fully expanded. While it's expanding I want the blank space to be gradually appearing above the bids section which will appear to the user as the bid section is slowly animating downwards as the div is increasing in height. Can such a specific animation be done using chakra, or should I use another animation utility?
 implement animation where Total Score at the top is sticky, and it shrinks as you scroll down the page
@@ -35,7 +33,6 @@ phase out classNames .team1 and .team2 inside App.css. Replace everything that u
 there's a hover state on the question mark ButtonIcon that turns background a certain color. Given the positioning of the ButtonIcon, it looks bad. Try changing its style from padding to margin.
 BidSection and ActualsSection are logially very similar. And it's annoying how I need to make changes in both of those components when it's always the same change. This is a code smell. Consider combining the two into one component
 PlayerInput accepts way too many props, and some of the props seem redundant. Refactor.
-now that I've moved currentRound state into global state with Context, make sure to remove any code from when it was hooked up to local component state
 i have resetCurrentRound() being invoked in both onContinue and onSameTeams. The user sometimes clicks onContinue before 'onSameTeams' button so the user sometimes sets state twice in a row? Is there a better solution for this, or is this pretty normal?
 getCurrentDealerId is an ugly function that's hard to reason about. refactor after currentRound vs pastround has been thoroughly sorted out.
 is getTeamClassName a bad solution for conditional styling?
@@ -70,7 +67,6 @@ buggy behavior when I try to move useSetScoreWhenRoundIsFinished into the hooks.
 go through codebase looking for comments. Add them to the backlog and then delete the comments
 In CurrentRound.jsx, isCurrent is being passed as a prop but maybe isCurrent should be defined from within BidSection in the form of state. Each instance of BidSection will have an isCurrent state that mounts true, but when it unmounts (or is added to roundHistory), then it switches to false. 
 find out if it's possible to adjust click/hover timing on mobile. Background... On mobile, hover gets activated before click does. onMouseDown (when the user clicks mouse without letting go) triggers hover. It's only onMouseUp (the user letting go of the click) that actually triggers a click. On mobile, if enough time passes between onMouseDown and onMouseUp, then the click event does not register. Is this default behavior something unique to a browser, or is it something that we can control with code? In other words, can we implement some functionality that would trigger a click event even after the user held down a button for 5 seconds? If so, find out what default time lapse would be, and increase it slightly so that we can avoid the scenario when a user accidentally holds the button for too long and it doesn't register a click
-
 
 Matt's suggestions:
 make sure that PastRound and CurrentRound don't know or set gameScore

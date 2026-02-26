@@ -2,7 +2,7 @@ import { useContext, useState, useMemo, useCallback, memo } from 'react';
 import { Box, Flex, Text } from '../ui';
 import { isNotDefaultValue, addInputs } from '../../helpers/math/spadesMath';
 import { useIndependentTeamScoring } from '../../helpers/utils/hooks';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { InputModal } from '../modals';
 import DealerTag from '../ui/DealerTag';
 import { ErrorModal } from '../modals';

@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import ButtonGrid from '../components/ui/ButtonGrid';
 import type { GlobalContextValue } from '../types';
 import type { ReactNode } from 'react';

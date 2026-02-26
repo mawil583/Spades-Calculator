@@ -6,11 +6,12 @@ import { UpdateNotification } from '../components';
 import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
 import { useFeatureFlag } from '../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../helpers/utils/featureFlags';
-import { getNames } from '../helpers/utils/storage';
+import { GlobalContext } from '../store/GlobalContext';
+import { useContext } from 'react';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
-  const names = getNames();
+  const { names } = useContext(GlobalContext);
   useRedirectWhenFalsey(names, navigate);
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 

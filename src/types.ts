@@ -81,6 +81,8 @@ export interface AppState {
   roundHistory: Round[];
   firstDealerOrder: string[];
   isFirstGameAmongTeammates: boolean;
+  names: Names;
+  nilScoringRule: string;
 }
 
 // ─── Reducer actions ──────────────────────────────────────────────────────
@@ -91,7 +93,9 @@ export type AppAction =
   | { type: 'SET_ROUND_HISTORY'; payload: { roundHistory: Round[] } }
   | { type: 'RESET_ROUND_HISTORY' }
   | { type: 'SET_FIRST_DEALER_ORDER'; payload: { firstDealerOrder: string[] } }
-  | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } };
+  | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } }
+  | { type: 'SET_NAMES'; payload: { names: Names } }
+  | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } };
 
 // ─── Shared UI types ────────────────────────────────────────────────────────
 export interface ModalOpenArgs {
@@ -116,12 +120,16 @@ export interface GlobalContextValue {
   roundHistory: Round[];
   firstDealerOrder: string[];
   isFirstGameAmongTeammates: boolean;
+  names: Names;
+  nilScoringRule: string;
   setCurrentRound: (args: UpdateInputArgs) => void;
   resetCurrentRound: () => void;
   setRoundHistory: (newRoundHistory: Round[]) => void;
   resetRoundHistory: () => void;
   setFirstDealerOrder: (newFirstDealerOrder: string[]) => void;
   setDealerOverride: (dealerOverride: string | null) => void;
+  setNames: (names: Names | ((val: Names) => Names)) => void;
+  setNilScoringRule: (rule: string) => void;
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────
