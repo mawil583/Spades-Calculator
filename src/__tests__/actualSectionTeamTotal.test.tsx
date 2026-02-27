@@ -5,19 +5,20 @@ import { Provider } from '../components/ui/provider';
 import ActualSection from '../components/game/ActualSection';
 import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
-import type { GlobalContextValue, InputValue, Round } from '../types';
+import type { InputValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock the context
 const mockSetCurrentRound = vi.fn();
 const mockSetRoundHistory = vi.fn();
 const mockResetCurrentRound = vi.fn();
 
-const mockContextValue: Partial<GlobalContextValue> = {
+const mockContextValue = createMockGlobalContext({
   currentRound: {} as Round,
   setCurrentRound: mockSetCurrentRound,
   setRoundHistory: mockSetRoundHistory,
   resetCurrentRound: mockResetCurrentRound,
-};
+});
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -33,9 +34,7 @@ Object.defineProperty(window, 'localStorage', {
 const renderWithProviders = (component: ReactNode) => {
   return render(
     <Provider>
-      <GlobalContext.Provider
-        value={mockContextValue as unknown as GlobalContextValue}
-      >
+      <GlobalContext.Provider value={mockContextValue}>
         {component}
       </GlobalContext.Provider>
     </Provider>,

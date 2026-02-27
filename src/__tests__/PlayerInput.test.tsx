@@ -7,6 +7,7 @@ import PlayerInput from '../components/forms/PlayerInput';
 import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
 import type { ReactNode } from 'react';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
@@ -18,7 +19,7 @@ vi.mock('../components/ui/DealerTag', () => ({
 }));
 
 describe('PlayerInput', () => {
-  const mockContextValue = {
+  const mockContextValue = createMockGlobalContext({
     firstDealerOrder: [
       'team1BidsAndActuals.p1Bid',
       'team2BidsAndActuals.p1Bid',
@@ -38,11 +39,11 @@ describe('PlayerInput', () => {
         p1Actual: '',
         p2Actual: '',
       },
-    } as unknown as Round,
+    },
     setCurrentRound: vi.fn(),
     setRoundHistory: vi.fn(),
     setDealerOverride: vi.fn(),
-  };
+  });
 
   const defaultProps = {
     inputId: 'testInput',

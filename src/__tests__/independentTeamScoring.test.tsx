@@ -24,7 +24,7 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
 
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <BrowserRouter>
@@ -110,7 +110,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       // Mock the score calculation to return different values
       mockCalculateTeamScoreFromRoundHistory.mockImplementation(
@@ -182,7 +182,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -242,7 +242,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       // Mock the score calculation
       mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
@@ -329,7 +329,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       // Mock initial score calculation
       mockCalculateTeamScoreFromRoundHistory.mockImplementation((_, name) => {
@@ -373,9 +373,7 @@ describe('Independent Team Scoring', () => {
       rerender(
         <BrowserRouter>
           <Provider>
-            <GlobalContext.Provider
-              value={updatedContextValue as unknown as GlobalContextValue}
-            >
+            <GlobalContext.Provider value={updatedContextValue}>
               <SpadesCalculator />
             </GlobalContext.Provider>
           </Provider>
@@ -442,7 +440,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 
@@ -500,7 +498,7 @@ describe('Independent Team Scoring', () => {
           'team2BidsAndActuals.p2Bid',
         ],
         setFirstDealerOrder: vi.fn(),
-      } as unknown as GlobalContextValue;
+      };
 
       renderWithProviders(<SpadesCalculator />, contextValue);
 

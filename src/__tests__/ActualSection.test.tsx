@@ -8,6 +8,7 @@ import ActualSection from '../components/game/ActualSection';
 import type { InputValue } from '../types';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -51,12 +52,12 @@ vi.mock('../helpers/utils/hooks', async (importOriginal) => {
 
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <Provider>
       <GlobalContext.Provider
-        value={contextValue as unknown as GlobalContextValue}
+        value={contextValue }
       >
         {component}
       </GlobalContext.Provider>
@@ -74,10 +75,7 @@ describe('ActualSection Component', () => {
     t2p2Name: 'Dad',
   };
 
-  const mockContextValue = {
-    setCurrentRound: vi.fn(),
-    setRoundHistory: vi.fn(),
-  };
+  const mockContextValue = createMockGlobalContext({ setCurrentRound: vi.fn(), setRoundHistory: vi.fn() });
 
   const defaultProps = {
     index: 0,

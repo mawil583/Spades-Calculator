@@ -8,6 +8,7 @@ import Round from '../../components/game/Round';
 import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue, Round as RoundType } from '../../types';
 import type { ReactNode } from 'react';
+import { createMockGlobalContext } from '../utils/mockContext';
 
 // Mock the spadesMath functions
 vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
@@ -39,7 +40,7 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
@@ -49,7 +50,7 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
     team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-  } as unknown as RoundType,
+  },
   setDealerOverride: vi.fn(),
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
@@ -58,7 +59,7 @@ const mockContextValue = {
   resetCurrentRound: vi.fn(),
   resetRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
-};
+});
 
 const renderWithProviders = (component: ReactNode) => {
   return render(

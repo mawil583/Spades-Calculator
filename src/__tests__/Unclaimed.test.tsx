@@ -6,6 +6,7 @@ import { GlobalContext } from '../store/GlobalContext';
 
 import { vi } from 'vitest';
 import type { GlobalContextValue, Round, InputValue } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock the dependencies
 vi.mock('../helpers/utils/hooks', async (importOriginal) => {
@@ -28,7 +29,7 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   };
 });
 
-const mockGlobalContext: Partial<GlobalContextValue> = {
+const mockGlobalContext = createMockGlobalContext({
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
@@ -40,7 +41,7 @@ const mockGlobalContext: Partial<GlobalContextValue> = {
     team2BidsAndActuals: { p1Bid: '4', p2Bid: '1', p1Actual: '', p2Actual: '' },
   } as unknown as Round as Round,
   setDealerOverride: vi.fn(),
-};
+});
 
 const renderWithChakra = (component: React.ReactNode) => {
   return render(

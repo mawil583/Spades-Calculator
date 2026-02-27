@@ -1,4 +1,3 @@
-import type { Round } from '../../types';
 import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -7,6 +6,7 @@ import { Provider } from '../../components/ui/provider';
 import SpadesCalculator from '../../pages/SpadesCalculator';
 import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue } from '../../types';
+import { createMockGlobalContext } from '../utils/mockContext';
 
 vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
@@ -21,7 +21,7 @@ vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
 });
 
 // Mock the context values
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   resetCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
@@ -30,7 +30,7 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
     team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-  } as unknown as Round,
+  },
   names: {
     t1p1Name: 'Alice',
     t1p2Name: 'Bob',
@@ -40,7 +40,7 @@ const mockContextValue = {
     team2Name: 'Team Beta',
   },
   setNames: vi.fn(),
-};
+});
 
 const renderApp = () => {
   return render(

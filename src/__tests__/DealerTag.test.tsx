@@ -5,7 +5,8 @@ import { Provider } from '../components/ui/provider';
 import DealerTag from '../components/ui/DealerTag';
 import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
-import type { GlobalContextValue } from '../types';
+import type { GlobalContextValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock the spadesMath functions
 vi.mock('../helpers/math/spadesMath', () => ({
@@ -30,16 +31,16 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 });
 
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
     'team1BidsAndActuals.p2Bid',
     'team2BidsAndActuals.p2Bid',
   ],
-  currentRound: {},
+  currentRound: {} as Round,
   setDealerOverride: vi.fn(),
-};
+});
 
 const renderWithProviders = (component: ReactNode) => {
   return render(

@@ -7,6 +7,7 @@ import Header from '../../components/ui/Header';
 import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../../types';
 import type { ReactNode } from 'react';
+import { createMockGlobalContext } from '../utils/mockContext';
 
 // Mock the context values
 vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
@@ -18,7 +19,7 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   };
 });
 
-const mockContextValue: GlobalContextValue = {
+const mockContextValue = createMockGlobalContext({
   resetCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
@@ -30,7 +31,7 @@ const mockContextValue: GlobalContextValue = {
   resetRoundHistory: vi.fn(),
   setDealerOverride: vi.fn(),
   setNames: vi.fn(),
-} as unknown as GlobalContextValue;
+});
 
 const renderWithProviders = (
   component: ReactNode,

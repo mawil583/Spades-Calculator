@@ -1,15 +1,19 @@
-import type { then } from 'web-vitals';
 import type { Metric } from 'web-vitals';
 
 const reportWebVitals = (onPerfEntry?: (metric: Metric) => void) => {
   if (typeof onPerfEntry === 'function') {
-    then(({ onCLS, onINP, onFCP, onLCP, onTTFB }) => {
-      onCLS(onPerfEntry);
-      onINP(onPerfEntry);
-      onFCP(onPerfEntry);
-      onLCP(onPerfEntry);
-      onTTFB(onPerfEntry);
-    });
+    import('web-vitals')
+      .then((webVitals) => {
+        const { onCLS, onINP, onFCP, onLCP, onTTFB } = webVitals;
+        onCLS(onPerfEntry);
+        onINP(onPerfEntry);
+        onFCP(onPerfEntry);
+        onLCP(onPerfEntry);
+        onTTFB(onPerfEntry);
+      })
+      .catch((err) => {
+        console.error('Error loading web-vitals', err);
+      });
   }
 };
 

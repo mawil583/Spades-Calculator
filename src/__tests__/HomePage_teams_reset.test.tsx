@@ -7,6 +7,7 @@ import { initialNames } from '../helpers/utils/constants'; // Should contain 'Te
 import { vi } from 'vitest';
 import React from 'react';
 import type { GlobalContextValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Removed useLocalStorage mock as NameForm uses GlobalContext now
 vi.mock('../components/modals/WarningModal', () => ({
@@ -68,7 +69,7 @@ vi.mock(
 
 const renderWithProviders = (
   component: React.ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <Provider>
@@ -82,7 +83,7 @@ const renderWithProviders = (
 describe('Team Name Reset Verification', () => {
   const setNames = vi.fn();
 
-  const defaultContext: Partial<GlobalContextValue> = {
+  const defaultContext = createMockGlobalContext({
     setNames,
     roundHistory: [
       {
@@ -101,7 +102,7 @@ describe('Team Name Reset Verification', () => {
       } as unknown as Round as unknown as Round,
     ],
     currentRound: undefined,
-  };
+  });
 
   it('should reset team names to "Team 1" and "Team 2" when Different Teams is selected', async () => {
     // Start with CUSTOM team names

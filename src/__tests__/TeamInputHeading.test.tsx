@@ -7,10 +7,11 @@ import TeamInputHeading from '../components/forms/TeamInputHeading';
 import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
@@ -30,11 +31,11 @@ const mockContextValue = {
       p1Actual: '',
       p2Actual: '',
     },
-  } as unknown as Round,
+  },
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setDealerOverride: vi.fn(),
-};
+});
 
 const renderWithContext = (component: ReactNode) => {
   return render(

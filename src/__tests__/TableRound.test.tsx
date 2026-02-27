@@ -5,6 +5,7 @@ import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
 import TableRound from '../components/game/TableRound';
 import { vi } from 'vitest';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Explicitly mock the hooks using vi.mock
 vi.mock('../helpers/utils/hooks', async (importOriginal) => {
@@ -29,7 +30,7 @@ const mockNames = {
   t2p2Name: 'Player 4',
 };
 
-const renderWithProviders = (contextValue: Partial<GlobalContextValue>) => {
+const renderWithProviders = (contextValue: GlobalContextValue) => {
   return render(
     <BrowserRouter>
       <Provider>
@@ -48,20 +49,31 @@ describe('TableRound Component', () => {
     vi.clearAllMocks();
   });
 
-  const getBaseContext = () => ({
-    currentRound: {
-      team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-      team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-    } as unknown as Round,
-    resetCurrentRound: vi.fn(),
-    setRoundHistory: vi.fn(),
-    firstDealerOrder: [
-      'team1BidsAndActuals.p1Bid',
-      'team2BidsAndActuals.p1Bid',
-      'team1BidsAndActuals.p2Bid',
-      'team2BidsAndActuals.p2Bid',
-    ],
-  });
+  const getBaseContext = () =>
+    createMockGlobalContext({
+      currentRound: {
+        team1BidsAndActuals: {
+          p1Bid: '',
+          p2Bid: '',
+          p1Actual: '',
+          p2Actual: '',
+        },
+        team2BidsAndActuals: {
+          p1Bid: '',
+          p2Bid: '',
+          p1Actual: '',
+          p2Actual: '',
+        },
+      } as unknown as Round,
+      resetCurrentRound: vi.fn(),
+      setRoundHistory: vi.fn(),
+      firstDealerOrder: [
+        'team1BidsAndActuals.p1Bid',
+        'team2BidsAndActuals.p1Bid',
+        'team1BidsAndActuals.p2Bid',
+        'team2BidsAndActuals.p2Bid',
+      ],
+    });
 
   it('renders all 4 player sections with correct names', () => {
     renderWithProviders(getBaseContext());
