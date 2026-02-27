@@ -430,13 +430,6 @@ describe('Dealer Functionality', () => {
 
       // The dealer should be t2p1, but the bug returns t1p2 (clonedfirstDealerOrder[1])
       expect(currentDealer).to.equal('team2BidsAndActuals.p1Bid');
-
-      // Let's also check what the bug actually returns
-      console.log('Current dealer:', currentDealer);
-      console.log('Expected: team2BidsAndActuals.p1Bid');
-      console.log(
-        'Bug returns: team1BidsAndActuals.p2Bid (clonedfirstDealerOrder[1])',
-      );
     });
 
     test('comprehensive dealer rotation test', () => {

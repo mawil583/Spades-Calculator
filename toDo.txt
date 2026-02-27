@@ -9,6 +9,7 @@ Make UI more professional with background pictures, maybe a real card playing ta
 make sure that the dealer tag also rotates once between games. Do this in TDD
 Some of my components have a ton of logic. Move logic to utils file. 
 Organize app to where every .jsx file has a corresponding .test.jsx file within the same directory. So each component has its own directory with 2 files, a test file and a component file. 
+Port 5173 is in use, trying another one... when running tests. Make sure ports in use are killed. 
 
 --Backlog--
 There is a popup that says "ready for offline use". It has an X button to dismiss and it has y padding but not x padding, so it looks bad.
