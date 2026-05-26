@@ -3,7 +3,7 @@ import {
   getDealerIdHistory,
   getCurrentDealerId,
 } from '../../helpers/math/spadesMath';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { Badge } from '../ui';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
 import { getNames } from '../../helpers/utils/storage';
@@ -93,12 +93,14 @@ const DealerTag = ({
         >
           D
         </Badge>
-        <DealerSelectionModal
-          isOpen={isOpen}
-          onClose={setIsOpen}
-          dealerOptions={dealerOptions}
-          onSelectDealer={onSelectDealer}
-        />
+        {isOpen && (
+          <DealerSelectionModal
+            isOpen={isOpen}
+            onClose={setIsOpen}
+            dealerOptions={dealerOptions}
+            onSelectDealer={onSelectDealer}
+          />
+        )}
       </>
     )
   );

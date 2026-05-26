@@ -57,7 +57,8 @@
     "test:browserstack": "node tests/browserstack.js",
     "lighthouse": "lighthouse http://localhost:5173 --output=json --output-path=./lighthouse-report.json",
     "lighthouse:ci": "lhci autorun",
-    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\""
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,css,md,json}\"",
+    "pre-commit": "npm run lint:staged && npm run unit && npm run e2e:headless && npm run build"
   },
   "browserslist": {
     "production": [

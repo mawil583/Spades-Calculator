@@ -4,9 +4,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../../components/ui/provider';
 import Header from '../../components/ui/Header';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../../types';
 import type { ReactNode } from 'react';
+import { createMockGlobalContext } from '../utils/mockContext';
 
 // Mock the context values
 vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
@@ -18,7 +19,7 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
   };
 });
 
-const mockContextValue: GlobalContextValue = {
+const mockContextValue = createMockGlobalContext({
   resetCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
@@ -29,7 +30,8 @@ const mockContextValue: GlobalContextValue = {
   setCurrentRound: vi.fn(),
   resetRoundHistory: vi.fn(),
   setDealerOverride: vi.fn(),
-} as unknown as GlobalContextValue;
+  setNames: vi.fn(),
+});
 
 const renderWithProviders = (
   component: ReactNode,
@@ -165,7 +167,7 @@ describe('New Game Flow Integration', () => {
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
-      expect(window.localStorage.setItem).toHaveBeenCalled();
+      expect(contextValue.setNames).toHaveBeenCalled();
     });
 
     it('should reset names to empty and navigate to home when selecting "Different Teams"', async () => {
@@ -197,18 +199,15 @@ describe('New Game Flow Integration', () => {
       const differentTeamsButton = await screen.findByText('Different Teams');
       fireEvent.click(differentTeamsButton);
 
-      // Verify that localStorage.setItem was called with initialNames (empty player names)
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'names',
-        JSON.stringify({
-          t1p1Name: '',
-          t1p2Name: '',
-          t2p1Name: '',
-          t2p2Name: '',
-          team1Name: 'Team 1',
-          team2Name: 'Team 2',
-        }),
-      );
+      // Verify that setNames was called with initialNames (empty player names)
+      expect(contextValue.setNames).toHaveBeenCalledWith({
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+      });
     });
   });
 
@@ -400,7 +399,7 @@ describe('New Game Flow Integration', () => {
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
-      expect(window.localStorage.setItem).toHaveBeenCalled();
+      expect(contextValue.setNames).toHaveBeenCalled();
     });
 
     it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', async () => {
@@ -441,18 +440,15 @@ describe('New Game Flow Integration', () => {
       const differentTeamsButton = await screen.findByText('Different Teams');
       fireEvent.click(differentTeamsButton);
 
-      // Verify that localStorage.setItem was called with initialNames (empty player names)
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'names',
-        JSON.stringify({
-          t1p1Name: '',
-          t1p2Name: '',
-          t2p1Name: '',
-          t2p2Name: '',
-          team1Name: 'Team 1',
-          team2Name: 'Team 2',
-        }),
-      );
+      // Verify that setNames was called with initialNames (empty player names)
+      expect(contextValue.setNames).toHaveBeenCalledWith({
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+      });
     });
   });
 

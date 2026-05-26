@@ -1,12 +1,20 @@
-import { createContext, useReducer, ReactNode } from 'react';
-import rootReducer, { initialState } from '../utils/rootReducer';
-import { updateInput } from '../utils/helperFunctions';
+import {
+  createContext,
+  useReducer,
+  ReactNode,
+  useCallback,
+  useMemo,
+} from 'react';
+import rootReducer, { getInitialState } from './rootReducer';
+import { updateInput } from '../helpers/utils/helperFunctions';
 import type {
   GlobalContextValue,
   UpdateInputArgs,
   Round,
   InputValue,
-} from '../../types';
+  AppState,
+  Names,
+} from '../types';
 
 export const GlobalContext = createContext<GlobalContextValue>(
   {} as GlobalContextValue,
@@ -70,9 +78,13 @@ const buildActualRound = (args: UpdateInputArgs): Round => {
 };
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(rootReducer, initialState);
+  const [state, dispatch] = useReducer(
+    rootReducer,
+    undefined as unknown as AppState,
+    getInitialState,
+  );
 
-  const setCurrentRound = (args: UpdateInputArgs) => {
+  const setCurrentRound = useCallback((args: UpdateInputArgs) => {
     if (isTeamTotalUpdate(args.fieldToUpdate)) {
       dispatch({
         type: 'SET_CURRENT_ROUND',
@@ -89,15 +101,15 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
         payload: { currentRound: updateInput(args) },
       });
     }
-  };
+  }, []);
 
-  const resetCurrentRound = () => {
+  const resetCurrentRound = useCallback(() => {
     dispatch({
       type: 'RESET_CURRENT_ROUND',
     });
-  };
+  }, []);
 
-  const setRoundHistory = (newRoundHistory: Round[]) => {
+  const setRoundHistory = useCallback((newRoundHistory: Round[]) => {
     const clonedNewRoundHistory = [...newRoundHistory];
     dispatch({
       type: 'SET_ROUND_HISTORY',
@@ -105,9 +117,9 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
         roundHistory: clonedNewRoundHistory,
       },
     });
-  };
+  }, []);
 
-  const setFirstDealerOrder = (newFirstDealerOrder: string[]) => {
+  const setFirstDealerOrder = useCallback((newFirstDealerOrder: string[]) => {
     const clonedNewFirstDealerOrder = [...newFirstDealerOrder];
     dispatch({
       type: 'SET_FIRST_DEALER_ORDER',
@@ -115,35 +127,76 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
         firstDealerOrder: clonedNewFirstDealerOrder,
       },
     });
-  };
+  }, []);
 
-  const setDealerOverride = (dealerOverride: string | null) => {
+  const setDealerOverride = useCallback((dealerOverride: string | null) => {
     dispatch({
       type: 'SET_DEALER_OVERRIDE',
       payload: {
         dealerOverride,
       },
     });
-  };
+  }, []);
 
-  const resetRoundHistory = () => {
+  const resetRoundHistory = useCallback(() => {
     dispatch({
       type: 'RESET_ROUND_HISTORY',
     });
-  };
+  }, []);
 
-  const globalStore = {
-    setCurrentRound,
-    setRoundHistory,
-    resetRoundHistory,
-    resetCurrentRound,
-    setFirstDealerOrder,
-    setDealerOverride,
-    firstDealerOrder: state.firstDealerOrder,
-    currentRound: state.currentRound,
-    roundHistory: state.roundHistory,
-    isFirstGameAmongTeammates: state.isFirstGameAmongTeammates,
-  };
+  const setNames = useCallback(
+    (names: Names | ((val: Names) => Names)) => {
+      const valueToStore =
+        names instanceof Function ? names(state.names) : names;
+      dispatch({
+        type: 'SET_NAMES',
+        payload: { names: valueToStore },
+      });
+    },
+    [state.names],
+  );
+
+  const setNilScoringRule = useCallback((rule: string) => {
+    dispatch({
+      type: 'SET_NIL_SCORING_RULE',
+      payload: { nilScoringRule: rule },
+    });
+  }, []);
+
+  const globalStore = useMemo(
+    () => ({
+      setCurrentRound,
+      setRoundHistory,
+      resetRoundHistory,
+      resetCurrentRound,
+      setFirstDealerOrder,
+      setDealerOverride,
+      setNames,
+      setNilScoringRule,
+      firstDealerOrder: state.firstDealerOrder,
+      currentRound: state.currentRound,
+      roundHistory: state.roundHistory,
+      isFirstGameAmongTeammates: state.isFirstGameAmongTeammates,
+      names: state.names,
+      nilScoringRule: state.nilScoringRule,
+    }),
+    [
+      setCurrentRound,
+      setRoundHistory,
+      resetRoundHistory,
+      resetCurrentRound,
+      setFirstDealerOrder,
+      setDealerOverride,
+      setNames,
+      setNilScoringRule,
+      state.firstDealerOrder,
+      state.currentRound,
+      state.roundHistory,
+      state.isFirstGameAmongTeammates,
+      state.names,
+      state.nilScoringRule,
+    ],
+  );
 
   return (
     <GlobalContext.Provider value={globalStore}>

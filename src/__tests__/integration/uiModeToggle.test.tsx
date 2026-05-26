@@ -1,25 +1,27 @@
-import type { Round } from '../../types';
 import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Provider } from '../../components/ui/provider';
 import SpadesCalculator from '../../pages/SpadesCalculator';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import type { GlobalContextValue } from '../../types';
+import { createMockGlobalContext } from '../utils/mockContext';
 
 vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,
     addInputs: vi.fn((a, b) => (a || 0) + (b || 0)),
-    isNotDefaultValue: vi.fn((value) => value !== ''),
+    isNotDefaultValue: vi.fn(
+      (value) => value !== '' && value !== null && value !== undefined,
+    ),
     calculateTeamScore: vi.fn(() => 50),
   };
 });
 
 // Mock the context values
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   resetCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
@@ -28,12 +30,21 @@ const mockContextValue = {
   currentRound: {
     team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
     team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
-  } as unknown as Round,
-};
+  },
+  names: {
+    t1p1Name: 'Alice',
+    t1p2Name: 'Bob',
+    t2p1Name: 'Charlie',
+    t2p2Name: 'Diana',
+    team1Name: 'Team Alpha',
+    team2Name: 'Team Beta',
+  },
+  setNames: vi.fn(),
+});
 
 const renderApp = () => {
   return render(
-    <BrowserRouter>
+    <MemoryRouter initialEntries={['/spades-calculator']}>
       <Provider>
         <GlobalContext.Provider
           value={mockContextValue as unknown as GlobalContextValue}
@@ -41,7 +52,7 @@ const renderApp = () => {
           <SpadesCalculator />
         </GlobalContext.Provider>
       </Provider>
-    </BrowserRouter>,
+    </MemoryRouter>,
   );
 };
 
@@ -49,19 +60,6 @@ describe('UI Mode Toggle Integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     window.localStorage.clear();
-
-    // Set up names so the app renders the main content
-    window.localStorage.setItem(
-      'names',
-      JSON.stringify({
-        t1p1Name: 'Alice',
-        t1p2Name: 'Bob',
-        t2p1Name: 'Charlie',
-        t2p2Name: 'Diana',
-        team1Name: 'Team Alpha',
-        team2Name: 'Team Beta',
-      }),
-    );
   });
 
   it('should immediately toggle UI mode without refresh', async () => {

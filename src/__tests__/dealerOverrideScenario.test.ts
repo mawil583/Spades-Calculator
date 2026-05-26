@@ -1,3 +1,4 @@
+import type { InputValue } from '../types';
 import {
   getCurrentDealerId,
   getDealerIdHistory,
@@ -16,16 +17,16 @@ describe('Dealer Override Scenario Test', () => {
     const round1History = [
       {
         team1BidsAndActuals: {
-          p1Bid: '3' as import('../types').InputValue,
-          p2Bid: '4' as import('../types').InputValue,
-          p1Actual: '3' as import('../types').InputValue,
-          p2Actual: '4' as import('../types').InputValue,
+          p1Bid: '3' as InputValue,
+          p2Bid: '4' as InputValue,
+          p1Actual: '3' as InputValue,
+          p2Actual: '4' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '2' as import('../types').InputValue,
-          p2Bid: '1' as import('../types').InputValue,
-          p1Actual: '2' as import('../types').InputValue,
-          p2Actual: '1' as import('../types').InputValue,
+          p1Bid: '2' as InputValue,
+          p2Bid: '1' as InputValue,
+          p1Actual: '2' as InputValue,
+          p2Actual: '1' as InputValue,
         },
         dealerOverride: null, // No override for round 1
       },
@@ -36,16 +37,16 @@ describe('Dealer Override Scenario Test', () => {
       ...round1History,
       {
         team1BidsAndActuals: {
-          p1Bid: '2' as import('../types').InputValue,
-          p2Bid: '1' as import('../types').InputValue,
-          p1Actual: '2' as import('../types').InputValue,
-          p2Actual: '1' as import('../types').InputValue,
+          p1Bid: '2' as InputValue,
+          p2Bid: '1' as InputValue,
+          p1Actual: '2' as InputValue,
+          p2Actual: '1' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '3' as import('../types').InputValue,
-          p2Bid: '4' as import('../types').InputValue,
-          p1Actual: '3' as import('../types').InputValue,
-          p2Actual: '4' as import('../types').InputValue,
+          p1Bid: '3' as InputValue,
+          p2Bid: '4' as InputValue,
+          p1Actual: '3' as InputValue,
+          p2Actual: '4' as InputValue,
         },
         dealerOverride: 'team1BidsAndActuals.p1Bid', // Override to t1p1 for round 2
       },
@@ -56,16 +57,16 @@ describe('Dealer Override Scenario Test', () => {
       ...round2History,
       {
         team1BidsAndActuals: {
-          p1Bid: '1' as import('../types').InputValue,
-          p2Bid: '3' as import('../types').InputValue,
-          p1Actual: '1' as import('../types').InputValue,
-          p2Actual: '3' as import('../types').InputValue,
+          p1Bid: '1' as InputValue,
+          p2Bid: '3' as InputValue,
+          p1Actual: '1' as InputValue,
+          p2Actual: '3' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '4' as import('../types').InputValue,
-          p2Bid: '2' as import('../types').InputValue,
-          p1Actual: '4' as import('../types').InputValue,
-          p2Actual: '2' as import('../types').InputValue,
+          p1Bid: '4' as InputValue,
+          p2Bid: '2' as InputValue,
+          p1Actual: '4' as InputValue,
+          p2Actual: '2' as InputValue,
         },
         dealerOverride: null, // No override for round 3
       },
@@ -76,16 +77,16 @@ describe('Dealer Override Scenario Test', () => {
       ...round3History,
       {
         team1BidsAndActuals: {
-          p1Bid: '2' as import('../types').InputValue,
-          p2Bid: '1' as import('../types').InputValue,
-          p1Actual: '2' as import('../types').InputValue,
-          p2Actual: '1' as import('../types').InputValue,
+          p1Bid: '2' as InputValue,
+          p2Bid: '1' as InputValue,
+          p1Actual: '2' as InputValue,
+          p2Actual: '1' as InputValue,
         },
         team2BidsAndActuals: {
-          p1Bid: '3' as import('../types').InputValue,
-          p2Bid: '4' as import('../types').InputValue,
-          p1Actual: '3' as import('../types').InputValue,
-          p2Actual: '4' as import('../types').InputValue,
+          p1Bid: '3' as InputValue,
+          p2Bid: '4' as InputValue,
+          p1Actual: '3' as InputValue,
+          p2Actual: '4' as InputValue,
         },
         dealerOverride: null, // No override for round 4
       },

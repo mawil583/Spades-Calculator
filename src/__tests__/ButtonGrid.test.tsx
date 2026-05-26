@@ -4,10 +4,11 @@ import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import ButtonGrid from '../components/ui/ButtonGrid';
 import type { GlobalContextValue } from '../types';
 import type { ReactNode } from 'react';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock the helper functions
 vi.mock('../helpers/utils/helperFunctions', async (importOriginal) => {
@@ -25,12 +26,12 @@ vi.mock('../helpers/utils/helperFunctions', async (importOriginal) => {
 
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <Provider>
       <GlobalContext.Provider
-        value={contextValue as unknown as GlobalContextValue}
+        value={contextValue }
       >
         {component}
       </GlobalContext.Provider>
@@ -39,10 +40,7 @@ const renderWithProviders = (
 };
 
 describe('ButtonGrid Component', () => {
-  const mockContextValue = {
-    setCurrentRound: vi.fn(),
-    setRoundHistory: vi.fn(),
-  };
+  const mockContextValue = createMockGlobalContext({ setCurrentRound: vi.fn(), setRoundHistory: vi.fn() });
 
   const defaultProps = {
     type: 'Bid' as const,

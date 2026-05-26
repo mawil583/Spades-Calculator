@@ -1,8 +1,16 @@
-import { defaultLocalStorage, setLocalStorage } from './helperFunctions';
-import { initialFirstDealerOrder, EMPTY_ROUND } from './constants';
-import type { AppState, AppAction } from '../../types';
+import {
+  defaultLocalStorage,
+  setLocalStorage,
+} from '../helpers/utils/helperFunctions';
+import {
+  initialFirstDealerOrder,
+  EMPTY_ROUND,
+  initialNames,
+  TAKES_BAGS,
+} from '../helpers/utils/constants';
+import type { AppState, AppAction } from '../types';
 
-export const initialState = {
+export const getInitialState = (): AppState => ({
   currentRound: defaultLocalStorage('currentRound', EMPTY_ROUND),
   roundHistory: defaultLocalStorage('roundHistory', []),
   firstDealerOrder: defaultLocalStorage(
@@ -13,7 +21,9 @@ export const initialState = {
     'isFirstGameAmongTeammates',
     true,
   ),
-};
+  names: defaultLocalStorage('names', initialNames),
+  nilScoringRule: defaultLocalStorage('nilScoringRule', TAKES_BAGS),
+});
 
 const rootReducer = (state: AppState, action: AppAction): AppState => {
   switch (action.type) {
@@ -85,6 +95,42 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
       } catch (err) {
         console.error('Error in SET_DEALER_OVERRIDE:', err);
         return state;
+      }
+    case 'SET_NAMES':
+      try {
+        const names = { ...action.payload.names };
+        setLocalStorage('names', names);
+        return {
+          ...state,
+          names,
+        };
+      } catch (err) {
+        console.error(
+          'Error in SET_NAMES (localStorage quota or write error):',
+          err,
+        );
+        return {
+          ...state,
+          names: action.payload.names,
+        };
+      }
+    case 'SET_NIL_SCORING_RULE':
+      try {
+        const rule = action.payload.nilScoringRule;
+        setLocalStorage('nilScoringRule', rule);
+        return {
+          ...state,
+          nilScoringRule: rule,
+        };
+      } catch (err) {
+        console.error(
+          'Error in SET_NIL_SCORING_RULE (localStorage quota or write error):',
+          err,
+        );
+        return {
+          ...state,
+          nilScoringRule: action.payload.nilScoringRule,
+        };
       }
     default:
       // @ts-expect-error import.meta.env is Vite-specific

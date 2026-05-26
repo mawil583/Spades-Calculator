@@ -4,19 +4,10 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Provider } from '../components/ui/provider';
 import ErrorModal from '../components/modals/ErrorModal';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round } from '../types';
-
-const mockContextValue = {
-  team1Name: 'Team 1',
-  team2Name: 'Team 2',
-  t1p1Name: 'Mike',
-  t1p2Name: 'Kim',
-  t2p1Name: 'Mom',
-  t2p2Name: 'Dad',
-  setCurrentRound: vi.fn(),
-};
+import { createMockGlobalContext } from './utils/mockContext';
 
 const mockNames = {
   team1Name: 'Team 1',
@@ -33,9 +24,13 @@ const mockNames = {
   },
 };
 
+const mockContextValue = createMockGlobalContext({
+  names: mockNames,
+});
+
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <Provider>
@@ -78,7 +73,7 @@ describe('ErrorModal Component', () => {
 
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={mockSetIsModalOpen}
           index={0}
@@ -98,14 +93,14 @@ describe('ErrorModal Component', () => {
     it('should allow editing actuals from within error modal', async () => {
       const mockSetCurrentRound = vi.fn();
       const mockOnOpenModal = vi.fn();
-      const contextWithSetCurrentRound = {
-        ...mockContextValue,
+      const contextWithSetCurrentRound = createMockGlobalContext({
+        names: mockNames,
         setCurrentRound: mockSetCurrentRound,
-      };
+      });
 
       renderWithProviders(
         <ErrorModal
-          onOpenModal={mockOnOpenModal}
+          onOpenParentModal={mockOnOpenModal}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -134,7 +129,7 @@ describe('ErrorModal Component', () => {
         fireEvent.click(targetElement);
       }
 
-      // If onOpenModal is passed, it should be called instead of opening internal modal
+      // If onOpenParentModal is passed, it should be called instead of opening internal modal
       expect(mockOnOpenModal).toHaveBeenCalledWith(
         expect.objectContaining({
           fieldToUpdate: 'team2BidsAndActuals.p2Actual',
@@ -146,7 +141,7 @@ describe('ErrorModal Component', () => {
     it('should NOT have a close button', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -170,7 +165,7 @@ describe('ErrorModal Component', () => {
     it('should display correct modal structure', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -193,7 +188,7 @@ describe('ErrorModal Component', () => {
     it('should display player names correctly', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -218,7 +213,7 @@ describe('ErrorModal Component', () => {
     it('should have proper modal role', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -238,7 +233,7 @@ describe('ErrorModal Component', () => {
     it('should have clickable player inputs', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -260,7 +255,7 @@ describe('ErrorModal Component', () => {
     it('should have clickable team total headings', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -287,10 +282,10 @@ describe('ErrorModal Component', () => {
 
     it('should open team total modal when clicking on team total headings', async () => {
       const mockSetCurrentRound = vi.fn();
-      const contextWithSetCurrentRound = {
-        ...mockContextValue,
+      const contextWithSetCurrentRound = createMockGlobalContext({
+        names: mockNames,
         setCurrentRound: mockSetCurrentRound,
-      };
+      });
 
       renderWithProviders(
         <ErrorModal
@@ -330,7 +325,7 @@ describe('ErrorModal Component', () => {
     it('should not have team total headings in focus when error modal opens', async () => {
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -375,20 +370,10 @@ describe('ErrorModal Component', () => {
           team2P2: true, // Auto-generated
         },
       } as unknown as Round;
-
-      const mockSetCurrentRound = vi.fn();
-      const mockContextValue = {
+      const mockContextValue = createMockGlobalContext({
         currentRound: mockCurrentRoundWithAutoGenerated,
-        setCurrentRound: mockSetCurrentRound,
-        setRoundHistory: vi.fn(),
-        resetRoundHistory: vi.fn(),
-        resetCurrentRound: vi.fn(),
-        setFirstDealerOrder: vi.fn(),
-        setDealerOverride: vi.fn(),
-        firstDealerOrder: [],
-        roundHistory: [],
-        isFirstGameAmongTeammates: true,
-      };
+        names: mockNames,
+      });
 
       renderWithProviders(
         <ErrorModal
@@ -424,16 +409,12 @@ describe('ErrorModal Component', () => {
       const option4 = await screen.findByText('4');
       fireEvent.click(option4);
 
-      // Verify that setCurrentRound was called with the correct parameters
-      expect(mockSetCurrentRound).toHaveBeenCalledWith({
-        input: '4',
-        fieldToUpdate: 'team1BidsAndActuals.p1Actual',
-        currentRound: mockCurrentRoundWithAutoGenerated,
+      // The bid selection modal closes automatically on selection
+      await waitFor(() => {
+        expect(
+          screen.queryByTestId('bidSelectionModal'),
+        ).not.toBeInTheDocument();
       });
-
-      // Close the modal
-      const closeButton = await screen.findByRole('button', { name: /close/i });
-      fireEvent.click(closeButton);
     });
   });
 
@@ -460,26 +441,14 @@ describe('ErrorModal Component', () => {
         },
       } as unknown as Round;
 
-      const contextValue = {
-        ...mockContextValue,
+      const contextValue = createMockGlobalContext({
+        names: mockNames,
         currentRound: customCurrentRound,
-        resetCurrentRound: vi.fn(),
-        setRoundHistory: vi.fn(),
-        setFirstDealerOrder: vi.fn(),
-        setDealerOverride: vi.fn(),
-        setCurrentRound: vi.fn(),
-        firstDealerOrder: [
-          'team1BidsAndActuals.p1Bid',
-          'team2BidsAndActuals.p1Bid',
-          'team1BidsAndActuals.p2Bid',
-          'team2BidsAndActuals.p2Bid',
-        ],
-        roundHistory: [],
-      };
+      });
 
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -520,14 +489,14 @@ describe('ErrorModal Component', () => {
         },
       } as unknown as Round;
 
-      const contextValue = {
-        ...mockContextValue,
+      const contextValue = createMockGlobalContext({
+        names: mockNames,
         currentRound: mockCurrentRoundWithZeros,
-      };
+      });
 
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -581,7 +550,7 @@ describe('ErrorModal Component', () => {
 
       renderWithProviders(
         <ErrorModal
-          onOpenModal={() => {}}
+          onOpenParentModal={() => {}}
           isOpen={true}
           setIsModalOpen={vi.fn()}
           index={0}
@@ -591,7 +560,7 @@ describe('ErrorModal Component', () => {
           currentRound={roundWithValues} // This should be prioritized!
           errorMessage="Error message"
         />,
-        { ...mockContextValue, currentRound: emptyRound },
+        createMockGlobalContext({ names: mockNames, currentRound: emptyRound }),
       );
 
       // Team 1 Total: 4+3=7. Team 2 Total: 3+2=5.

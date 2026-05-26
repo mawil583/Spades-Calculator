@@ -15,17 +15,19 @@ This project now includes comprehensive linting checks that run automatically be
 
 ### Pre-commit Hook
 
-The pre-commit hook runs automatically when you commit code and includes:
+The pre-commit hook runs automatically when you commit code by executing `npm run pre-commit`, which includes:
 
-1. **Lint-staged**: Only lints files that are staged for commit (faster performance)
-2. **Tests**: Runs both unit tests and e2e tests if linting passes
-3. **Fail-fast**: If linting fails, the commit is blocked
+1. **Lint-staged**: Only lints staged `src/**/*.{js,jsx,ts,tsx}` files (faster performance)
+2. **Unit tests**
+3. **E2E headless tests**
+4. **Production build**
+5. **Fail-fast**: Stops on first failure, blocking the commit
 
 ### Lint-staged Configuration
 
 - Automatically fixes linting issues in staged files
-- Only processes `.js` and `.jsx` files
-- Re-adds fixed files to the staging area
+- Only processes `src/**/*.{js,jsx,ts,tsx}` files
+- (No explicit re-add needed with modern lint-staged)
 
 ## Available Scripts
 
@@ -55,15 +57,23 @@ npm run unit
 npm run e2e
 ```
 
+### Pre-commit Script
+
+```bash
+# Run all pre-commit checks (lint-staged + unit + e2e:headless + build)
+# Equivalent to what the git pre-commit hook executes
+npm run pre-commit
+```
+
 ## How It Works
 
 ### Pre-commit Process
 
-1. When you run `git commit`, the pre-commit hook triggers
+1. When you run `git commit`, the pre-commit hook triggers `npm run pre-commit`
 2. **Lint-staged** runs on only the files you're committing
-3. If linting passes, **tests** run
-4. If both pass, the commit proceeds
-5. If either fails, the commit is blocked
+3. If linting passes, **unit tests**, **e2e headless tests**, and **build** run
+4. If all pass, the commit proceeds
+5. If any fails, the commit is blocked
 
 ### Example Output
 
@@ -147,19 +157,7 @@ If tests are failing:
 
 ### ESLint Config
 
-Located in `package.json`:
-
-```json
-{
-  "eslintConfig": {
-    "extends": [
-      "eslint:recommended",
-      "plugin:react/recommended",
-      "plugin:react-hooks/recommended"
-    ]
-  }
-}
-```
+Located in `eslint.config.js` (uses ESLint flat config format).
 
 ### Lint-staged Config
 
@@ -168,7 +166,9 @@ Located in `package.json`:
 ```json
 {
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix --max-warnings=0", "git add"]
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix --max-warnings=0"
+    ]
   }
 }
 ```
@@ -178,22 +178,10 @@ Located in `package.json`:
 Located in `.husky/pre-commit`:
 
 ```bash
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-# Run lint-staged to lint only changed files
-echo "🔍 Running lint-staged on changed files..."
-npm run lint:staged
-
-# If lint-staged passes, run tests
-if [ $? -eq 0 ]; then
-  echo "✅ Linting passed, running tests..."
-  npm run test
-else
-  echo "❌ Linting failed. Please fix the issues before committing."
-  exit 1
-fi
+npm run pre-commit
 ```
+
+(This runs the full pre-commit checks defined in package.json)
 
 ## Benefits
 

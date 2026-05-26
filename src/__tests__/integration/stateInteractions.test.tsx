@@ -1,8 +1,9 @@
+import type { Names } from '../../types';
 import { vi, type Mock } from 'vitest';
 
 import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from '../../components/ui/provider';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import type { GlobalContextValue, Round } from '../../types';
 import type { ReactNode } from 'react';
@@ -45,7 +46,7 @@ vi.mock('../../helpers/math/spadesMath', async (importOriginal) => {
 });
 
 interface MockContextValue extends GlobalContextValue {
-  names: Record<string, string>;
+  names: Names;
   setNames: Mock;
 }
 
@@ -117,9 +118,11 @@ describe('Complex State Interactions Between Unrelated Components', () => {
       setRoundHistory: mockSetRoundHistory,
       firstDealerOrder: [],
       isFirstGameAmongTeammates: false,
+      nilScoringRule: 'takesBags',
       setFirstDealerOrder: vi.fn(),
       setDealerOverride: vi.fn(),
       resetRoundHistory: vi.fn(),
+      setNilScoringRule: vi.fn(),
     } as unknown as MockContextValue;
 
     mockLocalStorage.getItem.mockReturnValue(

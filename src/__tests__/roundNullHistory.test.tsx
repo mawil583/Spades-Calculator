@@ -4,11 +4,12 @@ import { vi } from 'vitest';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round as RoundType } from '../types';
 import RoundComponent from '../components/game/Round';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
+import { createMockGlobalContext } from './utils/mockContext';
 
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: Partial<GlobalContextValue>,
+  contextValue: GlobalContextValue,
 ) => {
   return render(
     <GlobalContext.Provider value={contextValue as GlobalContextValue}>
@@ -28,7 +29,7 @@ describe('Round component - null safety', () => {
   });
 
   it('does not crash when roundHistory contains null at target index', () => {
-    const ctx = {
+    const ctx = createMockGlobalContext({
       currentRound: {
         team1BidsAndActuals: {
           p1Bid: '',
@@ -45,7 +46,7 @@ describe('Round component - null safety', () => {
       } as unknown as Round,
       resetCurrentRound: vi.fn(),
       setRoundHistory: vi.fn(),
-    };
+    });
 
     const { container } = renderWithProviders(
       <RoundComponent

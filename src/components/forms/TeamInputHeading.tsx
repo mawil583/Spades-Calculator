@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Heading } from '../ui';
 import { InputModal } from '../modals';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { team1Color, team2Color } from '../../customTheme';
 
 import type { Round, InputValue, ModalOpenArgs } from '../../types';
@@ -19,7 +19,7 @@ interface TeamInputHeadingProps {
   roundHistory?: Round[];
   team1Name?: string;
   team2Name?: string;
-  onOpenModal?: (args: ModalOpenArgs) => void;
+  onOpenParentModal?: (args: ModalOpenArgs) => void;
 }
 
 function TeamInputHeading({
@@ -35,10 +35,11 @@ function TeamInputHeading({
   roundHistory,
   // team1Name, // Unused parameter
   // team2Name, // Unused parameter
-  onOpenModal,
+  onOpenParentModal,
 }: TeamInputHeadingProps) {
-  const [isTeam1ModalOpen, setIsTeam1ModalOpen] = useState(false);
-  const [isTeam2ModalOpen, setIsTeam2ModalOpen] = useState(false);
+  const [isLocalTeam1ModalOpen, setIsLocalTeam1ModalOpen] = useState(false);
+  const [isLocalTeam2ModalOpen, setIsLocalTeam2ModalOpen] = useState(false);
+  const isUsingParentModal = Boolean(onOpenParentModal);
   const { setCurrentRound, setRoundHistory } = useContext(GlobalContext);
 
   // Check if neither player on each team went nil
@@ -51,8 +52,8 @@ function TeamInputHeading({
 
   const handleTeam1Click = () => {
     if (team1CanEdit) {
-      if (onOpenModal) {
-        onOpenModal({
+      if (isUsingParentModal && onOpenParentModal) {
+        onOpenParentModal({
           fieldToUpdate: 'team1Total',
           type: 'Actual',
           playerName: 'Team 1',
@@ -60,15 +61,15 @@ function TeamInputHeading({
             handleTeamTotalUpdate(1, parseInt(val as string, 10)),
         });
       } else {
-        setIsTeam1ModalOpen(true);
+        setIsLocalTeam1ModalOpen(true);
       }
     }
   };
 
   const handleTeam2Click = () => {
     if (team2CanEdit) {
-      if (onOpenModal) {
-        onOpenModal({
+      if (isUsingParentModal && onOpenParentModal) {
+        onOpenParentModal({
           fieldToUpdate: 'team2Total',
           type: 'Actual',
           playerName: 'Team 2',
@@ -76,7 +77,7 @@ function TeamInputHeading({
             handleTeamTotalUpdate(2, parseInt(val as string, 10)),
         });
       } else {
-        setIsTeam2ModalOpen(true);
+        setIsLocalTeam2ModalOpen(true);
       }
     }
   };
@@ -131,12 +132,12 @@ function TeamInputHeading({
   return (
     <>
       {/* Team 1 Modal */}
-      {!onOpenModal && (
+      {!isUsingParentModal && isLocalTeam1ModalOpen && (
         <InputModal
           isCurrent={!!isCurrent}
           playerName="Team 1"
-          isOpen={isTeam1ModalOpen}
-          setIsModalOpen={setIsTeam1ModalOpen}
+          isOpen={isLocalTeam1ModalOpen}
+          setIsModalOpen={setIsLocalTeam1ModalOpen}
           type="Actual"
           typeLabel="Actuals"
           fieldToUpdate="team1Total"
@@ -150,12 +151,12 @@ function TeamInputHeading({
       )}
 
       {/* Team 2 Modal */}
-      {!onOpenModal && (
+      {!isUsingParentModal && isLocalTeam2ModalOpen && (
         <InputModal
           isCurrent={!!isCurrent}
           playerName="Team 2"
-          isOpen={isTeam2ModalOpen}
-          setIsModalOpen={setIsTeam2ModalOpen}
+          isOpen={isLocalTeam2ModalOpen}
+          setIsModalOpen={setIsLocalTeam2ModalOpen}
           type="Actual"
           typeLabel="Actuals"
           fieldToUpdate="team2Total"

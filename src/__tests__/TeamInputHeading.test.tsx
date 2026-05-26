@@ -1,15 +1,17 @@
+import type { InputValue } from '../types';
 import { vi } from 'vitest';
 
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from '../components/ui/provider';
 import TeamInputHeading from '../components/forms/TeamInputHeading';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { ReactNode } from 'react';
 import type { GlobalContextValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // No longer mocking InputModal to ensure we test the real Chakra v3 Dialog integration
 
-const mockContextValue = {
+const mockContextValue = createMockGlobalContext({
   firstDealerOrder: [
     'team1BidsAndActuals.p1Bid',
     'team2BidsAndActuals.p1Bid',
@@ -29,11 +31,11 @@ const mockContextValue = {
       p1Actual: '',
       p2Actual: '',
     },
-  } as unknown as Round,
+  },
   setCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setDealerOverride: vi.fn(),
-};
+});
 
 const renderWithContext = (component: ReactNode) => {
   return render(
@@ -52,8 +54,8 @@ describe('TeamInputHeading', () => {
     team1Total: 0,
     team2Total: 0,
     title: 'Actuals',
-    team1Bids: ['1', '2'] as unknown as import('../types').InputValue[],
-    team2Bids: ['3', '4'] as unknown as import('../types').InputValue[],
+    team1Bids: ['1', '2'] as unknown as InputValue[],
+    team2Bids: ['3', '4'] as unknown as InputValue[],
     onTeamTotalChange: vi.fn(),
     isEditable: false,
   };
@@ -62,8 +64,8 @@ describe('TeamInputHeading', () => {
     it('should be interactive (clickable) but NOT editable for team total input', () => {
       const props = {
         ...defaultProps,
-        team1Bids: ['1', '2'] as unknown as import('../types').InputValue[], // Neither is nil
-        team2Bids: ['3', '4'] as unknown as import('../types').InputValue[], // Neither is nil
+        team1Bids: ['1', '2'] as unknown as InputValue[], // Neither is nil
+        team2Bids: ['3', '4'] as unknown as InputValue[], // Neither is nil
         isEditable: true,
       };
 
@@ -86,8 +88,8 @@ describe('TeamInputHeading', () => {
     it('should not be editable for team total input', () => {
       const props = {
         ...defaultProps,
-        team1Bids: ['Nil', '2'] as unknown as import('../types').InputValue[], // One player went nil
-        team2Bids: ['3', '4'] as unknown as import('../types').InputValue[], // Neither is nil
+        team1Bids: ['Nil', '2'] as unknown as InputValue[], // One player went nil
+        team2Bids: ['3', '4'] as unknown as InputValue[], // Neither is nil
         isEditable: false,
       };
 
@@ -106,8 +108,8 @@ describe('TeamInputHeading', () => {
     it('should show calculated team totals when individual values are empty', () => {
       const props = {
         ...defaultProps,
-        team1Bids: ['1', '2'] as unknown as import('../types').InputValue[], // Neither is nil
-        team2Bids: ['3', '4'] as unknown as import('../types').InputValue[], // Neither is nil
+        team1Bids: ['1', '2'] as unknown as InputValue[], // Neither is nil
+        team2Bids: ['3', '4'] as unknown as InputValue[], // Neither is nil
         isEditable: true,
         team1Total: 0, // Calculated from empty individual values
         team2Total: 0, // Calculated from empty individual values

@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Round, TableRound } from './';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 
@@ -15,13 +15,12 @@ function Rounds() {
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
   const CurrentRoundComponent = useTableRoundUI ? TableRound : Round;
 
-  // Adjust state during render when roundHistory length changes
-  if (roundHistory.length !== previousRoundHistoryLength) {
-    if (roundHistory.length > previousRoundHistoryLength) {
-      setIsCompleting(true);
-      setShowNewRound(false);
-    }
+  if (roundHistory.length > previousRoundHistoryLength) {
+    // This is the React-recommended way to adjust state while rendering
+    // based on comparing previous props/state.
     setPreviousRoundHistoryLength(roundHistory.length);
+    setIsCompleting(true);
+    setShowNewRound(false);
   }
 
   // Handle the completion of the animation sequence

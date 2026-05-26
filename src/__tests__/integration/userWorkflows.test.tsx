@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { Provider } from '../../components/ui/provider';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import { StateProvider } from '../../helpers/context/GlobalContext';
+import { StateProvider } from '../../store/GlobalContext';
 import HomePage from '../../pages/HomePage';
 
 // Mock localStorage

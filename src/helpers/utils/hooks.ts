@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useMemo } from 'react';
-import { GlobalContext } from '../context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import {
   isNotDefaultValue,
   addInputs,
@@ -195,15 +195,8 @@ export function useGameScores() {
   const context = useContext(GlobalContext);
   const roundHistory = context?.roundHistory;
   const currentRound = context?.currentRound || null;
-
-  // Safe generic read?
-  const nilSettingStr =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('nilScoringRule')
-      : null;
-  const nilSetting: NilSetting | null = nilSettingStr
-    ? JSON.parse(nilSettingStr)
-    : null;
+  const nilSettingOption = context?.nilScoringRule || null;
+  const nilSetting = nilSettingOption as NilSetting | null;
 
   // Memoize history score calculation
   const historyScores = useMemo(() => {

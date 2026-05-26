@@ -3,18 +3,20 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import WarningModal from '../components/modals/WarningModal';
-import { GlobalContext } from '../helpers/context/GlobalContext';
+import { GlobalContext } from '../store/GlobalContext';
 import type { GlobalContextValue, Round } from '../types';
+import { createMockGlobalContext } from './utils/mockContext';
 
 // Mock the context values
 // Mock the context values
-const mockContextValue: Partial<GlobalContextValue> = {
+const mockContextValue = createMockGlobalContext({
   resetCurrentRound: vi.fn(),
   setRoundHistory: vi.fn(),
   setFirstDealerOrder: vi.fn(),
   firstDealerOrder: ['player1', 'player2', 'player3', 'player4'],
   roundHistory: [],
-};
+  setNames: vi.fn(),
+});
 
 const { mockedNavigate } = vi.hoisted(() => ({
   mockedNavigate: vi.fn(),
@@ -30,7 +32,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 
 const renderWithProviders = (
   component: React.ReactNode,
-  contextValue: Partial<GlobalContextValue> = mockContextValue,
+  contextValue: GlobalContextValue = mockContextValue,
 ) => {
   return render(
     <BrowserRouter>
@@ -55,10 +57,10 @@ describe('WarningModal', () => {
 
   describe('when there is no round history', () => {
     it('should show only the NewPlayerQuestion modal', async () => {
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
@@ -81,10 +83,10 @@ describe('WarningModal', () => {
 
     it('should handle "Different Teams" selection', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -101,10 +103,10 @@ describe('WarningModal', () => {
 
     it('should reset names to empty and navigate to home when selecting "Different Teams"', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -115,17 +117,14 @@ describe('WarningModal', () => {
       const ctx = contextValue as GlobalContextValue;
 
       await waitFor(() => {
-        expect(window.localStorage.setItem).toHaveBeenCalledWith(
-          'names',
-          JSON.stringify({
-            t1p1Name: '',
-            t1p2Name: '',
-            t2p1Name: '',
-            t2p2Name: '',
-            team1Name: 'Team 1',
-            team2Name: 'Team 2',
-          }),
-        );
+        expect(ctx.setNames).toHaveBeenCalledWith({
+          t1p1Name: '',
+          t1p2Name: '',
+          t2p1Name: '',
+          t2p2Name: '',
+          team1Name: 'Team 1',
+          team2Name: 'Team 2',
+        });
       });
       await waitFor(() => {
         expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
@@ -140,10 +139,10 @@ describe('WarningModal', () => {
 
     it('should handle "Same Teams" selection', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -162,7 +161,7 @@ describe('WarningModal', () => {
 
   describe('when there is round history', () => {
     it('should show the DataWarningQuestion first', async () => {
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -180,7 +179,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
@@ -203,7 +202,7 @@ describe('WarningModal', () => {
 
     it('should handle "Cancel" from DataWarningQuestion', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -221,7 +220,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -234,7 +233,7 @@ describe('WarningModal', () => {
     });
 
     it('should show NewPlayerQuestion after clicking "Continue"', async () => {
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -252,7 +251,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={vi.fn()} />,
@@ -279,7 +278,7 @@ describe('WarningModal', () => {
 
     it('should handle "Same Teams" selection with round history', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -297,7 +296,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -320,7 +319,7 @@ describe('WarningModal', () => {
 
     it('should handle "Different Teams" selection with round history', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -338,7 +337,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -360,7 +359,7 @@ describe('WarningModal', () => {
 
     it('should reset names to empty and navigate to home when selecting "Different Teams" with round history', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -378,7 +377,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
@@ -391,18 +390,15 @@ describe('WarningModal', () => {
       // Then click Different Teams
       fireEvent.click(await screen.findByText('Different Teams'));
 
-      // Verify that localStorage.setItem was called with initialNames (empty player names)
-      expect(window.localStorage.setItem).toHaveBeenCalledWith(
-        'names',
-        JSON.stringify({
-          t1p1Name: '',
-          t1p2Name: '',
-          t2p1Name: '',
-          t2p2Name: '',
-          team1Name: 'Team 1',
-          team2Name: 'Team 2',
-        }),
-      );
+      // Verify that setNames was called with initialNames (empty player names)
+      expect(contextValue.setNames).toHaveBeenCalledWith({
+        t1p1Name: '',
+        t1p2Name: '',
+        t2p1Name: '',
+        t2p2Name: '',
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+      });
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/');
     });
@@ -411,7 +407,7 @@ describe('WarningModal', () => {
   describe('modal state management', () => {
     it('should handle modal close', async () => {
       const setIsModalOpen = vi.fn();
-      const contextValue: Partial<GlobalContextValue> = {
+      const contextValue = createMockGlobalContext({
         ...mockContextValue,
         roundHistory: [
           {
@@ -429,7 +425,7 @@ describe('WarningModal', () => {
             },
           } as unknown as Round as Round,
         ],
-      };
+      });
 
       renderWithProviders(
         <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,

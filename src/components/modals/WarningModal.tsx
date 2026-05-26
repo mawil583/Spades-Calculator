@@ -6,7 +6,7 @@ import {
   initialNames,
   initialFirstDealerOrder,
 } from '../../helpers/utils/constants';
-import { GlobalContext } from '../../helpers/context/GlobalContext';
+import { GlobalContext } from '../../store/GlobalContext';
 import { rotateArr } from '../../helpers/utils/helperFunctions';
 import DataWarningQuestion from '../forms/DataWarningQuestion';
 import NewPlayerQuestion from '../forms/NewPlayerQuestion';
@@ -29,6 +29,7 @@ function WarningModal({
     setFirstDealerOrder,
     firstDealerOrder,
     roundHistory,
+    setNames,
   } = useContext(GlobalContext);
   const hasRoundHistory = roundHistory.length > 0;
 
@@ -72,7 +73,7 @@ function WarningModal({
     if (resetNames) {
       resetNames(initialNames);
     } else {
-      localStorage.setItem('names', JSON.stringify(initialNames));
+      setNames(initialNames);
     }
     setFirstDealerOrder(initialFirstDealerOrder);
     setIsModalOpen(false);
