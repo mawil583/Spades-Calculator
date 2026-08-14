@@ -240,6 +240,160 @@ describe('ButtonGrid Component', () => {
     });
   });
 
+  describe('Undo Button', () => {
+    it('should NOT show Undo when the field is empty', () => {
+      renderWithProviders(
+        <ButtonGrid
+          {...defaultProps}
+          currentRound={{
+            team1BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+          }}
+        />,
+        mockContextValue,
+      );
+
+      expect(screen.queryByText('Undo')).not.toBeInTheDocument();
+    });
+
+    it('should show Undo button when the field has a value', () => {
+      renderWithProviders(
+        <ButtonGrid
+          {...defaultProps}
+          currentRound={{
+            team1BidsAndActuals: {
+              p1Bid: '3',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+          }}
+        />,
+        mockContextValue,
+      );
+
+      expect(screen.getByText('Undo')).toBeInTheDocument();
+    });
+
+    it('should clear the field with empty string when Undo is clicked on current round', () => {
+      renderWithProviders(
+        <ButtonGrid
+          {...defaultProps}
+          isCurrent={true}
+          currentRound={{
+            team1BidsAndActuals: {
+              p1Bid: '5',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+          }}
+        />,
+        mockContextValue,
+      );
+
+      fireEvent.click(screen.getByText('Undo'));
+
+      expect(mockContextValue.setCurrentRound).toHaveBeenCalledWith({
+        input: '',
+        fieldToUpdate: 'team1BidsAndActuals.p1Bid',
+        currentRound: {
+          team1BidsAndActuals: {
+            p1Bid: '5',
+            p2Bid: '',
+            p1Actual: '',
+            p2Actual: '',
+          },
+          team2BidsAndActuals: {
+            p1Bid: '',
+            p2Bid: '',
+            p1Actual: '',
+            p2Actual: '',
+          },
+        },
+      });
+    });
+
+    it('should close modal when Undo is clicked', () => {
+      const mockSetIsModalOpen = vi.fn();
+      renderWithProviders(
+        <ButtonGrid
+          {...defaultProps}
+          setIsModalOpen={mockSetIsModalOpen}
+          currentRound={{
+            team1BidsAndActuals: {
+              p1Bid: '2',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+          }}
+        />,
+        mockContextValue,
+      );
+
+      fireEvent.click(screen.getByText('Undo'));
+
+      expect(mockSetIsModalOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('should have correct data-cy attribute on Undo button', () => {
+      renderWithProviders(
+        <ButtonGrid
+          {...defaultProps}
+          currentRound={{
+            team1BidsAndActuals: {
+              p1Bid: '4',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '',
+              p2Bid: '',
+              p1Actual: '',
+              p2Actual: '',
+            },
+          }}
+        />,
+        mockContextValue,
+      );
+
+      expect(screen.getByText('Undo')).toHaveAttribute(
+        'data-cy',
+        'undoSelectionButton',
+      );
+    });
+  });
+
   describe('Accessibility', () => {
     it('should have clickable buttons', () => {
       renderWithProviders(<ButtonGrid {...defaultProps} />, mockContextValue);

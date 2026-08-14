@@ -1,12 +1,13 @@
-import { useContext } from 'react';
-import { SimpleGrid, Button } from '@chakra-ui/react';
+import { useContext, useMemo } from 'react';
+import { SimpleGrid, HStack } from '@chakra-ui/react';
+import { Button } from './button';
 import {
   getButtonValues,
   getEditedRoundHistory,
   updateInput,
 } from '../../helpers/utils/helperFunctions';
 import { GlobalContext } from '../../store/GlobalContext';
-import type { Round, InputValue } from '../../types';
+import type { Round, InputValue, TeamBidsAndActuals } from '../../types';
 
 export interface ButtonGridProps {
   type: 'Bid' | 'Actual';
@@ -32,6 +33,17 @@ function ButtonGrid({
   const { setCurrentRound, setRoundHistory } = useContext(GlobalContext);
   const buttonValues = getButtonValues(type);
 
+  // Parse the current field value from the round to determine if Undo should be shown
+  const currentValue = useMemo(() => {
+    const [teamKey, playerKey] = fieldToUpdate.split('.') as [
+      'team1BidsAndActuals' | 'team2BidsAndActuals',
+      keyof TeamBidsAndActuals,
+    ];
+    return currentRound[teamKey]?.[playerKey] ?? '';
+  }, [fieldToUpdate, currentRound]);
+
+  const hasValueToUndo = currentValue !== '';
+
   const onSelect = (input: InputValue) => {
     if (setIsModalOpen) {
       setIsModalOpen(false);
@@ -52,7 +64,7 @@ function ButtonGrid({
     } else {
       let updatedRound = updateInput({ input, fieldToUpdate, currentRound });
 
-      // If this is an individual actual update, mark it as manually entered
+      // If this is an individual actual update, clear auto-generated flag on undo too
       if (fieldToUpdate && fieldToUpdate.includes('Actual')) {
         const teamNumber = fieldToUpdate.includes('team1') ? 1 : 2;
         const playerNumber = fieldToUpdate.includes('p1Actual') ? 'P1' : 'P2';
@@ -98,6 +110,21 @@ function ButtonGrid({
           );
         })}
       </SimpleGrid>
+      {hasValueToUndo && (
+        <HStack justify="center" mt={4}>
+          <Button
+            onClick={() => onSelect('')}
+            variant="outline"
+            whiteSpace="normal"
+            h="auto"
+            minH="40px"
+            py={2}
+            data-cy="undoSelectionButton"
+          >
+            Undo
+          </Button>
+        </HStack>
+      )}
     </>
   );
 }

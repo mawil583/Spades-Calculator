@@ -223,6 +223,28 @@ export default [
     },
   },
   {
+    // Even inside the adapter layer, Button must come from the shared wrapper
+    // (src/components/ui/button.tsx) so every button inherits the same recipe.
+    // The wrapper file itself is excluded — it's the only legitimate importer.
+    files: ['src/components/ui/**/*.{js,jsx,ts,tsx}'],
+    ignores: ['src/components/ui/button.tsx'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@chakra-ui/react',
+              importNames: ['Button'],
+              message:
+                'Architecture Violation: Import the shared Button from "./button" (or "../ui") instead of Chakra UI directly, so all buttons share the same recipe and styling.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: [
       'src/**/*.test.{js,jsx,ts,tsx}',
       'src/**/*.spec.{js,jsx,ts,tsx}',
