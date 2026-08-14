@@ -11,10 +11,10 @@ const NewPlayerQuestion = ({
     <div style={{ padding: 'var(--app-spacing-2)' }}>
       <Separator mb={4} />
       <Flex direction={'row'} justifyContent={'space-evenly'} gap={4}>
-        <Button variant="outline" onClick={onDifferentTeams}>
+        <Button variant="secondary" onClick={onDifferentTeams}>
           Different Teams
         </Button>
-        <Button variant="outline" onClick={onSameTeams}>
+        <Button variant="secondary" onClick={onSameTeams}>
           Same Teams
         </Button>
       </Flex>

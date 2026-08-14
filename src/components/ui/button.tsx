@@ -2,7 +2,12 @@ import { Button as ChakraButton, type ButtonProps } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 
 /** Custom variants defined in customTheme.ts buttonRecipe */
-type CustomButtonVariant = 'team1Outline' | 'team2Outline';
+type CustomButtonVariant =
+  | 'team1Outline'
+  | 'team2Outline'
+  | 'primary'
+  | 'secondary'
+  | 'dangerOutline';
 
 export interface CustomButtonProps extends Omit<ButtonProps, 'variant'> {
   variant?: ButtonProps['variant'] | CustomButtonVariant;

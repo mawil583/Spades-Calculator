@@ -85,7 +85,7 @@ const UpdateNotification = () => {
                 {needRefresh && (
                   <Button
                     size="sm"
-                    variant="outline"
+                    variant="primary"
                     onClick={handleUpdate}
                     flex="1"
                   >

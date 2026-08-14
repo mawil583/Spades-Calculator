@@ -51,7 +51,7 @@ const DealerSelectionModal = ({
             data-testid="dealerOptionButton"
             data-player-id={opt.id}
             onClick={() => onSelectDealer(opt.id)}
-            variant="outline"
+            variant="secondary"
           >
             {opt.label}
           </Button>

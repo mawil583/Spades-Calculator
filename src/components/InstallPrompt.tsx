@@ -202,12 +202,13 @@ const InstallPrompt = () => {
           <Button
             data-testid="install-app-button"
             size="sm"
+            variant="primary"
             onClick={handleInstallClick}
             flex={1}
           >
             <Download /> Install App
           </Button>
-          <Button variant="outline" size="sm" onClick={handleDismiss} flex={1}>
+          <Button variant="secondary" size="sm" onClick={handleDismiss} flex={1}>
             Maybe Later
           </Button>
         </HStack>

@@ -49,10 +49,41 @@ const buttonRecipe = defineRecipe({
           bg: 'rgba(255, 255, 255, 0.12)',
         },
       },
-      solid: {
-        bg: 'blue.600',
+      primary: {
+        bg: 'offWhite',
+        color: 'premiumBlue',
+        border: 'none',
         _hover: {
-          bg: 'blue.700',
+          bg: 'white',
+        },
+        _active: {
+          bg: 'gray.200',
+        },
+      },
+      secondary: {
+        bg: 'premiumBlue',
+        border: '1px solid',
+        borderColor: 'gray.300', // lighter border for contrast
+        color: 'white', // ensure text is white
+        _hover: {
+          bg: '#1a202c',
+          borderColor: 'white',
+        },
+        _active: {
+          bg: 'blackAlpha.700',
+        },
+      },
+      dangerOutline: {
+        bg: 'transparent',
+        border: '1px solid',
+        borderColor: 'errorRed',
+        color: 'errorRed',
+        _hover: {
+          bg: 'rgba(249, 80, 80, 0.1)',
+          borderColor: 'errorRed',
+        },
+        _active: {
+          bg: 'rgba(249, 80, 80, 0.2)',
         },
       },
       team1Outline: {

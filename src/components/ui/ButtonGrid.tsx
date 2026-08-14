@@ -99,7 +99,7 @@ function ButtonGrid({
                 onSelect(buttonVal);
               }}
               data-cy={`${type.toLowerCase()}SelectionButton`}
-              variant="outline"
+              variant="secondary"
               whiteSpace="normal"
               h="auto"
               minH="40px"
@@ -114,7 +114,7 @@ function ButtonGrid({
         <HStack justify="center" mt={4}>
           <Button
             onClick={() => onSelect('')}
-            variant="outline"
+            variant="dangerOutline"
             whiteSpace="normal"
             h="auto"
             minH="40px"

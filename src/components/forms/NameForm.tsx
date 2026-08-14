@@ -136,7 +136,7 @@ function NameForm() {
         {hasGameData ? (
           <SimpleGrid columns={2} gap={6} my={8}>
             <Button
-              variant="outline"
+              variant="secondary"
               size="lg"
               height="40px"
               width="auto"
@@ -151,7 +151,7 @@ function NameForm() {
               New Game
             </Button>
             <Button
-              variant="outline"
+              variant="primary"
               size="lg"
               height="40px"
               width="auto"
@@ -168,7 +168,7 @@ function NameForm() {
         ) : (
           <Center>
             <Button
-              variant="outline"
+              variant="primary"
               size="lg"
               height="40px"
               width="200px"

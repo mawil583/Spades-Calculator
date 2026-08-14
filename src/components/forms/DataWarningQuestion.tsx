@@ -14,10 +14,10 @@ const DataWarningQuestion = ({
         This will permanently delete your game data.
       </Text>
       <Flex direction={'row'} justifyContent={'space-between'}>
-        <Button variant="outline" onClick={onCancel}>
+        <Button variant="secondary" onClick={onCancel}>
           Cancel
         </Button>
-        <Button variant="outline" onClick={onContinue}>
+        <Button variant="dangerOutline" onClick={onContinue}>
           Continue
         </Button>
       </Flex>

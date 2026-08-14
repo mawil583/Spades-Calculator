@@ -355,7 +355,7 @@ const DownloadButton = () => {
         </Text>
         <Button
           data-testid="download-app-button"
-          variant="outline"
+          variant="primary"
           size="lg"
           onClick={handleInstallClick}
           w="full"
