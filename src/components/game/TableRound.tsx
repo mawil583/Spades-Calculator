@@ -14,7 +14,6 @@ import {
 } from '../../helpers/utils/helperFunctions';
 import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
-import { getNames } from '../../helpers/utils/storage';
 
 import type { Round, InputValue, ModalOpenArgs, Names } from '../../types';
 
@@ -304,11 +303,17 @@ function TableRound({
   isCurrent = false,
   roundIndex,
 }: TableRoundProps) {
-  const names = getNames() || ({} as Names);
+  const {
+    currentRound,
+    viewCurrentRound,
+    resetCurrentRound,
+    setRoundHistory,
+    displayNames,
+    role,
+  } = useContext(GlobalContext);
+  const names = displayNames || ({} as Names);
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     names;
-  const { currentRound, resetCurrentRound, setRoundHistory } =
-    useContext(GlobalContext);
 
   // Single hook call for feature flag - passed to child components as prop
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
@@ -320,11 +325,12 @@ function TableRound({
     isNotDefaultValue,
     setRoundHistory,
     roundHistory,
+    role,
   );
 
   const { team1Score, team2Score } = useGameScores();
 
-  const { team1BidsAndActuals, team2BidsAndActuals } = currentRound || {
+  const { team1BidsAndActuals, team2BidsAndActuals } = viewCurrentRound || {
     team1BidsAndActuals: {},
     team2BidsAndActuals: {},
   };
@@ -496,7 +502,7 @@ function TableRound({
         dealerId={data.dealer}
         isCurrent={isCurrent}
         roundHistory={roundHistory}
-        currentRound={currentRound}
+        currentRound={viewCurrentRound}
         index={roundIndex}
         onOpenParentModal={handleOpenModal}
         showBid={allBidsEntered}

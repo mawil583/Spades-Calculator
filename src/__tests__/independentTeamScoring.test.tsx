@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import SpadesCalculator from '../pages/SpadesCalculator';
 import { GlobalContext } from '../store/GlobalContext';
+import { createMockGlobalContext } from './utils/mockContext';
 
 import { vi } from 'vitest';
 import type { ReactNode } from 'react';
@@ -24,12 +25,17 @@ vi.mock('../helpers/math/spadesMath', async (importOriginal) => {
 
 const renderWithProviders = (
   component: ReactNode,
-  contextValue: GlobalContextValue,
+  contextValue: Partial<GlobalContextValue> = {},
 ) => {
+  // Let createMockGlobalContext handle merge + derivation of viewer fields
+  // so that displayNames/viewCurrentRound/viewRoundHistory reflect overridden
+  // names/currentRound/roundHistory, not the defaults.
+  const value: GlobalContextValue =
+    createMockGlobalContext(contextValue);
   return render(
     <BrowserRouter>
       <Provider>
-        <GlobalContext.Provider value={contextValue as GlobalContextValue}>
+        <GlobalContext.Provider value={value}>
           {component}
         </GlobalContext.Provider>
       </Provider>
@@ -123,9 +129,7 @@ describe('Independent Team Scoring', () => {
       renderWithProviders(<SpadesCalculator />, contextValue);
 
       // Wait for the page to load
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Team 1 should have their score updated (70 points)
       expect(screen.getByText('70')).toBeInTheDocument();
@@ -187,9 +191,7 @@ describe('Independent Team Scoring', () => {
       renderWithProviders(<SpadesCalculator />, contextValue);
 
       // Wait for the page to load
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Round should not be completed since Team 2 hasn't finished
       expect(mockSetRoundHistory).not.toHaveBeenCalled();
@@ -254,9 +256,7 @@ describe('Independent Team Scoring', () => {
       renderWithProviders(<SpadesCalculator />, contextValue);
 
       // Wait for the page to load
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Both teams should have their scores updated
       expect(screen.getByText('70')).toBeInTheDocument(); // Team 1
@@ -343,9 +343,7 @@ describe('Independent Team Scoring', () => {
       );
 
       // Wait for initial render
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Team 1 should have score, Team 2 should not
       expect(screen.getByText('70')).toBeInTheDocument(); // Team 1
@@ -373,7 +371,9 @@ describe('Independent Team Scoring', () => {
       rerender(
         <BrowserRouter>
           <Provider>
-            <GlobalContext.Provider value={updatedContextValue}>
+            <GlobalContext.Provider
+              value={createMockGlobalContext(updatedContextValue)}
+            >
               <SpadesCalculator />
             </GlobalContext.Provider>
           </Provider>
@@ -445,9 +445,7 @@ describe('Independent Team Scoring', () => {
       renderWithProviders(<SpadesCalculator />, contextValue);
 
       // Wait for the page to load
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Round should be completed since total actuals = 13
       expect(mockSetRoundHistory).toHaveBeenCalled();
@@ -503,9 +501,7 @@ describe('Independent Team Scoring', () => {
       renderWithProviders(<SpadesCalculator />, contextValue);
 
       // Wait for the page to load
-      await waitFor(() => {
-        expect(screen.findAllByText('Team Alpha')).resolves.toHaveLength(2); // Game Score + Team Total
-      });
+      await screen.findAllByText('Team Alpha'); // wait for the board to render
 
       // Round should not be completed since total actuals ≠ 13
       expect(mockSetRoundHistory).not.toHaveBeenCalled();

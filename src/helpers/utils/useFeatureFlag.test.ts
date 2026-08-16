@@ -19,21 +19,14 @@ describe('useFeatureFlag hook', () => {
     const { result } = renderHook(() =>
       useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI),
     );
-    expect(result.current[0]).toBe(false);
+    expect(result.current[0]).toBe(true);
   });
 
   it('should toggle the flag value', () => {
     const { result } = renderHook(() =>
       useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI),
     );
-    expect(result.current[0]).toBe(false);
-
-    act(() => {
-      result.current[1]();
-    });
-
     expect(result.current[0]).toBe(true);
-    expect(localStorage.getItem(FEATURE_FLAGS.TABLE_ROUND_UI)).toBe('true');
 
     act(() => {
       result.current[1]();
@@ -41,5 +34,12 @@ describe('useFeatureFlag hook', () => {
 
     expect(result.current[0]).toBe(false);
     expect(localStorage.getItem(FEATURE_FLAGS.TABLE_ROUND_UI)).toBe('false');
+
+    act(() => {
+      result.current[1]();
+    });
+
+    expect(result.current[0]).toBe(true);
+    expect(localStorage.getItem(FEATURE_FLAGS.TABLE_ROUND_UI)).toBe('true');
   });
 });

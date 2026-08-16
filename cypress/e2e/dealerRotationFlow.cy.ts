@@ -13,6 +13,9 @@ describe('Dealer Rotation Flow with Override', () => {
     // Set the names in localStorage
     cy.window().then((win) => {
       win.localStorage.setItem('names', JSON.stringify(initialNames));
+      // Pin classic UI: this spec drives classic-UI selectors (bidButton /
+      // game-score-container) that the table layout doesn't render.
+      win.localStorage.setItem('featureFlag_tableRoundUI', JSON.stringify(false));
     });
 
     // Visit the spades calculator page

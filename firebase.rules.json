@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "sessions": {
+      "$sessionId": {
+        ".read": true,
+        ".write": "newData.child('leaderUid').val() === auth.uid"
+      }
+    }
+  }
+}

@@ -95,7 +95,8 @@ export type AppAction =
   | { type: 'SET_FIRST_DEALER_ORDER'; payload: { firstDealerOrder: string[] } }
   | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } }
   | { type: 'SET_NAMES'; payload: { names: Names } }
-  | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } };
+  | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } }
+  | { type: 'HYDRATE'; payload: AppState };
 
 // ─── Shared UI types ────────────────────────────────────────────────────────
 export interface ModalOpenArgs {
@@ -130,6 +131,21 @@ export interface GlobalContextValue {
   setDealerOverride: (dealerOverride: string | null) => void;
   setNames: (names: Names | ((val: Names) => Names)) => void;
   setNilScoringRule: (rule: string) => void;
+
+  // ── Realtime session (shared board watching) ──
+  role: SessionRole;
+  sessionId: string | null;
+  seat: Seat;
+  isViewerSynced: boolean;
+  startLeaderSession: () => Promise<void>;
+  joinSession: (id: string) => void;
+  setSeat: (seat: Seat) => void;
+  endSession: () => void;
+
+  // ── Viewer perspective (Team 2 viewers see the board mirrored) ──
+  displayNames: Names;
+  viewCurrentRound: Round;
+  viewRoundHistory: Round[];
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────
@@ -138,3 +154,11 @@ export interface TeamColorStyle {
   color: string;
   borderColor: string;
 }
+
+// ─── Realtime (shared board watching) ─────────────────────────────────────
+
+/** The 4 seats around the table. Keyed by their Names form field. */
+export type Seat = 't1p1' | 't1p2' | 't2p1' | 't2p2';
+
+/** Role of the current device: leader writes, viewer mirrors read-only. */
+export type SessionRole = 'leader' | 'viewer' | 'local';

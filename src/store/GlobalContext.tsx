@@ -4,9 +4,27 @@ import {
   ReactNode,
   useCallback,
   useMemo,
+  useState,
+  useEffect,
+  useRef,
 } from 'react';
 import rootReducer, { getInitialState } from './rootReducer';
 import { updateInput } from '../helpers/utils/helperFunctions';
+import {
+  isRealtimeEnabled,
+  createSession,
+  writeSessionState,
+  subscribeSession,
+} from '../firebase/realtime';
+import { rotateNames, rotateRound } from '../helpers/utils/perspective';
+import {
+  persistViewerSession,
+  clearPersistedViewerSession,
+  persistViewerSeat,
+  clearPersistedViewerSeat,
+  getPersistedViewerSeat,
+} from '../helpers/utils/viewerSession';
+import { setFeatureFlag, FEATURE_FLAGS } from '../helpers/utils/featureFlags';
 import type {
   GlobalContextValue,
   UpdateInputArgs,
@@ -14,6 +32,8 @@ import type {
   InputValue,
   AppState,
   Names,
+  Seat,
+  SessionRole,
 } from '../types';
 
 export const GlobalContext = createContext<GlobalContextValue>(
@@ -83,6 +103,117 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     undefined as unknown as AppState,
     getInitialState,
   );
+
+  // ── Realtime session state ─────────────────────────────────────────────
+  const [role, setRole] = useState<SessionRole>('local');
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [seat, setSeat] = useState<Seat>('t1p1');
+  const [isViewerSynced, setIsViewerSynced] = useState(false);
+  const seatRef = useRef(seat);
+  const sessionIdRef = useRef(sessionId);
+  const uiModeAppliedRef = useRef(false);
+
+  // Keep refs in sync with state — avoids direct ref mutation during render
+  useEffect(() => {
+    seatRef.current = seat;
+  }, [seat]);
+  useEffect(() => {
+    sessionIdRef.current = sessionId;
+  }, [sessionId]);
+
+  const startLeaderSession = useCallback(async () => {
+    const existing = sessionIdRef.current;
+    if (existing) {
+      setRole('leader');
+      return;
+    }
+    if (!isRealtimeEnabled()) {
+      console.warn('Firebase is not configured yet.');
+      return;
+    }
+    const id = await createSession(state);
+    setSessionId(id);
+    setRole('leader');
+  }, [state]);
+
+  const joinSession = useCallback((id: string) => {
+    setSessionId(id);
+    setRole('viewer');
+    persistViewerSession(id);
+    const persistedSeat = getPersistedViewerSeat();
+    if (persistedSeat) setSeat(persistedSeat as Seat);
+  }, []);
+
+  const endSession = useCallback(() => {
+    setRole('local');
+    setSessionId(null);
+    setIsViewerSynced(false);
+    uiModeAppliedRef.current = false;
+    clearPersistedViewerSession();
+    clearPersistedViewerSeat();
+  }, []);
+
+  // Seat selection is persisted so a viewer who navigates away and back keeps
+  // their chosen perspective instead of being re-prompted.
+  const setSeatAndPersist = useCallback((nextSeat: Seat) => {
+    setSeat(nextSeat);
+    persistViewerSeat(nextSeat);
+  }, []);
+
+  // Viewer perspective: rotate the four seats so the viewer's own seat is in
+  // the "you" position. This preserves left/right correctly (a team mirror
+  // would invert them). Team 1 / leader seats simply aren't rotated.
+  const isViewer = role === 'viewer';
+
+  const displayNames = useMemo(
+    () => (isViewer ? rotateNames(state.names, seat) : state.names),
+    [isViewer, state.names, seat],
+  );
+
+  const viewCurrentRound = useMemo(
+    () => (isViewer ? rotateRound(state.currentRound, seat) : state.currentRound),
+    [isViewer, state.currentRound, seat],
+  );
+
+  const viewRoundHistory = useMemo(
+    () =>
+      isViewer
+        ? state.roundHistory.map((round) => rotateRound(round, seat))
+        : state.roundHistory,
+    [isViewer, state.roundHistory, seat],
+  );
+
+  // Leader: push state to the session on every change (debounced).
+  useEffect(() => {
+    if (role !== 'leader' || !sessionId) return;
+    const timer = window.setTimeout(() => {
+      writeSessionState(sessionId, state).catch((err) =>
+        console.error('Failed to write session state:', err),
+      );
+    }, 200);
+    return () => window.clearTimeout(timer);
+  }, [state, role, sessionId]);
+
+  // Viewer: subscribe to the session and hydrate as the leader writes.
+  useEffect(() => {
+    if (role !== 'viewer' || !sessionId) return;
+    const unsubscribe = subscribeSession(
+      sessionId,
+      (incoming) => {
+        dispatch({ type: 'HYDRATE', payload: incoming });
+        setIsViewerSynced(true);
+      },
+      (err) => console.error('Session subscribe error:', err),
+      (uiMode) => {
+        // Apply the leader's UI mode as the default on first sync only. The
+        // viewer can subsequently toggle their own layout via Settings.
+        if (uiModeAppliedRef.current) return;
+        uiModeAppliedRef.current = true;
+        setFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI, uiMode);
+      },
+    );
+    return unsubscribe;
+  }, [role, sessionId]);
 
   const setCurrentRound = useCallback((args: UpdateInputArgs) => {
     if (isTeamTotalUpdate(args.fieldToUpdate)) {
@@ -179,6 +310,17 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       isFirstGameAmongTeammates: state.isFirstGameAmongTeammates,
       names: state.names,
       nilScoringRule: state.nilScoringRule,
+      displayNames,
+      viewCurrentRound,
+      viewRoundHistory,
+      role,
+      sessionId,
+      seat,
+      isViewerSynced,
+      startLeaderSession,
+      joinSession,
+      setSeat: setSeatAndPersist,
+      endSession,
     }),
     [
       setCurrentRound,
@@ -195,6 +337,17 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       state.isFirstGameAmongTeammates,
       state.names,
       state.nilScoringRule,
+      displayNames,
+      viewCurrentRound,
+      viewRoundHistory,
+      role,
+      sessionId,
+      seat,
+      isViewerSynced,
+      startLeaderSession,
+      joinSession,
+      setSeatAndPersist,
+      endSession,
     ],
   );
 

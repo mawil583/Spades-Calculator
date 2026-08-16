@@ -5,11 +5,11 @@ import { useContext } from 'react';
 import { GlobalContext } from '../../store/GlobalContext';
 
 const GameScore = function () {
-  const { names } = useContext(GlobalContext);
+  const { displayNames } = useContext(GlobalContext);
 
   const { team1Score, team2Score } = useGameScores();
 
-  if (!names) return null;
+  if (!displayNames) return null;
 
   return (
     <>
@@ -22,12 +22,12 @@ const GameScore = function () {
         <SimpleGrid columns={2}>
           <TeamScore
             teamClassName="team1"
-            teamName={names.team1Name}
+            teamName={displayNames.team1Name}
             scoreObj={team1Score}
           />
           <TeamScore
             teamClassName="team2"
-            teamName={names.team2Name}
+            teamName={displayNames.team2Name}
             scoreObj={team2Score}
           />
         </SimpleGrid>

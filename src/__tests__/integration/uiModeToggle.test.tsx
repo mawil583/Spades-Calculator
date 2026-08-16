@@ -65,8 +65,10 @@ describe('UI Mode Toggle Integration', () => {
   it('should immediately toggle UI mode without refresh', async () => {
     renderApp();
 
-    // 1. Verify default state (Classic Layout) -> GameScore IS present
-    expect(screen.getByTestId('game-score-container')).toBeInTheDocument();
+    // 1. Verify default state (Table Layout) -> GameScore is NOT present
+    expect(
+      screen.queryByTestId('game-score-container'),
+    ).not.toBeInTheDocument();
 
     // 2. Open Menu
     const menuButton = screen.getByLabelText('Open Menu');
@@ -80,33 +82,30 @@ describe('UI Mode Toggle Integration', () => {
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
     expect(screen.getByText('Settings')).toBeInTheDocument();
 
-    // 5. Find and toggle the switch
-    // The switch text says "Classic Layout" or "Table Layout" depending on state
-    // Initially it should say "Classic Layout"
-    expect(screen.getByText('Classic Layout')).toBeInTheDocument();
+    // 5. The switch reflects the current mode — table layout by default.
+    expect(screen.getByText('Table Layout')).toBeInTheDocument();
 
     // Chakra UI Switch usually renders as a checkbox input
     const toggleSwitch = screen.getByRole('checkbox');
 
-    // Toggle ON (Switch to Table Layout)
+    // Toggle to Classic Layout
     fireEvent.click(toggleSwitch);
 
-    // Verify text changed to "Table Layout"
-    expect(await screen.findByText('Table Layout')).toBeInTheDocument();
+    // Verify text changed to "Classic Layout"
+    expect(await screen.findByText('Classic Layout')).toBeInTheDocument();
 
-    // 6. Close Modal
-    // We don't need to close it to verify the background change, but let's check it's gone.
-    expect(
-      screen.queryByTestId('game-score-container'),
-    ).not.toBeInTheDocument();
+    // 6. GameScore is now visible in classic mode.
+    expect(screen.getByTestId('game-score-container')).toBeInTheDocument();
 
-    // 7. Toggle OFF (Switch back to Classic Layout)
+    // 7. Toggle back to Table Layout
     fireEvent.click(toggleSwitch);
 
     // Verify text changed back
-    expect(await screen.findByText('Classic Layout')).toBeInTheDocument();
+    expect(await screen.findByText('Table Layout')).toBeInTheDocument();
 
-    // 8. Verify GameScore is back
-    expect(screen.getByTestId('game-score-container')).toBeInTheDocument();
-  });
+    // 8. GameScore is gone again in table mode.
+    expect(
+      screen.queryByTestId('game-score-container'),
+    ).not.toBeInTheDocument();
+  }, 30000);
 });

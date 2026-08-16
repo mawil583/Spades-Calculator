@@ -4,9 +4,13 @@ import Unclaimed from '../components/game/Unclaimed';
 import BidSection from '../components/game/BidSection';
 import { GlobalContext } from '../store/GlobalContext';
 
-import { vi } from 'vitest';
+import { vi, beforeEach } from 'vitest';
 import type { GlobalContextValue, Round, InputValue } from '../types';
 import { createMockGlobalContext } from './utils/mockContext';
+import {
+  FEATURE_FLAGS,
+  setFeatureFlag,
+} from '../helpers/utils/featureFlags';
 
 // Mock the dependencies
 vi.mock('../helpers/utils/hooks', async (importOriginal) => {
@@ -54,19 +58,27 @@ const renderWithChakra = (component: React.ReactNode) => {
 };
 
 describe('Unclaimed Component', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
   it('should display unclaimed text correctly', () => {
     renderWithChakra(<Unclaimed numUnclaimed={5} />);
     expect(screen.getByText('Unclaimed: 5')).toBeInTheDocument();
   });
 
-  it('should display overbid text when numUnclaimed is negative', () => {
+  it('should display overbid count in table mode (default)', () => {
     renderWithChakra(<Unclaimed numUnclaimed={-2} />);
-    expect(
-      screen.getByText("2 overbids! Someone's getting set!"),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Overbids: 2')).toBeInTheDocument();
   });
 
-  it('should display singular overbid text when numUnclaimed is -1', () => {
+  it('should display a single overbid count in table mode', () => {
+    renderWithChakra(<Unclaimed numUnclaimed={-1} />);
+    expect(screen.getByText('Overbids: 1')).toBeInTheDocument();
+  });
+
+  it('should display the classic overbid wording in classic mode', () => {
+    setFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI, false);
     renderWithChakra(<Unclaimed numUnclaimed={-1} />);
     expect(
       screen.getByText("1 overbid! Someone's getting set!"),

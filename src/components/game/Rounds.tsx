@@ -6,7 +6,8 @@ import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 
 function Rounds() {
-  const { roundHistory } = useContext(GlobalContext);
+  const context = useContext(GlobalContext);
+  const roundHistory = context?.viewRoundHistory ?? [];
   const [isCompleting, setIsCompleting] = useState(false);
   const [showNewRound, setShowNewRound] = useState(true);
   const [previousRoundHistoryLength, setPreviousRoundHistoryLength] = useState(

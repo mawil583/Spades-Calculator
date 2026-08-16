@@ -132,8 +132,20 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
           nilScoringRule: action.payload.nilScoringRule,
         };
       }
+    case 'HYDRATE':
+      // Viewer mirror: receive the full state pushed by the leader. Deliberately
+      // does NOT write to localStorage (a viewer's device shouldn't clobber the
+      // leader's own persisted game, and rehydrating live is the point).
+      return {
+        ...state,
+        currentRound: action.payload.currentRound,
+        roundHistory: action.payload.roundHistory,
+        firstDealerOrder: action.payload.firstDealerOrder,
+        isFirstGameAmongTeammates: action.payload.isFirstGameAmongTeammates,
+        names: action.payload.names,
+        nilScoringRule: action.payload.nilScoringRule,
+      };
     default:
-      // @ts-expect-error import.meta.env is Vite-specific
       if (import.meta.env.DEV) {
         console.log('default called');
       }

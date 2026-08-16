@@ -4,9 +4,9 @@ import {
   getCurrentDealerId,
 } from '../../helpers/math/spadesMath';
 import { GlobalContext } from '../../store/GlobalContext';
+import { rotateDealerId } from '../../helpers/utils/perspective';
 import { Badge } from '../ui';
 import { initialFirstDealerOrder } from '../../helpers/utils/constants';
-import { getNames } from '../../helpers/utils/storage';
 import { DealerSelectionModal } from '../modals';
 import type { Round, Names } from '../../types';
 
@@ -24,7 +24,7 @@ const DealerTag = ({
   roundHistory,
   ...props
 }: DealerTagProps) => {
-  const { firstDealerOrder, currentRound, setDealerOverride } =
+  const { firstDealerOrder, currentRound, setDealerOverride, role, seat, names } =
     useContext(GlobalContext);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,18 +39,24 @@ const DealerTag = ({
     roundHistory,
   });
 
-  const isDealer = currentDealerId === id;
+  // The dealer is a fact about a player, not a screen slot. In viewer mode the
+  // board is rotated to the viewer's seat, so rotate the dealer id too — the
+  // badge must follow the player, otherwise it lands on the wrong name.
+  const displayDealerId =
+    role === 'viewer' ? rotateDealerId(currentDealerId, seat) : currentDealerId;
+
+  const isDealer = displayDealerId === id;
 
   const dealerOptions = useMemo(() => {
-    const names = getNames() || ({} as Partial<Names>);
+    const nameMap = names || ({} as Partial<Names>);
 
     const getNameForId = (playerId: string) => {
       const isTeam1 = playerId.includes('team1BidsAndActuals');
       const isP1 = playerId.includes('p1Bid');
-      if (isTeam1 && isP1) return names.t1p1Name || 'Team 1 - P1';
-      if (isTeam1 && !isP1) return names.t1p2Name || 'Team 1 - P2';
-      if (!isTeam1 && isP1) return names.t2p1Name || 'Team 2 - P1';
-      return names.t2p2Name || 'Team 2 - P2';
+      if (isTeam1 && isP1) return nameMap.t1p1Name || 'Team 1 - P1';
+      if (isTeam1 && !isP1) return nameMap.t1p2Name || 'Team 1 - P2';
+      if (!isTeam1 && isP1) return nameMap.t2p1Name || 'Team 2 - P1';
+      return nameMap.t2p2Name || 'Team 2 - P2';
     };
 
     const options = initialFirstDealerOrder.map((optId) => ({
@@ -58,7 +64,7 @@ const DealerTag = ({
       label: getNameForId(optId),
     }));
     return options;
-  }, []);
+  }, [names]);
 
   const onSelectDealer = (selectedId: string) => {
     // Only allow dealer changes for the current round (isCurrent = true)

@@ -20,6 +20,7 @@
     "@testing-library/react": "^16.3.0",
     "browserslist": "^4.25.2",
     "caniuse-lite": "^1.0.30001734",
+    "firebase": "^12.17.1",
     "formik": "^2.2.9",
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.563.0",
