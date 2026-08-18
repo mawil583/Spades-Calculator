@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=18.x"
+    "node": ">=22.0.0"
   },
   "projectId": "prj_kyypwKAKMKtdyfWi4HzNwuSd7QdO",
   "orgId": "kedTkGTQnyMW9NGClCGdMCEk",
