@@ -3,6 +3,7 @@ import {
   getDatabase,
   ref,
   set,
+  update,
   onValue,
   type Database,
   type Unsubscribe,
@@ -104,10 +105,14 @@ export async function writeSessionState(
   id: string,
   state: AppState,
 ): Promise<void> {
-  const uid = await ensureLeaderUid();
+  // ensureLeaderUid() keeps the anonymous sign-in alive so auth.uid is present
+  // for the security rule to compare against the session's stored leaderUid.
+  await ensureLeaderUid();
   const uiMode = getFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
-  await set(ref(getRTDB(), sessionPath(id)), {
-    leaderUid: uid,
+  // update() (not set()) so leaderUid — established once at createSession() —
+  // is never overwritten. Re-writing it on every push would let any client
+  // claim an existing session by writing its own uid (see firebase.rules.json).
+  await update(ref(getRTDB(), sessionPath(id)), {
     state: normalizeState(state),
     uiMode,
   });

@@ -96,7 +96,9 @@ export type AppAction =
   | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } }
   | { type: 'SET_NAMES'; payload: { names: Names } }
   | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } }
-  | { type: 'HYDRATE'; payload: AppState };
+  | { type: 'HYDRATE'; payload: AppState }
+  | { type: 'RESTORE_LOCAL' }
+  | { type: 'SEED_GAME_FROM_VIEW'; payload: AppState };
 
 // ─── Shared UI types ────────────────────────────────────────────────────────
 export interface ModalOpenArgs {

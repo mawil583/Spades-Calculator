@@ -21,6 +21,8 @@ import {
 } from '../../helpers/math/spadesMath';
 import ShareWatch from '../realtime/ShareWatch';
 import ViewerControls from '../realtime/ViewerControls';
+import WatchingChip from '../realtime/WatchingChip';
+import { useLeaveSession } from '../realtime/useLeaveSession';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ const Header = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
   const [isShareWatchOpen, setIsShareWatchOpen] = useState(false);
+  const [isWatchingOpen, setIsWatchingOpen] = useState(false);
   // Auto-open the seat picker the first time a viewer's board mounts. The
   // Header only renders for a viewer once the live board has synced, so `role`
   // is already 'viewer' at this point — no effect needed. A viewer who already
@@ -43,13 +46,25 @@ const Header = () => {
     () => role === 'viewer' && !getPersistedViewerSeat(),
   );
   const { handleInstallClick, isInstalled } = usePWAInstall();
+  const leaveSession = useLeaveSession();
 
   const names = getNames() ?? initialNames;
   const hasAnyData =
     hasPlayerNamesEntered(names) ||
     hasRoundProgress(roundHistory, currentRound);
 
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    setIsWatchingOpen(false);
+  };
+
+  // The watching menu and the hamburger menu must never be open at once — the
+  // hamburger dropdown sits later in the DOM and would paint over the watching
+  // dropdown. Opening one closes the other.
+  const toggleWatching = () => {
+    setIsWatchingOpen((open) => !open);
+    setIsMenuOpen(false);
+  };
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(true);
@@ -68,7 +83,13 @@ const Header = () => {
 
   const handleViewerSeatClick = () => {
     setIsMenuOpen(false);
+    setIsWatchingOpen(false);
     setIsViewerSeatOpen(true);
+  };
+
+  const handleLeaveSession = () => {
+    setIsWatchingOpen(false);
+    leaveSession();
   };
 
   const handleNewGameClick = () => {
@@ -84,6 +105,10 @@ const Header = () => {
   };
 
   const handleNavigateHome = () => {
+    // A viewer is read-only: the title must not boot them off the live board
+    // to the name form. The landing page keeps its own redirect as a failsafe
+    // for direct/stale URLs, but a deliberate click here shouldn't navigate.
+    if (role === 'viewer') return;
     navigate('/');
   };
 
@@ -99,14 +124,34 @@ const Header = () => {
           fontSize="var(--app-font-xl)"
           fontWeight="bold"
           letterSpacing="tight"
-          cursor="pointer"
+          cursor={role === 'viewer' ? 'default' : 'pointer'}
+          flex="1"
+          minWidth={0}
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
           onClick={handleNavigateHome}
         >
           SpadesCalculator
         </Text>
-        <IconButton variant="ghost" onClick={toggleMenu} aria-label="Open Menu">
-          <MenuIcon size={24} />
-        </IconButton>
+        <Flex align="center" gap={1.5} flexShrink={0}>
+          {role === 'viewer' && (
+            <WatchingChip
+              isOpen={isWatchingOpen}
+              onToggle={toggleWatching}
+              onSwitchSeat={handleViewerSeatClick}
+              onLeave={handleLeaveSession}
+            />
+          )}
+          <IconButton
+            variant="ghost"
+            onClick={toggleMenu}
+            aria-label="Open Menu"
+            flexShrink={0}
+          >
+            <MenuIcon size={24} />
+          </IconButton>
+        </Flex>
       </Flex>
 
       {isMenuOpen && (

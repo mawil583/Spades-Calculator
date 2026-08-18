@@ -16,13 +16,13 @@ import {
   writeSessionState,
   subscribeSession,
 } from '../firebase/realtime';
-import { rotateNames, rotateRound } from '../helpers/utils/perspective';
+import { rotateNames, rotateRound, rotateGameState } from '../helpers/utils/perspective';
 import {
   persistViewerSession,
   clearPersistedViewerSession,
   persistViewerSeat,
-  clearPersistedViewerSeat,
   getPersistedViewerSeat,
+  hasOwnLocalGame,
 } from '../helpers/utils/viewerSession';
 import { setFeatureFlag, FEATURE_FLAGS } from '../helpers/utils/featureFlags';
 import type {
@@ -150,8 +150,25 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     setIsViewerSynced(false);
     uiModeAppliedRef.current = false;
     clearPersistedViewerSession();
-    clearPersistedViewerSeat();
-  }, []);
+    if (hasOwnLocalGame()) {
+      // This device has its own game: restore it, undoing the hydrated leader
+      // board.
+      dispatch({ type: 'RESTORE_LOCAL' });
+    } else {
+      // Fresh device: seed the name form AND the board with the FULL watched
+      // game, rotated so the viewer's chosen seat lands in the "you" (t1p1)
+      // slot. Leaving must not blank the game — the leader's rounds carry over
+      // so "Continue" resumes where they left off. In-memory only, so
+      // `hasOwnLocalGame()` stays false and the leave flow lands on the form.
+      dispatch({
+        type: 'SEED_GAME_FROM_VIEW',
+        payload: rotateGameState(state, seat),
+      });
+    }
+    // The chosen seat is deliberately NOT cleared: it's a stable per-device
+    // preference ("where am I sitting?"), so leaving a session and rejoining
+    // (Undo, or re-opening the link) must not re-prompt for the seat.
+  }, [state, seat]);
 
   // Seat selection is persisted so a viewer who navigates away and back keeps
   // their chosen perspective instead of being re-prompted.

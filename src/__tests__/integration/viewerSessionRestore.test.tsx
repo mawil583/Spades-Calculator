@@ -1,9 +1,11 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
+import { useContext, useEffect } from 'react';
 import { MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { StateProvider } from '../../store/GlobalContext';
+import { StateProvider, GlobalContext } from '../../store/GlobalContext';
 import SpadesCalculator from '../../pages/SpadesCalculator';
 import { Provider } from '../../components/ui/provider';
+import type { GlobalContextValue } from '../../types';
 
 const { subscribeSessionMock } = vi.hoisted(() => ({
   subscribeSessionMock: vi.fn(),
@@ -15,6 +17,18 @@ vi.mock('../../firebase/realtime', () => ({
   writeSessionState: vi.fn(),
   subscribeSession: subscribeSessionMock,
 }));
+
+// Latest context value, refreshed on every render so tests can reach
+// endSession / joinSession without a button-driven harness.
+let ctx: GlobalContextValue;
+
+function CtxHarness() {
+  const value = useContext(GlobalContext);
+  useEffect(() => {
+    ctx = value;
+  }, [value]);
+  return null;
+}
 
 // Exposes the current location so tests can assert the URL was re-synced.
 function LocationProbe() {
@@ -31,6 +45,7 @@ const renderCalculator = (initialEntry = '/spades-calculator') => {
   render(
     <Provider>
       <StateProvider>
+        <CtxHarness />
         <MemoryRouter initialEntries={[initialEntry]}>
           <LocationProbe />
           <Routes>
@@ -83,5 +98,20 @@ describe('viewer session restore after navigation', () => {
       expect(screen.getByTestId('location').textContent).toBe('/');
     });
     expect(subscribeSessionMock).not.toHaveBeenCalled();
+  });
+
+  it('does not re-join after the viewer leaves (endSession)', async () => {
+    renderCalculator('/spades-calculator?session=sess-1');
+
+    // The viewer joins on the initial ?session= URL.
+    await waitFor(() => expect(subscribeSessionMock).toHaveBeenCalledTimes(1));
+
+    // Simulate "Leave": endSession flips role to 'local' synchronously, but the
+    // URL still carries ?session= (navigate removes it a beat later). The
+    // effect must NOT treat this as a fresh join and re-subscribe.
+    act(() => ctx.endSession());
+
+    await waitFor(() => expect(ctx.role).toBe('local'));
+    expect(subscribeSessionMock).toHaveBeenCalledTimes(1);
   });
 });

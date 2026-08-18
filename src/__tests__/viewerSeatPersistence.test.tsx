@@ -76,7 +76,7 @@ describe('viewer seat persistence', () => {
     await waitFor(() => expect(ctx.seat).toBe('t2p2'));
   });
 
-  it('clears the persisted seat when the session ends', async () => {
+  it('keeps the persisted seat when the session ends', async () => {
     render(
       <StateProvider>
         <ViewerHarness id="s1" seat="t2p1" />
@@ -86,6 +86,8 @@ describe('viewer seat persistence', () => {
     await waitFor(() => expect(getPersistedViewerSeat()).toBe('t2p1'));
 
     act(() => ctx.endSession());
-    expect(getPersistedViewerSeat()).toBeNull();
+    // Leaving must NOT clear the seat — rejoining (Undo / re-opening the link)
+    // should restore it without re-prompting.
+    expect(getPersistedViewerSeat()).toBe('t2p1');
   });
 });

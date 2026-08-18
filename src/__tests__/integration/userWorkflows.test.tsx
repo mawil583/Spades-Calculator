@@ -71,6 +71,10 @@ describe('Complete User Workflows', () => {
   });
 
   describe('Basic Game Setup Workflow', () => {
+    // This is the heaviest test in the suite: a full-app render (StateProvider +
+    // RouterProvider + HomePage) followed by several fireEvents. It runs in ~1.2s
+    // in isolation but is starved past the 10s default under parallel suite load,
+    // so it gets a wider timeout rather than racing the default.
     it('should complete full game setup process', async () => {
       renderWithProviders(<HomePage />);
 
@@ -103,7 +107,7 @@ describe('Complete User Workflows', () => {
       await waitFor(() => {
         expect(screen.getByText(/Team A/i)).toBeInTheDocument();
       });
-    });
+    }, 30000);
   });
 
   describe('Form Validation Workflow', () => {

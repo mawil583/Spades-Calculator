@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { GameScore, Rounds } from '../components/game';
@@ -29,9 +29,19 @@ function SpadesCalculator() {
   // A visitor whose URL carries ?session= is a viewer: subscribe to the session.
   // If the URL lost the param (navigated to landing and back), restore it from
   // persistence and re-sync the URL so a refresh still works.
+  //
+  // `joinedSessionRef` prevents a re-join race on "Leave": endSession flips
+  // `role` to 'local' synchronously, but navigate() is a React transition that
+  // removes `?session=` from the URL a beat later. Without the guard, the effect
+  // re-runs with `role === 'local'` while `sessionParam` is still present and
+  // immediately re-joins — bouncing the user back into viewer mode (chip stays,
+  // and the homepage redirect loop traps them).
+  const joinedSessionRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (sessionParam) {
-      if (role !== 'viewer') {
+      if (role !== 'viewer' && joinedSessionRef.current !== sessionParam) {
+        joinedSessionRef.current = sessionParam;
         joinSession(sessionParam);
       }
       return;

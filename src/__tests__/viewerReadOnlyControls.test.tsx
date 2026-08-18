@@ -14,6 +14,26 @@ const emptyRound = {
   team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
 } as unknown as Round;
 
+const renderViewerHeader = () => {
+  // Persist a seat so the seat picker doesn't auto-open and cover the menu.
+  persistViewerSeat('t2p1');
+
+  render(
+    <BrowserRouter>
+      <Provider>
+        <GlobalContext.Provider
+          value={createMockGlobalContext({
+            role: 'viewer',
+            currentRound: emptyRound,
+          })}
+        >
+          <Header />
+        </GlobalContext.Provider>
+      </Provider>
+    </BrowserRouter>,
+  );
+};
+
 describe('viewer read-only controls', () => {
   beforeEach(() => {
     window.sessionStorage.clear();
@@ -52,30 +72,40 @@ describe('viewer read-only controls', () => {
     });
   });
 
-  describe('header New Game', () => {
+  describe('header viewer menu', () => {
     it('does not offer New Game to a viewer', () => {
-      // Persist a seat so the seat picker doesn't auto-open and cover the menu.
-      persistViewerSeat('t2p1');
-
-      render(
-        <BrowserRouter>
-          <Provider>
-            <GlobalContext.Provider
-              value={createMockGlobalContext({
-                role: 'viewer',
-                currentRound: emptyRound,
-              })}
-            >
-              <Header />
-            </GlobalContext.Provider>
-          </Provider>
-        </BrowserRouter>,
-      );
+      renderViewerHeader();
 
       fireEvent.click(screen.getByLabelText('Open Menu'));
 
       expect(screen.queryByText('New Game')).not.toBeInTheDocument();
-      // Sanity: viewer-only items are still present.
+      // Sanity: the viewer can still switch seat from the hamburger menu, and
+      // the always-visible status chip is present.
+      expect(screen.getByText('Switch seat')).toBeInTheDocument();
+      expect(screen.getByTestId('watching-chip')).toBeInTheDocument();
+    });
+
+    it('offers Switch seat from the hamburger menu', () => {
+      renderViewerHeader();
+
+      fireEvent.click(screen.getByLabelText('Open Menu'));
+
+      // Exactly one "Switch seat" (the chip's own copy is hidden while closed).
+      expect(screen.getByText('Switch seat')).toBeInTheDocument();
+    });
+
+    it('closes the hamburger menu when the watching chip is opened', () => {
+      renderViewerHeader();
+
+      fireEvent.click(screen.getByLabelText('Open Menu'));
+      expect(screen.getByText('Settings')).toBeInTheDocument();
+
+      fireEvent.click(screen.getByTestId('watching-chip'));
+
+      // Hamburger menu closed — its items are gone.
+      expect(screen.queryByText('Settings')).not.toBeInTheDocument();
+      // Watching menu open — its actions are visible.
+      expect(screen.getByText('Leave')).toBeInTheDocument();
       expect(screen.getByText('Switch seat')).toBeInTheDocument();
     });
   });
