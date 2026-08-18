@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { GlobalContext } from '../../store/GlobalContext';
+import { getPersistedViewerSession } from '../../helpers/utils/viewerSession';
 import WarningModal from '../modals/WarningModal';
 import {
   hasPlayerNamesEntered,
@@ -50,6 +51,16 @@ function NameForm() {
       navigate('/spades-calculator', { state: values });
     },
   });
+
+  // A viewer is only here to watch a live board, not to (re)name players. If
+  // this device has an active viewer session, bounce straight back to the board
+  // so they can't edit names locally (which wouldn't sync to the leader anyway).
+  useEffect(() => {
+    const persisted = getPersistedViewerSession();
+    if (persisted) {
+      navigate(`/spades-calculator?session=${persisted}`, { replace: true });
+    }
+  }, [navigate]);
 
   const { values, setFieldValue } = formik;
   const { team1Name, team2Name } = values;

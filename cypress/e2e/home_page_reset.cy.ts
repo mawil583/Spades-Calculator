@@ -2,6 +2,11 @@ describe('Home Page Reset', () => {
     beforeEach(() => {
         // Clear local storage to start fresh
         cy.clearLocalStorage();
+        // Pin classic UI so the calculator-page selectors (bidButton / actualButton)
+        // resolve — the table layout (now the default) renders different elements.
+        cy.window().then((win) => {
+            win.localStorage.setItem('featureFlag_tableRoundUI', JSON.stringify(false));
+        });
         cy.visit('/');
     });
 

@@ -14,7 +14,13 @@ interface ScoreSettingProps {
 }
 
 function ScoreSetting({ onOpenScoreHelp }: ScoreSettingProps) {
-  const { nilScoringRule, setNilScoringRule } = useContext(GlobalContext);
+  const { nilScoringRule, setNilScoringRule, role } =
+    useContext(GlobalContext);
+
+  // The nil scoring rule is a leader-owned game-logic setting. A viewer sees
+  // scores already computed with the leader's rule (hydrated), so letting them
+  // change it locally would silently diverge from the shared board.
+  if (role === 'viewer') return null;
 
   const handleClick = () => {
     if (onOpenScoreHelp) {

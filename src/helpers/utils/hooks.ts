@@ -15,6 +15,7 @@ import type {
   NilSetting,
   TeamKey,
   InputValue,
+  SessionRole,
 } from '../../types';
 
 export function useLocalStorage<T>(
@@ -67,8 +68,10 @@ export function useLocalStorage<T>(
 export function useRedirectWhenFalsey(
   names: Names | null,
   navigate: (path: string) => void,
+  enabled = true,
 ) {
   useEffect(() => {
+    if (!enabled) return;
     if (!names) {
       navigate('/');
     } else {
@@ -77,7 +80,7 @@ export function useRedirectWhenFalsey(
         navigate('/');
       }
     }
-  }, [names, navigate]);
+  }, [names, navigate, enabled]);
 }
 
 export function useSetUnclaimed(
@@ -110,8 +113,14 @@ export function useIndependentTeamScoring(
   isNotDefaultValueFn: (val: InputValue) => boolean,
   setRoundHistory: (history: Round[]) => void,
   roundHistory: Round[],
+  role: SessionRole = 'local',
 ) {
   useEffect(() => {
+    // A viewer mirrors the leader's board read-only. Completing a round is a
+    // leader-only side effect — running it on a viewer would mutate their
+    // local state (and localStorage) out from under the hydrated leader state.
+    if (role === 'viewer') return;
+
     const team1InputVals = Object.values(currentRound.team1BidsAndActuals);
     const team2InputVals = Object.values(currentRound.team2BidsAndActuals);
     const team1InputsAreEntered = team1InputVals.every(isNotDefaultValueFn);
@@ -149,6 +158,7 @@ export function useIndependentTeamScoring(
     isNotDefaultValueFn,
     setRoundHistory,
     roundHistory,
+    role,
   ]);
 }
 
@@ -193,8 +203,8 @@ function calculateCurrentRoundTeamScore(
 
 export function useGameScores() {
   const context = useContext(GlobalContext);
-  const roundHistory = context?.roundHistory;
-  const currentRound = context?.currentRound || null;
+  const roundHistory = context?.viewRoundHistory ?? context?.roundHistory;
+  const currentRound = context?.viewCurrentRound || null;
   const nilSettingOption = context?.nilScoringRule || null;
   const nilSetting = nilSettingOption as NilSetting | null;
 

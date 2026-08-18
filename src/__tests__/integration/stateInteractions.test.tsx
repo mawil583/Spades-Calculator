@@ -114,7 +114,7 @@ describe('Complex State Interactions Between Unrelated Components', () => {
       } as unknown as Round as Round,
       setCurrentRound: mockSetCurrentRound,
       resetCurrentRound: vi.fn(),
-      roundHistory: [],
+      roundHistory: [] as Round[],
       setRoundHistory: mockSetRoundHistory,
       firstDealerOrder: [],
       isFirstGameAmongTeammates: false,
@@ -123,6 +123,19 @@ describe('Complex State Interactions Between Unrelated Components', () => {
       setDealerOverride: vi.fn(),
       resetRoundHistory: vi.fn(),
       setNilScoringRule: vi.fn(),
+      displayNames: {
+        team1Name: 'Team 1',
+        team2Name: 'Team 2',
+        t1p1Name: 'Mike',
+        t1p2Name: 'Kim',
+        t2p1Name: 'Mom',
+        t2p2Name: 'Dad',
+      },
+      viewCurrentRound: {
+        team1BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
+        team2BidsAndActuals: { p1Bid: '', p2Bid: '', p1Actual: '', p2Actual: '' },
+      } as unknown as Round,
+      viewRoundHistory: [] as Round[],
     } as unknown as MockContextValue;
 
     mockLocalStorage.getItem.mockReturnValue(

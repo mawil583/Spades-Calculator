@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "sessions": {
+      "$sessionId": {
+        ".read": true,
+        ".write": "(!data.exists() && newData.child('leaderUid').val() === auth.uid) || (data.exists() && data.child('leaderUid').val() === auth.uid)"
+      }
+    }
+  }
+}

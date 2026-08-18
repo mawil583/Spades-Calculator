@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, useMemo } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { Container, Separator } from '../ui';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,7 +19,6 @@ import { GlobalContext } from '../../store/GlobalContext';
 import type {
   Round as RoundType,
   InputValue,
-  Names,
   NilSetting,
 } from '../../types';
 
@@ -30,29 +29,24 @@ interface RoundProps {
 }
 
 function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
-  const { currentRound, resetCurrentRound, setRoundHistory } =
-    useContext(GlobalContext);
+  const {
+    currentRound,
+    viewCurrentRound,
+    resetCurrentRound,
+    setRoundHistory,
+    displayNames,
+    nilScoringRule,
+    role,
+  } = useContext(GlobalContext);
 
   const [isActualsSectionVisible, setIsActualsSectionVisible] = useState(false);
 
-  const namesStr =
-    typeof window !== 'undefined' ? localStorage.getItem('names') : null;
-  const names: Names | null = useMemo(
-    () => (namesStr ? JSON.parse(namesStr) : null),
-    [namesStr],
-  );
-
-  const nilSettingStr =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('nilScoringRule')
-      : null;
-  const nilSetting: NilSetting | null = useMemo(
-    () => (nilSettingStr ? JSON.parse(nilSettingStr) : null),
-    [nilSettingStr],
-  );
+  // Viewer-safe names/nilSetting: read from context (hydrated from leader's state),
+  // not localStorage (which would show the viewer's own stale values).
+  const nilSetting = nilScoringRule as NilSetting | null;
 
   const roundAtIndex = isCurrent ? null : (roundHistory?.[roundIndex] ?? null);
-  const roundInputs = isCurrent ? currentRound : roundAtIndex;
+  const roundInputs = isCurrent ? viewCurrentRound : roundAtIndex;
 
   // Always call hooks before any early returns
   useIndependentTeamScoring(
@@ -61,6 +55,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
     isNotDefaultValue,
     setRoundHistory,
     roundHistory,
+    role,
   );
 
   // Check if all bids are entered and update animation state
@@ -98,9 +93,6 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
     }
   }, [allBidsEntered, isCurrent, isActualsSectionVisible]);
 
-  // Early returns must happen AFTER hooks
-  if (!names) return null;
-
   // If this is a past round and the round data is missing or malformed, skip rendering this round
   if (!isCurrent) {
     const hasValidStructure =
@@ -112,7 +104,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
     }
   }
 
-  const { team1Name, team2Name } = names;
+  const { team1Name, team2Name } = displayNames;
 
   function getTeamsScoresFromHistory() {
     if (roundAtIndex) {
@@ -275,7 +267,7 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
 
   return (
     <div className="round" data-cy="round">
-      <RoundHeading roundNumber={roundIndex + 1} names={names} />
+      <RoundHeading roundNumber={roundIndex + 1} names={displayNames} />
       <Container px={0}>
         {!isCurrent && (
           <>
@@ -307,12 +299,12 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
               style={{ overflow: 'hidden' }}
             >
               <ActualSection
-                names={names}
+                names={displayNames}
                 isCurrent={isCurrent}
                 index={roundIndex}
                 roundHistory={roundHistory}
                 currentRound={
-                  (isCurrent ? currentRound : roundAtIndex) as RoundType
+                  (isCurrent ? viewCurrentRound : roundAtIndex) as RoundType
                 }
               />
             </motion.div>
@@ -322,11 +314,11 @@ function Round({ roundHistory, isCurrent = false, roundIndex }: RoundProps) {
         {showActuals && <Separator className="divider-between-sections" />}
 
         <BidSection
-          names={names}
+          names={displayNames}
           isCurrent={isCurrent}
           index={roundIndex}
           roundHistory={roundHistory}
-          currentRound={(isCurrent ? currentRound : roundAtIndex) as RoundType}
+          currentRound={(isCurrent ? viewCurrentRound : roundAtIndex) as RoundType}
         />
       </Container>
     </div>

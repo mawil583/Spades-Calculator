@@ -132,8 +132,34 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
           nilScoringRule: action.payload.nilScoringRule,
         };
       }
+    case 'HYDRATE':
+      // Viewer mirror: receive the full state pushed by the leader. Deliberately
+      // does NOT write to localStorage (a viewer's device shouldn't clobber the
+      // leader's own persisted game, and rehydrating live is the point).
+      return {
+        ...state,
+        currentRound: action.payload.currentRound,
+        roundHistory: action.payload.roundHistory,
+        firstDealerOrder: action.payload.firstDealerOrder,
+        isFirstGameAmongTeammates: action.payload.isFirstGameAmongTeammates,
+        names: action.payload.names,
+        nilScoringRule: action.payload.nilScoringRule,
+      };
+    case 'RESTORE_LOCAL':
+      // Leaving a viewer/leader session on a device that has its OWN local
+      // game: fall back to it. HYDRATE never touched localStorage, so re-running
+      // getInitialState re-reads the viewer's own persisted state — undoing the
+      // leader's hydrated board.
+      return getInitialState();
+    case 'SEED_GAME_FROM_VIEW':
+      // Leaving a viewer session on a device with NO local game: seed a fresh
+      // local game pre-filled with the FULL watched game (names, rounds,
+      // dealer order) already rotated to the viewer's seat by the caller. The
+      // board must not appear "just started" — the leader's rounds carry over.
+      // In-memory only (no localStorage write) so `hasOwnLocalGame()` stays
+      // false and the leave flow lands on the name form.
+      return { ...action.payload };
     default:
-      // @ts-expect-error import.meta.env is Vite-specific
       if (import.meta.env.DEV) {
         console.log('default called');
       }

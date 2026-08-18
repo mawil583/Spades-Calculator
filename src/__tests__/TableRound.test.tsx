@@ -180,4 +180,28 @@ describe('TableRound Component', () => {
     expect(screen.getAllByText(/Bid:Made/i).length).toBe(1); // Only Team 1
     expect(screen.getAllByText(/^Bid$/i).length).toBe(1); // Team 2 still shows "Bid"
   });
+
+  it('shows names from context (displayNames), not localStorage — viewer regression', () => {
+    // Simulate a viewer's fresh device: no persisted names, but the context
+    // carries the leader's hydrated names. The old implementation read
+    // `getNames()` (localStorage) here, so a viewer rendered blank names.
+    localStorage.removeItem('names');
+
+    const context = getBaseContext();
+    context.displayNames = {
+      team1Name: 'Team Alpha',
+      team2Name: 'Team Beta',
+      t1p1Name: 'Alice',
+      t1p2Name: 'Bob',
+      t2p1Name: 'Carol',
+      t2p2Name: 'Dan',
+    };
+
+    renderWithProviders(context);
+
+    expect(screen.getByText(/Alice/)).toBeInTheDocument();
+    expect(screen.getByText(/Bob/)).toBeInTheDocument();
+    expect(screen.getByText(/Carol/)).toBeInTheDocument();
+    expect(screen.getByText(/Dan/)).toBeInTheDocument();
+  });
 });

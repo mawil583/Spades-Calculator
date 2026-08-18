@@ -17,6 +17,10 @@ describe('featureFlags utilities', () => {
     );
   });
 
+  it('defaults TABLE_ROUND_UI to true (table mode)', () => {
+    expect(getFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI)).toBe(true);
+  });
+
   it('should return true when flag is set to true in localStorage', () => {
     localStorage.setItem(FEATURE_FLAGS.TABLE_ROUND_UI, JSON.stringify(true));
     expect(getFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI)).toBe(true);

@@ -4,7 +4,7 @@ export const FEATURE_FLAGS = {
 };
 
 export const FLAG_DEFAULTS = {
-  [FEATURE_FLAGS.TABLE_ROUND_UI]: false, // Original UI is default
+  [FEATURE_FLAGS.TABLE_ROUND_UI]: true, // Table layout is the default UI
 };
 
 export const getFeatureFlag = (flagKey: string) => {

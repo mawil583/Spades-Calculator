@@ -15,9 +15,9 @@ export const toaster = createToaster({
 export const Toaster = () => {
   return (
     <Portal>
-      <ChakraToaster toaster={toaster} insetInline={{ md: '16' }}>
+      <ChakraToaster toaster={toaster}>
         {(toast) => (
-          <Toast.Root width={{ md: 'sm' }}>
+          <Toast.Root width={{ base: 'calc(100vw - 2rem)', md: 'sm' }}>
             {toast.indicator && (
               <Toast.Indicator>{toast.indicator}</Toast.Indicator>
             )}
