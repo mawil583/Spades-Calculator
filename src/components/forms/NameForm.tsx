@@ -12,13 +12,16 @@ import {
 
 import { TeamNameInput, PlayerNameInput } from './';
 import { Button, SimpleGrid, Center } from '../ui';
+import ScoreLimitModal from '../modals/ScoreLimitModal';
 import type { Names } from '../../types';
 
 function NameForm() {
   const navigate = useNavigate();
-  const { roundHistory, currentRound, names, setNames } =
+  const { roundHistory, currentRound, names, setNames, setScoreLimit } =
     useContext(GlobalContext);
   const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
+  const [isScoreLimitModalOpen, setIsScoreLimitModalOpen] = useState(false);
+  const [pendingNames, setPendingNames] = useState<Names | null>(null);
 
   const hasGameData =
     hasPlayerNamesEntered(names) ||
@@ -48,9 +51,22 @@ function NameForm() {
     enableReinitialize: true,
     onSubmit: (values) => {
       setNames(values);
+      if (!hasGameData) {
+        // Fresh game: offer an optional score limit before heading to the board.
+        setPendingNames(values);
+        setIsScoreLimitModalOpen(true);
+        return;
+      }
       navigate('/spades-calculator', { state: values });
     },
   });
+
+  const finishGameStart = (scoreLimit: number | null) => {
+    setScoreLimit(scoreLimit);
+    setIsScoreLimitModalOpen(false);
+    navigate('/spades-calculator', { state: pendingNames ?? undefined });
+    setPendingNames(null);
+  };
 
   // A viewer is only here to watch a live board, not to (re)name players. If
   // this device has an active viewer session, bounce straight back to the board
@@ -79,6 +95,12 @@ function NameForm() {
         isOpen={isWarningModalOpen}
         setIsModalOpen={setIsWarningModalOpen}
         resetNames={setNames}
+      />
+      <ScoreLimitModal
+        isOpen={isScoreLimitModalOpen}
+        setIsModalOpen={setIsScoreLimitModalOpen}
+        onDecline={() => finishGameStart(null)}
+        onSetLimit={(limit) => finishGameStart(limit)}
       />
       <form onSubmit={formik.handleSubmit}>
         {/* Team 1 Section */}

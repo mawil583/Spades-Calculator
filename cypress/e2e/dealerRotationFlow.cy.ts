@@ -33,6 +33,8 @@ describe('Dealer Rotation Flow with Override', () => {
       if ($body.find(':contains("New Game")').length > 0) {
         cy.contains('New Game').click();
         cy.contains('Same Teams').click();
+        // Decline the score limit prompt
+        cy.contains('button', 'No').click();
       } else {
         // Close menu if New Game not found/needed
         cy.get('[aria-label="Open Menu"]').click();

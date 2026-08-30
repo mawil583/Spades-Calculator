@@ -36,6 +36,8 @@ export const createMockGlobalContext = (
     resetCurrentRound: vi.fn(),
     isFirstGameAmongTeammates: false,
     setDealerOverride: vi.fn(),
+    scoreLimit: null,
+    setScoreLimit: vi.fn(),
     role: 'local' as const,
     sessionId: null,
     seat: 't1p1' as const,

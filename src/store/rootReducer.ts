@@ -23,6 +23,7 @@ export const getInitialState = (): AppState => ({
   ),
   names: defaultLocalStorage('names', initialNames),
   nilScoringRule: defaultLocalStorage('nilScoringRule', TAKES_BAGS),
+  scoreLimit: defaultLocalStorage('scoreLimit', null),
 });
 
 const rootReducer = (state: AppState, action: AppAction): AppState => {
@@ -132,6 +133,23 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
           nilScoringRule: action.payload.nilScoringRule,
         };
       }
+    case 'SET_SCORE_LIMIT':
+      try {
+        setLocalStorage('scoreLimit', action.payload.scoreLimit);
+        return {
+          ...state,
+          scoreLimit: action.payload.scoreLimit,
+        };
+      } catch (err) {
+        console.error(
+          'Error in SET_SCORE_LIMIT (localStorage quota or write error):',
+          err,
+        );
+        return {
+          ...state,
+          scoreLimit: action.payload.scoreLimit,
+        };
+      }
     case 'HYDRATE':
       // Viewer mirror: receive the full state pushed by the leader. Deliberately
       // does NOT write to localStorage (a viewer's device shouldn't clobber the
@@ -144,6 +162,7 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
         isFirstGameAmongTeammates: action.payload.isFirstGameAmongTeammates,
         names: action.payload.names,
         nilScoringRule: action.payload.nilScoringRule,
+        scoreLimit: action.payload.scoreLimit ?? null,
       };
     case 'RESTORE_LOCAL':
       // Leaving a viewer/leader session on a device that has its OWN local

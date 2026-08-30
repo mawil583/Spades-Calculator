@@ -311,6 +311,13 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     });
   }, []);
 
+  const setScoreLimit = useCallback((limit: number | null) => {
+    dispatch({
+      type: 'SET_SCORE_LIMIT',
+      payload: { scoreLimit: limit },
+    });
+  }, []);
+
   const globalStore = useMemo(
     () => ({
       setCurrentRound,
@@ -321,12 +328,14 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       setDealerOverride,
       setNames,
       setNilScoringRule,
+      setScoreLimit,
       firstDealerOrder: state.firstDealerOrder,
       currentRound: state.currentRound,
       roundHistory: state.roundHistory,
       isFirstGameAmongTeammates: state.isFirstGameAmongTeammates,
       names: state.names,
       nilScoringRule: state.nilScoringRule,
+      scoreLimit: state.scoreLimit,
       displayNames,
       viewCurrentRound,
       viewRoundHistory,
@@ -348,12 +357,14 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       setDealerOverride,
       setNames,
       setNilScoringRule,
+      setScoreLimit,
       state.firstDealerOrder,
       state.currentRound,
       state.roundHistory,
       state.isFirstGameAmongTeammates,
       state.names,
       state.nilScoringRule,
+      state.scoreLimit,
       displayNames,
       viewCurrentRound,
       viewRoundHistory,

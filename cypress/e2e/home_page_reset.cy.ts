@@ -29,7 +29,13 @@ describe('Home Page Reset', () => {
         // 2. Start Game (New Game button only visible if game data exists)
         // We need to start a game to create history/current round
         cy.get('[data-cy="startButton"]').click();
-        
+
+        // Dismiss the score-limit prompt (continue without a limit)
+        cy.contains('Do you want to set a score limit for this game?').should(
+            'be.visible'
+        );
+        cy.contains('button', 'No').click();
+
         // Ensure we are on calculator page
         cy.url().should('include', '/spades-calculator');
 

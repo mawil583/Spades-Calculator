@@ -24,6 +24,12 @@ describe('Player Name Editing Flow', () => {
     // 2. Click Start
     cy.get('button[data-cy="startButton"]').click();
 
+    // 2b. Dismiss the score-limit prompt (continue without a limit)
+    cy.contains('Do you want to set a score limit for this game?').should(
+      'be.visible'
+    );
+    cy.contains('button', 'No').click();
+
     // 3. Verify on spades-calculator page
     cy.url().should('include', '/spades-calculator');
 

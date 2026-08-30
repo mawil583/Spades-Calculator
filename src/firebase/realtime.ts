@@ -68,6 +68,7 @@ function normalizeState(raw: AppState | null | undefined): AppState {
     isFirstGameAmongTeammates: raw?.isFirstGameAmongTeammates ?? true,
     names: raw?.names ?? initialNames,
     nilScoringRule: raw?.nilScoringRule ?? TAKES_BAGS,
+    scoreLimit: raw?.scoreLimit ?? null,
   } as AppState;
 }
 

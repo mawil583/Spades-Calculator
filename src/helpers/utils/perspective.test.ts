@@ -205,6 +205,7 @@ describe('rotateGameState (seed the game on viewer leave)', () => {
     isFirstGameAmongTeammates: true,
     names,
     nilScoringRule: 'takesBags',
+    scoreLimit: null,
   };
 
   it('returns the same state for the leader seat (t1p1)', () => {

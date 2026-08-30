@@ -84,8 +84,11 @@ describe('New Game Flow', () => {
       // Click the New Game button
       cy.contains('New Game').click();
 
-      // Click Same Teams
+      // Click Same Teams, which leads to the score-limit prompt
       cy.contains('Same Teams').click();
+
+      // Decline the score limit
+      cy.contains('button', 'No').click();
 
       // Should stay on the spades calculator page
       cy.url().should('eq', Cypress.config().baseUrl + '/spades-calculator');
@@ -149,8 +152,11 @@ describe('New Game Flow', () => {
       cy.get('[aria-label="Open Menu"]').click();
       cy.contains('New Game').click();
 
-      // Click Same Teams
+      // Click Same Teams, which leads to the score-limit prompt
       cy.contains('Same Teams').click();
+
+      // Decline the score limit
+      cy.contains('button', 'No').click();
 
       // Verify we're still on the spades calculator page
       cy.url().should('eq', Cypress.config().baseUrl + '/spades-calculator');

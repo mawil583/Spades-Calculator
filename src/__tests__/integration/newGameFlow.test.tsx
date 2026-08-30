@@ -127,10 +127,12 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(screen.getByLabelText('Open Menu'));
       fireEvent.click(screen.getByText('New Game'));
 
-      // Wait for modal and click Same Teams
+      // Wait for modal and click Same Teams, which leads to the score-limit prompt
       const sameTeamsButton = await screen.findByText('Same Teams');
       fireEvent.click(sameTeamsButton);
+      fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
+      expect(contextValue.setScoreLimit).toHaveBeenCalledWith(null);
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
       expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
     });
@@ -349,9 +351,10 @@ describe('New Game Flow Integration', () => {
       const continueButton = await screen.findByText('Continue');
       fireEvent.click(continueButton);
 
-      // Click Same Teams
+      // Click Same Teams, then decline the score limit
       const sameTeamsButton = await screen.findByText('Same Teams');
       fireEvent.click(sameTeamsButton);
+      fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
       expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
       expect(contextValue.resetCurrentRound).toHaveBeenCalled();
