@@ -99,6 +99,7 @@ const leaderState: AppState = {
   isFirstGameAmongTeammates: true,
   names: leaderNames,
   nilScoringRule: 'takesBags',
+  scoreLimit: null,
 };
 
 describe('viewer leave', () => {

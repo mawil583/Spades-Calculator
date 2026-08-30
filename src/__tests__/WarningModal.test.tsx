@@ -137,7 +137,7 @@ describe('WarningModal', () => {
       });
     });
 
-    it('should handle "Same Teams" selection', async () => {
+    it('should ask about a score limit after "Same Teams" and start without one on "No"', async () => {
       const setIsModalOpen = vi.fn();
       const contextValue = createMockGlobalContext({
         ...mockContextValue,
@@ -152,6 +152,72 @@ describe('WarningModal', () => {
       fireEvent.click(await screen.findByText('Same Teams'));
       const ctx = contextValue as GlobalContextValue;
 
+      expect(
+        await screen.findByText(
+          'Do you want to set a score limit for this game?',
+        ),
+      ).toBeInTheDocument();
+      expect(ctx.resetCurrentRound).not.toHaveBeenCalled();
+
+      fireEvent.click(await screen.findByRole('button', { name: 'No' }));
+
+      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
+    });
+
+    it('should set a entered score limit after "Same Teams" via the numeric input', async () => {
+      const setIsModalOpen = vi.fn();
+      const contextValue = createMockGlobalContext({
+        ...mockContextValue,
+        roundHistory: [],
+      });
+
+      renderWithProviders(
+        <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
+        contextValue,
+      );
+
+      fireEvent.click(await screen.findByText('Same Teams'));
+      fireEvent.click(await screen.findByRole('button', { name: 'Yes' }));
+
+      const input = await screen.findByTestId('score-limit-input');
+      expect(input).toHaveAttribute('inputmode', 'numeric');
+      fireEvent.change(input, { target: { value: '500' } });
+      fireEvent.click(screen.getByTestId('setScoreLimitButton'));
+      const ctx = contextValue as GlobalContextValue;
+
+      expect(ctx.setScoreLimit).toHaveBeenCalledWith(500);
+      expect(ctx.resetCurrentRound).toHaveBeenCalled();
+      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(setIsModalOpen).toHaveBeenCalledWith(false);
+      expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
+    });
+
+    it('should show a cancel button on the input step and unset the limit on cancel', async () => {
+      const setIsModalOpen = vi.fn();
+      const contextValue = createMockGlobalContext({
+        ...mockContextValue,
+        roundHistory: [],
+      });
+
+      renderWithProviders(
+        <WarningModal isOpen={true} setIsModalOpen={setIsModalOpen} />,
+        contextValue,
+      );
+
+      fireEvent.click(await screen.findByText('Same Teams'));
+      fireEvent.click(await screen.findByRole('button', { name: 'Yes' }));
+
+      expect(
+        await screen.findByRole('button', { name: 'Cancel' }),
+      ).toBeInTheDocument();
+      fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+      const ctx = contextValue as GlobalContextValue;
+
+      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
       expect(ctx.resetCurrentRound).toHaveBeenCalled();
       expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
@@ -306,10 +372,14 @@ describe('WarningModal', () => {
       // Click Continue first
       fireEvent.click(await screen.findByText('Continue'));
 
-      // Then click Same Teams
+      // Then click Same Teams, which now leads to the score-limit prompt
       fireEvent.click(await screen.findByText('Same Teams'));
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'No' }),
+      );
       const ctx = contextValue as GlobalContextValue;
 
+      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
       expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
       expect(ctx.resetCurrentRound).toHaveBeenCalled();
       expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);

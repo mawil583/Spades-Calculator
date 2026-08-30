@@ -10,6 +10,8 @@ import { GlobalContext } from '../../store/GlobalContext';
 import { rotateArr } from '../../helpers/utils/helperFunctions';
 import DataWarningQuestion from '../forms/DataWarningQuestion';
 import NewPlayerQuestion from '../forms/NewPlayerQuestion';
+import ScoreLimitQuestion from '../forms/ScoreLimitQuestion';
+import ScoreLimitInput from '../forms/ScoreLimitInput';
 
 interface WarningModalProps {
   isOpen: boolean;
@@ -30,22 +32,29 @@ function WarningModal({
     firstDealerOrder,
     roundHistory,
     setNames,
+    setScoreLimit,
   } = useContext(GlobalContext);
   const hasRoundHistory = roundHistory.length > 0;
 
   // State to track if the user has clicked "Continue" on the data warning
   const [hasClickedContinue, setHasClickedContinue] = useState(false);
+  const [isSettingScoreLimit, setIsSettingScoreLimit] = useState(false);
+  const [isEnteringScoreLimit, setIsEnteringScoreLimit] = useState(false);
   const [previousIsOpenValue, setPreviousIsOpenValue] = useState(isOpen);
 
   // Derived visibility state
   const showDataWarning = isOpen && hasRoundHistory && !hasClickedContinue;
-  const showNewPlayer = isOpen && (!hasRoundHistory || hasClickedContinue);
+  const showNewPlayer =
+    isOpen && (!hasRoundHistory || hasClickedContinue) && !isSettingScoreLimit;
+  const showScoreLimit = isOpen && isSettingScoreLimit;
 
   // Adjust state during render when isOpen changes
   if (isOpen !== previousIsOpenValue) {
     setPreviousIsOpenValue(isOpen);
     if (!isOpen) {
       setHasClickedContinue(false);
+      setIsSettingScoreLimit(false);
+      setIsEnteringScoreLimit(false);
     }
   }
 
@@ -57,7 +66,14 @@ function WarningModal({
     setHasClickedContinue(true);
   };
 
+  // "Same Teams" now funnels through the optional score-limit prompt before
+  // the game actually resets; nothing is cleared until that answer lands.
   const onSameTeams = () => {
+    setIsSettingScoreLimit(true);
+  };
+
+  const finishSameTeams = (scoreLimit: number | null) => {
+    setScoreLimit(scoreLimit);
     if (hasRoundHistory) {
       setFirstDealerOrder(rotateArr(firstDealerOrder));
     }
@@ -80,15 +96,20 @@ function WarningModal({
     navigate('/');
   };
 
+  const title = showDataWarning
+    ? 'Are you sure?'
+    : isSettingScoreLimit
+      ? isEnteringScoreLimit
+        ? 'Enter Score Limit'
+        : 'New Game'
+      : 'Would you like to keep the same teams?';
+
   return (
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
-      title={
-        showDataWarning
-          ? 'Are you sure?'
-          : 'Would you like to keep the same teams?'
-      }
+      title={title}
+      showCloseButton={!isEnteringScoreLimit}
       contentProps={
         { 'data-testid': 'warning-modal' } as BoxProps &
           Record<`data-${string}`, string>
@@ -101,6 +122,18 @@ function WarningModal({
         <NewPlayerQuestion
           onDifferentTeams={onDifferentTeams}
           onSameTeams={onSameTeams}
+        />
+      )}
+      {showScoreLimit && !isEnteringScoreLimit && (
+        <ScoreLimitQuestion
+          onYes={() => setIsEnteringScoreLimit(true)}
+          onNo={() => finishSameTeams(null)}
+        />
+      )}
+      {showScoreLimit && isEnteringScoreLimit && (
+        <ScoreLimitInput
+          onSetLimit={(limit) => finishSameTeams(limit)}
+          onCancel={() => finishSameTeams(null)}
         />
       )}
     </AppModal>

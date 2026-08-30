@@ -5,3 +5,6 @@ export { default as InputModal } from './InputModal';
 export { default as ActualsValidationModal } from './ActualsValidationModal';
 export { default as DealerSelectionModal } from './DealerSelectionModal';
 export { default as SettingsModal } from './SettingsModal';
+export { default as ScoreLimitModal } from './ScoreLimitModal';
+export { default as GameWonModal } from './GameWonModal';
+export { default as EditScoreLimitModal } from './EditScoreLimitModal';

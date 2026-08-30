@@ -582,3 +582,30 @@ export const hasRoundProgress = (
 
   return hasTeam1Progress || hasTeam2Progress;
 };
+
+/*
+A round only counts as finished once every bid and actual is entered AND the
+actuals add up to 13 — the same bar useIndependentTeamScoring uses before a
+round is moved into history.
+*/
+export const isRoundComplete = (round: Round | null): boolean => {
+  if (!round?.team1BidsAndActuals || !round.team2BidsAndActuals) {
+    return false;
+  }
+  const { team1BidsAndActuals, team2BidsAndActuals } = round;
+
+  const allInputsEntered = [
+    ...Object.values(team1BidsAndActuals),
+    ...Object.values(team2BidsAndActuals),
+  ].every(isNotDefaultValue);
+  if (!allInputsEntered) return false;
+
+  const totalActuals = addInputs(
+    team1BidsAndActuals.p1Actual,
+    team1BidsAndActuals.p2Actual,
+    team2BidsAndActuals.p1Actual,
+    team2BidsAndActuals.p2Actual,
+  );
+
+  return totalActuals === 13;
+};

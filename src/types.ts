@@ -83,6 +83,8 @@ export interface AppState {
   isFirstGameAmongTeammates: boolean;
   names: Names;
   nilScoringRule: string;
+  /** Win threshold in points; null when no score limit is set. */
+  scoreLimit: number | null;
 }
 
 // ─── Reducer actions ──────────────────────────────────────────────────────
@@ -96,6 +98,7 @@ export type AppAction =
   | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } }
   | { type: 'SET_NAMES'; payload: { names: Names } }
   | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } }
+  | { type: 'SET_SCORE_LIMIT'; payload: { scoreLimit: number | null } }
   | { type: 'HYDRATE'; payload: AppState }
   | { type: 'RESTORE_LOCAL' }
   | { type: 'SEED_GAME_FROM_VIEW'; payload: AppState };
@@ -133,6 +136,10 @@ export interface GlobalContextValue {
   setDealerOverride: (dealerOverride: string | null) => void;
   setNames: (names: Names | ((val: Names) => Names)) => void;
   setNilScoringRule: (rule: string) => void;
+  setScoreLimit: (limit: number | null) => void;
+
+  /** Win threshold in points; null when no score limit is set. */
+  scoreLimit: number | null;
 
   // ── Realtime session (shared board watching) ──
   role: SessionRole;
