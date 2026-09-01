@@ -1,10 +1,12 @@
 import { AppModal } from '../ui';
-import NewScoreLimitInput from '../forms/NewScoreLimitInput';
+import ScoreLimitInput from '../forms/ScoreLimitInput';
 import type { BoxProps } from '../ui/box';
 
 interface EditScoreLimitModalProps {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
+  /** "Edit" when a limit exists, "Set" when there is none yet. */
+  title?: string;
   /** The floor the new limit must clear (winner's current score, or 0). */
   minLimit: number;
   onSetLimit: (limit: number) => void;
@@ -13,6 +15,7 @@ interface EditScoreLimitModalProps {
 function EditScoreLimitModal({
   isOpen,
   setIsModalOpen,
+  title = 'Edit Score Limit',
   minLimit,
   onSetLimit,
 }: EditScoreLimitModalProps) {
@@ -20,13 +23,13 @@ function EditScoreLimitModal({
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
-      title="Edit Score Limit"
+      title={title}
       contentProps={
         { 'data-testid': 'edit-score-limit-modal' } as BoxProps &
           Record<`data-${string}`, string>
       }
     >
-      <NewScoreLimitInput
+      <ScoreLimitInput
         minLimit={minLimit}
         onSetLimit={(limit) => {
           onSetLimit(limit);

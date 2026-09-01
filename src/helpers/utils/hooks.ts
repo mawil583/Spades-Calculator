@@ -6,6 +6,7 @@ import {
   convertStringInputToNum,
   calculateTeamScoreFromRoundHistory,
   calculateRoundScore,
+  isRoundComplete,
 } from '../math/spadesMath';
 import { TEAM1, TEAM2 } from './constants';
 
@@ -201,28 +202,35 @@ function calculateCurrentRoundTeamScore(
   };
 }
 
+export function useHistoryTeamScores(
+  roundHistory: Round[] | null,
+  nilSetting: NilSetting | null,
+) {
+  return useMemo(
+    () => ({
+      team1: calculateTeamScoreFromRoundHistory(
+        roundHistory || [],
+        TEAM1,
+        nilSetting,
+      ),
+      team2: calculateTeamScoreFromRoundHistory(
+        roundHistory || [],
+        TEAM2,
+        nilSetting,
+      ),
+    }),
+    [roundHistory, nilSetting],
+  );
+}
+
 export function useGameScores() {
   const context = useContext(GlobalContext);
   const roundHistory = context?.viewRoundHistory ?? context?.roundHistory;
   const currentRound = context?.viewCurrentRound || null;
-  const nilSettingOption = context?.nilScoringRule || null;
-  const nilSetting = nilSettingOption as NilSetting | null;
+  const nilSetting = context?.nilScoringRule ?? null;
 
   // Memoize history score calculation
-  const historyScores = useMemo(() => {
-    const history = roundHistory || [];
-    const team1 = calculateTeamScoreFromRoundHistory(
-      history,
-      TEAM1,
-      nilSetting,
-    );
-    const team2 = calculateTeamScoreFromRoundHistory(
-      history,
-      TEAM2,
-      nilSetting,
-    );
-    return { team1, team2 };
-  }, [roundHistory, nilSetting]);
+  const historyScores = useHistoryTeamScores(roundHistory, nilSetting);
 
   // Memoize current round score calculation
   const currentScores = useMemo(() => {
@@ -255,4 +263,45 @@ export function useGameScores() {
 
     return { team1Score, team2Score };
   }, [historyScores, currentScores]);
+}
+
+/**
+ * Scores counting only COMPLETED play: banked round history plus the current
+ * round once every bid/actual is entered and the actuals total 13. This is the
+ * basis for win detection and the floor for replacement score limits — partial
+ * rounds must never trigger (or gate) a game-end decision.
+ */
+export function useFinishedGameScores() {
+  const context = useContext(GlobalContext);
+  const roundHistory = context?.viewRoundHistory ?? context?.roundHistory;
+  const currentRound = context?.viewCurrentRound || null;
+  const nilSetting = context?.nilScoringRule ?? null;
+
+  const historyScores = useHistoryTeamScores(roundHistory, nilSetting);
+
+  return useMemo(() => {
+    let team1 = historyScores.team1.teamScore;
+    let team2 = historyScores.team2.teamScore;
+
+    if (isRoundComplete(currentRound)) {
+      const team1Actuals = currentRound.team1BidsAndActuals;
+      const team2Actuals = currentRound.team2BidsAndActuals;
+      team1 += calculateRoundScore(
+        team1Actuals.p1Bid,
+        team1Actuals.p2Bid,
+        team1Actuals.p1Actual,
+        team1Actuals.p2Actual,
+        nilSetting ?? undefined,
+      ).score;
+      team2 += calculateRoundScore(
+        team2Actuals.p1Bid,
+        team2Actuals.p2Bid,
+        team2Actuals.p1Actual,
+        team2Actuals.p2Actual,
+        nilSetting ?? undefined,
+      ).score;
+    }
+
+    return { team1, team2 };
+  }, [historyScores, currentRound, nilSetting]);
 }

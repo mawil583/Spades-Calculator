@@ -69,6 +69,7 @@ function normalizeState(raw: AppState | null | undefined): AppState {
     names: raw?.names ?? initialNames,
     nilScoringRule: raw?.nilScoringRule ?? TAKES_BAGS,
     scoreLimit: raw?.scoreLimit ?? null,
+    winAcknowledged: raw?.winAcknowledged ?? null,
   } as AppState;
 }
 

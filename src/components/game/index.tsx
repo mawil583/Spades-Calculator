@@ -1,6 +1,7 @@
 export { default as ActualSection } from './ActualSection';
 export { default as TeamScore } from './TeamScore';
 export { default as Unclaimed } from './Unclaimed';
+export { default as ScoreLimitDisplay } from './ScoreLimitDisplay';
 export { default as SettingDescription } from './SettingDescription';
 export { default as SettingExample } from './SettingExample';
 export { default as RoundHeading } from './RoundHeading';

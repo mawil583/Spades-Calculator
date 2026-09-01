@@ -609,3 +609,25 @@ export const isRoundComplete = (round: Round | null): boolean => {
 
   return totalActuals === 13;
 };
+
+/*
+Determines the end-game outcome from finished scores. A team "hits" the limit
+at or above it; if both teams hit in the same completed round, the higher
+score takes the game and an exact tie goes to overtime (tieAt).
+*/
+export const getGameOutcome = (
+  team1: number,
+  team2: number,
+  scoreLimit: number | null,
+): { winner: 'team1' | 'team2' | null; tieAt: number | null } => {
+  if (scoreLimit == null) return { winner: null, tieAt: null };
+  const team1Hit = team1 >= scoreLimit;
+  const team2Hit = team2 >= scoreLimit;
+  if (!team1Hit && !team2Hit) return { winner: null, tieAt: null };
+  if (team1Hit && team2Hit) {
+    if (team1 > team2) return { winner: 'team1', tieAt: null };
+    if (team2 > team1) return { winner: 'team2', tieAt: null };
+    return { winner: null, tieAt: team1 };
+  }
+  return { winner: team1Hit ? 'team1' : 'team2', tieAt: null };
+};

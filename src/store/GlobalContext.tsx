@@ -32,8 +32,10 @@ import type {
   InputValue,
   AppState,
   Names,
+  NilSetting,
   Seat,
   SessionRole,
+  WinAcknowledgement,
 } from '../types';
 
 export const GlobalContext = createContext<GlobalContextValue>(
@@ -304,7 +306,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     [state.names],
   );
 
-  const setNilScoringRule = useCallback((rule: string) => {
+  const setNilScoringRule = useCallback((rule: NilSetting) => {
     dispatch({
       type: 'SET_NIL_SCORING_RULE',
       payload: { nilScoringRule: rule },
@@ -314,6 +316,23 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
   const setScoreLimit = useCallback((limit: number | null) => {
     dispatch({
       type: 'SET_SCORE_LIMIT',
+      payload: { scoreLimit: limit },
+    });
+  }, []);
+
+  const setWinAcknowledged = useCallback(
+    (winAcknowledged: WinAcknowledgement | null) => {
+      dispatch({
+        type: 'SET_WIN_ACKNOWLEDGED',
+        payload: { winAcknowledged },
+      });
+    },
+    [],
+  );
+
+  const startNewGame = useCallback((limit: number | null) => {
+    dispatch({
+      type: 'START_NEW_GAME',
       payload: { scoreLimit: limit },
     });
   }, []);
@@ -329,6 +348,8 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       setNames,
       setNilScoringRule,
       setScoreLimit,
+      startNewGame,
+      setWinAcknowledged,
       firstDealerOrder: state.firstDealerOrder,
       currentRound: state.currentRound,
       roundHistory: state.roundHistory,
@@ -336,6 +357,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       names: state.names,
       nilScoringRule: state.nilScoringRule,
       scoreLimit: state.scoreLimit,
+      winAcknowledged: state.winAcknowledged,
       displayNames,
       viewCurrentRound,
       viewRoundHistory,
@@ -358,6 +380,8 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       setNames,
       setNilScoringRule,
       setScoreLimit,
+      startNewGame,
+      setWinAcknowledged,
       state.firstDealerOrder,
       state.currentRound,
       state.roundHistory,
@@ -365,6 +389,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
       state.names,
       state.nilScoringRule,
       state.scoreLimit,
+      state.winAcknowledged,
       displayNames,
       viewCurrentRound,
       viewRoundHistory,

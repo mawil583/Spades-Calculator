@@ -7,6 +7,7 @@ import {
   addInputs,
   whoWentNil,
   isRoundComplete,
+  getGameOutcome,
   calculateTeamRoundScoreWithOneNilBidder,
   calculateTeamRoundScoreWithBothNonBlindNil,
   calculateScoreForDualNilWithOneBlind,
@@ -470,5 +471,57 @@ describe('isRoundComplete', () => {
     expect(
       isRoundComplete({} as unknown as Round),
     ).to.be.false;
+  });
+});
+
+describe('getGameOutcome', () => {
+  test('no outcome when there is no score limit', () => {
+    expect(getGameOutcome(500, 300, null)).to.deep.equal({
+      winner: null,
+      tieAt: null,
+    });
+  });
+
+  test('no outcome while both teams are under the limit', () => {
+    expect(getGameOutcome(490, 300, 500)).to.deep.equal({
+      winner: null,
+      tieAt: null,
+    });
+  });
+
+  test('a team hitting the limit alone wins', () => {
+    expect(getGameOutcome(520, 300, 500)).to.deep.equal({
+      winner: 'team1',
+      tieAt: null,
+    });
+    expect(getGameOutcome(300, 510, 500)).to.deep.equal({
+      winner: 'team2',
+      tieAt: null,
+    });
+  });
+
+  test('reaching the limit exactly counts as a win', () => {
+    expect(getGameOutcome(500, 300, 500)).to.deep.equal({
+      winner: 'team1',
+      tieAt: null,
+    });
+  });
+
+  test('both crossing in the same round: higher score wins', () => {
+    expect(getGameOutcome(540, 510, 500)).to.deep.equal({
+      winner: 'team1',
+      tieAt: null,
+    });
+    expect(getGameOutcome(510, 540, 500)).to.deep.equal({
+      winner: 'team2',
+      tieAt: null,
+    });
+  });
+
+  test('an exact tie at the limit goes to overtime', () => {
+    expect(getGameOutcome(510, 510, 500)).to.deep.equal({
+      winner: null,
+      tieAt: 510,
+    });
   });
 });

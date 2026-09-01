@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { BoxProps } from '../ui/box';
 import { AppModal } from '../ui';
-import ScoreLimitQuestion from '../forms/ScoreLimitQuestion';
-import ScoreLimitInput from '../forms/ScoreLimitInput';
+import ScoreLimitFlow, { ScoreLimitFlowStep } from '../forms/ScoreLimitFlow';
 
 interface ScoreLimitModalProps {
   isOpen: boolean;
@@ -17,41 +16,40 @@ function ScoreLimitModal({
   onDecline,
   onSetLimit,
 }: ScoreLimitModalProps) {
-  const [isEnteringLimit, setIsEnteringLimit] = useState(false);
+  const [step, setStep] = useState<ScoreLimitFlowStep>('ask');
   const [previousIsOpenValue, setPreviousIsOpenValue] = useState(isOpen);
 
+  // Keep the step-derived title in sync when the modal reopens.
   if (isOpen !== previousIsOpenValue) {
     setPreviousIsOpenValue(isOpen);
     if (!isOpen) {
-      setIsEnteringLimit(false);
+      setStep('ask');
     }
   }
-
-  const onNo = () => {
-    setIsModalOpen(false);
-    onDecline();
-  };
 
   return (
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
-      showCloseButton={!isEnteringLimit}
-      title={isEnteringLimit ? 'Enter Score Limit' : 'New Game'}
+      showCloseButton={step !== 'enter'}
+      title={step === 'enter' ? 'Enter Score Limit' : 'New Game'}
       contentProps={
         { 'data-testid': 'score-limit-modal' } as BoxProps &
           Record<`data-${string}`, string>
       }
     >
-      {!isEnteringLimit && (
-        <ScoreLimitQuestion onYes={() => setIsEnteringLimit(true)} onNo={onNo} />
-      )}
-      {isEnteringLimit && (
-        <ScoreLimitInput
-          onSetLimit={onSetLimit}
-          onCancel={onNo}
-        />
-      )}
+      <ScoreLimitFlow
+        isActive={isOpen}
+        onResolve={(limit) => {
+          setIsModalOpen(false);
+          if (limit == null) {
+            onDecline();
+          } else {
+            onSetLimit(limit);
+          }
+        }}
+        onStepChange={setStep}
+      />
     </AppModal>
   );
 }
