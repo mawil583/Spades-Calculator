@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { SimpleGrid } from '../ui';
 import { PlayerInput } from '../forms';
 import { useSetUnclaimed } from '../../helpers/utils/hooks';
+import { useFeatureFlag } from '../../helpers/utils/useFeatureFlag';
+import { FEATURE_FLAGS } from '../../helpers/utils/featureFlags';
 import { TeamInputHeading } from '../forms';
 import { addInputs } from '../../helpers/math/spadesMath';
 import { Unclaimed } from './';
@@ -27,6 +29,8 @@ function BidSection({
   const { team1Name, team2Name, t1p1Name, t1p2Name, t2p1Name, t2p2Name } =
     names;
 
+  const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
+
   const [numUnclaimed, setNumUnclaimed] = useState(13);
 
   const team1Bids = [team1BidsAndActuals.p1Bid, team1BidsAndActuals.p2Bid];
@@ -46,7 +50,10 @@ function BidSection({
         team2Total={team2BidTotal}
         title="Bids"
       />
-      <Unclaimed numUnclaimed={numUnclaimed} />
+      <Unclaimed
+        numUnclaimed={numUnclaimed}
+        showScoreLimit={isCurrent && !useTableRoundUI}
+      />
       <SimpleGrid columns={2} mb="var(--app-spacing-4)">
         <PlayerInput
           type={'Bid'}

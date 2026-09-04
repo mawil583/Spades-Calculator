@@ -6,9 +6,10 @@ import ScoreLimitDisplay from './ScoreLimitDisplay';
 
 interface UnclaimedProps {
   numUnclaimed: number;
+  showScoreLimit?: boolean;
 }
 
-function Unclaimed({ numUnclaimed }: UnclaimedProps) {
+function Unclaimed({ numUnclaimed, showScoreLimit = false }: UnclaimedProps) {
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 
   const text = getUnclaimedText(numUnclaimed, useTableRoundUI);
@@ -16,7 +17,7 @@ function Unclaimed({ numUnclaimed }: UnclaimedProps) {
   return (
     <Flex direction="column" align="center" gap={0.5}>
       <Text lineHeight="1.2">{text}</Text>
-      <ScoreLimitDisplay />
+      {showScoreLimit && <ScoreLimitDisplay />}
     </Flex>
   );
 }
