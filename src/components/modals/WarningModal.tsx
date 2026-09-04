@@ -7,11 +7,10 @@ import {
   initialFirstDealerOrder,
 } from '../../helpers/utils/constants';
 import { GlobalContext } from '../../store/GlobalContext';
-import { rotateArr } from '../../helpers/utils/helperFunctions';
 import DataWarningQuestion from '../forms/DataWarningQuestion';
 import NewPlayerQuestion from '../forms/NewPlayerQuestion';
-import ScoreLimitQuestion from '../forms/ScoreLimitQuestion';
-import ScoreLimitInput from '../forms/ScoreLimitInput';
+import ScoreLimitFlow from '../forms/ScoreLimitFlow';
+import type { ScoreLimitFlowStep } from '../forms/ScoreLimitFlow';
 
 interface WarningModalProps {
   isOpen: boolean;
@@ -26,13 +25,12 @@ function WarningModal({
 }: WarningModalProps) {
   const navigate = useNavigate();
   const {
-    resetCurrentRound,
-    setRoundHistory,
-    setFirstDealerOrder,
-    firstDealerOrder,
-    roundHistory,
+    startNewGame,
     setNames,
-    setScoreLimit,
+    setRoundHistory,
+    resetCurrentRound,
+    setFirstDealerOrder,
+    roundHistory,
   } = useContext(GlobalContext);
   const hasRoundHistory = roundHistory.length > 0;
 
@@ -72,13 +70,8 @@ function WarningModal({
     setIsSettingScoreLimit(true);
   };
 
-  const finishSameTeams = (scoreLimit: number | null) => {
-    setScoreLimit(scoreLimit);
-    if (hasRoundHistory) {
-      setFirstDealerOrder(rotateArr(firstDealerOrder));
-    }
-    resetCurrentRound();
-    setRoundHistory([]);
+  const finishSameTeams = (limit: number | null) => {
+    startNewGame(limit);
     setIsModalOpen(false);
     navigate('/spades-calculator');
   };
@@ -94,6 +87,10 @@ function WarningModal({
     setFirstDealerOrder(initialFirstDealerOrder);
     setIsModalOpen(false);
     navigate('/');
+  };
+
+  const onScoreLimitStepChange = (step: ScoreLimitFlowStep) => {
+    setIsEnteringScoreLimit(step === 'enter');
   };
 
   const title = showDataWarning
@@ -124,16 +121,11 @@ function WarningModal({
           onSameTeams={onSameTeams}
         />
       )}
-      {showScoreLimit && !isEnteringScoreLimit && (
-        <ScoreLimitQuestion
-          onYes={() => setIsEnteringScoreLimit(true)}
-          onNo={() => finishSameTeams(null)}
-        />
-      )}
-      {showScoreLimit && isEnteringScoreLimit && (
-        <ScoreLimitInput
-          onSetLimit={(limit) => finishSameTeams(limit)}
-          onCancel={() => finishSameTeams(null)}
+      {showScoreLimit && (
+        <ScoreLimitFlow
+          isActive={isOpen}
+          onResolve={finishSameTeams}
+          onStepChange={onScoreLimitStepChange}
         />
       )}
     </AppModal>

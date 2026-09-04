@@ -3,12 +3,12 @@ import {
   render,
   screen,
   fireEvent,
-  waitFor,
   within,
 } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from '../components/ui/provider';
 import GameWonModal from '../components/modals/GameWonModal';
+import type { GameEndOutcome } from '../types';
 
 const renderWithProviders = (component: React.ReactNode) => {
   return render(
@@ -18,10 +18,20 @@ const renderWithProviders = (component: React.ReactNode) => {
   );
 };
 
+const winOutcome = (
+  overrides: Partial<Extract<GameEndOutcome, { kind: 'win' }>> = {},
+): GameEndOutcome => ({
+  kind: 'win',
+  winnerTeam: 'team1',
+  winnerName: 'Team 1',
+  minLimit: 260,
+  ...overrides,
+});
+
+const tieOutcome = (at = 500): GameEndOutcome => ({ kind: 'tie', at });
+
 describe('GameWonModal', () => {
-  const setup = (
-    overrides: Partial<Parameters<typeof GameWonModal>[0]> = {},
-  ) => {
+  const setup = (overrides: { outcome?: GameEndOutcome | null } = {}) => {
     const setIsModalOpen = vi.fn();
     const onStartNewGameWithLimit = vi.fn();
     const onSetNewLimit = vi.fn();
@@ -29,13 +39,9 @@ describe('GameWonModal', () => {
       <GameWonModal
         isOpen={true}
         setIsModalOpen={setIsModalOpen}
-        isTie={false}
-        winnerTeam="team1"
-        winnerName="Team 1"
-        minLimit={260}
+        outcome={overrides.outcome ?? winOutcome()}
         onStartNewGameWithLimit={onStartNewGameWithLimit}
         onSetNewLimit={onSetNewLimit}
-        {...overrides}
       />,
     );
     return { setIsModalOpen, onStartNewGameWithLimit, onSetNewLimit };
@@ -67,7 +73,7 @@ describe('GameWonModal', () => {
   });
 
   it('does not color code the continue-or-new-game question', () => {
-    setup({ winnerTeam: 'team1' });
+    setup();
 
     const question = screen.getByText(
       'Do you want to continue the current game, or start a new one?',
@@ -83,10 +89,7 @@ describe('GameWonModal', () => {
       <GameWonModal
         isOpen={true}
         setIsModalOpen={vi.fn()}
-        isTie={false}
-        winnerTeam="team1"
-        winnerName="Team 1"
-        minLimit={260}
+        outcome={winOutcome()}
         onStartNewGameWithLimit={vi.fn()}
         onSetNewLimit={vi.fn()}
       />,
@@ -98,10 +101,7 @@ describe('GameWonModal', () => {
       <GameWonModal
         isOpen={true}
         setIsModalOpen={vi.fn()}
-        isTie={false}
-        winnerTeam="team2"
-        winnerName="Team 2"
-        minLimit={260}
+        outcome={winOutcome({ winnerTeam: 'team2', winnerName: 'Team 2' })}
         onStartNewGameWithLimit={vi.fn()}
         onSetNewLimit={vi.fn()}
       />,
@@ -110,9 +110,16 @@ describe('GameWonModal', () => {
   });
 
   it('renders the scoreboard inside the modal when provided', () => {
-    setup({
-      scoreboard: <div data-testid="modal-scoreboard">final tallies</div>,
-    });
+    renderWithProviders(
+      <GameWonModal
+        isOpen={true}
+        setIsModalOpen={vi.fn()}
+        outcome={winOutcome()}
+        scoreboard={<div data-testid="modal-scoreboard">final tallies</div>}
+        onStartNewGameWithLimit={vi.fn()}
+        onSetNewLimit={vi.fn()}
+      />,
+    );
 
     const modal = screen.getByTestId('game-won-modal');
     expect(modal).toBeInTheDocument();
@@ -179,7 +186,7 @@ describe('GameWonModal', () => {
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('does not mark an empty input as required', async () => {
+    it('does not mark an empty input as required', () => {
       setup();
 
       fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
@@ -196,7 +203,7 @@ describe('GameWonModal', () => {
       expect(screen.getByTestId('setScoreLimitButton')).toBeDisabled();
     });
 
-    it('rejects a new limit that is not higher than the winner score', async () => {
+    it('rejects a new limit that is not higher than the winner score', () => {
       setup();
 
       fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
@@ -206,12 +213,12 @@ describe('GameWonModal', () => {
       fireEvent.change(input, { target: { value: '260' } });
 
       expect(
-        await screen.findByText('Must be higher than 260'),
+        screen.getByText('Must be higher than 260'),
       ).toBeInTheDocument();
       expect(screen.getByTestId('setScoreLimitButton')).toBeDisabled();
     });
 
-    it('saves a higher limit through formik on submit', async () => {
+    it('saves a higher limit on submit', () => {
       const { onSetNewLimit, setIsModalOpen } = setup();
 
       fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
@@ -220,15 +227,15 @@ describe('GameWonModal', () => {
       const input = screen.getByTestId('score-limit-input');
       fireEvent.change(input, { target: { value: '500' } });
 
-      const setLimitButton = await screen.findByTestId('setScoreLimitButton');
-      await waitFor(() => expect(setLimitButton).not.toBeDisabled());
+      const setLimitButton = screen.getByTestId('setScoreLimitButton');
+      expect(setLimitButton).not.toBeDisabled();
       fireEvent.click(setLimitButton);
 
-      await waitFor(() => expect(onSetNewLimit).toHaveBeenCalledWith(500));
+      expect(onSetNewLimit).toHaveBeenCalledWith(500);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('filters non-digit characters from the input', async () => {
+    it('filters non-digit characters from the input', () => {
       setup();
 
       fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
@@ -263,7 +270,7 @@ describe('GameWonModal', () => {
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('starts the new game with the entered limit when "Yes" is selected', async () => {
+    it('starts the new game with the entered limit when "Yes" is selected', () => {
       const { setIsModalOpen, onStartNewGameWithLimit } = setup();
 
       fireEvent.click(screen.getByRole('button', { name: 'New Game' }));
@@ -276,9 +283,7 @@ describe('GameWonModal', () => {
       fireEvent.change(input, { target: { value: '400' } });
       fireEvent.click(screen.getByTestId('setScoreLimitButton'));
 
-      await waitFor(() =>
-        expect(onStartNewGameWithLimit).toHaveBeenCalledWith(400),
-      );
+      expect(onStartNewGameWithLimit).toHaveBeenCalledWith(400);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
@@ -296,9 +301,8 @@ describe('GameWonModal', () => {
   });
 
   describe('tie at the score limit', () => {
-    const tieSetup = (
-      overrides: Partial<Parameters<typeof GameWonModal>[0]> = {},
-    ) => setup({ isTie: true, ...overrides });
+    const tieSetup = (overrides: { outcome?: GameEndOutcome | null } = {}) =>
+      setup({ outcome: tieOutcome(), ...overrides });
 
     it('offers overtime instead of a winner', () => {
       tieSetup();
@@ -312,9 +316,16 @@ describe('GameWonModal', () => {
     });
 
     it('shows the scoreboard and both actions', () => {
-      tieSetup({
-        scoreboard: <div data-testid="modal-scoreboard">final tallies</div>,
-      });
+      renderWithProviders(
+        <GameWonModal
+          isOpen={true}
+          setIsModalOpen={vi.fn()}
+          outcome={tieOutcome()}
+          scoreboard={<div data-testid="modal-scoreboard">final tallies</div>}
+          onStartNewGameWithLimit={vi.fn()}
+          onSetNewLimit={vi.fn()}
+        />,
+      );
 
       const modal = screen.getByTestId('game-won-modal');
       expect(within(modal).getByTestId('modal-scoreboard')).toBeInTheDocument();
@@ -356,7 +367,7 @@ describe('GameWonModal', () => {
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
 
-    it('starts the new game with the entered limit when "Yes" is selected', async () => {
+    it('starts the new game with the entered limit when "Yes" is selected', () => {
       const { setIsModalOpen, onStartNewGameWithLimit } = tieSetup();
 
       fireEvent.click(screen.getByRole('button', { name: 'New Game' }));
@@ -369,9 +380,7 @@ describe('GameWonModal', () => {
       fireEvent.change(input, { target: { value: '400' } });
       fireEvent.click(screen.getByTestId('setScoreLimitButton'));
 
-      await waitFor(() =>
-        expect(onStartNewGameWithLimit).toHaveBeenCalledWith(400),
-      );
+      expect(onStartNewGameWithLimit).toHaveBeenCalledWith(400);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
     });
   });

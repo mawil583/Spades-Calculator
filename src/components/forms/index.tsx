@@ -7,4 +7,4 @@ export { default as PlayerNameInput } from './PlayerNameInput';
 export { default as DataWarningQuestion } from './DataWarningQuestion';
 export { default as ScoreLimitQuestion } from './ScoreLimitQuestion';
 export { default as ScoreLimitInput } from './ScoreLimitInput';
-export { default as NewScoreLimitInput } from './NewScoreLimitInput';
+export { default as ScoreLimitFlow } from './ScoreLimitFlow';

@@ -4,19 +4,13 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { GameScore, Rounds } from '../components/game';
 import { Header, Box, Center, Text } from '../components/ui';
 import { UpdateNotification, GameWonModal } from '../components';
-import { useRedirectWhenFalsey } from '../helpers/utils/hooks';
+import { useRedirectWhenFalsey, useFinishedGameScores } from '../helpers/utils/hooks';
 import { useFeatureFlag } from '../helpers/utils/useFeatureFlag';
 import { FEATURE_FLAGS } from '../helpers/utils/featureFlags';
 import { GlobalContext } from '../store/GlobalContext';
 import { getPersistedViewerSession } from '../helpers/utils/viewerSession';
-import { rotateArr } from '../helpers/utils/helperFunctions';
-import {
-  calculateTeamScoreFromRoundHistory,
-  calculateRoundScore,
-  isRoundComplete,
-} from '../helpers/math/spadesMath';
-import { TEAM1, TEAM2 } from '../helpers/utils/constants';
-import type { NilSetting } from '../types';
+import { getGameOutcome, isNotDefaultValue } from '../helpers/math/spadesMath';
+import type { GameEndOutcome, WinAcknowledgement } from '../types';
 
 function SpadesCalculator() {
   const navigate = useNavigate();
@@ -31,15 +25,10 @@ function SpadesCalculator() {
     joinSession,
     scoreLimit,
     setScoreLimit,
+    startNewGame,
+    winAcknowledged,
+    setWinAcknowledged,
     displayNames,
-    firstDealerOrder,
-    setFirstDealerOrder,
-    roundHistory,
-    setRoundHistory,
-    resetCurrentRound,
-    viewCurrentRound,
-    viewRoundHistory,
-    nilScoringRule,
   } = useContext(GlobalContext);
 
   // A viewer whose session was persisted (e.g. after navigating away and back)
@@ -50,89 +39,66 @@ function SpadesCalculator() {
   useRedirectWhenFalsey(names, navigate, !isViewerUrl);
   const [useTableRoundUI] = useFeatureFlag(FEATURE_FLAGS.TABLE_ROUND_UI);
 
+  // Mirror the useRedirectWhenFalsey condition: "Different Teams" from the
+  // header's New Game modal clears names before navigate('/') completes (it
+  // runs in a React transition), so the board must not paint that cleared
+  // frame — otherwise the calculator flashes for a beat before routing home.
+  const hasAllNames =
+    Boolean(names) && Object.values(names).every(isNotDefaultValue);
+
   // ── Score limit: announce the winner once a team reaches it ──
   // Only fully completed rounds count toward the win check: a round is done
   // when every bid/actual is entered and the actuals total 13. That way both
   // teams' actuals are always in before anyone is declared the winner, and if
   // both teams crossed in the same round the higher score takes the game —
   // or, on an exact tie, the players are offered overtime.
-  const [isWinDismissed, setIsWinDismissed] = useState(false);
-  const [dismissedTieAt, setDismissedTieAt] = useState<number | null>(null);
+  const finishedScores = useFinishedGameScores();
 
-  const finishedGameScores = useMemo(() => {
-    const nilSetting = (nilScoringRule || null) as NilSetting | null;
-    const history = viewRoundHistory ?? [];
-    let t1 = calculateTeamScoreFromRoundHistory(history, TEAM1, nilSetting)
-      .teamScore;
-    let t2 = calculateTeamScoreFromRoundHistory(history, TEAM2, nilSetting)
-      .teamScore;
-
-    if (isRoundComplete(viewCurrentRound)) {
-      const { team1BidsAndActuals, team2BidsAndActuals } = viewCurrentRound;
-      t1 += calculateRoundScore(
-        team1BidsAndActuals.p1Bid,
-        team1BidsAndActuals.p2Bid,
-        team1BidsAndActuals.p1Actual,
-        team1BidsAndActuals.p2Actual,
-        nilSetting ?? undefined,
-      ).score;
-      t2 += calculateRoundScore(
-        team2BidsAndActuals.p1Bid,
-        team2BidsAndActuals.p2Bid,
-        team2BidsAndActuals.p1Actual,
-        team2BidsAndActuals.p2Actual,
-        nilSetting ?? undefined,
-      ).score;
+  const outcome = useMemo<GameEndOutcome | null>(() => {
+    const { winner, tieAt } = getGameOutcome(
+      finishedScores.team1,
+      finishedScores.team2,
+      scoreLimit,
+    );
+    if (winner == null && tieAt == null) return null;
+    if (winner != null) {
+      return {
+        kind: 'win',
+        winnerTeam: winner,
+        winnerName:
+          winner === 'team2' ? displayNames.team2Name : displayNames.team1Name,
+        minLimit: winner === 'team2' ? finishedScores.team2 : finishedScores.team1,
+      };
     }
+    return { kind: 'tie', at: tieAt as number };
+  }, [finishedScores, scoreLimit, displayNames]);
 
-    return { team1: t1, team2: t2 };
-  }, [viewRoundHistory, viewCurrentRound, nilScoringRule]);
+  // An acknowledgement suppresses the announcement only while the exact
+  // scores + limit that produced it remain; new play or a new limit
+  // re-announces. It is mirrored into app state, so dismissing survives
+  // navigating away and back; the local copy gives the immediate re-render.
+  const [acknowledged, setAcknowledged] = useState<WinAcknowledgement | null>(
+    winAcknowledged,
+  );
+  const isAnnouncementAcknowledged =
+    outcome != null &&
+    acknowledged != null &&
+    acknowledged.team1 === finishedScores.team1 &&
+    acknowledged.team2 === finishedScores.team2 &&
+    acknowledged.scoreLimit === scoreLimit;
 
-  const { roundWinner, tiedAt } = useMemo<{
-    roundWinner: 'team1' | 'team2' | null;
-    tiedAt: number | null;
-  }>(() => {
-    if (scoreLimit == null) return { roundWinner: null, tiedAt: null };
-    const t1 = finishedGameScores.team1;
-    const t2 = finishedGameScores.team2;
-    const t1Hit = t1 >= scoreLimit;
-    const t2Hit = t2 >= scoreLimit;
-    if (!t1Hit && !t2Hit) return { roundWinner: null, tiedAt: null };
-    if (t1Hit && t2Hit) {
-      if (t1 > t2) return { roundWinner: 'team1', tiedAt: null };
-      if (t2 > t1) return { roundWinner: 'team2', tiedAt: null };
-      return { roundWinner: null, tiedAt: t1 };
-    }
-    return {
-      roundWinner: t1Hit ? 'team1' : 'team2',
-      tiedAt: null,
-    };
-  }, [scoreLimit, finishedGameScores]);
-
-  // A dismissal only suppresses the announcement while the scores that
-  // produced it remain; once the game resets below the limit it clears.
-  if (roundWinner === null && isWinDismissed) {
-    setIsWinDismissed(false);
-  }
-  if (tiedAt === null && dismissedTieAt !== null) {
-    setDismissedTieAt(null);
-  }
-
-  const isTie = roundWinner === null && tiedAt !== null;
   const isGameEndModalOpen =
-    role !== 'viewer' &&
-    ((roundWinner !== null && !isWinDismissed) ||
-      (isTie && dismissedTieAt !== tiedAt));
+    role !== 'viewer' && outcome != null && !isAnnouncementAcknowledged;
 
-  // "New Game" from the end-game modals always resolves the score-limit
-  // prompt first: null wipes the limit, a number starts the rematch with it.
-  const handleStartNewGameWithLimit = (limit: number | null) => {
-    setScoreLimit(limit);
-    if (roundHistory.length > 0) {
-      setFirstDealerOrder(rotateArr(firstDealerOrder));
-    }
-    resetCurrentRound();
-    setRoundHistory([]);
+  const acknowledgeOutcome = () => {
+    if (outcome == null || scoreLimit == null) return;
+    const ack: WinAcknowledgement = {
+      team1: finishedScores.team1,
+      team2: finishedScores.team2,
+      scoreLimit,
+    };
+    setAcknowledged(ack);
+    setWinAcknowledged(ack);
   };
 
   // A visitor whose URL carries ?session= is a viewer: subscribe to the session.
@@ -205,37 +171,22 @@ function SpadesCalculator() {
           the menu and use "Switch seat". Only the read-only board is blocked
           from pointer events for viewers. */}
       <Header />
-      {names && (
-        role === 'viewer' ? (
+      {hasAllNames &&
+        (role === 'viewer' ? (
           <Box style={{ pointerEvents: 'none' }}>{board}</Box>
         ) : (
           <Box>{board}</Box>
-        )
-      )}
+        ))}
       <GameWonModal
         isOpen={isGameEndModalOpen}
         setIsModalOpen={(open) => {
           if (!open) {
-            if (roundWinner) setIsWinDismissed(true);
-            else if (tiedAt !== null) setDismissedTieAt(tiedAt);
+            acknowledgeOutcome();
           }
         }}
-        isTie={isTie}
-        winnerTeam={roundWinner ?? 'team1'}
-        winnerName={
-          roundWinner === 'team2'
-            ? displayNames.team2Name
-            : displayNames.team1Name
-        }
-        minLimit={
-          roundWinner === null
-            ? 0
-            : roundWinner === 'team2'
-              ? finishedGameScores.team2
-              : finishedGameScores.team1
-        }
+        outcome={outcome}
         scoreboard={<GameScore />}
-        onStartNewGameWithLimit={handleStartNewGameWithLimit}
+        onStartNewGameWithLimit={startNewGame}
         onSetNewLimit={(limit) => setScoreLimit(limit)}
       />
     </div>

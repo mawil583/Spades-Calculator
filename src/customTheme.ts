@@ -119,8 +119,11 @@ const buttonRecipe = defineRecipe({
   },
 });
 
-const inputRecipe = defineRecipe({
+export const inputRecipe = defineRecipe({
   base: {
+    // 16px minimum: iOS Safari zooms the page when an input below 16px is
+    // focused, and the zoom sticks after the keyboard closes.
+    fontSize: '16px',
     bg: 'rgba(255, 255, 255, 0.03)',
     border: '1px solid',
     borderColor: 'rgba(255, 255, 255, 0.1)',

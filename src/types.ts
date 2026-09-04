@@ -76,15 +76,42 @@ export interface TeamStats {
 
 // ─── Global store state ────────────────────────────────────────────────────
 
+/** Snapshot of the scores that produced an acknowledged game-end announcement. */
+export interface WinAcknowledgement {
+  team1: number;
+  team2: number;
+  scoreLimit: number;
+}
+
+/**
+ * What the end-game announcement should show. A single discriminated union so
+ * hosts can't render a winner from half of a tie (or vice versa).
+ */
+export type GameEndOutcome =
+  | {
+      kind: 'win';
+      winnerTeam: 'team1' | 'team2';
+      winnerName: string;
+      /** The winner's score — a replacement limit must be higher. */
+      minLimit: number;
+    }
+  | { kind: 'tie'; at: number };
+
 export interface AppState {
   currentRound: Round;
   roundHistory: Round[];
   firstDealerOrder: string[];
   isFirstGameAmongTeammates: boolean;
   names: Names;
-  nilScoringRule: string;
+  nilScoringRule: NilSetting;
   /** Win threshold in points; null when no score limit is set. */
   scoreLimit: number | null;
+  /**
+   * The (team1, team2, scoreLimit) snapshot when the game-end announcement was
+   * last acknowledged. The announcement stays suppressed while the snapshot
+   * still matches; new scores or a new limit re-announce it.
+   */
+  winAcknowledged: WinAcknowledgement | null;
 }
 
 // ─── Reducer actions ──────────────────────────────────────────────────────
@@ -97,8 +124,13 @@ export type AppAction =
   | { type: 'SET_FIRST_DEALER_ORDER'; payload: { firstDealerOrder: string[] } }
   | { type: 'SET_DEALER_OVERRIDE'; payload: { dealerOverride: string | null } }
   | { type: 'SET_NAMES'; payload: { names: Names } }
-  | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: string } }
+  | { type: 'SET_NIL_SCORING_RULE'; payload: { nilScoringRule: NilSetting } }
   | { type: 'SET_SCORE_LIMIT'; payload: { scoreLimit: number | null } }
+  | {
+      type: 'SET_WIN_ACKNOWLEDGED';
+      payload: { winAcknowledged: WinAcknowledgement | null };
+    }
+  | { type: 'START_NEW_GAME'; payload: { scoreLimit: number | null } }
   | { type: 'HYDRATE'; payload: AppState }
   | { type: 'RESTORE_LOCAL' }
   | { type: 'SEED_GAME_FROM_VIEW'; payload: AppState };
@@ -127,7 +159,7 @@ export interface GlobalContextValue {
   firstDealerOrder: string[];
   isFirstGameAmongTeammates: boolean;
   names: Names;
-  nilScoringRule: string;
+  nilScoringRule: NilSetting;
   setCurrentRound: (args: UpdateInputArgs) => void;
   resetCurrentRound: () => void;
   setRoundHistory: (newRoundHistory: Round[]) => void;
@@ -135,11 +167,19 @@ export interface GlobalContextValue {
   setFirstDealerOrder: (newFirstDealerOrder: string[]) => void;
   setDealerOverride: (dealerOverride: string | null) => void;
   setNames: (names: Names | ((val: Names) => Names)) => void;
-  setNilScoringRule: (rule: string) => void;
+  setNilScoringRule: (rule: NilSetting) => void;
   setScoreLimit: (limit: number | null) => void;
+  /**
+   * Resets the whole game to a fresh start: clears rounds, rotates the dealer
+   * when a game was actually played, and applies the given score limit
+   * (null = play without one). Also clears the game-end acknowledgement.
+   */
+  startNewGame: (limit: number | null) => void;
+  setWinAcknowledged: (ack: WinAcknowledgement | null) => void;
 
   /** Win threshold in points; null when no score limit is set. */
   scoreLimit: number | null;
+  winAcknowledged: WinAcknowledgement | null;
 
   // ── Realtime session (shared board watching) ──
   role: SessionRole;

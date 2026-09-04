@@ -132,9 +132,7 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(sameTeamsButton);
       fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
-      expect(contextValue.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(contextValue.startNewGame).toHaveBeenCalledWith(null);
     });
 
     it('should handle "Different Teams" selection from New Game button', async () => {
@@ -356,9 +354,7 @@ describe('New Game Flow Integration', () => {
       fireEvent.click(sameTeamsButton);
       fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
-      expect(contextValue.setFirstDealerOrder).toHaveBeenCalled();
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(contextValue.startNewGame).toHaveBeenCalledWith(null);
     });
 
     it('should handle complete flow: Continue -> Different Teams', async () => {

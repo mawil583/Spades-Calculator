@@ -100,6 +100,7 @@ const leaderState: AppState = {
   names: leaderNames,
   nilScoringRule: 'takesBags',
   scoreLimit: null,
+  winAcknowledged: null,
 };
 
 describe('viewer leave', () => {

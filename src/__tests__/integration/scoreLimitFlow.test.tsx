@@ -298,8 +298,7 @@ describe('score limit flow', () => {
           'Do you want to set a score limit for this game?',
         ),
       ).toBeInTheDocument();
-      expect(contextValue.resetCurrentRound).not.toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).not.toHaveBeenCalled();
+      expect(contextValue.startNewGame).not.toHaveBeenCalled();
     });
 
     it('starts the new game without a limit when "No" is selected', async () => {
@@ -311,9 +310,7 @@ describe('score limit flow', () => {
       );
       fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
-      expect(contextValue.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(contextValue.startNewGame).toHaveBeenCalledWith(null);
     });
 
     it('starts the new game with the entered limit when "Yes" is selected', async () => {
@@ -330,10 +327,8 @@ describe('score limit flow', () => {
       fireEvent.click(screen.getByTestId('setScoreLimitButton'));
 
       await waitFor(() => {
-        expect(contextValue.setScoreLimit).toHaveBeenCalledWith(400);
+        expect(contextValue.startNewGame).toHaveBeenCalledWith(400);
       });
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
     });
 
     it('never shows the game-over or overtime modals to viewers of a shared board', async () => {
@@ -577,8 +572,7 @@ describe('score limit flow', () => {
           'Do you want to set a score limit for this game?',
         ),
       ).toBeInTheDocument();
-      expect(contextValue.resetCurrentRound).not.toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).not.toHaveBeenCalled();
+      expect(contextValue.startNewGame).not.toHaveBeenCalled();
     });
 
     it('starts the new game without a limit when "No" is selected from overtime', async () => {
@@ -637,9 +631,7 @@ describe('score limit flow', () => {
       );
       fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
-      expect(contextValue.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(contextValue.startNewGame).toHaveBeenCalledWith(null);
     });
 
     it('starts the new game with the entered limit when "Yes" is selected from overtime', async () => {
@@ -703,10 +695,8 @@ describe('score limit flow', () => {
       fireEvent.click(screen.getByTestId('setScoreLimitButton'));
 
       await waitFor(() => {
-        expect(contextValue.setScoreLimit).toHaveBeenCalledWith(400);
+        expect(contextValue.startNewGame).toHaveBeenCalledWith(400);
       });
-      expect(contextValue.resetCurrentRound).toHaveBeenCalled();
-      expect(contextValue.setRoundHistory).toHaveBeenCalledWith([]);
     });
 
     it('closes the edit modal on the first X click without triggering validation', async () => {

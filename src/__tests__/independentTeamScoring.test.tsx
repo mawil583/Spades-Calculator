@@ -76,7 +76,7 @@ describe('Independent Team Scoring', () => {
       const mockSetRoundHistory = vi.fn();
       const mockResetCurrentRound = vi.fn();
 
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',
@@ -146,7 +146,7 @@ describe('Independent Team Scoring', () => {
       const mockSetRoundHistory = vi.fn();
       const mockResetCurrentRound = vi.fn();
 
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',
@@ -204,7 +204,7 @@ describe('Independent Team Scoring', () => {
       const mockSetRoundHistory = vi.fn();
       const mockResetCurrentRound = vi.fn();
 
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',
@@ -289,7 +289,7 @@ describe('Independent Team Scoring', () => {
       const mockResetCurrentRound = vi.fn();
 
       // Start with Team 1 complete, Team 2 incomplete
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',
@@ -353,9 +353,9 @@ describe('Independent Team Scoring', () => {
       const updatedContextValue = {
         ...contextValue,
         currentRound: {
-          ...contextValue.currentRound,
+          ...contextValue.currentRound!,
           team2BidsAndActuals: {
-            ...contextValue.currentRound.team2BidsAndActuals,
+            ...contextValue.currentRound!.team2BidsAndActuals,
             p2Actual: '4', // Team 2 now complete (2+4=6 actuals, total = 7+6=13)
           },
         } as unknown as Round,
@@ -400,7 +400,7 @@ describe('Independent Team Scoring', () => {
       const mockSetRoundHistory = vi.fn();
       const mockResetCurrentRound = vi.fn();
 
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',
@@ -456,7 +456,7 @@ describe('Independent Team Scoring', () => {
       const mockSetRoundHistory = vi.fn();
       const mockResetCurrentRound = vi.fn();
 
-      const contextValue = {
+      const contextValue: Partial<GlobalContextValue> = {
         names: {
           team1Name: 'Team Alpha',
           team2Name: 'Team Beta',

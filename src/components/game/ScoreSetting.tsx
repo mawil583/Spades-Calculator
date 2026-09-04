@@ -8,6 +8,7 @@ import {
   TAKES_BAGS,
 } from '../../helpers/utils/constants';
 import { GlobalContext } from '../../store/GlobalContext';
+import type { NilSetting } from '../../types';
 
 interface ScoreSettingProps {
   onOpenScoreHelp?: () => void;
@@ -49,7 +50,7 @@ function ScoreSetting({ onOpenScoreHelp }: ScoreSettingProps) {
       </Text>
       <RadioGroup
         onValueChange={(e: { value: string | null }) =>
-          setNilScoringRule(e.value || '')
+          setNilScoringRule((e.value || TAKES_BAGS) as NilSetting)
         }
         value={nilScoringRule}
       >

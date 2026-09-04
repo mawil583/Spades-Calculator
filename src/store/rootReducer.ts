@@ -1,6 +1,7 @@
 import {
   defaultLocalStorage,
   setLocalStorage,
+  rotateArr,
 } from '../helpers/utils/helperFunctions';
 import {
   initialFirstDealerOrder,
@@ -8,7 +9,7 @@ import {
   initialNames,
   TAKES_BAGS,
 } from '../helpers/utils/constants';
-import type { AppState, AppAction } from '../types';
+import type { AppState, AppAction, Round } from '../types';
 
 export const getInitialState = (): AppState => ({
   currentRound: defaultLocalStorage('currentRound', EMPTY_ROUND),
@@ -24,6 +25,7 @@ export const getInitialState = (): AppState => ({
   names: defaultLocalStorage('names', initialNames),
   nilScoringRule: defaultLocalStorage('nilScoringRule', TAKES_BAGS),
   scoreLimit: defaultLocalStorage('scoreLimit', null),
+  winAcknowledged: defaultLocalStorage('winAcknowledged', null),
 });
 
 const rootReducer = (state: AppState, action: AppAction): AppState => {
@@ -150,6 +152,59 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
           scoreLimit: action.payload.scoreLimit,
         };
       }
+    case 'SET_WIN_ACKNOWLEDGED':
+      try {
+        setLocalStorage('winAcknowledged', action.payload.winAcknowledged);
+        return {
+          ...state,
+          winAcknowledged: action.payload.winAcknowledged,
+        };
+      } catch (err) {
+        console.error(
+          'Error in SET_WIN_ACKNOWLEDGED (localStorage quota or write error):',
+          err,
+        );
+        return {
+          ...state,
+          winAcknowledged: action.payload.winAcknowledged,
+        };
+      }
+    case 'START_NEW_GAME': {
+      // One choreography for every "start a fresh game" entry point: rotate the
+      // dealer only when a game was actually played, wipe rounds, apply the
+      // chosen score limit, and clear any game-end acknowledgement.
+      const scoreLimit = action.payload.scoreLimit;
+      const winAcknowledged = null;
+      const roundHistory: Round[] = [];
+      const firstDealerOrder =
+        state.roundHistory.length > 0
+          ? rotateArr(state.firstDealerOrder)
+          : state.firstDealerOrder;
+      const nextState = {
+        ...state,
+        scoreLimit,
+        winAcknowledged,
+        roundHistory,
+        currentRound: EMPTY_ROUND,
+        firstDealerOrder,
+      };
+      try {
+        setLocalStorage('scoreLimit', scoreLimit);
+        setLocalStorage('winAcknowledged', winAcknowledged);
+        setLocalStorage('roundHistory', roundHistory);
+        setLocalStorage('currentRound', EMPTY_ROUND);
+        if (firstDealerOrder !== state.firstDealerOrder) {
+          setLocalStorage('firstDealerOrder', firstDealerOrder);
+        }
+        return nextState;
+      } catch (err) {
+        console.error(
+          'Error in START_NEW_GAME (localStorage quota or write error):',
+          err,
+        );
+        return nextState;
+      }
+    }
     case 'HYDRATE':
       // Viewer mirror: receive the full state pushed by the leader. Deliberately
       // does NOT write to localStorage (a viewer's device shouldn't clobber the
@@ -163,6 +218,7 @@ const rootReducer = (state: AppState, action: AppAction): AppState => {
         names: action.payload.names,
         nilScoringRule: action.payload.nilScoringRule,
         scoreLimit: action.payload.scoreLimit ?? null,
+        winAcknowledged: action.payload.winAcknowledged ?? null,
       };
     case 'RESTORE_LOCAL':
       // Leaving a viewer/leader session on a device that has its OWN local

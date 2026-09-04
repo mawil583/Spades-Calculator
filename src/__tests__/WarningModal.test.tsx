@@ -161,9 +161,7 @@ describe('WarningModal', () => {
 
       fireEvent.click(await screen.findByRole('button', { name: 'No' }));
 
-      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(ctx.resetCurrentRound).toHaveBeenCalled();
-      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.startNewGame).toHaveBeenCalledWith(null);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
@@ -189,9 +187,7 @@ describe('WarningModal', () => {
       fireEvent.click(screen.getByTestId('setScoreLimitButton'));
       const ctx = contextValue as GlobalContextValue;
 
-      expect(ctx.setScoreLimit).toHaveBeenCalledWith(500);
-      expect(ctx.resetCurrentRound).toHaveBeenCalled();
-      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.startNewGame).toHaveBeenCalledWith(500);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
@@ -217,9 +213,7 @@ describe('WarningModal', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
       const ctx = contextValue as GlobalContextValue;
 
-      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(ctx.resetCurrentRound).toHaveBeenCalled();
-      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.startNewGame).toHaveBeenCalledWith(null);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });
@@ -379,10 +373,7 @@ describe('WarningModal', () => {
       );
       const ctx = contextValue as GlobalContextValue;
 
-      expect(ctx.setScoreLimit).toHaveBeenCalledWith(null);
-      expect(ctx.setFirstDealerOrder).toHaveBeenCalled();
-      expect(ctx.resetCurrentRound).toHaveBeenCalled();
-      expect(ctx.setRoundHistory).toHaveBeenCalledWith([]);
+      expect(ctx.startNewGame).toHaveBeenCalledWith(null);
       expect(setIsModalOpen).toHaveBeenCalledWith(false);
       expect(mockedNavigate).toHaveBeenCalledWith('/spades-calculator');
     });

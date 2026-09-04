@@ -2,26 +2,19 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { AppModal, Box, Button, Flex, Text } from '../ui';
 import type { BoxProps } from '../ui/box';
-import ScoreLimitQuestion from '../forms/ScoreLimitQuestion';
-import ScoreLimitInput from '../forms/ScoreLimitInput';
-import NewScoreLimitInput from '../forms/NewScoreLimitInput';
+import ScoreLimitFlow, { ScoreLimitFlowStep } from '../forms/ScoreLimitFlow';
+import type { GameEndOutcome } from '../../types';
 
-type GameWonPhase =
-  | 'result'
-  | 'askNewLimit'
-  | 'enterNewLimit'
-  | 'newGameAskLimit'
-  | 'newGameEnterLimit';
+type GameWonPhase = 'result' | 'continueLimit' | 'newGameLimit';
 
 interface GameWonModalProps {
   isOpen: boolean;
   setIsModalOpen: (isOpen: boolean) => void;
-  /** Tie at the limit shows the overtime prompt instead of a winner. */
-  isTie: boolean;
-  winnerTeam: 'team1' | 'team2';
-  winnerName: string;
-  /** The winner's current score — a replacement limit must be higher. */
-  minLimit: number;
+  /**
+   * What to announce: a winner or a tie at the limit. Null while the game
+   * isn't over (the modal is then closed).
+   */
+  outcome: GameEndOutcome | null;
   /** Final tallies (e.g. the GameScore component) so players see the margin. */
   scoreboard?: ReactNode;
   /**
@@ -36,54 +29,57 @@ interface GameWonModalProps {
 function GameWonModal({
   isOpen,
   setIsModalOpen,
-  isTie,
-  winnerTeam,
-  winnerName,
-  minLimit,
+  outcome,
   scoreboard,
   onStartNewGameWithLimit,
   onSetNewLimit,
 }: GameWonModalProps) {
   const [phase, setPhase] = useState<GameWonPhase>('result');
+  const [limitStep, setLimitStep] = useState<ScoreLimitFlowStep>('ask');
   const [previousIsOpenValue, setPreviousIsOpenValue] = useState(isOpen);
 
   if (isOpen !== previousIsOpenValue) {
     setPreviousIsOpenValue(isOpen);
     if (!isOpen) {
       setPhase('result');
+      setLimitStep('ask');
     }
   }
 
-  const onStartNewGame = (limit: number | null) => {
-    setIsModalOpen(false);
-    onStartNewGameWithLimit(limit);
-  };
-
+  const isTie = outcome?.kind === 'tie';
   const title =
     phase === 'result'
       ? isTie
         ? 'Overtime'
         : 'Game Over'
-      : phase === 'askNewLimit' || phase === 'newGameAskLimit'
-        ? 'New Game'
-        : phase === 'enterNewLimit'
+      : limitStep === 'enter'
+        ? phase === 'continueLimit'
           ? 'Enter New Score Limit'
-          : 'Enter Score Limit';
+          : 'Enter Score Limit'
+        : 'New Game';
+
+  const resolveContinue = (limit: number | null) => {
+    onSetNewLimit(limit);
+    setIsModalOpen(false);
+  };
+
+  const resolveNewGame = (limit: number | null) => {
+    setIsModalOpen(false);
+    onStartNewGameWithLimit(limit);
+  };
 
   return (
     <AppModal
       isOpen={isOpen}
       onClose={setIsModalOpen}
       title={title}
-      showCloseButton={
-        phase !== 'enterNewLimit' && phase !== 'newGameEnterLimit'
-      }
+      showCloseButton={limitStep !== 'enter'}
       contentProps={
         { 'data-testid': 'game-won-modal' } as BoxProps &
           Record<`data-${string}`, string>
       }
     >
-      {phase === 'result' && isTie && (
+      {phase === 'result' && outcome?.kind === 'tie' && (
         <div
           style={{ padding: 'var(--app-spacing-2)' }}
           data-testid="tie-content"
@@ -113,16 +109,19 @@ function GameWonModal({
             </Button>
             <Button
               variant="primary"
-              onClick={() => setPhase('newGameAskLimit')}
+              onClick={() => setPhase('newGameLimit')}
             >
               New Game
             </Button>
           </Flex>
         </div>
       )}
-      {phase === 'result' && !isTie && (
+      {phase === 'result' && outcome?.kind === 'win' && (
         <div style={{ padding: 'var(--app-spacing-2)' }}>
-          <div className={winnerTeam} data-testid={`winner-${winnerTeam}`}>
+          <div
+            className={outcome.winnerTeam}
+            data-testid={`winner-${outcome.winnerTeam}`}
+          >
             <Flex direction={'column'} align={'center'} gap={2}>
               <span
                 style={{
@@ -131,7 +130,7 @@ function GameWonModal({
                   lineHeight: 1.2,
                 }}
               >
-                {winnerName} wins!
+                {outcome.winnerName} wins!
               </span>
             </Flex>
           </div>
@@ -152,55 +151,34 @@ function GameWonModal({
             <Button
               variant="secondary"
               flex={1}
-              onClick={() => setPhase('askNewLimit')}
+              onClick={() => setPhase('continueLimit')}
             >
               Continue
             </Button>
             <Button
               variant="primary"
               flex={1}
-              onClick={() => setPhase('newGameAskLimit')}
+              onClick={() => setPhase('newGameLimit')}
             >
               New Game
             </Button>
           </Flex>
         </div>
       )}
-      {phase === 'askNewLimit' && (
-        <ScoreLimitQuestion
+      {phase === 'continueLimit' && (
+        <ScoreLimitFlow
+          isActive={isOpen}
           question="Would you like to set a new score limit?"
-          onYes={() => setPhase('enterNewLimit')}
-          onNo={() => {
-            // Continuing without a new limit means playing without one.
-            onSetNewLimit(null);
-            setIsModalOpen(false);
-          }}
+          minLimit={outcome?.kind === 'win' ? outcome.minLimit : 0}
+          onResolve={resolveContinue}
+          onStepChange={setLimitStep}
         />
       )}
-      {phase === 'enterNewLimit' && (
-        <NewScoreLimitInput
-          minLimit={minLimit}
-          onSetLimit={(limit) => {
-            onSetNewLimit(limit);
-            setIsModalOpen(false);
-          }}
-          onCancel={() => {
-            // Backing out means continuing without any score limit.
-            onSetNewLimit(null);
-            setIsModalOpen(false);
-          }}
-        />
-      )}
-      {phase === 'newGameAskLimit' && (
-        <ScoreLimitQuestion
-          onYes={() => setPhase('newGameEnterLimit')}
-          onNo={() => onStartNewGame(null)}
-        />
-      )}
-      {phase === 'newGameEnterLimit' && (
-        <ScoreLimitInput
-          onSetLimit={(limit) => onStartNewGame(limit)}
-          onCancel={() => onStartNewGame(null)}
+      {phase === 'newGameLimit' && (
+        <ScoreLimitFlow
+          isActive={isOpen}
+          onResolve={resolveNewGame}
+          onStepChange={setLimitStep}
         />
       )}
     </AppModal>

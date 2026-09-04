@@ -16,6 +16,7 @@ const baseState = (): AppState => ({
   names: initialNames,
   nilScoringRule: TAKES_BAGS,
   scoreLimit: null,
+  winAcknowledged: null,
 });
 
 describe('score limit storage', () => {
@@ -64,6 +65,114 @@ describe('score limit storage', () => {
     });
   });
 
+  describe('SET_WIN_ACKNOWLEDGED', () => {
+    it('stores the acknowledgement in state and localStorage', () => {
+      const ack = { team1: 520, team2: 480, scoreLimit: 500 };
+      const nextState = rootReducer(baseState(), {
+        type: 'SET_WIN_ACKNOWLEDGED',
+        payload: { winAcknowledged: ack },
+      });
+
+      expect(nextState.winAcknowledged).toEqual(ack);
+      expect(JSON.parse(window.localStorage.getItem('winAcknowledged') ?? '')).toEqual(
+        ack,
+      );
+    });
+
+    it('clears the acknowledgement when null is passed', () => {
+      const stateWithAck = {
+        ...baseState(),
+        winAcknowledged: { team1: 520, team2: 480, scoreLimit: 500 },
+      };
+
+      const nextState = rootReducer(stateWithAck, {
+        type: 'SET_WIN_ACKNOWLEDGED',
+        payload: { winAcknowledged: null },
+      });
+
+      expect(nextState.winAcknowledged).toBeNull();
+      expect(JSON.parse(window.localStorage.getItem('winAcknowledged') ?? '')).toBeNull();
+    });
+  });
+
+  describe('START_NEW_GAME', () => {
+    it('resets rounds, applies the limit and clears the acknowledgement', () => {
+      const playedState: AppState = {
+        ...baseState(),
+        roundHistory: [
+          {
+            team1BidsAndActuals: {
+              p1Bid: '5',
+              p2Bid: '5',
+              p1Actual: '5',
+              p2Actual: '5',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '1',
+              p2Bid: '1',
+              p1Actual: '0',
+              p2Actual: '0',
+            },
+          },
+        ],
+        scoreLimit: 500,
+        winAcknowledged: { team1: 130, team2: -20, scoreLimit: 500 },
+      };
+
+      const nextState = rootReducer(playedState, {
+        type: 'START_NEW_GAME',
+        payload: { scoreLimit: 300 },
+      });
+
+      expect(nextState.scoreLimit).toBe(300);
+      expect(nextState.roundHistory).toEqual([]);
+      expect(nextState.currentRound).toEqual(EMPTY_ROUND);
+      expect(nextState.winAcknowledged).toBeNull();
+      expect(JSON.parse(window.localStorage.getItem('scoreLimit') ?? '')).toBe(300);
+      expect(
+        JSON.parse(window.localStorage.getItem('winAcknowledged') ?? ''),
+      ).toBeNull();
+    });
+
+    it('rotates the dealer when a game was played', () => {
+      const playedState: AppState = {
+        ...baseState(),
+        roundHistory: [
+          {
+            team1BidsAndActuals: {
+              p1Bid: '5',
+              p2Bid: '5',
+              p1Actual: '5',
+              p2Actual: '5',
+            },
+            team2BidsAndActuals: {
+              p1Bid: '1',
+              p2Bid: '1',
+              p1Actual: '0',
+              p2Actual: '0',
+            },
+          },
+        ],
+      };
+
+      const nextState = rootReducer(playedState, {
+        type: 'START_NEW_GAME',
+        payload: { scoreLimit: null },
+      });
+
+      expect(nextState.firstDealerOrder).not.toEqual(initialFirstDealerOrder);
+    });
+
+    it('keeps the dealer order when no game was played', () => {
+      const nextState = rootReducer(baseState(), {
+        type: 'START_NEW_GAME',
+        payload: { scoreLimit: null },
+      });
+
+      expect(nextState.firstDealerOrder).toEqual(initialFirstDealerOrder);
+    });
+  });
+
   describe('HYDRATE', () => {
     it('adopts the leader score limit for viewers', () => {
       const leaderState = { ...baseState(), scoreLimit: 250 };
@@ -89,6 +198,33 @@ describe('score limit storage', () => {
       });
 
       expect(hydrated.scoreLimit).toBeNull();
+    });
+
+    it('adopts the leader game-end acknowledgement for viewers', () => {
+      const ack = { team1: 520, team2: -80, scoreLimit: 500 };
+      const leaderState = { ...baseState(), winAcknowledged: ack };
+
+      const hydrated = rootReducer(baseState(), {
+        type: 'HYDRATE',
+        payload: leaderState,
+      });
+
+      expect(hydrated.winAcknowledged).toEqual(ack);
+    });
+
+    it('falls back to null acknowledgement for sessions created before acknowledgements existed', () => {
+      const legacyLeaderState = baseState() as unknown as Record<
+        string,
+        unknown
+      >;
+      delete legacyLeaderState.winAcknowledged;
+
+      const hydrated = rootReducer(baseState(), {
+        type: 'HYDRATE',
+        payload: legacyLeaderState as unknown as AppState,
+      });
+
+      expect(hydrated.winAcknowledged).toBeNull();
     });
   });
 });
