@@ -141,6 +141,19 @@ export const inputRecipe = defineRecipe({
       boxShadow: '0 0 0 1px {colors.red.400}',
     },
   },
+  variants: {
+    size: {
+      md: {
+        textStyle: 'md', // 16px — ensures default md inputs resolve to >= 16px so iOS Safari never zooms
+      },
+      lg: {
+        textStyle: 'lg', // 18px
+      },
+    },
+  },
+  defaultVariants: {
+    size: 'md',
+  },
 });
 
 const fieldSlotRecipe = defineSlotRecipe({
@@ -167,7 +180,7 @@ const badgeRecipe = defineRecipe({
     justifyContent: 'center',
     borderRadius: '8px',
     fontWeight: 'bold',
-    fontSize: '13px',
+    fontSize: '14px',
     width: '24px',
     height: '24px',
     verticalAlign: 'middle',
@@ -196,6 +209,19 @@ export const system = createSystem(defaultConfig, {
       field: fieldSlotRecipe,
     },
     tokens: {
+      // Type scale: every step has a distinct, increasing size. Floor for
+      // secondary/helper text (xs) is 14px so nothing in the app renders
+      // illegibly small.
+      fontSizes: {
+        '2xs': { value: '12px' },
+        xs: { value: '14px' },
+        sm: { value: '15px' },
+        md: { value: '16px' },
+        lg: { value: '18px' },
+        xl: { value: '20px' },
+        '2xl': { value: '24px' },
+        '3xl': { value: '30px' },
+      },
       colors: {
         team1: { value: team1Color },
         team2: { value: team2Color },
@@ -218,6 +244,11 @@ export const system = createSystem(defaultConfig, {
       color: 'gray.50',
       height: '100%',
     },
+    // Global safety net for mobile form controls: iOS Safari zooms any input
+    // with computed font-size < 16px on focus.
+    'input, textarea, select': {
+      fontSize: '16px',
+    },
     ':root': {
       '--app-team1': '{colors.team1}',
       '--app-team2': '{colors.team2}',
@@ -226,15 +257,15 @@ export const system = createSystem(defaultConfig, {
       '--app-error-red': '{colors.errorRed}',
       '--app-premium-blue': '{colors.premiumBlue}',
       '--app-dealer-badge': '{colors.dealerBadge}',
-      // Typography
-      '--app-font-2xs': '10px',
-      '--app-font-xs': '12px',
-      '--app-font-sm': '14px',
-      '--app-font-md': '16px',
-      '--app-font-lg': '18px',
-      '--app-font-xl': '20px',
-      '--app-font-2xl': '24px',
-      '--app-font-3xl': '30px',
+      // Typography — mapped directly to fontSizes tokens
+      '--app-font-2xs': '{fontSizes.2xs}',
+      '--app-font-xs': '{fontSizes.xs}',
+      '--app-font-sm': '{fontSizes.sm}',
+      '--app-font-md': '{fontSizes.md}',
+      '--app-font-lg': '{fontSizes.lg}',
+      '--app-font-xl': '{fontSizes.xl}',
+      '--app-font-2xl': '{fontSizes.2xl}',
+      '--app-font-3xl': '{fontSizes.3xl}',
       // Spacing
       '--app-spacing-0': '0px',
       '--app-spacing-1': '4px',

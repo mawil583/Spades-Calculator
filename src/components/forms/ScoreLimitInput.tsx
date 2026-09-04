@@ -30,6 +30,13 @@ function ScoreLimitInput({
 
   const confirm = () => {
     if (!isValidLimit) return;
+    // Dismiss virtual keyboard before transition so it doesn't linger into the next screen.
+    if (
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement !== document.body
+    ) {
+      document.activeElement.blur();
+    }
     onSetLimit(parsed as number);
   };
 

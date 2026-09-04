@@ -14,8 +14,8 @@ function Unclaimed({ numUnclaimed }: UnclaimedProps) {
   const text = getUnclaimedText(numUnclaimed, useTableRoundUI);
 
   return (
-    <Flex direction="column" align="center">
-      <Text>{text}</Text>
+    <Flex direction="column" align="center" gap={0.5}>
+      <Text lineHeight="1.2">{text}</Text>
       <ScoreLimitDisplay />
     </Flex>
   );
