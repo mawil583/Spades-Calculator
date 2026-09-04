@@ -199,5 +199,32 @@ describe('score limit storage', () => {
 
       expect(hydrated.scoreLimit).toBeNull();
     });
+
+    it('adopts the leader game-end acknowledgement for viewers', () => {
+      const ack = { team1: 520, team2: -80, scoreLimit: 500 };
+      const leaderState = { ...baseState(), winAcknowledged: ack };
+
+      const hydrated = rootReducer(baseState(), {
+        type: 'HYDRATE',
+        payload: leaderState,
+      });
+
+      expect(hydrated.winAcknowledged).toEqual(ack);
+    });
+
+    it('falls back to null acknowledgement for sessions created before acknowledgements existed', () => {
+      const legacyLeaderState = baseState() as unknown as Record<
+        string,
+        unknown
+      >;
+      delete legacyLeaderState.winAcknowledged;
+
+      const hydrated = rootReducer(baseState(), {
+        type: 'HYDRATE',
+        payload: legacyLeaderState as unknown as AppState,
+      });
+
+      expect(hydrated.winAcknowledged).toBeNull();
+    });
   });
 });
