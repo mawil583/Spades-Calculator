@@ -27,6 +27,7 @@ function ScoreLimitDisplay() {
       <Text
         as="button"
         fontSize="sm"
+        lineHeight="1.2"
         opacity={0.8}
         data-testid="score-limit-display"
         cursor={canEdit ? 'pointer' : 'default'}
